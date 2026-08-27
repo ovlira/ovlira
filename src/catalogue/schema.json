@@ -1,0 +1,69 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ovlira.catalogue.schema.json",
+  "title": "Ovlira descriptor",
+  "description": "The versioned machine-readable contract used by the local Ovlira registry.",
+  "oneOf": [
+    {
+      "type": "object",
+      "required": ["id", "kind", "title", "description", "category", "tags", "api", "guidance"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^component\\.[a-z0-9-]+$" },
+        "kind": { "const": "component" },
+        "title": { "type": "string", "minLength": 1 },
+        "description": { "type": "string", "minLength": 1 },
+        "category": { "type": "string", "minLength": 1 },
+        "tags": { "type": "array", "items": { "type": "string" } },
+        "api": { "$ref": "#/$defs/api" },
+        "guidance": { "$ref": "#/$defs/guidance" }
+      }
+    },
+    {
+      "type": "object",
+      "required": ["id", "kind", "title", "description", "category", "tags", "useWhen", "avoidWhen", "components", "requiredStates", "constraints", "example", "composition"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^(page|state|shell)\\.[a-z0-9-]+$" },
+        "kind": { "const": "recipe" },
+        "title": { "type": "string", "minLength": 1 },
+        "description": { "type": "string", "minLength": 1 },
+        "category": { "type": "string", "minLength": 1 },
+        "tags": { "type": "array", "items": { "type": "string" } },
+        "useWhen": { "type": "array", "items": { "type": "string" } },
+        "avoidWhen": { "type": "array", "items": { "type": "string" } },
+        "components": { "type": "array", "items": { "type": "string", "pattern": "^ov-" } },
+        "requiredStates": { "type": "array", "items": { "type": "string" } },
+        "constraints": { "type": "array", "items": { "type": "string" } },
+        "example": { "type": "string", "minLength": 1 },
+        "composition": { "type": "array", "items": { "type": "string" } }
+      }
+    }
+  ],
+  "$defs": {
+    "api": {
+      "type": "object",
+      "required": ["tag", "importPath", "props", "events", "slots", "cssCustomProperties", "parts"],
+      "properties": {
+        "tag": { "type": "string", "pattern": "^ov-[a-z0-9-]+$" },
+        "importPath": { "type": "string" },
+        "props": { "type": "array", "items": { "type": "object", "required": ["name", "type", "description"] } },
+        "events": { "type": "array", "items": { "type": "object", "required": ["name", "description"] } },
+        "slots": { "type": "array", "items": { "type": "string" } },
+        "cssCustomProperties": { "type": "array", "items": { "type": "string" } },
+        "parts": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "guidance": {
+      "type": "object",
+      "required": ["useWhen", "avoidWhen", "constraints", "example"],
+      "properties": {
+        "useWhen": { "type": "array", "items": { "type": "string" } },
+        "avoidWhen": { "type": "array", "items": { "type": "string" } },
+        "constraints": { "type": "array", "items": { "type": "string" } },
+        "requiredStates": { "type": "array", "items": { "type": "string" } },
+        "requiredProps": { "type": "array", "items": { "type": "string" } },
+        "disallowedChildren": { "type": "array", "items": { "type": "string" } },
+        "example": { "type": "string", "minLength": 1 }
+      }
+    }
+  }
+}

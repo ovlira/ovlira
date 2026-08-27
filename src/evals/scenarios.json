@@ -1,0 +1,26 @@
+[
+  {
+    "id": "settings-recipe",
+    "title": "Workspace settings screen",
+    "prompt": "A team needs a workspace settings screen with profile fields, preferences, and save actions. Use the highest-level approved pattern that already describes this screen.",
+    "searchQuery": "settings page",
+    "targetId": "page.settings",
+    "targetKind": "recipe"
+  },
+  {
+    "id": "labeled-input",
+    "title": "Labeled workspace field",
+    "prompt": "A form needs one accessible text field for a workspace name. Choose the smallest approved building block rather than a full page recipe.",
+    "searchQuery": "text field",
+    "targetId": "component.input",
+    "targetKind": "component"
+  },
+  {
+    "id": "empty-collection",
+    "title": "Empty collection state",
+    "prompt": "A records page has no results yet and needs a clear explanation plus a primary create action. Prefer the page-level recipe over the primitive component when both match, because this is a complete state pattern.",
+    "searchQuery": "empty state",
+    "targetId": "state.empty",
+    "targetKind": "recipe"
+  }
+]

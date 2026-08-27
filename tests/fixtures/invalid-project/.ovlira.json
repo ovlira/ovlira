@@ -1,0 +1,6 @@
+{
+  "version": 1,
+  "added": [],
+  "recipes": ["page.settings"],
+  "entry": "src/main.ts"
+}

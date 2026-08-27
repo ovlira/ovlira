@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ovlira.local/schemas/codex-plan.schema.json",
+  "title": "Ovlira Codex evaluation plan",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["version", "scenarioId", "plan"],
+  "properties": {
+    "version": { "type": "integer", "const": 1 },
+    "scenarioId": { "type": "string", "minLength": 1 },
+    "plan": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 6,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["op", "query", "id"],
+        "properties": {
+          "op": { "type": "string", "enum": ["search", "inspect", "add"] },
+          "query": { "type": "string" },
+          "id": { "type": "string" }
+        }
+      }
+    }
+  }
+}

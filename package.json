@@ -1,0 +1,50 @@
+{
+  "name": "ovlira",
+  "version": "0.2.0",
+  "description": "A local, agent-first UI prototyping and design-system toolkit.",
+  "type": "module",
+  "customElements": "./custom-elements.json",
+  "bin": {
+    "ovlira": "dist/cli/index.js"
+  },
+  "exports": {
+    ".": "./dist/index.js",
+    "./components/*.js": "./dist/components/*.js"
+  },
+  "files": [
+    "dist",
+    "src",
+    "custom-elements.json",
+    "custom-elements-manifest.config.mjs",
+    "README.md",
+    "docs",
+    "examples",
+    "AGENTS.md",
+    "CLAUDE.md"
+  ],
+  "engines": {
+    "node": ">=20.19.0"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "test": "npm run build && vitest run",
+    "test:watch": "vitest",
+    "manifest": "cem analyze --litelement",
+    "metadata:check": "node dist/cli/index.js metadata --json",
+    "eval:codex": "npm run build && node dist/evals/runner.js",
+    "benchmark:codex": "npm run build && node dist/evals/runner.js --runs 3",
+    "eval:codex:offline": "npm run build && node dist/evals/runner.js --offline",
+    "check:fixtures": "node dist/cli/index.js check --json --cwd tests/fixtures/valid-project && node dist/cli/index.js check --json --cwd tests/fixtures/invalid-project"
+  },
+  "dependencies": {
+    "lit": "^3.3.0",
+    "typescript": "^5.8.3"
+  },
+  "devDependencies": {
+    "@custom-elements-manifest/analyzer": "^0.10.10",
+    "@types/node": "^26.4.0",
+    "jsdom": "^26.1.0",
+    "vite": "^7.1.0",
+    "vitest": "^3.2.4"
+  }
+}

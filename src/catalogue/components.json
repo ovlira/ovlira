@@ -1,0 +1,258 @@
+[
+  {
+    "id": "component.button",
+    "kind": "component",
+    "title": "Button",
+    "description": "A native button with a restrained set of intent, size, and loading states.",
+    "category": "actions",
+    "tags": ["action", "form", "primary", "secondary", "destructive"],
+    "api": {
+      "tag": "ov-button",
+      "importPath": "./components/ovlira/button.js",
+      "props": [
+        { "name": "variant", "type": "'primary' | 'secondary' | 'quiet' | 'danger'", "description": "Visual and semantic intent.", "default": "primary", "reflected": true },
+        { "name": "size", "type": "'sm' | 'md' | 'lg'", "description": "Control height and padding.", "default": "md", "reflected": true },
+        { "name": "loading", "type": "boolean", "description": "Disables the button and communicates progress.", "default": "false", "reflected": true },
+        { "name": "disabled", "type": "boolean", "description": "Prevents interaction.", "default": "false", "reflected": true }
+      ],
+      "events": [],
+      "slots": ["default: button label"],
+      "cssCustomProperties": ["--ov-button-radius"],
+      "parts": ["button"]
+    },
+    "guidance": {
+      "useWhen": ["The user needs to submit, confirm, or move forward."],
+      "avoidWhen": ["The action is navigation; use a native link instead."],
+      "constraints": ["Use one primary button per form or task region.", "Keep the label action-first and specific."],
+      "requiredProps": [],
+      "disallowedChildren": ["ov-button"],
+      "example": "examples/components/button.md"
+    }
+  },
+  {
+    "id": "component.input",
+    "kind": "component",
+    "title": "Input",
+    "description": "A labelled native text input with help, error, and required states.",
+    "category": "forms",
+    "tags": ["form", "text", "field", "label", "validation"],
+    "api": {
+      "tag": "ov-input",
+      "importPath": "./components/ovlira/input.js",
+      "props": [
+        { "name": "label", "type": "string", "description": "Visible accessible label.", "required": true, "reflected": true },
+        { "name": "name", "type": "string", "description": "Native form field name.", "reflected": true },
+        { "name": "value", "type": "string", "description": "Current input value." },
+        { "name": "type", "type": "string", "description": "Native input type.", "default": "text", "reflected": true },
+        { "name": "required", "type": "boolean", "description": "Marks the field as required.", "default": "false", "reflected": true },
+        { "name": "error", "type": "string", "description": "Validation message." }
+      ],
+      "events": [{ "name": "input", "description": "Native input event retargeted from the shadow root." }],
+      "slots": [],
+      "cssCustomProperties": ["--ov-field-accent"],
+      "parts": ["field", "label", "input", "message"]
+    },
+    "guidance": {
+      "useWhen": ["A user must enter a short, single-line value."],
+      "avoidWhen": ["The response is long-form; use a native textarea until a dedicated recipe exists."],
+      "constraints": ["Always provide a visible label; placeholder text is not a label."],
+      "requiredProps": ["label"],
+      "example": "examples/components/input.md"
+    }
+  },
+  {
+    "id": "component.select",
+    "kind": "component",
+    "title": "Select",
+    "description": "A labelled native select for a small, known set of options.",
+    "category": "forms",
+    "tags": ["form", "choice", "dropdown", "field"],
+    "api": {
+      "tag": "ov-select",
+      "importPath": "./components/ovlira/select.js",
+      "props": [
+        { "name": "label", "type": "string", "description": "Visible accessible label.", "required": true, "reflected": true },
+        { "name": "options", "type": "SelectOption[]", "description": "Options assigned as a property." },
+        { "name": "value", "type": "string", "description": "Selected option value." },
+        { "name": "required", "type": "boolean", "description": "Marks the field as required.", "default": "false", "reflected": true }
+      ],
+      "events": [{ "name": "change", "description": "Native change event retargeted from the shadow root." }],
+      "slots": [],
+      "cssCustomProperties": ["--ov-field-accent"],
+      "parts": ["field", "label", "select"]
+    },
+    "guidance": {
+      "useWhen": ["The choice list is short enough to scan without search."],
+      "avoidWhen": ["There are more than roughly eight options or options need rich descriptions."],
+      "constraints": ["Provide a useful empty prompt when the field is not required."],
+      "requiredProps": ["label"],
+      "example": "examples/components/select.md"
+    }
+  },
+  {
+    "id": "component.badge",
+    "kind": "component",
+    "title": "Badge",
+    "description": "A compact status or category marker for short labels.",
+    "category": "feedback",
+    "tags": ["status", "label", "metadata", "pill"],
+    "api": {
+      "tag": "ov-badge",
+      "importPath": "./components/ovlira/badge.js",
+      "props": [{ "name": "tone", "type": "'neutral' | 'accent' | 'success' | 'warning' | 'danger'", "description": "Status tone.", "default": "neutral", "reflected": true }],
+      "events": [],
+      "slots": ["default: badge text"],
+      "cssCustomProperties": [],
+      "parts": ["badge"]
+    },
+    "guidance": {
+      "useWhen": ["A short status adds useful scan context."],
+      "avoidWhen": ["The label is a paragraph or the only way information is conveyed."],
+      "constraints": ["Use text that remains meaningful without color."],
+      "example": "examples/components/badge.md"
+    }
+  },
+  {
+    "id": "component.card",
+    "kind": "component",
+    "title": "Card",
+    "description": "An article-like surface for grouping related content and actions.",
+    "category": "layout",
+    "tags": ["surface", "container", "section", "content"],
+    "api": {
+      "tag": "ov-card",
+      "importPath": "./components/ovlira/card.js",
+      "props": [{ "name": "padding", "type": "'none' | 'sm' | 'md' | 'lg'", "description": "Internal spacing.", "default": "md", "reflected": true }],
+      "events": [],
+      "slots": ["header", "default: body", "footer"],
+      "cssCustomProperties": ["--ov-card-padding"],
+      "parts": ["card", "header", "body", "footer"]
+    },
+    "guidance": {
+      "useWhen": ["A related set of content needs a clear boundary."],
+      "avoidWhen": ["The page is already composed of many nested bordered surfaces."],
+      "constraints": ["Keep card hierarchy shallow; prefer one card per task or information group."],
+      "disallowedChildren": [],
+      "example": "examples/components/card.md"
+    }
+  },
+  {
+    "id": "component.alert",
+    "kind": "component",
+    "title": "Alert",
+    "description": "An inline message with an appropriate live-region role.",
+    "category": "feedback",
+    "tags": ["message", "error", "notice", "status", "feedback"],
+    "api": {
+      "tag": "ov-alert",
+      "importPath": "./components/ovlira/alert.js",
+      "props": [{ "name": "tone", "type": "'info' | 'success' | 'warning' | 'danger'", "description": "Message intent.", "default": "info", "reflected": true }, { "name": "heading", "type": "string", "description": "Optional short heading." }],
+      "events": [],
+      "slots": ["default: message content"],
+      "cssCustomProperties": [],
+      "parts": ["alert", "heading", "message"]
+    },
+    "guidance": {
+      "useWhen": ["The user needs feedback that persists in the page context."],
+      "avoidWhen": ["The feedback is a transient toast or a field-level validation message."],
+      "constraints": ["Danger messages should explain what happened and the next action."],
+      "example": "examples/components/alert.md"
+    }
+  },
+  {
+    "id": "component.page-header",
+    "kind": "component",
+    "title": "Page header",
+    "description": "A consistent page title block with optional context and actions.",
+    "category": "layout",
+    "tags": ["heading", "navigation", "page", "actions"],
+    "api": {
+      "tag": "ov-page-header",
+      "importPath": "./components/ovlira/page-header.js",
+      "props": [{ "name": "title", "type": "string", "description": "Page heading.", "required": true, "reflected": true }, { "name": "description", "type": "string", "description": "Supporting context." }, { "name": "eyebrow", "type": "string", "description": "Small section label." }],
+      "events": [],
+      "slots": ["actions"],
+      "cssCustomProperties": [],
+      "parts": ["header", "eyebrow", "title", "description", "actions"]
+    },
+    "guidance": {
+      "useWhen": ["A screen needs a clear title and optional task-level actions."],
+      "avoidWhen": ["The content is a modal or a small card with its own heading."],
+      "constraints": ["Use exactly one page header per main region.", "Reserve the primary action for the page's main task."],
+      "requiredProps": ["title"],
+      "example": "examples/components/page-header.md"
+    }
+  },
+  {
+    "id": "component.empty-state",
+    "kind": "component",
+    "title": "Empty state",
+    "description": "A calm, actionable explanation for a collection with no items.",
+    "category": "feedback",
+    "tags": ["empty", "zero", "onboarding", "collection"],
+    "api": {
+      "tag": "ov-empty-state",
+      "importPath": "./components/ovlira/empty-state.js",
+      "props": [{ "name": "title", "type": "string", "description": "Empty state heading.", "required": true, "reflected": true }, { "name": "description", "type": "string", "description": "Reason and next step." }],
+      "events": [],
+      "slots": ["action"],
+      "cssCustomProperties": [],
+      "parts": ["state", "title", "description", "action"]
+    },
+    "guidance": {
+      "useWhen": ["A user understands the collection but it currently has no results."],
+      "avoidWhen": ["The page failed to load; show an error state instead."],
+      "constraints": ["Name a specific next action when one exists."],
+      "requiredProps": ["title"],
+      "example": "examples/components/empty-state.md"
+    }
+  },
+  {
+    "id": "component.data-table",
+    "kind": "component",
+    "title": "Data table",
+    "description": "A compact, labelled table for comparable records and row actions.",
+    "category": "data",
+    "tags": ["table", "data", "rows", "list", "crud"],
+    "api": {
+      "tag": "ov-data-table",
+      "importPath": "./components/ovlira/data-table.js",
+      "props": [{ "name": "caption", "type": "string", "description": "Accessible table name.", "required": true, "reflected": true }, { "name": "columns", "type": "TableColumn[]", "description": "Column definitions." }, { "name": "rows", "type": "Record<string, string>[]", "description": "Data rows." }],
+      "events": [],
+      "slots": [],
+      "cssCustomProperties": [],
+      "parts": ["table", "caption", "header", "body", "row"]
+    },
+    "guidance": {
+      "useWhen": ["Users need to compare the same fields across multiple records."],
+      "avoidWhen": ["Each record needs a long narrative or the layout is primarily visual."],
+      "constraints": ["Keep columns to the fields required for the task.", "Provide an empty state when rows are absent."],
+      "requiredProps": ["caption"],
+      "example": "examples/components/data-table.md"
+    }
+  },
+  {
+    "id": "component.application-shell",
+    "kind": "component",
+    "title": "Application shell",
+    "description": "A responsive app frame with a labelled navigation rail and main content region.",
+    "category": "layout",
+    "tags": ["shell", "navigation", "app", "layout", "sidebar"],
+    "api": {
+      "tag": "ov-application-shell",
+      "importPath": "./components/ovlira/application-shell.js",
+      "props": [{ "name": "navLabel", "type": "string", "description": "Accessible navigation label.", "default": "Primary navigation", "reflected": true }],
+      "events": [],
+      "slots": ["brand", "nav", "header", "default: main content"],
+      "cssCustomProperties": ["--ov-shell-rail"],
+      "parts": ["shell", "rail", "brand", "nav", "content", "header", "main"]
+    },
+    "guidance": {
+      "useWhen": ["Multiple screens share a persistent navigation model."],
+      "avoidWhen": ["The page is a one-off landing screen or a focused modal flow."],
+      "constraints": ["Keep navigation labels short and ordered by frequency.", "Use one main landmark inside the shell."],
+      "requiredProps": [],
+      "example": "examples/components/application-shell.md"
+    }
+  }
+]
