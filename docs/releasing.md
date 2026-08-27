@@ -1,0 +1,67 @@
+# Releasing Ovlira
+
+Ovlira currently ships as one public npm package:
+
+```text
+package:   @ovlira/cli
+executable: ovlira
+repository: ovlira/ovlira
+```
+
+The organization scope gives the npm organization ownership of the package without forcing a premature package split. `@ovlira/core` is reserved as a possible future extraction for stable registry and validation APIs; it is not a second package today.
+
+## Before the first publish
+
+From a clean checkout:
+
+```bash
+npm ci
+npm run release:check
+npm pack --dry-run
+```
+
+Review the tarball contents and confirm that it contains `dist`, `src`, the catalogue, metadata, docs, examples, and the Custom Elements Manifest, but not `node_modules`, `coverage`, `reports`, or local credentials.
+
+The initial scoped package must be made public explicitly:
+
+```bash
+npm whoami
+npm publish --access public
+```
+
+Publishing a version is irreversible in the npm registry, so the package name, version, tarball, and access level should be checked before this command.
+
+## GitHub releases
+
+For each release:
+
+```bash
+npm version patch
+git push origin main --follow-tags
+```
+
+Then create and publish a GitHub Release for the matching tag, such as `v0.2.1`. The publish workflow checks that the tag version exactly matches `package.json` before publishing.
+
+Before relying on the workflow, configure an npm trusted publisher for `@ovlira/cli`:
+
+- Provider: GitHub Actions
+- Organization: `ovlira`
+- Repository: `ovlira`
+- Workflow filename: `publish.yml`
+- Allowed action: npm publish
+
+The workflow grants only `contents: read` and `id-token: write`, runs the release checks, and publishes with provenance. It does not store an npm token in GitHub. See the [npm trusted publishing documentation](https://docs.npmjs.com/trusted-publishers/) for the current npm configuration screens and requirements.
+
+## CI
+
+Pull requests and pushes to `main` run:
+
+```text
+npm ci
+npm test
+npm run manifest
+npm run eval:codex:offline
+npm pack --dry-run
+```
+
+The live Codex evaluator remains opt-in and is not part of release CI.

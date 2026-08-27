@@ -1,6 +1,6 @@
 # Architecture
 
-Ovlira is a local npm package with no server, database, auth, or MCP layer.
+Ovlira is a local npm package (`@ovlira/cli`) with no server, database, auth, or MCP layer. The installed executable remains `ovlira` so agent instructions and project workflows stay short.
 
 ```text
 src/components       Lit runtime implementations

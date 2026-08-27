@@ -14,7 +14,7 @@ There are no independent release units yet. A second package would add workspace
 
 ## Decision
 
-Use one npm package named `ovlira`, with clear source directories and a straightforward future split point.
+Use one npm package named `@ovlira/cli`, with the executable named `ovlira`, clear source directories, and a straightforward future split point.
 
 ## Consequence for Ovlira
 

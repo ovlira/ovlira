@@ -23,7 +23,14 @@ npm run build
 npm run manifest
 ```
 
-To use the CLI locally after building:
+To install the published CLI:
+
+```bash
+npm install -g @ovlira/cli
+ovlira --version
+```
+
+The npm package is scoped to the `ovlira` organization, but the executable remains `ovlira`. To use the CLI from this checkout after building:
 
 ```bash
 npm install -g .
@@ -105,6 +112,16 @@ npm run benchmark:codex -- --runs 3 --report reports/baseline.json
 ```
 
 See [`docs/ai-evals.md`](./docs/ai-evals.md) for the scenario contract, safety boundary, token fields, and benchmark interpretation.
+
+## Releases
+
+The repository publishes one package, [`@ovlira/cli`](https://www.npmjs.com/package/@ovlira/cli), with the `ovlira` executable. Run the release checks before publishing:
+
+```bash
+npm run release:check
+```
+
+The first public scoped publish uses `npm publish --access public`. Later releases are intended to come from a GitHub Release through the provenance workflow in [`.github/workflows/publish.yml`](./.github/workflows/publish.yml). See [`docs/releasing.md`](./docs/releasing.md) for the npm organization and trusted-publisher setup.
 
 ## Framework portability
 

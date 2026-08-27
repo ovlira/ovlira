@@ -1,9 +1,29 @@
 {
-  "name": "ovlira",
+  "name": "@ovlira/cli",
   "version": "0.2.0",
   "description": "A local, agent-first UI prototyping and design-system toolkit.",
+  "keywords": [
+    "design-system",
+    "lit",
+    "web-components",
+    "custom-elements",
+    "coding-agents",
+    "cli"
+  ],
+  "license": "MIT",
   "type": "module",
   "customElements": "./custom-elements.json",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ovlira/ovlira.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ovlira/ovlira/issues"
+  },
+  "homepage": "https://github.com/ovlira/ovlira#readme",
+  "publishConfig": {
+    "access": "public"
+  },
   "bin": {
     "ovlira": "dist/cli/index.js"
   },
@@ -17,6 +37,8 @@
     "custom-elements.json",
     "custom-elements-manifest.config.mjs",
     "README.md",
+    "CHANGELOG.md",
+    "LICENSE",
     "docs",
     "examples",
     "AGENTS.md",
@@ -31,6 +53,7 @@
     "test:watch": "vitest",
     "manifest": "cem analyze --litelement",
     "metadata:check": "node dist/cli/index.js metadata --json",
+    "release:check": "npm test && npm run manifest && npm pack --dry-run",
     "eval:codex": "npm run build && node dist/evals/runner.js",
     "benchmark:codex": "npm run build && node dist/evals/runner.js --runs 3",
     "eval:codex:offline": "npm run build && node dist/evals/runner.js --offline",
