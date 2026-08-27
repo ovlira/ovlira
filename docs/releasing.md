@@ -31,9 +31,11 @@ npm publish --access public
 
 Publishing a version is irreversible in the npm registry, so the package name, version, tarball, and access level should be checked before this command.
 
+Do not create a GitHub Release for `v0.2.0` after this manual publish: the release workflow would try to publish the same npm version again. Push the matching Git tag if desired, then use the GitHub Release workflow for the next version.
+
 ## GitHub releases
 
-For each release:
+For releases after the initial `0.2.0` package:
 
 ```bash
 npm version patch
