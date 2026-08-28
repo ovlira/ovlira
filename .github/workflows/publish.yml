@@ -3,6 +3,12 @@ name: Publish to npm
 on:
   release:
     types: [published]
+  workflow_dispatch:
+    inputs:
+      release_tag:
+        description: Git tag to publish, for example v0.2.1
+        required: true
+        default: v0.2.1
 
 permissions:
   contents: read
@@ -16,18 +22,24 @@ jobs:
       - name: Check out release
         uses: actions/checkout@v4
         with:
-          ref: ${{ github.event.release.tag_name }}
+          ref: ${{ github.event.release.tag_name || inputs.release_tag }}
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '22.x'
+          node-version: '24.x'
           registry-url: https://registry.npmjs.org
           package-manager-cache: false
 
+      - name: Use trusted-publishing-compatible npm
+        run: |
+          npm install --global 'npm@^11.5.1'
+          node --version
+          npm --version
+
       - name: Verify release version
         env:
-          RELEASE_TAG: ${{ github.event.release.tag_name }}
+          RELEASE_TAG: ${{ github.event.release.tag_name || inputs.release_tag }}
         run: node -e "const pkg = require('./package.json'); const tag = process.env.RELEASE_TAG.replace(/^v/, ''); if (pkg.version !== tag) throw new Error('package.json version ' + pkg.version + ' does not match release tag ' + tag)"
 
       - name: Install dependencies
@@ -39,5 +51,5 @@ jobs:
       - name: Regenerate Custom Elements Manifest
         run: npm run manifest
 
-      - name: Publish with provenance
-        run: npm publish --provenance --access public
+      - name: Publish with trusted provenance
+        run: npm publish --access public

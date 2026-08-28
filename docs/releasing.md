@@ -54,6 +54,8 @@ Before relying on the workflow, configure an npm trusted publisher for `@ovlira/
 
 The workflow grants only `contents: read` and `id-token: write`, runs the release checks, and publishes with provenance. It does not store an npm token in GitHub. See the [npm trusted publishing documentation](https://docs.npmjs.com/trusted-publishers/) for the current npm configuration screens and requirements.
 
+Trusted publishing requires npm CLI 11.5.1 or later and Node 22.14.0 or later. The workflow uses Node 24 and installs the latest npm 11.x before publishing. If a release run fails after a package has already been published, do not rerun it for the same version; npm never reuses a published name/version pair. For a failed unpublished release, use the workflow's manual `Run workflow` action with the existing tag, such as `v0.2.1`.
+
 ## CI
 
 Pull requests and pushes to `main` run:
