@@ -113,6 +113,15 @@ npm run benchmark:codex -- --runs 3 --report reports/baseline.json
 
 See [`docs/ai-evals.md`](./docs/ai-evals.md) for the scenario contract, safety boundary, token fields, and benchmark interpretation.
 
+The next testing layer is also available offline. Structured specs are validated by Ovlira, executed through the real CLI, and can be rendered into disposable Vitest files:
+
+```bash
+npm run eval:specs
+npm run eval:specs:vitest
+```
+
+See the [living evaluation plan](./docs/ai-evals.md#structured-specs-and-generated-vitest) for the Codex-authored test concept.
+
 ## Releases
 
 The repository publishes one package, [`@ovlira/cli`](https://www.npmjs.com/package/@ovlira/cli), with the `ovlira` executable. Run the release checks before publishing:
@@ -141,4 +150,4 @@ tests              unit, CLI, vertical-slice, and valid/invalid fixtures
 
 ## Current limitations
 
-This first pass has no visual editor, canvas manipulation, drag-and-drop, change tracking, collaboration, hosted service, authentication, backend, MCP server, semantic/vector search, or automatic Lit-to-React/Vue/Angular conversion. The validator uses conservative static checks. A future version can add AST and browser-backed checks without changing the local CLI workflow.
+This first pass has no visual editor, canvas manipulation, drag-and-drop, change tracking, collaboration, hosted service, authentication, backend, MCP server, semantic/vector search, or automatic Lit-to-React/Vue/Angular conversion. The validator uses conservative static checks. A dependency-free runtime DOM contract now exists for future browser adapters, but the CLI does not start a browser yet. A future version can add AST and browser-backed checks without changing the local CLI workflow.

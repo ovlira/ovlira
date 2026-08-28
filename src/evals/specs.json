@@ -1,0 +1,44 @@
+[
+  {
+    "version": 1,
+    "id": "recipe.settings-selection",
+    "kind": "workflow",
+    "prompt": "Choose the approved recipe for a workspace settings screen.",
+    "search": "settings page",
+    "targetId": "page.settings",
+    "targetKind": "recipe",
+    "assertions": [
+      { "type": "search.contains", "id": "page.settings", "kind": "", "ruleId": "", "expected": "" },
+      { "type": "inspect.kind", "id": "page.settings", "kind": "recipe", "ruleId": "", "expected": "" },
+      { "type": "check.exit", "id": "", "kind": "", "ruleId": "", "expected": "0" }
+    ]
+  },
+  {
+    "version": 1,
+    "id": "component.labeled-input",
+    "kind": "workflow",
+    "prompt": "Choose the smallest approved building block for one accessible workspace text field.",
+    "search": "text field",
+    "targetId": "component.input",
+    "targetKind": "component",
+    "assertions": [
+      { "type": "search.contains", "id": "component.input", "kind": "", "ruleId": "", "expected": "" },
+      { "type": "inspect.kind", "id": "component.input", "kind": "component", "ruleId": "", "expected": "" },
+      { "type": "check.exit", "id": "", "kind": "", "ruleId": "", "expected": "0" }
+    ]
+  },
+  {
+    "version": 1,
+    "id": "recipe.empty-state-selection",
+    "kind": "workflow",
+    "prompt": "Choose the approved pattern for an empty records page with a create action.",
+    "search": "empty state",
+    "targetId": "state.empty",
+    "targetKind": "recipe",
+    "assertions": [
+      { "type": "search.contains", "id": "state.empty", "kind": "", "ruleId": "", "expected": "" },
+      { "type": "inspect.kind", "id": "state.empty", "kind": "recipe", "ruleId": "", "expected": "" },
+      { "type": "check.exit", "id": "", "kind": "", "ruleId": "", "expected": "0" }
+    ]
+  }
+]

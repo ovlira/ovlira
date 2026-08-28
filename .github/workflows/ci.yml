@@ -38,6 +38,12 @@ jobs:
       - name: Run offline Codex evaluator
         run: npm run eval:codex:offline
 
+      - name: Run structured specs
+        run: npm run eval:specs
+
+      - name: Render and run generated Vitest specs
+        run: npm run eval:specs:vitest
+
       - name: Verify package identity
         run: node -e "const pkg = require('./package.json'); if (pkg.name !== '@ovlira/cli' || pkg.bin?.ovlira !== 'dist/cli/index.js') process.exit(1)"
 

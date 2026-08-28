@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Ovlira structured test specification",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["version", "id", "kind", "prompt", "search", "targetId", "targetKind", "assertions"],
+  "properties": {
+    "version": { "type": "integer", "const": 1 },
+    "id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9.-]*$" },
+    "kind": { "type": "string", "enum": ["workflow"] },
+    "prompt": { "type": "string", "minLength": 1 },
+    "search": { "type": "string", "minLength": 1 },
+    "targetId": { "type": "string", "minLength": 1 },
+    "targetKind": { "type": "string", "enum": ["component", "recipe"] },
+    "assertions": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["type", "id", "kind", "ruleId", "expected"],
+        "properties": {
+          "type": { "type": "string", "enum": ["search.contains", "inspect.kind", "check.exit", "diagnostic.contains"] },
+          "id": { "type": "string" },
+          "kind": { "type": "string" },
+          "ruleId": { "type": "string" },
+          "expected": { "type": "string" }
+        }
+      }
+    }
+  }
+}

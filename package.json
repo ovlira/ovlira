@@ -57,6 +57,8 @@
     "eval:codex": "npm run build && node dist/evals/runner.js",
     "benchmark:codex": "npm run build && node dist/evals/runner.js --runs 3",
     "eval:codex:offline": "npm run build && node dist/evals/runner.js --offline",
+    "eval:specs": "npm run build && node dist/evals/spec-runner.js",
+    "eval:specs:vitest": "npm run build && node dist/evals/spec-runner.js --render --run",
     "check:fixtures": "node dist/cli/index.js check --json --cwd tests/fixtures/valid-project && node dist/cli/index.js check --json --cwd tests/fixtures/invalid-project"
   },
   "dependencies": {

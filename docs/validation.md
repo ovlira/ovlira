@@ -14,3 +14,15 @@ Rules currently implemented:
 - `a11y.heading-start` and `a11y.heading-jump` — basic heading order issues.
 
 Diagnostics include a severity, stable rule ID, file, line where practical, and a suggested fix. The checks do not prove visual quality, contrast in every rendered state, keyboard behavior across browsers, or dynamic state transitions hidden behind arbitrary JavaScript.
+
+## Runtime contract
+
+`src/validator/runtime.ts` contains the first runtime-facing rule layer. A host integration can pass a rendered `Document` to `validateRuntimeDocument` and receive the same diagnostic shape for:
+
+- missing accessible names on native controls and `ov-input`/`ov-select` hosts;
+- rendered heading starts and jumps;
+- missing required state markers;
+- multiple primary actions in a marked region; and
+- Ovlira custom elements that were not registered by the app.
+
+This is an adapter contract, not a browser runner. jsdom tests exercise it today. `ovlira check` remains source-based until a local browser/Vite adapter can be added without making the default command slow or network-dependent. It cannot currently prove contrast, keyboard interaction, shadow-root behavior in every browser, or dynamic transitions.

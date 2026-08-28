@@ -42,33 +42,44 @@ The runner records Codex CLI version, model, profile hash, latency, schema succe
 
 If authentication is available from an isolated Codex home, pass `--codex-home PATH`. Otherwise the runner preserves the normal Codex authentication location while suppressing unrelated context with `--ignore-user-config` and the compact profile flags.
 
-## Living plan: generated Vitest
+## Structured specs and generated Vitest
 
-The current runner asks Codex for a bounded plan. The next layer can ask Codex to author regression tests for agent behaviour, while keeping execution deterministic and safe.
+The repository now includes a small structured-spec runner. The current checked-in specs are deterministic examples of the format a future Codex authoring step can produce. They run through the real CLI and can render into disposable Vitest files.
+
+```bash
+# Run the approved specs in-process.
+npm run eval:specs
+
+# Render reports/generated-tests/*.test.ts and execute those files with Vitest.
+npm run eval:specs:vitest
+```
 
 ### 1. Generate a structured test specification
 
-The first format should be a versioned intermediate representation, not unrestricted model-written TypeScript:
+The format is a versioned intermediate representation, not unrestricted model-written TypeScript:
 
 ```json
 {
   "version": 1,
   "id": "recipe.empty-state-selection",
   "kind": "workflow",
-  "setup": { "search": "empty collection with create action" },
+  "prompt": "Choose the approved pattern for an empty records page with a create action.",
+  "search": "empty state",
+  "targetId": "state.empty",
+  "targetKind": "recipe",
   "assertions": [
-    { "type": "search.contains", "id": "state.empty" },
-    { "type": "inspect.kind", "id": "state.empty", "kind": "recipe" },
-    { "type": "check.exit", "expected": 0 }
+    { "type": "search.contains", "id": "state.empty", "kind": "", "ruleId": "", "expected": "" },
+    { "type": "inspect.kind", "id": "state.empty", "kind": "recipe", "ruleId": "", "expected": "" },
+    { "type": "check.exit", "id": "", "kind": "", "ruleId": "", "expected": "0" }
   ]
 }
 ```
 
-Ovlira would validate the schema, restrict the assertion vocabulary, execute the setup using the real CLI, and score the assertions. This gives Codex a useful authoring role without allowing generated shell commands, network requests, arbitrary imports, or repository edits.
+The schema is in [`src/evals/test-spec.schema.json`](../src/evals/test-spec.schema.json), and the offline catalogue is in [`src/evals/specs.json`](../src/evals/specs.json). Ovlira validates the shape and assertion semantics, restricts the assertion vocabulary, executes the setup using the real CLI, and scores the assertions. The blank fields on each assertion are deliberate: flat all-required objects are accepted by more structured-output providers and keep the response contract simple. v0.3 currently executes workflow specs; validator-specific setup is a later extension.
 
 ### 2. Render disposable Vitest files
 
-Validated specifications can be rendered to `reports/generated-tests/<run-id>/` and run with `vitest run`. The renderer should initially support search/inspect/add workflows, expected diagnostics, required recipe states, token rules, and token-budget assertions. It should import only approved Ovlira and Vitest helpers.
+Validated specifications render to `reports/generated-tests/` and run with `vitest run`. The renderer imports only Vitest and `runSpecById`; all CLI operations remain owned by Ovlira. The first assertion vocabulary covers catalogue search, inspect, check exit codes, and matching diagnostics. Required states and token-rule assertions can be added without changing the generated-file boundary.
 
 ### 3. Add adversarial coverage
 
@@ -78,7 +89,7 @@ Codex can generate negative cases for missing labels, duplicate primary actions,
 
 Generated tests should run in temporary projects and remain disposable by default. A future promotion command may copy only passing, schema-valid tests into `tests/generated/`; it must never modify production code or silently change the repository.
 
-This plan is tracked as a living roadmap in [`docs/roadmap.md`](./roadmap.md). The existing offline evaluator is the first implementation step; raw model-authored Vitest remains intentionally deferred until the structured specification and safety checks exist.
+This plan is tracked as a living roadmap in [`docs/roadmap.md`](./roadmap.md). Raw model-authored Vitest remains intentionally deferred: Codex may propose a structured spec later, but Ovlira must validate it before rendering or executing anything.
 
 ## Boundaries
 

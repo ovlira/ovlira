@@ -19,7 +19,14 @@ The next evaluation layer should let Codex discover gaps in Ovlira and author re
 - Reports include pass/fail, schema success, CLI/model, profile hash, latency, cached input, uncached input, output, reasoning, and total tokens.
 - Offline replay keeps the executor and assertions testable without Codex or network access.
 
-### Next: structured test specifications
+### Current: structured test specifications
+
+- `src/evals/test-spec.schema.json` defines a flat, versioned, provider-friendly contract.
+- `src/evals/spec-runner.ts` validates specs and executes only approved assertion types through the real CLI.
+- `npm run eval:specs` runs the checked-in specs offline.
+- `npm run eval:specs:vitest` renders disposable files under `reports/generated-tests/` and executes them with Vitest.
+
+### Next: Codex-authored specifications
 
 Ask Codex for a compact test specification rather than unrestricted TypeScript:
 
@@ -38,7 +45,7 @@ Ask Codex for a compact test specification rather than unrestricted TypeScript:
 }
 ```
 
-The specification becomes a small intermediate representation with a versioned schema. Ovlira owns the assertion vocabulary and executes it through the existing CLI, which keeps results deterministic and makes generated tests easy to reject or revise.
+The specification becomes a small intermediate representation with a versioned schema. Ovlira owns the assertion vocabulary and executes it through the existing CLI, which keeps results deterministic and makes generated tests easy to reject or revise. The next implementation step is to add a Codex call that returns this schema, reusing the existing token and latency reporting, while keeping offline replay as the default CI path.
 
 ### Following: Vitest generation
 
@@ -48,7 +55,7 @@ Render validated specifications into disposable files such as:
 reports/generated-tests/<run-id>/empty-state-selection.test.ts
 ```
 
-The renderer would import only approved Ovlira and Vitest helpers, then run the generated file with `vitest run`. The first renderer should cover catalogue search, inspect, add, check diagnostics, required states, token rules, and token-budget assertions. Generated files should be kept for inspection only when `--keep` or `--report` is requested.
+The current renderer imports only approved Ovlira and Vitest helpers, then runs the generated file with `vitest run`. Extend it to cover required states, token rules, and token-budget assertions. Generated files should be kept for inspection only when `--keep` or `--report` is requested.
 
 ### Later: adversarial tests and promotion
 
@@ -69,7 +76,7 @@ See [`docs/ai-evals.md`](./ai-evals.md) for the current evaluator and the propos
 
 ## Next
 
-- Add browser-backed accessibility checks for generated examples.
+- Add a local browser/Vite adapter that feeds rendered documents into the runtime DOM contract in [`docs/spikes/007-runtime-dom-contract.md`](./spikes/007-runtime-dom-contract.md).
 - Parse HTML/JSX/Vue templates with ASTs for fewer false positives.
 - Add fixture-level recipe state contracts and component versioning.
 
