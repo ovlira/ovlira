@@ -10,11 +10,11 @@ Ran `init` and `add page.settings` in a clean temporary directory, then inspecte
 
 ## Result
 
-Copying gives an agent a local, searchable implementation and avoids a network or package-resolution requirement after the CLI is installed. It also makes deliberate local edits possible.
+Copying gives an agent a local, searchable implementation and avoids a network or package-resolution requirement after the CLI is installed. It also makes deliberate local edits possible, including a project-owned theme file.
 
 ## Decision
 
-Copy the selected component sources, token CSS, and a runnable entry example into the project. Keep the registry and source templates bundled with the CLI package.
+Copy the selected component sources, a project-owned theme CSS file, and a runnable entry example into the project. Keep the registry and source templates bundled with the CLI package.
 
 ## Consequence for Ovlira
 

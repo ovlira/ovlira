@@ -89,7 +89,7 @@ Codex can generate negative cases for missing labels, duplicate primary actions,
 
 Generated tests should run in temporary projects and remain disposable by default. A future promotion command may copy only passing, schema-valid tests into `tests/generated/`; it must never modify production code or silently change the repository.
 
-This plan is tracked as a living roadmap in [`docs/roadmap.md`](./roadmap.md). Raw model-authored Vitest remains intentionally deferred: Codex may propose a structured spec later, but Ovlira must validate it before rendering or executing anything.
+This document records the bounded generated-test concept. The product [roadmap](./roadmap.md) keeps that capability in maintenance mode until the theme, recipe-quality, token-budget, and autonomy milestones require more evaluation infrastructure. Raw model-authored Vitest remains intentionally deferred: Codex may propose a structured spec later, but Ovlira must validate it before rendering or executing anything.
 
 ## Boundaries
 

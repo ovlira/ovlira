@@ -1,6 +1,6 @@
 # Validation
 
-The first validator is a static source check. It scans project source files while ignoring `node_modules`, generated `dist`, and copied Ovlira component implementations. TypeScript/JavaScript files also receive a small AST pass so obvious DOM property assignments such as `field.label = 'Name'` are understood.
+The first validator is a static source check. It scans project source files while ignoring `node_modules`, generated `dist`, copied Ovlira component implementations, and the user-owned `src/styles/ovlira-theme.css` (or legacy `ovlira-tokens.css`) theme file. TypeScript/JavaScript files also receive a small AST pass so obvious DOM property assignments such as `field.label = 'Name'` are understood.
 
 Rules currently implemented:
 

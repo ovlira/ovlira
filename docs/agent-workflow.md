@@ -24,4 +24,4 @@ Search gives stable IDs and short descriptions. Inspect gives one component or r
 
 Use `--kind`, `--category`, `--tag`, and `--limit` to keep search context bounded. Use `inspect --section api|guidance|example` when the full descriptor is unnecessary. Add is idempotent and preserves locally edited files; pass `--entry src/app.ts` to target an explicit entry or `--force` only to replace generated files deliberately.
 
-Agents should search before inventing a component, prefer recipes for complete screens, use approved tokens, include required states, and run `ovlira check` before finishing.
+Agents should search before inventing a component, prefer recipes for complete screens, use the project-owned `src/styles/ovlira-theme.css` and approved `--ov-*` tokens, include required states, and run `ovlira check` before finishing.

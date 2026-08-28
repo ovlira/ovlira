@@ -1,12 +1,12 @@
 # Ovlira 0.2
 
-Ovlira is a local, agent-first UI prototyping and design-system toolkit for Codex and Claude Code. It gives coding agents a small catalogue of real Lit components, page recipes, design tokens, and static guardrails without sending an entire design system into context.
+Ovlira is a local, token-efficient UI prototyping toolkit for coding agents such as Codex and Claude Code. It gives them a small catalogue of human-designed Lit components, screen recipes, global theme tokens, and deterministic guardrails without sending an entire design system into context.
 
 The prototype is CLI-first, deterministic, and local. It is not Figma, a visual editor, a hosted service, a backend, or an MCP server.
 
 ## Why it exists
 
-Agents are good at composing interfaces but often spend context inventing controls, miss accessible labels, or create inconsistent states. Ovlira makes the useful path short:
+Agents are good at composing interfaces and implementing application behaviour, but they should not need to invent or perfect the underlying visual design. Human designers own Ovlira's components, recipes, and default theme; agents retrieve those decisions, adapt the domain content and logic, and check the result. Ovlira makes that path short:
 
 ```text
 search → inspect → add → compose → check
@@ -52,7 +52,7 @@ npm run build
 ovlira check --json
 ```
 
-`search` returns at most eight compact results. `inspect` returns one full descriptor. `add` copies only the recipe's component source, token CSS, and a runnable example into the project. The generated project is ordinary Vite + TypeScript and can be changed locally.
+`search` returns at most eight compact results. `inspect` returns one full descriptor. `add` copies only the recipe's component source, the user-owned theme CSS, and a runnable example into the project. The generated project is ordinary Vite + TypeScript and can be changed locally.
 
 For a catalogue overview, use `ovlira list` or `ovlira list --json`.
 
@@ -83,7 +83,7 @@ ovlira tokens --format json
 ovlira tokens --format css
 ```
 
-The generated app imports `src/styles/ovlira-tokens.css`. Use `--ov-*` values rather than arbitrary colors, spacing, or typography literals.
+The generated app imports the user-owned `src/styles/ovlira-theme.css`. Use `--ov-*` values rather than arbitrary colors, spacing, or typography literals. The current export makes the core palette and typography globally replaceable; the theme file is the documented customization surface. Projects created by v0.2 may continue using `src/styles/ovlira-tokens.css`.
 
 ## Validation
 

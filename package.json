@@ -1,7 +1,7 @@
 {
   "name": "@ovlira/cli",
   "version": "0.2.1",
-  "description": "A local, agent-first UI prototyping and design-system toolkit.",
+  "description": "A local, token-efficient UI prototyping toolkit for coding agents.",
   "keywords": [
     "design-system",
     "lit",

@@ -10,6 +10,8 @@ import tokens from '../tokens/tokens.json' with { type: 'json' };
 const packageRoot = resolvePackageRoot();
 const sourceRoot = path.join(packageRoot, 'src');
 const tokenCssPath = path.join(sourceRoot, 'tokens', 'tokens.css');
+const themeFileName = 'ovlira-theme.css';
+const legacyThemeFileName = 'ovlira-tokens.css';
 const projectFiles = new Set(['.ts', '.tsx', '.js', '.jsx', '.vue', '.html', '.css']);
 
 export interface CliIO {
@@ -215,17 +217,18 @@ async function initProject(cwd: string, args: ParsedArgs, io: CliIO): Promise<nu
   const target = path.resolve(cwd, args.positional[0] ?? '.');
   await fs.mkdir(path.join(target, 'src', 'styles'), { recursive: true });
   await fs.mkdir(path.join(target, 'src', 'components', 'ovlira'), { recursive: true });
+  const theme = await projectTheme(target);
   const files: Record<string, string> = {
     'package.json': JSON.stringify({ name: path.basename(target), private: true, type: 'module', scripts: { dev: 'vite', build: 'tsc && vite build' }, dependencies: { lit: '^3.3.0' }, devDependencies: { typescript: '^5.8.3', vite: '^7.1.0' } }, null, 2) + '\n',
     'index.html': '<!doctype html>\n<html lang="en"><head><meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><title>Ovlira prototype</title></head><body><div id="app"></div><script type="module" src="/src/main.ts"></script></body></html>\n',
-    'src/main.ts': starterEntry(),
+    'src/main.ts': starterEntry(theme.fileName),
     'src/styles.css': globalStyles(),
     'tsconfig.json': JSON.stringify({ compilerOptions: { target: 'ES2022', useDefineForClassFields: false, module: 'ESNext', moduleResolution: 'Bundler', strict: true, noEmit: true, skipLibCheck: true, lib: ['ES2022', 'DOM', 'DOM.Iterable'] }, include: ['src'] }, null, 2) + '\n',
     'vite.config.ts': "import { defineConfig } from 'vite';\nexport default defineConfig({});\n",
     '.gitignore': 'node_modules\ndist\n',
     '.ovlira.json': JSON.stringify({ version: 1, added: [], recipes: [], entry: 'src/main.ts' } satisfies ProjectManifest, null, 2) + '\n',
   };
-  files['src/styles/ovlira-tokens.css'] = await fs.readFile(tokenCssPath, 'utf8');
+  files[`src/styles/${theme.fileName}`] = await fs.readFile(tokenCssPath, 'utf8');
   const written: string[] = [];
   for (const [relative, content] of Object.entries(files)) {
     const absolute = path.join(target, relative);
@@ -268,9 +271,9 @@ async function addCommand(args: ParsedArgs, io: CliIO): Promise<number> {
     record(relative, status);
     if (status !== 'conflict' && !manifest.added.includes(tag)) manifest.added.push(tag);
   }
-  const tokenDestination = path.join(target, 'src', 'styles', 'ovlira-tokens.css');
-  const tokenStatus = await copyTemplate(tokenCssPath, tokenDestination, args.force);
-  record(projectRelativePath(target, tokenDestination), tokenStatus);
+  const theme = await projectTheme(target);
+  const themeStatus = await copyUserTemplate(tokenCssPath, theme.absolute);
+  record(theme.relative, themeStatus);
   if (item.kind === 'recipe' && !conflicts.length && !manifest.recipes.includes(item.id)) manifest.recipes.push(item.id);
   await fs.writeFile(manifestPath, JSON.stringify(manifest, null, 2) + '\n');
   const entryPath = path.join(target, manifest.entry);
@@ -278,12 +281,12 @@ async function addCommand(args: ParsedArgs, io: CliIO): Promise<number> {
   const entryExists = await exists(entryPath);
   const entryIsStarter = entryExists && (await fs.readFile(entryPath, 'utf8')).includes('ovlira add page.settings');
   if (!entryExists || entryIsStarter || args.entry) {
-    const entry = item.kind === 'recipe' ? recipeEntry(item) : componentEntry(item);
+    const entry = item.kind === 'recipe' ? recipeEntry(item, theme.fileName) : componentEntry(item, theme.fileName);
     record(projectRelativePath(target, entryPath), await writeProjectFile(entryPath, entry, args.force || entryIsStarter || !entryExists));
     entryWritten = true;
   } else {
     const examplePath = path.join(target, 'src', 'ovlira-example.ts');
-    record(projectRelativePath(target, examplePath), await writeProjectFile(examplePath, item.kind === 'recipe' ? recipeEntry(item) : componentEntry(item), args.force));
+    record(projectRelativePath(target, examplePath), await writeProjectFile(examplePath, item.kind === 'recipe' ? recipeEntry(item, theme.fileName) : componentEntry(item, theme.fileName), args.force));
   }
   const barrelPath = path.join(target, 'src', 'ovlira.generated.ts');
   const barrel = `${orderedAddedTags(manifest.added).map((tag) => `import './components/ovlira/${tag.replace('ov-', '')}.js';`).join('\n')}\n`;
@@ -298,6 +301,15 @@ type FileStatus = 'changed' | 'skipped' | 'conflict';
 
 async function copyTemplate(source: string, destination: string, force: boolean): Promise<FileStatus> {
   return writeProjectFile(destination, await fs.readFile(source, 'utf8'), force);
+}
+
+async function copyUserTemplate(source: string, destination: string): Promise<FileStatus> {
+  if (!await exists(destination)) {
+    await fs.mkdir(path.dirname(destination), { recursive: true });
+    await fs.copyFile(source, destination);
+    return 'changed';
+  }
+  return 'skipped';
 }
 
 async function writeProjectFile(destination: string, content: string, force: boolean): Promise<FileStatus> {
@@ -330,8 +342,22 @@ async function readManifest(manifestPath: string): Promise<ProjectManifest> {
   return value;
 }
 
-function starterEntry(): string {
-  return `import './styles/ovlira-tokens.css';
+interface ProjectTheme {
+  absolute: string;
+  fileName: string;
+  relative: string;
+}
+
+async function projectTheme(target: string): Promise<ProjectTheme> {
+  const styles = path.join(target, 'src', 'styles');
+  const next = path.join(styles, themeFileName);
+  const legacy = path.join(styles, legacyThemeFileName);
+  const absolute = await exists(next) || !await exists(legacy) ? next : legacy;
+  return { absolute, fileName: path.basename(absolute), relative: projectRelativePath(target, absolute) };
+}
+
+function starterEntry(theme = themeFileName): string {
+  return `import './styles/${theme}';
 import './styles.css';
 
 const app = document.querySelector<HTMLDivElement>('#app');
@@ -371,9 +397,9 @@ code { background: var(--ov-color-ink); color: var(--ov-color-accent); display: 
 `;
 }
 
-function componentEntry(item: ComponentDescriptor): string {
+function componentEntry(item: ComponentDescriptor, theme = themeFileName): string {
   return `import './ovlira.generated.js';
-import './styles/ovlira-tokens.css';
+import './styles/${theme}';
 import './styles.css';
 
 const app = document.querySelector<HTMLDivElement>('#app');
@@ -399,9 +425,9 @@ function componentMarkup(item: ComponentDescriptor): string {
   }
 }
 
-function recipeEntry(recipe: RecipeDescriptor): string {
+function recipeEntry(recipe: RecipeDescriptor, theme = themeFileName): string {
   const markup = recipe.id === 'page.settings' ? settingsMarkup() : genericRecipeMarkup(recipe);
-  return `import './ovlira.generated.js';\nimport './styles/ovlira-tokens.css';\nimport './styles.css';\n\nconst app = document.querySelector<HTMLDivElement>('#app');\nif (app) {\n  app.innerHTML = \`${markup}\`;\n  ${recipe.id === 'page.settings' ? "const selects = app.querySelectorAll('ov-select'); selects.forEach((select) => { select.options = [{ value: 'eu', label: 'Europe' }, { value: 'us', label: 'United States' }]; });" : ''}\n}\n`;
+  return `import './ovlira.generated.js';\nimport './styles/${theme}';\nimport './styles.css';\n\nconst app = document.querySelector<HTMLDivElement>('#app');\nif (app) {\n  app.innerHTML = \`${markup}\`;\n  ${recipe.id === 'page.settings' ? "const selects = app.querySelectorAll('ov-select'); selects.forEach((select) => { select.options = [{ value: 'eu', label: 'Europe' }, { value: 'us', label: 'United States' }]; });" : ''}\n}\n`;
 }
 
 function settingsMarkup(): string {
@@ -551,7 +577,7 @@ function validatePrimaryActions(files: FileText[], diagnostics: Diagnostic[]) {
 function validateTokens(files: FileText[], diagnostics: Diagnostic[]) {
   const approved = new Set(flattenTokenValues(tokens));
   for (const file of files) {
-    if (file.relative.endsWith('src/styles/ovlira-tokens.css') || file.relative.startsWith('src/components/ovlira/')) continue;
+    if (file.relative.endsWith(`src/styles/${themeFileName}`) || file.relative.endsWith(`src/styles/${legacyThemeFileName}`) || file.relative.startsWith('src/components/ovlira/')) continue;
     const pattern = /#[0-9a-f]{3,8}\b/gi;
     let match: RegExpExecArray | null;
     while ((match = pattern.exec(file.text))) if (!approved.has(match[0].toLowerCase())) pushDiagnostic(diagnostics, 'tokens.unapproved-literal', 'warning', `Literal color ${match[0]} is not an approved Ovlira token value.`, file, match.index, 'Use a --ov-* custom property from the token export.');

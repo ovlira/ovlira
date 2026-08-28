@@ -1,91 +1,200 @@
 # Roadmap
 
-## v0.2 delivered
+## Mission
 
-- Versioned metadata contract with runtime validation and a normalized registry index.
-- Idempotent `add` with conflict protection, `--force`, `--entry`, and a generated import barrel.
-- Bounded search filters and focused inspect sections with structured JSON errors.
-- AST-aware recognition of obvious DOM property assignments.
-- Additional token literal checks and fixture coverage.
+Ovlira helps coding agents produce well-designed, consistent, local UI prototypes with as little model context as practical.
 
-## Living roadmap: Codex-generated tests
+The product is a compact catalogue of human-designed components and screen recipes, a global theme contract, a deterministic retrieval workflow, and checks that keep generated prototypes inside those contracts. It is not an AI designer. It should remove visual invention from the agent's workload, then let the agent work autonomously on composition, content, data, state, interaction, and application code.
 
-The next evaluation layer should let Codex discover gaps in Ovlira and author regression tests for agent behaviour. The safe boundary is important: Codex proposes a bounded test, while Ovlira validates and executes it. Generated work must not be allowed to run arbitrary shell commands, access the network, modify production code, or silently change the repository.
-
-### Current: bounded workflow evaluations
-
-- Codex returns a schema-constrained `search → inspect → add` plan.
-- Ovlira executes the plan in a temporary project and runs `ovlira check`.
-- Reports include pass/fail, schema success, CLI/model, profile hash, latency, cached input, uncached input, output, reasoning, and total tokens.
-- Offline replay keeps the executor and assertions testable without Codex or network access.
-
-### Current: structured test specifications
-
-- `src/evals/test-spec.schema.json` defines a flat, versioned, provider-friendly contract.
-- `src/evals/spec-runner.ts` validates specs and executes only approved assertion types through the real CLI.
-- `npm run eval:specs` runs the checked-in specs offline.
-- `npm run eval:specs:vitest` renders disposable files under `reports/generated-tests/` and executes them with Vitest.
-
-### Next: Codex-authored specifications
-
-Ask Codex for a compact test specification rather than unrestricted TypeScript:
-
-```json
-{
-  "version": 1,
-  "id": "recipe.empty-state-selection",
-  "kind": "workflow",
-  "prompt": "Choose a pattern for an empty records page",
-  "setup": { "search": "empty collection with create action" },
-  "assertions": [
-    { "type": "search.contains", "id": "state.empty" },
-    { "type": "inspect.kind", "id": "state.empty", "kind": "recipe" },
-    { "type": "check.exit", "expected": 0 }
-  ]
-}
-```
-
-The specification becomes a small intermediate representation with a versioned schema. Ovlira owns the assertion vocabulary and executes it through the existing CLI, which keeps results deterministic and makes generated tests easy to reject or revise. The next implementation step is to add a Codex call that returns this schema, reusing the existing token and latency reporting, while keeping offline replay as the default CI path.
-
-### Following: Vitest generation
-
-Render validated specifications into disposable files such as:
+The shortest useful workflow remains:
 
 ```text
-reports/generated-tests/<run-id>/empty-state-selection.test.ts
+search → inspect → add → adapt → check
 ```
 
-The current renderer imports only approved Ovlira and Vitest helpers, then runs the generated file with `vitest run`. Extend it to cover required states, token rules, and token-budget assertions. Generated files should be kept for inspection only when `--keep` or `--report` is requested.
+## Division of responsibility
 
-### Later: adversarial tests and promotion
+Human designers own the decisions that require taste:
 
-- Ask Codex for negative cases: missing labels, duplicate primary actions, missing recipe states, unknown IDs, disallowed nesting, and unapproved token literals.
-- Require each negative test to declare an expected stable rule ID, for example `actions.one-primary`.
-- Run generated tests in an isolated temporary project with no package installation or network access.
-- Add an explicit promotion command that copies only passing, schema-valid tests into `tests/generated/`.
-- Never promote or modify repository code automatically.
+- the default visual language;
+- component anatomy, states, responsive behaviour, and interaction details;
+- recipe composition and hierarchy;
+- semantic theme tokens and their default values; and
+- visual acceptance of every catalogue addition.
 
-### Benchmark questions
+Coding agents own the work that can be derived from those decisions:
 
-- Which catalogue descriptions lead agents to the intended recipe or component?
-- Does focused metadata reduce uncached input tokens?
-- Which prompts produce reliable plans and schema-valid tests?
-- Do metadata or validator changes improve agent success without increasing context cost?
+- choosing and retrieving the smallest suitable recipe or component;
+- adapting domain copy, data, routes, and actions;
+- wiring loading, empty, error, success, and interactive states;
+- implementing application logic and local integrations;
+- applying a project theme through the global configuration surface; and
+- building, checking, and repairing the prototype without redesigning base components.
 
-See [`docs/ai-evals.md`](./ai-evals.md) for the current evaluator and the proposed generated-test workflow.
+This boundary is a product constraint. Ovlira should make the approved path easier than asking an agent to invent or perfect UI.
 
-## Next
+## What counts as an Ovlira prototype
 
-- Add a local browser/Vite adapter that feeds rendered documents into the runtime DOM contract in [`docs/spikes/007-runtime-dom-contract.md`](./spikes/007-runtime-dom-contract.md).
-- Parse HTML/JSX/Vue templates with ASTs for fewer false positives.
-- Add fixture-level recipe state contracts and component versioning.
+A successful prototype is ordinary local frontend source that:
 
-## Later
+- starts from an approved recipe when one fits;
+- uses only the components needed for the task;
+- can change its font, colours, radius, and related brand decisions from one global theme surface;
+- contains real, switchable states required by the selected recipe;
+- can be adapted across domains without a domain-specific component fork;
+- passes `ovlira check`; and
+- remains understandable and editable after Ovlira has finished.
 
-- Optional local registry overrides and project-specific approved patterns.
-- More recipes for navigation, onboarding, and responsive data workflows.
-- Better framework type helpers generated from CEM.
+Ovlira does not need to generate production backends, solve deployment, or provide a visual editor for this definition to be useful.
 
-## Intentionally not built
+## Current position: v0.2
 
-Ovlira v0.1 has no visual editor, canvas, drag-and-drop, collaboration, hosted service, backend, authentication, MCP server, change tracking, semantic/vector search, or automatic Lit-to-React/Vue/Angular conversion.
+The initial release proves the technical vertical slice:
+
+- one local npm package with no server or model dependency;
+- ten Lit components and six domain-neutral recipes;
+- bounded catalogue search and focused inspection;
+- source copying with conflict protection and explicit local ownership;
+- global CSS custom properties for the initial palette and typography;
+- static and runtime-facing validation contracts; and
+- offline and opt-in live evaluations with token reporting.
+
+The important gaps are product gaps rather than missing infrastructure:
+
+- the token export is a useful start, but it is not yet a complete, documented theme contract;
+- some component visual values still sit outside the global token surface;
+- only the settings recipe is emitted as a substantial composed screen; other recipe outputs are closer to demonstrations than finished prototype starting points;
+- required states can be present as hidden markers without being meaningfully wired;
+- there is no explicit designer contribution and visual approval gate; and
+- token usage is reported by evaluations but is not yet enforced as a product budget.
+
+The existing generated-spec and runtime-validation work remains useful test infrastructure. Expanding it is not the product priority until these gaps are closed.
+
+## Now: v0.3 — make the existing promise real
+
+No net catalogue growth is planned for this phase. Improve the ten components and six recipes already shipped.
+
+### 1. Establish the theme contract
+
+- Generate one clearly named, user-owned theme file for semantic colour, typography, radius, elevation, and density decisions.
+- Keep resets and structural global styles separate from theme values and recipe-specific layout.
+- Make every catalogue component consume the documented semantic theme surface for brand-level decisions.
+- Remove or promote visual literals that prevent a global restyle; keep purely structural implementation details inside the human-authored component.
+- Provide the default theme and one deliberately contrasting test theme.
+- Prove that changing font, palette, radius, and density requires no component-source edits.
+- Preserve the user's theme when components or recipes are added again.
+
+### 2. Finish the existing recipes
+
+- Give every current recipe a complete runnable starting screen rather than a generic placeholder.
+- Define the content regions, actions, data seams, and state seams an agent is expected to adapt.
+- Implement usable loading, empty, error, and success examples where the recipe requires them.
+- Keep recipes domain-neutral: settings, search, CRUD, detail, empty state, and application shell should work for many products through copy and data changes.
+- Review every recipe at narrow, medium, and wide widths with a human designer.
+
+### 3. Encode the designer-to-agent handoff
+
+- Add a small contribution checklist covering anatomy, variants, states, accessibility, responsive behaviour, tokens, metadata, examples, and visual approval.
+- Require a human-approved reference fixture before a component or recipe enters the catalogue.
+- Keep agent-facing descriptors about usage and composition, not visual brainstorming.
+- Treat the source implementation as the approved design; expose deliberate customization through theme tokens, properties, slots, and parts.
+
+### 4. Turn token efficiency into a release gate
+
+- Measure only Ovlira-provided context separately from the coding agent's system prompt and tool overhead.
+- Keep search results bounded and make focused inspection the documented default.
+- Add regression tests for serialized search, inspect, add, and check response sizes.
+- Use these initial v0.3 budgets:
+  - default search response: at most 700 output tokens;
+  - focused inspect response: at most 500 output tokens;
+  - full inspect response: at most 900 output tokens; and
+  - a normal `search → focused inspect → add → check` path: at most 1,500 Ovlira output tokens.
+- Revise a budget only with a measured task-success improvement, not because metadata was convenient to add.
+
+### v0.3 exit criteria
+
+- All six recipe fixtures are human-approved at three representative widths.
+- The contrasting theme changes the full visual character of all fixtures without component edits.
+- Every recipe has real switchable required states and passes `ovlira check`.
+- The workflow token budgets pass in CI.
+- With project dependencies present, a fresh `init → add recipe → build → check` run succeeds without Ovlira invoking a model or network service.
+
+## Next: v0.4 — prove bounded agent autonomy
+
+Use the completed catalogue to prove that agents can build different prototypes without falling back to visual invention.
+
+### 1. Make adaptation explicit
+
+- Return the selected recipe's content regions, state obligations, and supported extension points through focused inspection.
+- Give generated recipes obvious seams for domain data, copy, actions, and navigation.
+- Make validation distinguish a real state implementation from a marker added only to silence the checker where this can be done deterministically.
+- Keep repair guidance concise and tied to stable rule IDs.
+
+### 2. Benchmark the real workflow
+
+- Maintain a small, fixed scenario suite spanning different domains while reusing the same recipes.
+- Score recipe selection, Ovlira-provided tokens, successful build/check, required-state completion, and component-source edits.
+- Require at least 90% success across the fixed suite before v1; failures should improve a recipe, descriptor, or rule rather than grow the prompt.
+- Treat edits to base component CSS as a failed default path unless the task explicitly requires a new design.
+
+### 3. Make repeated use safe
+
+- Preserve project theme, content, logic, and intentional local changes across repeated `add` operations.
+- Report catalogue/version drift without silently overwriting project files.
+- Document a small, explicit upgrade path for prototypes that want newer approved sources.
+
+### v0.4 exit criteria
+
+- The fixed autonomy suite meets the success target and v0.3 token budgets.
+- The same recipe is demonstrably reusable in at least three unrelated domains through content and data adaptation alone.
+- Re-running Ovlira in an adapted prototype does not lose theme or application work.
+- The agent completes the benchmark without being asked to improve the catalogue's visual design.
+
+## Then: v1.0 — freeze a small, dependable catalogue
+
+Catalogue growth begins only after v0.4 evidence shows a missing building block repeatedly blocks otherwise valid prototypes.
+
+- Cap the v1 catalogue at twenty components and ten recipes.
+- Prefer completing a current recipe over adding a new category.
+- Add no domain-specific packs; domain range should come from composition, copy, data, and theming.
+- Stabilize the theme, descriptor, manifest, and diagnostic schemas with documented compatibility rules.
+- Publish one clear end-to-end guide for Codex, Claude Code, and other shell-capable coding agents without introducing agent-specific runtime dependencies.
+- Release v1 only when every included item has human visual approval and every recipe meets the same theme, state, responsive, token, and autonomy gates.
+
+### Admission gate for a new catalogue item
+
+Every proposed component or recipe must satisfy all of these conditions:
+
+1. It is required by at least two accepted benchmark scenarios or has blocked three reviewed prototypes.
+2. Existing catalogue items cannot express the need without an accessibility or interaction compromise.
+3. A human designer supplies or approves the complete visual and behavioural contract.
+4. Its metadata fits the established token budgets.
+5. It stays inside the v1 catalogue cap or replaces a less useful item.
+
+## Work that is maintained but not expanded on the critical path
+
+- live Codex evaluation transport;
+- structured generated-test specifications;
+- the pure runtime DOM validation adapter;
+- framework portability examples; and
+- release automation.
+
+These should remain reliable. They move back onto the active roadmap only when they are the smallest way to satisfy a theme, quality, token, or autonomy exit criterion.
+
+## Intentionally outside the roadmap
+
+- an AI model inside Ovlira;
+- autonomous visual design or component styling by coding agents;
+- a Figma replacement, canvas, drag-and-drop editor, or screenshot-to-code system;
+- hosted accounts, collaboration, authentication, backend generation, or deployment;
+- an MCP server or semantic/vector search without measured evidence that the local CLI cannot meet the token budget;
+- unrestricted model-authored code or test execution;
+- automatic framework conversion or a package per framework;
+- an open-ended component marketplace; and
+- domain-specific design systems.
+
+Requests in this list require an explicit change to Ovlira's mission, not merely another roadmap item.
+
+## Roadmap decision rule
+
+Work enters the roadmap only when it directly improves at least one of four outcomes: fewer Ovlira-provided tokens, higher human-approved visual quality, more consistent prototypes, or greater agent autonomy inside the approved contracts. It must preserve the other three or make the trade-off measurable and explicit.

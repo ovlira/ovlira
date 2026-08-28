@@ -67,6 +67,8 @@ describe('ovlira CLI', () => {
     const addResult = JSON.parse(addCapture.stdout[0]);
     expect(addResult.added).toContain('ov-input');
     expect(addResult.files).toContain('src/components/ovlira/input.ts');
+    expect(addResult.files).toContain('src/styles/ovlira-theme.css');
+    expect(await fs.readFile(path.join(project, 'src/main.ts'), 'utf8')).toContain("./styles/ovlira-theme.css");
     expect(await fs.readFile(path.join(project, 'src/main.ts'), 'utf8')).toContain('Workspace settings');
     const checkCapture = ioCapture();
     expect(await runCli(['check', '--cwd', project, '--json'], project, checkCapture.io)).toBe(0);
@@ -97,6 +99,38 @@ describe('ovlira CLI', () => {
     expect(await runCli(['add', 'component.input', '--cwd', explicitEntryProject, '--entry', 'src/app.ts', '--json'], explicitEntryProject, explicitEntry.io)).toBe(0);
     expect(JSON.parse(explicitEntry.stdout[0]).entry).toBe('src/app.ts');
     expect(await fs.readFile(path.join(explicitEntryProject, 'src/app.ts'), 'utf8')).toContain('ov-input');
+  });
+
+  it('preserves the user-owned theme while adding more components', async () => {
+    const project = await tempProject();
+    expect(await runCli(['init', '.'], project, ioCapture().io)).toBe(0);
+    expect(await runCli(['add', 'component.button', '--cwd', project], project, ioCapture().io)).toBe(0);
+
+    const themePath = path.join(project, 'src/styles/ovlira-theme.css');
+    const customizedTheme = `${await fs.readFile(themePath, 'utf8')}\n:root { --ov-color-accent: rebeccapurple; }\n`;
+    await fs.writeFile(themePath, customizedTheme);
+
+    const addCapture = ioCapture();
+    expect(await runCli(['add', 'component.input', '--cwd', project, '--force', '--json'], project, addCapture.io)).toBe(0);
+    const result = JSON.parse(addCapture.stdout[0]);
+    expect(result.conflicts).toEqual([]);
+    expect(result.skipped).toContain('src/styles/ovlira-theme.css');
+    expect(await fs.readFile(themePath, 'utf8')).toBe(customizedTheme);
+    expect(await runCli(['check', '--cwd', project, '--json'], project, ioCapture().io)).toBe(0);
+  });
+
+  it('keeps the v0.2 theme filename during an init/add pass', async () => {
+    const project = await tempProject();
+    const legacyThemePath = path.join(project, 'src/styles/ovlira-tokens.css');
+    await fs.mkdir(path.dirname(legacyThemePath), { recursive: true });
+    const legacyTheme = ':root { --ov-color-accent: rebeccapurple; }\n';
+    await fs.writeFile(legacyThemePath, legacyTheme);
+
+    expect(await runCli(['init', '.'], project, ioCapture().io)).toBe(0);
+    expect(await fs.readFile(path.join(project, 'src/main.ts'), 'utf8')).toContain("./styles/ovlira-tokens.css");
+    expect(await runCli(['add', 'component.button', '--cwd', project], project, ioCapture().io)).toBe(0);
+    expect(await fs.readFile(legacyThemePath, 'utf8')).toBe(legacyTheme);
+    await expect(fs.access(path.join(project, 'src/styles/ovlira-theme.css'))).rejects.toThrow();
   });
 
   it('accepts a required prop assigned through an obvious DOM property binding', async () => {
