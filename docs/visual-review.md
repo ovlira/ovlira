@@ -41,11 +41,17 @@ for project in "$REVIEW_ROOT"/*; do
 done
 ```
 
-Start one fixture at a time and open the printed local URL:
+The checkout root intentionally has no `dev` script: it is the Ovlira CLI package. Keep this terminal session open so `REVIEW_ROOT` remains defined, then start a fixture from its generated project directory and open the printed local URL:
 
 ```bash
 cd "$REVIEW_ROOT/settings"
 npm run dev
+```
+
+If you are still at the checkout root, the equivalent explicit command is:
+
+```bash
+npm --prefix "$REVIEW_ROOT/settings" run dev
 ```
 
 Replace `settings` with `search`, `crud`, `detail`, `empty`, or `shell` for the other fixtures. Keep `REVIEW_ROOT` until the review is complete; remove only that exact temporary directory afterward with `rm -rf "$REVIEW_ROOT"`.
