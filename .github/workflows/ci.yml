@@ -45,7 +45,7 @@ jobs:
         run: npm run eval:specs:vitest
 
       - name: Verify package identity
-        run: node -e "const pkg = require('./package.json'); if (pkg.name !== '@ovlira/cli' || pkg.bin?.ovlira !== 'dist/cli/index.js') process.exit(1)"
+        run: node -e "const pkg = require('./package.json'); if (pkg.name !== '@ovlira/cli' || pkg.bin?.ovlira !== 'dist/cli/bin.js') process.exit(1)"
 
       - name: Inspect package contents
         run: npm pack --dry-run

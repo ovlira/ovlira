@@ -103,7 +103,7 @@ export interface EvalReport {
   version: 1;
   generatedAt: string;
   mode: 'live' | 'offline';
-  tool: { name: 'ovlira'; version: '0.2.0' };
+  tool: { name: 'ovlira'; version: '0.2.1' };
   profile: { transport: 'codex-exec'; hash: string; model: string };
   scenarios: ScenarioRun[];
   summary: {
@@ -155,7 +155,7 @@ export async function runEvaluator(options: EvalOptions = {}): Promise<EvalRepor
     version: 1,
     generatedAt: new Date().toISOString(),
     mode,
-    tool: { name: 'ovlira', version: '0.2.0' },
+    tool: { name: 'ovlira', version: '0.2.1' },
     profile: {
       transport: 'codex-exec',
       hash: hashValue({ ...codexProfile, model }),

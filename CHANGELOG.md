@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.2.1 — CLI entrypoint fix
+
+- Fixed `npx @ovlira/cli` and installed `ovlira` invocations by moving the executable to a dedicated entrypoint that works through npm's `.bin` symlink.
+
 ## 0.2.0 — initial public prototype
 
 - Added ten Lit custom elements, design tokens, six recipes, and framework portability examples.

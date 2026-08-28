@@ -64,7 +64,7 @@ export async function runCli(argv: string[], startingCwd = process.cwd(), io: Cl
       case '--help':
       case '-h': helpCommand(io); return 0;
       case 'version':
-      case '--version': io.stdout('0.2.0'); return 0;
+      case '--version': io.stdout('0.2.1'); return 0;
       default:
         io.stderr(`Unknown command “${args.command}”. Run “ovlira help” for available commands.`);
         return 1;
@@ -115,7 +115,8 @@ function parseArgs(argv: string[], startingCwd: string): ParsedArgs {
     else if (arg.startsWith('--section=')) section = arg.slice('--section='.length) as ParsedArgs['section'];
     else if (arg === '--entry') entry = nextValue();
     else if (arg.startsWith('--entry=')) entry = arg.slice('--entry='.length);
-    else if (arg === '--help' && !positional.length) positional.push('help');
+    else if ((arg === '--help' || arg === '-h') && !positional.length) positional.push('help');
+    else if ((arg === '--version' || arg === '-v') && !positional.length) positional.push('version');
     else if (!arg.startsWith('-')) positional.push(arg);
   }
   return { command: positional.shift() ?? 'help', positional, json, cwd: path.resolve(cwd), format, force, kind, tag, category, limit: Math.max(1, Math.min(limit, 100)), section, entry };
