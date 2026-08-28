@@ -7,6 +7,7 @@
 - Replaced generic recipe placeholders with complete, state-switchable starter screens for all shipped recipes.
 - Documented the designer-to-agent boundary and replaced the evaluation-led roadmap with bounded v0.3, v0.4, and v1 milestones.
 - Added deterministic CI checks for the v0.3 Ovlira response budgets, covering search, focused/full inspect, and the normal discovery workflow.
+- Added a focused human visual review protocol for approving all six recipe starters across widths, states, keyboard access, and a contrasting theme.
 
 ## 0.2.1 — CLI entrypoint fix
 

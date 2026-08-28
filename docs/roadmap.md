@@ -115,7 +115,7 @@ CI enforces these limits with the deterministic UTF-8 estimate documented in [`d
 
 ### v0.3 exit criteria
 
-- All six recipe fixtures are human-approved at three representative widths.
+- All six recipe fixtures are human-approved at three representative widths, following the [human visual review protocol](./visual-review.md).
 - The contrasting theme changes the full visual character of all fixtures without component edits.
 - Every recipe has real switchable required states and passes `ovlira check`.
 - The workflow token budgets pass in CI.
