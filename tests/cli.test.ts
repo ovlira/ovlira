@@ -75,6 +75,20 @@ describe('ovlira CLI', () => {
     expect(JSON.parse(checkCapture.stdout[0])).toMatchObject({ version: 1, ok: true });
   });
 
+  it('generates a complete, checkable starter for every recipe', async () => {
+    for (const recipe of ['page.settings', 'page.search', 'page.crud-table', 'page.detail', 'state.empty', 'shell.application']) {
+      const project = await tempProject();
+      expect(await runCli(['init', '.'], project, ioCapture().io)).toBe(0);
+      expect(await runCli(['add', recipe, '--cwd', project], project, ioCapture().io)).toBe(0);
+      const entry = await fs.readFile(path.join(project, 'src/main.ts'), 'utf8');
+      expect(entry).toContain("./styles/ovlira-theme.css");
+      if (recipe !== 'state.empty' && recipe !== 'shell.application') expect(entry).toContain('data-ovlira-state-target');
+      const check = ioCapture();
+      expect(await runCli(['check', '--cwd', project, '--json'], project, check.io)).toBe(0);
+      expect(JSON.parse(check.stdout[0])).toMatchObject({ version: 1, ok: true, diagnostics: [] });
+    }
+  });
+
   it('keeps add idempotent and protects local edits unless forced', async () => {
     const project = await tempProject();
     expect(await runCli(['init', '.'], project, ioCapture().io)).toBe(0);
