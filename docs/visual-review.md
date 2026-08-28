@@ -54,6 +54,13 @@ If you are still at the checkout root, the equivalent explicit command is:
 npm --prefix "$REVIEW_ROOT/settings" run dev
 ```
 
+If npm reports a path such as `/settings/package.json`, `REVIEW_ROOT` is empty in the current shell. Either rerun the preparation block above in this terminal, or find the existing disposable workspace and use its printed absolute path directly:
+
+```bash
+find /tmp -type d -name 'ovlira-visual-review.*' -prune -print 2>/dev/null
+npm --prefix "/tmp/ovlira-visual-review.REPLACE_ME/settings" run dev
+```
+
 Replace `settings` with `search`, `crud`, `detail`, `empty`, or `shell` for the other fixtures. Keep `REVIEW_ROOT` until the review is complete; remove only that exact temporary directory afterward with `rm -rf "$REVIEW_ROOT"`.
 
 ## Review sequence
