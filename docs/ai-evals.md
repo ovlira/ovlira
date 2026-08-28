@@ -40,6 +40,19 @@ The live mode uses `codex exec` with an ephemeral read-only workspace, a strict 
 
 The runner records Codex CLI version, model, profile hash, latency, schema success, total input, cached input, uncached input, output, reasoning, and total tokens. Cached input is reported separately; it is not treated as proof that the prompt became smaller.
 
+## Ovlira output budgets
+
+The v0.3 release gate measures the serialized `stdout` emitted by the local CLI, separately from provider-reported Codex usage. It excludes the agent's system prompt, model reasoning, tool calls, and any setup output used only to create a temporary project. The deterministic checks live in [`src/evals/budgets.ts`](../src/evals/budgets.ts) and run as part of `npm test`.
+
+The estimator counts UTF-8 bytes and rounds up at four bytes per estimated token. This is a stable regression proxy for the compact English metadata Ovlira emits; it is not a claim about any model provider's tokenizer. Budgets should change only when a measured task-success improvement justifies the additional context:
+
+- default search: 700 estimated output tokens;
+- focused inspect: 500;
+- full inspect: 900; and
+- a normal `search → focused inspect → add → check` workflow: 1,500 total.
+
+The workflow assertion counts one JSON response from each command. Human visual approval, successful builds, and provider token reports remain separate exit criteria.
+
 If authentication is available from an isolated Codex home, pass `--codex-home PATH`. Otherwise the runner preserves the normal Codex authentication location while suppressing unrelated context with `--ignore-user-config` and the compact profile flags.
 
 ## Structured specs and generated Vitest

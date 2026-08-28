@@ -6,6 +6,7 @@
 - Preserved customized theme files across repeated `add` operations and recognized the v0.2 `ovlira-tokens.css` filename.
 - Replaced generic recipe placeholders with complete, state-switchable starter screens for all shipped recipes.
 - Documented the designer-to-agent boundary and replaced the evaluation-led roadmap with bounded v0.3, v0.4, and v1 milestones.
+- Added deterministic CI checks for the v0.3 Ovlira response budgets, covering search, focused/full inspect, and the normal discovery workflow.
 
 ## 0.2.1 — CLI entrypoint fix
 

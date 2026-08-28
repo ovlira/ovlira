@@ -66,7 +66,7 @@ The important gaps are product gaps rather than missing infrastructure:
 - only the settings recipe is emitted as a substantial composed screen; other recipe outputs are closer to demonstrations than finished prototype starting points;
 - required states can be present as hidden markers without being meaningfully wired;
 - there is no explicit designer contribution and visual approval gate; and
-- token usage is reported by evaluations but is not yet enforced as a product budget.
+- token usage is reported by evaluations, and deterministic CLI response budgets are now enforced in CI; provider token accounting remains a separate measurement.
 
 The existing generated-spec and runtime-validation work remains useful test infrastructure. Expanding it is not the product priority until these gaps are closed.
 
@@ -110,6 +110,8 @@ No net catalogue growth is planned for this phase. Improve the ten components an
   - full inspect response: at most 900 output tokens; and
   - a normal `search → focused inspect → add → check` path: at most 1,500 Ovlira output tokens.
 - Revise a budget only with a measured task-success improvement, not because metadata was convenient to add.
+
+CI enforces these limits with the deterministic UTF-8 estimate documented in [`docs/ai-evals.md`](./ai-evals.md). It measures only serialized Ovlira command output, so model/provider usage and setup work cannot be mistaken for product response size.
 
 ### v0.3 exit criteria
 
