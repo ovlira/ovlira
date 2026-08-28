@@ -14,54 +14,53 @@ Use these decisions:
 
 ## Prepare fresh fixtures
 
-Run this from the Ovlira checkout. The commands create disposable projects, so the review does not depend on an adapted application or local edits.
+Run this from the Ovlira checkout. The commands create disposable projects under `reports/visual-review` (which is git-ignored), so the review does not depend on an adapted application or local edits. The first command removes only that generated review directory so stale files cannot cause conflicts.
 
 ```bash
+cd "$(git rev-parse --show-toplevel)"
 npm install
 npm run build
 
-OVLIRA_REPO="$(pwd)"
-REVIEW_ROOT="$(mktemp -d /tmp/ovlira-visual-review.XXXXXX)"
+rm -rf reports/visual-review
+mkdir -p reports/visual-review
 
-node "$OVLIRA_REPO/dist/cli/index.js" init "$REVIEW_ROOT/settings"
-node "$OVLIRA_REPO/dist/cli/index.js" add page.settings --cwd "$REVIEW_ROOT/settings"
-node "$OVLIRA_REPO/dist/cli/index.js" init "$REVIEW_ROOT/search"
-node "$OVLIRA_REPO/dist/cli/index.js" add page.search --cwd "$REVIEW_ROOT/search"
-node "$OVLIRA_REPO/dist/cli/index.js" init "$REVIEW_ROOT/crud"
-node "$OVLIRA_REPO/dist/cli/index.js" add page.crud-table --cwd "$REVIEW_ROOT/crud"
-node "$OVLIRA_REPO/dist/cli/index.js" init "$REVIEW_ROOT/detail"
-node "$OVLIRA_REPO/dist/cli/index.js" add page.detail --cwd "$REVIEW_ROOT/detail"
-node "$OVLIRA_REPO/dist/cli/index.js" init "$REVIEW_ROOT/empty"
-node "$OVLIRA_REPO/dist/cli/index.js" add state.empty --cwd "$REVIEW_ROOT/empty"
-node "$OVLIRA_REPO/dist/cli/index.js" init "$REVIEW_ROOT/shell"
-node "$OVLIRA_REPO/dist/cli/index.js" add shell.application --cwd "$REVIEW_ROOT/shell"
+node dist/cli/index.js init reports/visual-review/settings
+node dist/cli/index.js add page.settings --cwd reports/visual-review/settings
+node dist/cli/index.js init reports/visual-review/search
+node dist/cli/index.js add page.search --cwd reports/visual-review/search
+node dist/cli/index.js init reports/visual-review/crud
+node dist/cli/index.js add page.crud-table --cwd reports/visual-review/crud
+node dist/cli/index.js init reports/visual-review/detail
+node dist/cli/index.js add page.detail --cwd reports/visual-review/detail
+node dist/cli/index.js init reports/visual-review/empty
+node dist/cli/index.js add state.empty --cwd reports/visual-review/empty
+node dist/cli/index.js init reports/visual-review/shell
+node dist/cli/index.js add shell.application --cwd reports/visual-review/shell
 
-for project in "$REVIEW_ROOT"/*; do
+for project in reports/visual-review/*; do
   (cd "$project" && npm install && npm run build)
 done
 ```
 
-The checkout root intentionally has no `dev` script: it is the Ovlira CLI package. Keep this terminal session open so `REVIEW_ROOT` remains defined, then start a fixture from its generated project directory and open the printed local URL:
+The checkout root intentionally has no `dev` script: it is the Ovlira CLI package. Start a fixture with its exact path:
 
 ```bash
-cd "$REVIEW_ROOT/settings"
-npm run dev
+npm --prefix "$(git rev-parse --show-toplevel)/reports/visual-review/settings" run dev
 ```
 
-If you are still at the checkout root, the equivalent explicit command is:
+Stop the server with `Ctrl-C`. Start another fixture by changing only the final directory name:
 
 ```bash
-npm --prefix "$REVIEW_ROOT/settings" run dev
+npm --prefix "$(git rev-parse --show-toplevel)/reports/visual-review/search" run dev
+npm --prefix "$(git rev-parse --show-toplevel)/reports/visual-review/crud" run dev
+npm --prefix "$(git rev-parse --show-toplevel)/reports/visual-review/detail" run dev
+npm --prefix "$(git rev-parse --show-toplevel)/reports/visual-review/empty" run dev
+npm --prefix "$(git rev-parse --show-toplevel)/reports/visual-review/shell" run dev
 ```
 
-If npm reports a path such as `/settings/package.json`, `REVIEW_ROOT` is empty in the current shell. Either rerun the preparation block above in this terminal, or find the existing disposable workspace and use its printed absolute path directly:
+If npm reports `/settings/package.json` or another missing `package.json`, the fixtures have not been prepared in this checkout. Rerun the single preparation block above, then run one of the exact commands above. Do not type a placeholder path.
 
-```bash
-find /tmp -type d -name 'ovlira-visual-review.*' -prune -print 2>/dev/null
-npm --prefix "/tmp/ovlira-visual-review.REPLACE_ME/settings" run dev
-```
-
-Replace `settings` with `search`, `crud`, `detail`, `empty`, or `shell` for the other fixtures. Keep `REVIEW_ROOT` until the review is complete; remove only that exact temporary directory afterward with `rm -rf "$REVIEW_ROOT"`.
+The generated fixtures remain at `reports/visual-review` across terminal sessions. Remove only that directory after the review with `rm -rf reports/visual-review`.
 
 ## Review sequence
 
