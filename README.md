@@ -115,6 +115,8 @@ See [`docs/ai-evals.md`](./docs/ai-evals.md) for the scenario contract, safety b
 
 Human visual approval of the six recipe starters follows the focused [visual review protocol](./docs/visual-review.md), including default/contrasting theme checks, three representative widths, required states, and keyboard review.
 
+The review protocol uses one consolidated Vite app. Start it with `npm run review:visual` after the build; use its left navigation to move through all six recipe fixtures.
+
 The next testing layer is also available offline. Structured specs are validated by Ovlira, executed through the real CLI, and can be rendered into disposable Vitest files:
 
 ```bash

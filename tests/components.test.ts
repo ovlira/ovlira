@@ -34,4 +34,12 @@ describe('Ovlira components', () => {
     expect(element.shadowRoot?.querySelector('caption')?.textContent).toBe('Projects');
     expect(element.shadowRoot?.querySelector('tbody')?.textContent).toContain('Northstar');
   });
+
+  it('scopes application-shell navigation styles to the nav slot', async () => {
+    document.body.innerHTML = '<ov-application-shell><a slot="nav" href="#overview">Overview</a></ov-application-shell>';
+    const element = document.querySelector('ov-application-shell') as import('../src/components/application-shell.js').OvApplicationShell;
+    await element.updateComplete;
+    const navSlot = element.shadowRoot?.querySelector('slot[name="nav"]');
+    expect(navSlot?.classList.contains('nav-slot')).toBe(true);
+  });
 });

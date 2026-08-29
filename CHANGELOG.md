@@ -8,6 +8,8 @@
 - Documented the designer-to-agent boundary and replaced the evaluation-led roadmap with bounded v0.3, v0.4, and v1 milestones.
 - Added deterministic CI checks for the v0.3 Ovlira response budgets, covering search, focused/full inspect, and the normal discovery workflow.
 - Added a focused human visual review protocol for approving all six recipe starters across widths, states, keyboard access, and a contrasting theme.
+- Added one consolidated Vite behavior-review app with recipe navigation, state controls, and baseline local interactions; per-recipe review apps are no longer required.
+- Added the same baseline action seams to generated recipe starters, including search filtering, collection creation, detail editing, empty-state completion, and shell navigation.
 
 ## 0.2.1 — CLI entrypoint fix
 

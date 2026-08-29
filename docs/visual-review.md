@@ -2,9 +2,11 @@
 
 This is the approval protocol for the six shipped recipe starters. It is a design review, not a request for an agent to redesign the catalogue. Review the generated screen as a user would see it, record defects, and leave component source unchanged while deciding whether the fixture passes.
 
+The agent scope ends at fixture wiring, behavior, accessibility checks, and evidence capture. Only a human designer may choose new visual direction or approve changes to the theme and component styling.
+
 ## What a reviewer signs off
 
-Approve a recipe only when it is clear, legible, and coherent at all three widths; its required states are understandable; keyboard focus and labels are usable; and the default and contrasting themes both retain the intended hierarchy. A review can reject a fixture without proposing a replacement design. Record the smallest concrete issue for the catalogue owner to address.
+Approve a recipe only when it is clear, legible, and coherent at all three widths; its required states are understandable; keyboard focus and labels are usable; and the default and designer-supplied contrasting themes both retain the intended hierarchy. A review can reject a fixture without proposing a replacement design. Record the smallest concrete issue for the catalogue owner to address.
 
 Use these decisions:
 
@@ -12,55 +14,27 @@ Use these decisions:
 - **Revise** — the recipe is usable, but hierarchy, spacing, type, color, or responsive behavior needs a catalogue change.
 - **Block** — a task cannot be completed or understood, content is clipped or unreadable, a required state is missing, or keyboard/accessibility behavior fails.
 
-## Prepare fresh fixtures
+## Start the single review app
 
-Run this from the Ovlira checkout. The commands create disposable projects under `reports/visual-review` (which is git-ignored), so the review does not depend on an adapted application or local edits. The first command removes only that generated review directory so stale files cannot cause conflicts.
+Use one Vite app for the entire behavior review. It lives in `examples/visual-review`, imports the shipped components and token export directly, and provides recipe navigation, state controls, and baseline interactions. It deliberately does not invent a theme; a designer supplies the visual reference and contrasting theme for the visual sign-off pass. No per-recipe `init`, `add`, or `npm install` is needed.
+
+From the Ovlira checkout, run this exact block:
 
 ```bash
 cd "$(git rev-parse --show-toplevel)"
 npm install
 npm run build
-
-rm -rf reports/visual-review
-mkdir -p reports/visual-review
-
-node dist/cli/index.js init reports/visual-review/settings
-node dist/cli/index.js add page.settings --cwd reports/visual-review/settings
-node dist/cli/index.js init reports/visual-review/search
-node dist/cli/index.js add page.search --cwd reports/visual-review/search
-node dist/cli/index.js init reports/visual-review/crud
-node dist/cli/index.js add page.crud-table --cwd reports/visual-review/crud
-node dist/cli/index.js init reports/visual-review/detail
-node dist/cli/index.js add page.detail --cwd reports/visual-review/detail
-node dist/cli/index.js init reports/visual-review/empty
-node dist/cli/index.js add state.empty --cwd reports/visual-review/empty
-node dist/cli/index.js init reports/visual-review/shell
-node dist/cli/index.js add shell.application --cwd reports/visual-review/shell
-
-for project in reports/visual-review/*; do
-  (cd "$project" && npm install && npm run build)
-done
+npm run review:visual:build
+npm run review:visual
 ```
 
-The checkout root intentionally has no `dev` script: it is the Ovlira CLI package. Start a fixture with its exact path:
+Open the local URL printed by Vite. Leave that one server running while you switch between Settings, Search, CRUD table, Detail, Empty state, and Application shell in the left navigation. Stop it with `Ctrl-C` when the review is complete.
 
-```bash
-npm --prefix "$(git rev-parse --show-toplevel)/reports/visual-review/settings" run dev
-```
+The app's baseline interactions are deliberately small but observable: save settings shows a success state, search filters the sample rows, CRUD creates a new row, detail edits the record name, Empty state reveals a created result, and shell navigation changes the page context. These are harness interactions; generated starter parity is a separate v0.3 requirement.
 
-Stop the server with `Ctrl-C`. Start another fixture by changing only the final directory name:
+If you see `Missing script: "dev"`, you are in the checkout root or an old per-recipe fixture. Run `npm run review:visual` from the checkout root instead. The generated `init` projects still contain their own `dev` script, but they are no longer the review workflow.
 
-```bash
-npm --prefix "$(git rev-parse --show-toplevel)/reports/visual-review/search" run dev
-npm --prefix "$(git rev-parse --show-toplevel)/reports/visual-review/crud" run dev
-npm --prefix "$(git rev-parse --show-toplevel)/reports/visual-review/detail" run dev
-npm --prefix "$(git rev-parse --show-toplevel)/reports/visual-review/empty" run dev
-npm --prefix "$(git rev-parse --show-toplevel)/reports/visual-review/shell" run dev
-```
-
-If npm reports `/settings/package.json` or another missing `package.json`, the fixtures have not been prepared in this checkout. Rerun the single preparation block above, then run one of the exact commands above. Do not type a placeholder path.
-
-The generated fixtures remain at `reports/visual-review` across terminal sessions. Remove only that directory after the review with `rm -rf reports/visual-review`.
+The review app is the canonical visual surface for this phase. Generated recipe starters remain a separate output contract; interaction parity with those starters is tracked in the roadmap before v0.3 exit.
 
 ## Review sequence
 
@@ -72,7 +46,7 @@ For each recipe:
 2. At the middle and narrow widths, check that no text, control, state switcher, navigation item, table column, or action is clipped or horizontally stranded. Resize while the page is populated, not only when empty.
 3. Use the state controls in the generated fixture. Verify that exactly one state is visible, the selected control is announced with `aria-pressed`, and the message and next action match the state.
 4. Tab through the whole screen. Confirm a visible focus ring, sensible order, real labels for inputs/selects, keyboard-operable buttons and links, and no focus trap. Use a screen reader if available for the final decision.
-5. Repeat the wide and narrow checks with a deliberately contrasting theme. Edit only the project's `src/styles/ovlira-theme.css`; do not edit copied component files or `src/styles.css` for this pass.
+5. Repeat the wide and narrow checks with the contrasting theme supplied by the designer. Apply only that approved theme file; do not ask an agent to invent palette, typography, radius, or density values.
 6. Record the decision, viewport, state, theme, and evidence before moving to the next fixture.
 
 The generated state controls are:
@@ -101,31 +75,9 @@ If a check fails because a visual value is hard-coded in a component or recipe s
 
 ## Contrasting theme pass
 
-The second pass only needs to prove the theme seam, not establish a new brand. In the copied theme file, change semantic roles together so the screen has a clearly different character. For example:
+The second pass is designer-owned. The designer supplies the approved contrasting theme file or exact semantic token values; the agent only applies that artifact and verifies that the palette, typography, shape language, and density change globally while labels, states, and layout remain coherent. Check the approved theme at 1440px and 375px at minimum.
 
-```css
-:root {
-  --ov-color-canvas: #111820;
-  --ov-color-surface: #1a2430;
-  --ov-color-surface-raised: #243243;
-  --ov-color-ink: #f7fbff;
-  --ov-color-muted: #bfd0d8;
-  --ov-color-line: #5c7080;
-  --ov-color-accent: #6d5efc;
-  --ov-color-accent-strong: #8fc7ff;
-  --ov-color-info: #24527a;
-  --ov-color-success: #1d5c48;
-  --ov-color-warning: #775112;
-  --ov-color-danger: #7a2d3d;
-  --ov-font-sans: Georgia, 'Times New Roman', serif;
-  --ov-font-mono: 'SFMono-Regular', Consolas, monospace;
-  --ov-radius-sm: 0;
-  --ov-radius-md: 0.25rem;
-  --ov-radius-lg: 0.5rem;
-}
-```
-
-The exact values may change during design review. The acceptance question is whether the palette, typography, and shape language change globally while labels, states, and layout remain coherent. Check the contrasting theme at 1440px and 375px at minimum.
+If the designer has not supplied the contrasting artifact yet, mark this pass **Blocked — awaiting designer input**. Do not invent replacement values to make the checklist appear complete.
 
 ## Evidence record
 

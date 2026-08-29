@@ -83,6 +83,12 @@ describe('ovlira CLI', () => {
       const entry = await fs.readFile(path.join(project, 'src/main.ts'), 'utf8');
       expect(entry).toContain("./styles/ovlira-theme.css");
       if (recipe !== 'state.empty' && recipe !== 'shell.application') expect(entry).toContain('data-ovlira-state-target');
+      if (recipe === 'page.settings') expect(entry).toContain('data-ovlira-action="save"');
+      if (recipe === 'page.search') expect(entry).toContain('data-ovlira-action="search"');
+      if (recipe === 'page.crud-table') expect(entry).toContain('data-ovlira-create-form');
+      if (recipe === 'page.detail') expect(entry).toContain('data-ovlira-action="edit"');
+      if (recipe === 'state.empty') expect(entry).toContain('data-ovlira-state="success"');
+      if (recipe === 'shell.application') expect(entry).toContain('data-ovlira-nav');
       const check = ioCapture();
       expect(await runCli(['check', '--cwd', project, '--json'], project, check.io)).toBe(0);
       expect(JSON.parse(check.stdout[0])).toMatchObject({ version: 1, ok: true, diagnostics: [] });

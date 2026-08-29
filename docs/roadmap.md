@@ -33,6 +33,8 @@ Coding agents own the work that can be derived from those decisions:
 
 This boundary is a product constraint. Ovlira should make the approved path easier than asking an agent to invent or perfect UI.
 
+Agents must not choose or revise palette, typography, radius, density, motion, or other front-end visual direction. When a fixture fails visual review, the agent records the defect and continues with behavior, accessibility, composition, validation, and release work until a designer supplies an approved visual contract.
+
 ## What counts as an Ovlira prototype
 
 A successful prototype is ordinary local frontend source that:
@@ -63,8 +65,8 @@ The important gaps are product gaps rather than missing infrastructure:
 
 - the token export is a useful start, but it is not yet a complete, documented theme contract;
 - some component visual values still sit outside the global token surface;
-- only the settings recipe is emitted as a substantial composed screen; other recipe outputs are closer to demonstrations than finished prototype starting points;
-- required states can be present as hidden markers without being meaningfully wired;
+- the recipe starters are composed visual fixtures with baseline local interactions; they still need domain-data seams and stronger deterministic interaction checks;
+- the consolidated review app covers all six fixtures, and generated starters now expose the same baseline action seams;
 - there is no explicit designer contribution and visual approval gate; and
 - token usage is reported by evaluations, and deterministic CLI response budgets are now enforced in CI; provider token accounting remains a separate measurement.
 
@@ -80,7 +82,7 @@ No net catalogue growth is planned for this phase. Improve the ten components an
 - Keep resets and structural global styles separate from theme values and recipe-specific layout.
 - Make every catalogue component consume the documented semantic theme surface for brand-level decisions.
 - Remove or promote visual literals that prevent a global restyle; keep purely structural implementation details inside the human-authored component.
-- Provide the default theme and one deliberately contrasting test theme.
+- Have a designer provide the default theme and one deliberately contrasting reference theme; the agent only wires the token contract and verifies that it applies globally.
 - Prove that changing font, palette, radius, and density requires no component-source edits.
 - Preserve the user's theme when components or recipes are added again.
 
@@ -88,18 +90,26 @@ No net catalogue growth is planned for this phase. Improve the ten components an
 
 - Give every current recipe a complete runnable starting screen rather than a generic placeholder.
 - Define the content regions, actions, data seams, and state seams an agent is expected to adapt.
-- Implement usable loading, empty, error, and success examples where the recipe requires them.
+- Implement baseline local interactions: settings can save and acknowledge changes, search filters the sample results, collection recipes can create a record, detail can edit its identity, and shell navigation changes the active screen context.
+- Keep loading, empty, error, and success examples switchable for review while making the success path observable through an action.
 - Keep recipes domain-neutral: settings, search, CRUD, detail, empty state, and application shell should work for many products through copy and data changes.
 - Review every recipe at narrow, medium, and wide widths with a human designer.
 
-### 3. Encode the designer-to-agent handoff
+### 3. Consolidate visual review
+
+- Maintain one Vite review app for all six recipes instead of one app per fixture.
+- Let reviewers switch recipes and required states without rebuilding or changing directories; apply a contrasting theme only from a designer-supplied artifact.
+- Keep the review app as harness infrastructure; do not let it become a second design system or a replacement for generated starter output.
+- Build the review app in the release check so visual-review infrastructure cannot silently drift from the catalogue.
+
+### 4. Encode the designer-to-agent handoff
 
 - Add a small contribution checklist covering anatomy, variants, states, accessibility, responsive behaviour, tokens, metadata, examples, and visual approval.
 - Require a human-approved reference fixture before a component or recipe enters the catalogue.
 - Keep agent-facing descriptors about usage and composition, not visual brainstorming.
 - Treat the source implementation as the approved design; expose deliberate customization through theme tokens, properties, slots, and parts.
 
-### 4. Turn token efficiency into a release gate
+### 5. Turn token efficiency into a release gate
 
 - Measure only Ovlira-provided context separately from the coding agent's system prompt and tool overhead.
 - Keep search results bounded and make focused inspection the documented default.
@@ -116,8 +126,9 @@ CI enforces these limits with the deterministic UTF-8 estimate documented in [`d
 ### v0.3 exit criteria
 
 - All six recipe fixtures are human-approved at three representative widths, following the [human visual review protocol](./visual-review.md).
-- The contrasting theme changes the full visual character of all fixtures without component edits.
-- Every recipe has real switchable required states and passes `ovlira check`.
+- A designer-supplied contrasting theme changes the full visual character of all fixtures without component edits.
+- Every recipe has baseline observable interactions, real switchable required states, and passes `ovlira check`.
+- The single review app builds in CI and covers all six fixtures without per-recipe Vite projects.
 - The workflow token budgets pass in CI.
 - With project dependencies present, a fresh `init → add recipe → build → check` run succeeds without Ovlira invoking a model or network service.
 
