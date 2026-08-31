@@ -2172,6 +2172,166 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/progress.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "A labelled native progress indicator for determinate or indeterminate work.",
+          "name": "OvProgress",
+          "members": [
+            {
+              "kind": "field",
+              "name": "label",
+              "privacy": "public",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Progress'",
+              "attribute": "label",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "value",
+              "privacy": "public",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "attribute": "value",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "max",
+              "privacy": "public",
+              "type": {
+                "text": "number"
+              },
+              "default": "100",
+              "attribute": "max",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "indeterminate",
+              "privacy": "public",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "attribute": "indeterminate",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "showValue",
+              "privacy": "public",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "attribute": "show-value",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "instanceId",
+              "privacy": "private",
+              "readonly": true,
+              "default": "`ov-progress-${++progressId}`"
+            },
+            {
+              "kind": "field",
+              "name": "normalizedMax",
+              "privacy": "private",
+              "readonly": true
+            },
+            {
+              "kind": "method",
+              "name": "normalizedValue",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "max",
+                  "type": {
+                    "text": "number"
+                  }
+                }
+              ]
+            }
+          ],
+          "attributes": [
+            {
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Progress'",
+              "fieldName": "label"
+            },
+            {
+              "name": "value",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "fieldName": "value"
+            },
+            {
+              "name": "max",
+              "type": {
+                "text": "number"
+              },
+              "default": "100",
+              "fieldName": "max"
+            },
+            {
+              "name": "indeterminate",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "fieldName": "indeterminate"
+            },
+            {
+              "name": "show-value",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "fieldName": "showValue"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "ov-progress",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "OvProgress",
+          "declaration": {
+            "name": "OvProgress",
+            "module": "src/components/progress.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "ov-progress",
+          "declaration": {
+            "name": "OvProgress",
+            "module": "src/components/progress.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/radio-group.ts",
       "declarations": [
         {
@@ -2583,6 +2743,111 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/skeleton.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "A decorative loading placeholder; the owning region should expose aria-busy.",
+          "name": "OvSkeleton",
+          "members": [
+            {
+              "kind": "field",
+              "name": "variant",
+              "privacy": "public",
+              "type": {
+                "text": "SkeletonVariant"
+              },
+              "default": "'text'",
+              "attribute": "variant",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "lines",
+              "privacy": "public",
+              "type": {
+                "text": "number"
+              },
+              "default": "1",
+              "attribute": "lines",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "animated",
+              "privacy": "public",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true",
+              "attribute": "animated",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "normalizedVariant",
+              "type": {
+                "text": "SkeletonVariant"
+              },
+              "privacy": "private",
+              "readonly": true
+            }
+          ],
+          "attributes": [
+            {
+              "name": "variant",
+              "type": {
+                "text": "SkeletonVariant"
+              },
+              "default": "'text'",
+              "fieldName": "variant"
+            },
+            {
+              "name": "lines",
+              "type": {
+                "text": "number"
+              },
+              "default": "1",
+              "fieldName": "lines"
+            },
+            {
+              "name": "animated",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true",
+              "fieldName": "animated"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "ov-skeleton",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "OvSkeleton",
+          "declaration": {
+            "name": "OvSkeleton",
+            "module": "src/components/skeleton.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "ov-skeleton",
+          "declaration": {
+            "name": "OvSkeleton",
+            "module": "src/components/skeleton.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/spinner.ts",
       "declarations": [
         {
@@ -2654,6 +2919,255 @@
           "declaration": {
             "name": "OvSpinner",
             "module": "src/components/spinner.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/tabs.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "A controlled tablist with keyboard navigation and named panel slots.",
+          "name": "OvTabs",
+          "members": [
+            {
+              "kind": "field",
+              "name": "label",
+              "privacy": "public",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Tabs'",
+              "attribute": "label",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "value",
+              "privacy": "public",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "attribute": "value",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "orientation",
+              "privacy": "public",
+              "type": {
+                "text": "'horizontal' | 'vertical'"
+              },
+              "default": "'horizontal'",
+              "attribute": "orientation",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "items",
+              "privacy": "public",
+              "type": {
+                "text": "TabItem[]"
+              },
+              "default": "[]",
+              "attribute": "items"
+            },
+            {
+              "kind": "field",
+              "name": "instanceId",
+              "privacy": "private",
+              "readonly": true,
+              "default": "`ov-tabs-${++tabsId}`"
+            },
+            {
+              "kind": "field",
+              "name": "activeIndex",
+              "type": {
+                "text": "number"
+              },
+              "privacy": "private",
+              "default": "-1"
+            },
+            {
+              "kind": "field",
+              "name": "selectedValue",
+              "privacy": "private",
+              "readonly": true
+            },
+            {
+              "kind": "method",
+              "name": "ensureSelection",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "tabId",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "index",
+                  "type": {
+                    "text": "number"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "panelId",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "index",
+                  "type": {
+                    "text": "number"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "selectItem",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "index",
+                  "type": {
+                    "text": "number"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "handleKeydown",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "event",
+                  "type": {
+                    "text": "KeyboardEvent"
+                  }
+                },
+                {
+                  "name": "index",
+                  "type": {
+                    "text": "number"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "firstEnabledIndex",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "lastEnabledIndex",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "nextEnabledIndex",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "index",
+                  "type": {
+                    "text": "number"
+                  }
+                },
+                {
+                  "name": "direction",
+                  "type": {
+                    "text": "1 | -1"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "focusTab",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "index",
+                  "type": {
+                    "text": "number"
+                  }
+                }
+              ]
+            }
+          ],
+          "events": [
+            {
+              "name": "change",
+              "type": {
+                "text": "CustomEvent"
+              }
+            }
+          ],
+          "attributes": [
+            {
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Tabs'",
+              "fieldName": "label"
+            },
+            {
+              "name": "value",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "fieldName": "value"
+            },
+            {
+              "name": "orientation",
+              "type": {
+                "text": "'horizontal' | 'vertical'"
+              },
+              "default": "'horizontal'",
+              "fieldName": "orientation"
+            },
+            {
+              "name": "items",
+              "type": {
+                "text": "TabItem[]"
+              },
+              "default": "[]",
+              "fieldName": "items"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "ov-tabs",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "OvTabs",
+          "declaration": {
+            "name": "OvTabs",
+            "module": "src/components/tabs.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "ov-tabs",
+          "declaration": {
+            "name": "OvTabs",
+            "module": "src/components/tabs.ts"
           }
         }
       ]
@@ -2889,6 +3403,275 @@
           "declaration": {
             "name": "OvTextarea",
             "module": "src/components/textarea.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/toast.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "A transient, dismissible notification that an owning region places in the UI.",
+          "name": "OvToast",
+          "members": [
+            {
+              "kind": "field",
+              "name": "open",
+              "privacy": "public",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "attribute": "open",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "tone",
+              "privacy": "public",
+              "type": {
+                "text": "ToastTone"
+              },
+              "default": "'info'",
+              "attribute": "tone",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "heading",
+              "privacy": "public",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "attribute": "heading",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "duration",
+              "privacy": "public",
+              "type": {
+                "text": "number"
+              },
+              "default": "5000",
+              "attribute": "duration",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "dismissible",
+              "privacy": "public",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true",
+              "attribute": "dismissible",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "closeLabel",
+              "privacy": "public",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Dismiss notification'",
+              "attribute": "close-label",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "timer",
+              "type": {
+                "text": "number | undefined"
+              },
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "startedAt",
+              "type": {
+                "text": "number"
+              },
+              "privacy": "private",
+              "default": "0"
+            },
+            {
+              "kind": "field",
+              "name": "remaining",
+              "type": {
+                "text": "number"
+              },
+              "privacy": "private",
+              "default": "0"
+            },
+            {
+              "kind": "field",
+              "name": "hovered",
+              "type": {
+                "text": "boolean"
+              },
+              "privacy": "private",
+              "default": "false"
+            },
+            {
+              "kind": "field",
+              "name": "focused",
+              "type": {
+                "text": "boolean"
+              },
+              "privacy": "private",
+              "default": "false"
+            },
+            {
+              "kind": "field",
+              "name": "normalizedDuration",
+              "privacy": "private",
+              "readonly": true
+            },
+            {
+              "kind": "field",
+              "name": "dismiss",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "close",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "reason",
+                  "type": {
+                    "text": "ToastCloseReason"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "scheduleDismissal",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "pauseDismissal",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "handleMouseEnter",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "handleMouseLeave",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "handleFocusIn",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "handleFocusOut",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "resumeDismissal",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "clearTimer",
+              "privacy": "private"
+            }
+          ],
+          "events": [
+            {
+              "name": "close",
+              "type": {
+                "text": "CustomEvent"
+              }
+            }
+          ],
+          "attributes": [
+            {
+              "name": "open",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "fieldName": "open"
+            },
+            {
+              "name": "tone",
+              "type": {
+                "text": "ToastTone"
+              },
+              "default": "'info'",
+              "fieldName": "tone"
+            },
+            {
+              "name": "heading",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "fieldName": "heading"
+            },
+            {
+              "name": "duration",
+              "type": {
+                "text": "number"
+              },
+              "default": "5000",
+              "fieldName": "duration"
+            },
+            {
+              "name": "dismissible",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true",
+              "fieldName": "dismissible"
+            },
+            {
+              "name": "close-label",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Dismiss notification'",
+              "fieldName": "closeLabel"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "ov-toast",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "OvToast",
+          "declaration": {
+            "name": "OvToast",
+            "module": "src/components/toast.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "ov-toast",
+          "declaration": {
+            "name": "OvToast",
+            "module": "src/components/toast.ts"
           }
         }
       ]

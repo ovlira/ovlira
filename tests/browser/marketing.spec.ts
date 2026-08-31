@@ -71,7 +71,7 @@ test('catalogue uses a desktop master detail split and a mobile detail replaceme
 
 test('catalogue preview coverage includes every shipped component', async ({ page }) => {
   await openMarketing(page);
-  for (const id of ['ov-button', 'ov-input', 'ov-textarea', 'ov-checkbox', 'ov-radio-group', 'ov-toggle', 'ov-dialog', 'ov-select', 'ov-spinner', 'ov-menu', 'ov-pagination', 'ov-combobox', 'ov-badge', 'ov-card', 'ov-alert', 'ov-page-header', 'ov-empty-state', 'ov-data-table', 'ov-application-shell']) {
+  for (const id of ['ov-button', 'ov-input', 'ov-textarea', 'ov-checkbox', 'ov-radio-group', 'ov-toggle', 'ov-dialog', 'ov-select', 'ov-spinner', 'ov-menu', 'ov-pagination', 'ov-combobox', 'ov-tabs', 'ov-toast', 'ov-progress', 'ov-skeleton', 'ov-badge', 'ov-card', 'ov-alert', 'ov-page-header', 'ov-empty-state', 'ov-data-table', 'ov-application-shell']) {
     await page.locator(`[data-catalogue-select="${id}"]`).click();
     await expect(page.locator('[data-component-preview]')).toBeVisible();
     await expect(page.locator(`[data-component-preview] ${id}`).first()).toBeVisible();
@@ -173,6 +173,44 @@ test('combobox keyboard navigation selects the active option', async ({ page }) 
   await input.press('Enter');
   await expect(input).toHaveValue('Maya Chen');
   await expect(input).toHaveAttribute('aria-expanded', 'false');
+});
+
+test('tabs preview exposes related panels and keyboard selection', async ({ page }) => {
+  await openMarketing(page);
+  await page.locator('[data-catalogue-select="ov-tabs"]').click();
+  const host = page.locator('[data-component-preview] ov-tabs').first();
+  await expect(host.getByRole('tablist')).toHaveAttribute('aria-label', 'Project views');
+  await expect(host.getByRole('tab', { name: 'Overview' })).toHaveAttribute('aria-selected', 'true');
+  await expect(host.locator('[slot="overview"]')).toContainText('A summary of the project.');
+  await host.getByRole('tab', { name: 'Overview' }).press('ArrowRight');
+  await expect(host.getByRole('tab', { name: 'Activity' })).toHaveAttribute('aria-selected', 'true');
+  await expect(host.locator('[slot="activity"]')).toContainText('Recent project activity.');
+});
+
+test('toast preview exposes a live region and dismissal control', async ({ page }) => {
+  await openMarketing(page);
+  await page.locator('[data-catalogue-select="ov-toast"]').click();
+  const host = page.locator('[data-component-preview] ov-toast').first();
+  await expect(host).toContainText('Your project is up to date.');
+  await host.getByRole('button', { name: 'Dismiss notification' }).click();
+  await expect(host).not.toHaveAttribute('open');
+});
+
+test('progress preview exposes native progress value and label', async ({ page }) => {
+  await openMarketing(page);
+  await page.locator('[data-catalogue-select="ov-progress"]').click();
+  const host = page.locator('[data-component-preview] ov-progress').first();
+  await expect.poll(() => host.locator('progress').evaluate((element) => String((element as HTMLProgressElement).value))).toBe('68');
+  await expect(host.locator('[part="value"]')).toHaveText('68%');
+  await expect(host.getByText('Importing projects', { exact: true })).toBeVisible();
+});
+
+test('skeleton preview remains decorative inside a busy region', async ({ page }) => {
+  await openMarketing(page);
+  await page.locator('[data-catalogue-select="ov-skeleton"]').click();
+  const host = page.locator('[data-component-preview]');
+  await expect(host.locator('[aria-busy="true"]')).toHaveAttribute('aria-label', 'Loading project details');
+  await expect(host.locator('ov-skeleton').first().locator('[aria-hidden="true"]')).toBeVisible();
 });
 
 for (const theme of ['light', 'dark'] as const) {

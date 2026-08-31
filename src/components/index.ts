@@ -17,3 +17,7 @@ export * from './spinner.js';
 export * from './menu.js';
 export * from './pagination.js';
 export * from './combobox.js';
+export * from './tabs.js';
+export * from './toast.js';
+export * from './progress.js';
+export * from './skeleton.js';

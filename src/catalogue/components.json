@@ -548,5 +548,123 @@
       "requiredProps": ["label"],
       "example": "examples/components/combobox.md"
     }
+  },
+  {
+    "id": "component.tabs",
+    "kind": "component",
+    "title": "Tabs",
+    "description": "A controlled tablist with keyboard navigation and named panel slots.",
+    "category": "navigation",
+    "tags": ["tabs", "navigation", "panels", "views", "switcher"],
+    "api": {
+      "tag": "ov-tabs",
+      "importPath": "./components/ovlira/tabs.js",
+      "props": [
+        { "name": "label", "type": "string", "description": "Accessible tablist label.", "default": "Tabs", "reflected": true },
+        { "name": "value", "type": "string", "description": "Selected tab value.", "reflected": true },
+        { "name": "orientation", "type": "'horizontal' | 'vertical'", "description": "Tablist direction.", "default": "horizontal", "reflected": true },
+        { "name": "items", "type": "TabItem[]", "description": "Tab definitions assigned as a property." }
+      ],
+      "events": [{ "name": "change", "detail": "{ value: string; label: string }", "description": "Dispatched when an enabled tab is selected." }],
+      "slots": ["${value}: panel content for each tab value"],
+      "cssCustomProperties": [],
+      "parts": ["tabs", "tablist", "tab", "panels", "panel"]
+    },
+    "guidance": {
+      "useWhen": ["Users need to switch between related views that share the same context."],
+      "avoidWhen": ["The choices are independent destinations; use native links or application navigation instead."],
+      "constraints": ["Assign stable values and concise labels to every tab.", "Provide panel content through a named slot matching each tab value.", "Keep keyboard focus within the tablist predictable with Arrow, Home, and End keys."],
+      "requiredProps": [],
+      "example": "examples/components/tabs.md"
+    }
+  },
+  {
+    "id": "component.toast",
+    "kind": "component",
+    "title": "Toast",
+    "description": "A transient, dismissible notification for cross-context status feedback.",
+    "category": "feedback",
+    "tags": ["toast", "notification", "status", "alert", "transient"],
+    "api": {
+      "tag": "ov-toast",
+      "importPath": "./components/ovlira/toast.js",
+      "props": [
+        { "name": "open", "type": "boolean", "description": "Whether the notification is visible.", "default": "false", "reflected": true },
+        { "name": "tone", "type": "'info' | 'success' | 'warning' | 'danger'", "description": "Notification intent.", "default": "info", "reflected": true },
+        { "name": "heading", "type": "string", "description": "Optional short notification heading.", "reflected": true },
+        { "name": "duration", "type": "number", "description": "Milliseconds before automatic dismissal; zero disables it.", "default": "5000", "reflected": true },
+        { "name": "dismissible", "type": "boolean", "description": "Shows a dismissal control.", "default": "true", "reflected": true },
+        { "name": "closeLabel", "type": "string", "description": "Accessible dismissal label.", "default": "Dismiss notification", "reflected": true }
+      ],
+      "events": [{ "name": "close", "detail": "{ reason: 'dismiss' | 'timeout' }", "description": "Dispatched when the notification is dismissed by the user or timer." }],
+      "slots": ["default: notification message"],
+      "cssCustomProperties": [],
+      "parts": ["toast", "copy", "heading", "message", "close"]
+    },
+    "guidance": {
+      "useWhen": ["A short-lived status needs to reach users while they are working elsewhere in the interface."],
+      "avoidWhen": ["The message explains a persistent page condition or field error; use ov-alert or field validation instead."],
+      "constraints": ["Place toasts in an owning live region and keep messages concise.", "Provide a dismissal path and pause automatic dismissal while the notification is hovered or focused.", "Do not use a toast as the only record of a destructive or required action."],
+      "requiredProps": [],
+      "example": "examples/components/toast.md"
+    }
+  },
+  {
+    "id": "component.progress",
+    "kind": "component",
+    "title": "Progress",
+    "description": "A labelled native progress indicator for determinate or indeterminate work.",
+    "category": "feedback",
+    "tags": ["progress", "loading", "status", "async", "meter"],
+    "api": {
+      "tag": "ov-progress",
+      "importPath": "./components/ovlira/progress.js",
+      "props": [
+        { "name": "label", "type": "string", "description": "Visible and accessible progress label.", "default": "Progress", "reflected": true },
+        { "name": "value", "type": "number", "description": "Current completed amount.", "default": "0", "reflected": true },
+        { "name": "max", "type": "number", "description": "Total amount represented by the progress value.", "default": "100", "reflected": true },
+        { "name": "indeterminate", "type": "boolean", "description": "Communicates progress without a known completion amount.", "default": "false", "reflected": true },
+        { "name": "showValue", "type": "boolean", "description": "Shows the calculated percentage beside the bar.", "default": "false", "reflected": true }
+      ],
+      "events": [],
+      "slots": [],
+      "cssCustomProperties": [],
+      "parts": ["progress", "label", "value", "bar"]
+    },
+    "guidance": {
+      "useWhen": ["A task has measurable completion or needs an explicit indeterminate work signal."],
+      "avoidWhen": ["The operation is a short local wait with no useful completion estimate; use ov-spinner instead."],
+      "constraints": ["Keep value and max meaningful to the owning task and update them from application state.", "Use a concise visible label so the native progress semantics have context.", "Do not imply completion when the application has not confirmed it."],
+      "requiredProps": [],
+      "example": "examples/components/progress.md"
+    }
+  },
+  {
+    "id": "component.skeleton",
+    "kind": "component",
+    "title": "Skeleton",
+    "description": "A decorative loading placeholder for reserving the shape of incoming content.",
+    "category": "feedback",
+    "tags": ["skeleton", "loading", "placeholder", "async", "content"],
+    "api": {
+      "tag": "ov-skeleton",
+      "importPath": "./components/ovlira/skeleton.js",
+      "props": [
+        { "name": "variant", "type": "'text' | 'heading' | 'circle' | 'rect'", "description": "Placeholder shape.", "default": "text", "reflected": true },
+        { "name": "lines", "type": "number", "description": "Number of text or heading lines.", "default": "1", "reflected": true },
+        { "name": "animated", "type": "boolean", "description": "Enables the subtle loading pulse.", "default": "true", "reflected": true }
+      ],
+      "events": [],
+      "slots": [],
+      "cssCustomProperties": [],
+      "parts": ["skeleton", "line"]
+    },
+    "guidance": {
+      "useWhen": ["A known content shape should remain reserved while its data loads."],
+      "avoidWhen": ["The layout does not benefit from geometry reservation or the content can remain visible with an inline status."],
+      "constraints": ["Mark the owning content region aria-busy while placeholders are shown.", "Treat the placeholder as decorative and keep meaningful loading text in the owning region.", "Match the placeholder shape to the content it replaces without implying unavailable detail."],
+      "requiredProps": [],
+      "example": "examples/components/skeleton.md"
+    }
   }
 ]

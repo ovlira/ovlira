@@ -167,6 +167,69 @@ describe('Ovlira components', () => {
     expect(selectedInput?.getAttribute('aria-expanded')).toBe('false');
   });
 
+  it('renders tabs with tablist semantics, named panels, and keyboard selection', async () => {
+    document.body.innerHTML = '<ov-tabs label="Project views" value="overview"><p slot="overview">Summary</p><p slot="activity">Recent activity</p></ov-tabs>';
+    const element = document.querySelector('ov-tabs') as import('../src/components/tabs.js').OvTabs;
+    element.items = [{ value: 'overview', label: 'Overview' }, { value: 'activity', label: 'Activity' }];
+    await element.updateComplete;
+    const tablist = element.shadowRoot?.querySelector('[role="tablist"]');
+    const tabs = [...(element.shadowRoot?.querySelectorAll<HTMLButtonElement>('[role="tab"]') ?? [])];
+    const panels = [...(element.shadowRoot?.querySelectorAll<HTMLElement>('[role="tabpanel"]') ?? [])];
+    expect(tablist?.getAttribute('aria-label')).toBe('Project views');
+    expect(tabs).toHaveLength(2);
+    expect(tabs[0]?.getAttribute('aria-selected')).toBe('true');
+    expect(panels[0]?.hasAttribute('hidden')).toBe(false);
+    expect(panels[1]?.hasAttribute('hidden')).toBe(true);
+    const change = vi.fn();
+    element.addEventListener('change', change);
+    tabs[0]?.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true, composed: true }));
+    await element.updateComplete;
+    expect(element.value).toBe('activity');
+    expect(change).toHaveBeenCalledTimes(1);
+    expect(tabs[1]?.getAttribute('aria-selected')).toBe('true');
+  });
+
+  it('renders an open toast with a live-region role and dismisses it', async () => {
+    document.body.innerHTML = '<ov-toast tone="success" heading="Saved" duration="0" open>Your changes are ready.</ov-toast>';
+    const element = document.querySelector('ov-toast') as import('../src/components/toast.js').OvToast;
+    await element.updateComplete;
+    const toast = element.shadowRoot?.querySelector('[role="status"]');
+    expect(toast?.getAttribute('aria-live')).toBe('polite');
+    expect(element.textContent).toContain('Your changes are ready.');
+    const close = vi.fn();
+    element.addEventListener('close', close);
+    element.shadowRoot?.querySelector<HTMLButtonElement>('.close')?.click();
+    await element.updateComplete;
+    expect(element.open).toBe(false);
+    expect(close).toHaveBeenCalledTimes(1);
+    expect((close.mock.calls[0]?.[0] as CustomEvent).detail).toEqual({ reason: 'dismiss' });
+  });
+
+  it('keeps progress native and supports determinate and indeterminate states', async () => {
+    document.body.innerHTML = '<ov-progress label="Importing projects" value="68" max="100" show-value></ov-progress>';
+    const element = document.querySelector('ov-progress') as import('../src/components/progress.js').OvProgress;
+    await element.updateComplete;
+    const progress = element.shadowRoot?.querySelector('progress') as HTMLProgressElement | null;
+    expect(progress?.value).toBe(68);
+    expect(progress?.max).toBe(100);
+    expect(element.shadowRoot?.querySelector('[part="value"]')?.textContent).toBe('68%');
+    element.indeterminate = true;
+    await element.updateComplete;
+    expect(element.shadowRoot?.querySelector('progress')?.hasAttribute('value')).toBe(false);
+  });
+
+  it('renders decorative skeleton variants with the requested line count', async () => {
+    document.body.innerHTML = '<ov-skeleton variant="text" lines="3"></ov-skeleton>';
+    const element = document.querySelector('ov-skeleton') as import('../src/components/skeleton.js').OvSkeleton;
+    await element.updateComplete;
+    const skeleton = element.shadowRoot?.querySelector('[part="skeleton"]');
+    expect(skeleton?.getAttribute('aria-hidden')).toBe('true');
+    expect(element.shadowRoot?.querySelectorAll('[part="line"]')).toHaveLength(3);
+    element.variant = 'circle';
+    await element.updateComplete;
+    expect(element.shadowRoot?.querySelector('.circle')).not.toBeNull();
+  });
+
   it('renders property-backed table data without requiring JSON attributes', async () => {
     document.body.innerHTML = '<ov-data-table caption="Projects"></ov-data-table>';
     const element = document.querySelector('ov-data-table') as import('../src/components/data-table.js').OvDataTable;
