@@ -11,6 +11,7 @@
     { "name": "narrow", "width": 375, "height": 812 }
   ],
   "schemes": ["light", "dark"],
+  "themes": ["default", "contrast"],
   "automation": {
     "referenceScreenshots": "../../tests/browser/reference.spec.ts-snapshots",
     "recipeScreenshots": "../../tests/browser/visual.spec.ts-snapshots",
@@ -22,7 +23,31 @@
     "date": "2026-08-31",
     "source": "user-confirmed review"
   },
-  "contrastingThemeStatus": "not-supplied",
+  "contrastingThemeStatus": "approved",
+  "contrastingTheme": {
+    "id": "ovlira-contrast-2026-08-31",
+    "selector": "contrast",
+    "artifact": "./ovlira-contrast-theme.css",
+    "intent": "Warm paper-like surfaces, stronger ink and borders, squared geometry, and slightly denser controls.",
+    "approval": {
+      "decision": "pass",
+      "date": "2026-08-31",
+      "source": "user-confirmed design artifact"
+    },
+    "artifactSha256": "51bc10b1053bd9b8f55d802e83e1ffebc62b34b43547a2b724fad8108657740b",
+    "baselineStatus": "approved",
+    "baselineApproval": {
+      "decision": "pass",
+      "date": "2026-08-31",
+      "source": "user-confirmed rendered review"
+    },
+    "evidence": {
+      "referenceScreenshots": "../../tests/browser/reference.spec.ts-snapshots/design-reference-contrast-*-darwin.png",
+      "recipeScreenshots": "../../tests/browser/visual.spec.ts-snapshots/*-contrast-*-darwin.png",
+      "snapshotCount": 33,
+      "sha256": "1bcbd38e0390c583a0cc38030eb11681bdaba0abc6595b2ad02fa3f355878613"
+    }
+  },
   "notes": [
     "The HTML reference defines the default product language; it is not the production application architecture.",
     "Dark mode is a color scheme of the default theme and is not the separate contrasting theme required by the v0.3 roadmap.",

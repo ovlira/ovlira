@@ -1,5 +1,6 @@
 import AxeBuilder from '@axe-core/playwright';
 import { expect, test } from '@playwright/test';
+import { components } from '../../src/catalogue/index.js';
 
 const marketingUrl = 'http://127.0.0.1:4321/';
 
@@ -71,7 +72,7 @@ test('catalogue uses a desktop master detail split and a mobile detail replaceme
 
 test('catalogue preview coverage includes every shipped component', async ({ page }) => {
   await openMarketing(page);
-  for (const id of ['ov-button', 'ov-input', 'ov-textarea', 'ov-checkbox', 'ov-radio-group', 'ov-toggle', 'ov-dialog', 'ov-select', 'ov-spinner', 'ov-menu', 'ov-pagination', 'ov-combobox', 'ov-tabs', 'ov-toast', 'ov-progress', 'ov-skeleton', 'ov-tooltip', 'ov-avatar', 'ov-breadcrumbs', 'ov-accordion', 'ov-slider', 'ov-file-upload', 'ov-date-input', 'ov-stepper', 'ov-drawer', 'ov-number-input', 'ov-popover', 'ov-tree', 'ov-badge', 'ov-card', 'ov-alert', 'ov-page-header', 'ov-empty-state', 'ov-data-table', 'ov-application-shell']) {
+  for (const id of components.map((component) => component.api.tag)) {
     await page.locator(`[data-catalogue-select="${id}"]`).click();
     await expect(page.locator('[data-component-preview]')).toBeVisible();
     if (id === 'ov-drawer') {

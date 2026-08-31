@@ -1,10 +1,12 @@
 # Contrasting theme handoff
 
-The contrasting theme is the one remaining designer-owned input for the v0.3 visual exit criterion. It is not another prompt, an automatic dark-mode inversion, or an agent-selected palette. It is a small approved theme artifact that changes the character of the same fixtures without changing their anatomy or behavior.
+The contrasting theme is a designer-owned input for the v0.3 visual exit criterion. It is not another prompt, an automatic dark-mode inversion, or an agent-selected palette. The approved artifact is [`ovlira-contrast-theme.css`](./ovlira-contrast-theme.css), which changes the character of the same fixtures without changing their anatomy or behavior.
+
+The theme artifact and its 33 rendered recipe/reference baselines were approved on 2026-08-31. Their content digests are recorded and enforced through [`reference-manifest.json`](./reference-manifest.json).
 
 ## Required deliverable
 
-Provide one CSS file, for example `docs/design/ovlira-contrast-theme.css`, that overrides the semantic surface used by [`src/tokens/tokens.css`](../../src/tokens/tokens.css):
+The supplied CSS file overrides the semantic surface used by [`src/tokens/tokens.css`](../../src/tokens/tokens.css):
 
 - `--ov-bg`, `--ov-surface`, `--ov-surface-raised`, `--ov-text`, `--ov-muted`, and `--ov-faint`;
 - `--ov-border`, `--ov-hover`, and `--ov-focus`;

@@ -35,14 +35,14 @@ Do not create a GitHub Release for `v0.2.0` after this manual publish: the relea
 
 ## GitHub releases
 
-For releases after the initial `0.2.0` package:
+For releases after the initial `0.2.0` package, prepare the intended semantic version on a release branch:
 
 ```bash
-npm version patch
-git push origin main --follow-tags
+npm version <version> --no-git-tag-version
+npm run release:check
 ```
 
-Then create and publish a GitHub Release for the matching tag, such as `v0.2.2`. The publish workflow checks that the tag version exactly matches `package.json` before publishing.
+Merge the release branch after CI passes, then create and publish a GitHub Release for the matching tag, such as `v0.3.0`. The publish workflow checks that the tag version exactly matches `package.json` before publishing.
 
 Before relying on the workflow, configure an npm trusted publisher for `@ovlira/cli`:
 
@@ -54,7 +54,7 @@ Before relying on the workflow, configure an npm trusted publisher for `@ovlira/
 
 The workflow grants only `contents: read` and `id-token: write`, runs the package release checks, and publishes with provenance. Browser/screenshot checks remain in the macOS CI job because their approved baselines are platform-specific. It does not store an npm token in GitHub. See the [npm trusted publishing documentation](https://docs.npmjs.com/trusted-publishers/) for the current npm configuration screens and requirements.
 
-Trusted publishing requires npm CLI 11.5.1 or later and Node 22.14.0 or later. The workflow uses Node 24 and installs the latest npm 11.x before publishing. If a release run fails after a package has already been published, do not rerun it for the same version; npm never reuses a published name/version pair. For a failed unpublished release, use the workflow's manual `Run workflow` action with the existing tag, such as `v0.2.2`.
+Trusted publishing requires npm CLI 11.5.1 or later and Node 22.14.0 or later. The workflow uses Node 24 and installs the latest npm 11.x before publishing. If a release run fails after a package has already been published, do not rerun it for the same version; npm never reuses a published name/version pair. For a failed unpublished release, use the workflow's manual `Run workflow` action with the existing tag, such as `v0.3.0`.
 
 ## CI
 
@@ -65,7 +65,11 @@ npm ci
 npm test
 npm run manifest
 npm run eval:codex:offline
+npm run eval:specs
+npm run eval:specs:vitest
 npm pack --dry-run
 ```
+
+The macOS browser job separately runs the interaction, accessibility, responsive, recipe/reference screenshot, and catalogue component screenshot gates.
 
 The live Codex evaluator remains opt-in and is not part of release CI.

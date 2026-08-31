@@ -74,4 +74,4 @@ jobs:
         run: npm run reference:design:build && npm run review:visual:build && npm run marketing:build
 
       - name: Run interactions, accessibility, responsive, and screenshot gates
-        run: npm run test:ui
+        run: npm run test:ui && npm run test:component-visual

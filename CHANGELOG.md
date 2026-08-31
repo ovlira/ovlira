@@ -2,16 +2,20 @@
 
 ## Unreleased
 
-- Added `ov-date-input`, `ov-stepper`, and `ov-drawer` with native date, workflow, and side-panel semantics, examples, CLI starters, and marketing previews. Visual baselines are pending human approval.
-- Added `ov-number-input`, `ov-popover`, and `ov-tree` for bounded numeric entry, contextual surfaces, and nested resource navigation, with catalogue contracts, examples, CLI starters, and marketing previews. Visual baselines are pending human approval.
+## 0.3.0 — complete theme and catalogue foundation
 
-- Added `ov-accordion`, `ov-slider`, and `ov-file-upload` with native disclosure, range, and file-picker semantics, examples, CLI starters, and marketing previews. Visual baselines are pending human approval.
+- Added the approved warm-paper contrasting theme, wired it into the recipe and authored-reference harnesses, and digest-bound its approved evidence across all fixtures, states, and required viewports.
+- Added a catalogue-driven component visual-review matrix with focused light, dark, narrow, and public-state captures for all shipped components. The approved images are digest-bound in the manifest and included in the release gate.
+- Added `ov-date-input`, `ov-stepper`, and `ov-drawer` with native date, workflow, and side-panel semantics, examples, CLI starters, and marketing previews. Visual baselines are approved.
+- Added `ov-number-input`, `ov-popover`, and `ov-tree` for bounded numeric entry, contextual surfaces, and nested resource navigation, with catalogue contracts, examples, CLI starters, and marketing previews. Visual baselines are approved.
 
-- Added `ov-tooltip`, `ov-avatar`, and `ov-breadcrumbs` with property-backed APIs, accessible interaction and identity semantics, examples, CLI starters, and marketing previews. Visual baselines are pending human approval.
+- Added `ov-accordion`, `ov-slider`, and `ov-file-upload` with native disclosure, range, and file-picker semantics, examples, CLI starters, and marketing previews. Visual baselines are approved.
 
-- Added `ov-tabs`, `ov-toast`, `ov-progress`, and `ov-skeleton` with property-backed APIs, native interaction semantics, examples, CLI starters, and marketing previews. Visual baselines are pending human approval.
+- Added `ov-tooltip`, `ov-avatar`, and `ov-breadcrumbs` with property-backed APIs, accessible interaction and identity semantics, examples, CLI starters, and marketing previews. Visual baselines are approved.
 
-- Added reviewed-batch candidates `ov-spinner`, `ov-menu`, `ov-pagination`, and `ov-combobox` with property-backed APIs, native interaction semantics, examples, CLI starters, and marketing previews. Visual baselines are pending human approval.
+- Added `ov-tabs`, `ov-toast`, `ov-progress`, and `ov-skeleton` with property-backed APIs, native interaction semantics, examples, CLI starters, and marketing previews. Visual baselines are approved.
+
+- Added `ov-spinner`, `ov-menu`, `ov-pagination`, and `ov-combobox` with property-backed APIs, native interaction semantics, examples, CLI starters, and marketing previews. Visual baselines are approved.
 
 - Added `ov-textarea`, a token-aware labelled multiline field with native form semantics, help/error messaging, and input events.
 - Added `ov-checkbox`, a labelled native boolean field with checked, required, disabled, and help/error states.
