@@ -71,11 +71,26 @@ test('catalogue uses a desktop master detail split and a mobile detail replaceme
 
 test('catalogue preview coverage includes every shipped component', async ({ page }) => {
   await openMarketing(page);
-  for (const id of ['ov-button', 'ov-input', 'ov-textarea', 'ov-checkbox', 'ov-radio-group', 'ov-toggle', 'ov-select', 'ov-badge', 'ov-card', 'ov-alert', 'ov-page-header', 'ov-empty-state', 'ov-data-table', 'ov-application-shell']) {
+  for (const id of ['ov-button', 'ov-input', 'ov-textarea', 'ov-checkbox', 'ov-radio-group', 'ov-toggle', 'ov-dialog', 'ov-select', 'ov-badge', 'ov-card', 'ov-alert', 'ov-page-header', 'ov-empty-state', 'ov-data-table', 'ov-application-shell']) {
     await page.locator(`[data-catalogue-select="${id}"]`).click();
     await expect(page.locator('[data-component-preview]')).toBeVisible();
     await expect(page.locator(`[data-component-preview] ${id}`).first()).toBeVisible();
   }
+});
+
+test('dialog preview exposes native semantics and an explicit close path', async ({ page }) => {
+  await openMarketing(page);
+  await page.locator('[data-catalogue-select="ov-dialog"]').click();
+  const host = page.locator('[data-component-preview] ov-dialog').first();
+  const dialog = host.locator('dialog');
+  await expect(dialog).toBeVisible();
+  await expect(dialog).toHaveAttribute('aria-labelledby', /ov-dialog-/);
+  await expect(dialog).toHaveAttribute('aria-describedby', /ov-dialog-/);
+  await host.evaluate((element) => { (element as HTMLElement & { modal: boolean }).modal = true; });
+  await expect.poll(() => dialog.evaluate((element) => element.matches(':modal'))).toBe(true);
+  await host.getByRole('button', { name: 'Close', exact: true }).click();
+  await expect(host).not.toHaveAttribute('open');
+  await expect(dialog).toBeHidden();
 });
 
 test('toggle preview renders a circular handle inside its track', async ({ page }) => {

@@ -735,6 +735,220 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/dialog.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "A native dialog for interruptive decisions with explicit open and modal semantics.",
+          "name": "OvDialog",
+          "members": [
+            {
+              "kind": "field",
+              "name": "open",
+              "privacy": "public",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "attribute": "open",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "modal",
+              "privacy": "public",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "attribute": "modal",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "heading",
+              "privacy": "public",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "attribute": "heading",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "description",
+              "privacy": "public",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "attribute": "description",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "dismissible",
+              "privacy": "public",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true",
+              "attribute": "dismissible",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "hasActions",
+              "type": {
+                "text": "boolean"
+              },
+              "privacy": "private",
+              "default": "false"
+            },
+            {
+              "kind": "field",
+              "name": "nativeMode",
+              "type": {
+                "text": "'modal' | 'nonmodal' | null"
+              },
+              "privacy": "private",
+              "default": "null"
+            },
+            {
+              "kind": "field",
+              "name": "suppressNativeClose",
+              "type": {
+                "text": "boolean"
+              },
+              "privacy": "private",
+              "default": "false"
+            },
+            {
+              "kind": "field",
+              "name": "instanceId",
+              "privacy": "private",
+              "readonly": true,
+              "default": "`ov-dialog-${++dialogId}`"
+            },
+            {
+              "kind": "method",
+              "name": "handleActionsSlot",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "event",
+                  "type": {
+                    "text": "Event"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "syncNativeDialog",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "requestClose",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "closeNativeDialog",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "dialog",
+                  "type": {
+                    "text": "HTMLDialogElement"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "field",
+              "name": "handleNativeClose",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "handleNativeCancel",
+              "privacy": "private"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "open",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "fieldName": "open"
+            },
+            {
+              "name": "modal",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "fieldName": "modal"
+            },
+            {
+              "name": "heading",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "fieldName": "heading"
+            },
+            {
+              "name": "description",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "fieldName": "description"
+            },
+            {
+              "name": "dismissible",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true",
+              "fieldName": "dismissible"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "ov-dialog",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "OvDialog",
+          "declaration": {
+            "name": "OvDialog",
+            "module": "src/components/dialog.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "ov-dialog",
+          "declaration": {
+            "name": "OvDialog",
+            "module": "src/components/dialog.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/empty-state.ts",
       "declarations": [
         {

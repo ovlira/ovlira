@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import '../src/components/index.js';
 
 describe('Ovlira components', () => {
@@ -78,6 +78,28 @@ describe('Ovlira components', () => {
     expect(toggle?.getAttribute('aria-checked')).toBe('true');
     expect(thumb).not.toBeNull();
     expect(element.shadowRoot?.querySelector('.message')?.textContent).toContain('You can change this at any time.');
+  });
+
+  it('keeps dialog heading, body, actions, and explicit close semantics', async () => {
+    document.body.innerHTML = '<ov-dialog heading="Archive this project?" description="People will lose access." open><p>Review this decision.</p><ov-button slot="actions">Archive</ov-button></ov-dialog>';
+    const element = document.querySelector('ov-dialog') as import('../src/components/dialog.js').OvDialog;
+    await element.updateComplete;
+    const dialog = element.shadowRoot?.querySelector('dialog');
+    const heading = element.shadowRoot?.querySelector('h2');
+    const description = element.shadowRoot?.querySelector('.description');
+    const actions = element.shadowRoot?.querySelector('slot[name="actions"]');
+    expect(dialog?.open).toBe(true);
+    expect(dialog?.getAttribute('aria-labelledby')).toBe(heading?.id);
+    expect(dialog?.getAttribute('aria-describedby')).toBe(description?.id);
+    expect(element.textContent).toContain('Review this decision.');
+    expect(actions?.assignedElements()).toHaveLength(1);
+
+    const close = vi.fn();
+    element.addEventListener('close', close);
+    element.shadowRoot?.querySelector<HTMLButtonElement>('.close')?.click();
+    await element.updateComplete;
+    expect(element.open).toBe(false);
+    expect(close).toHaveBeenCalledTimes(1);
   });
 
   it('renders property-backed table data without requiring JSON attributes', async () => {

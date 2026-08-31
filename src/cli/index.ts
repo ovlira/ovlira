@@ -442,6 +442,7 @@ function componentMarkup(item: ComponentDescriptor): string {
     case 'ov-checkbox': return '<main class="demo"><p class="kicker">OVLIRA / COMPONENT</p><h1>Checkbox</h1><ov-checkbox label="Keep me signed in" name="remember" checked></ov-checkbox></main>';
     case 'ov-radio-group': return '<main class="demo"><p class="kicker">OVLIRA / COMPONENT</p><h1>Radio group</h1><ov-radio-group label="Workspace visibility" name="visibility" value="team"></ov-radio-group></main>';
     case 'ov-toggle': return '<main class="demo"><p class="kicker">OVLIRA / COMPONENT</p><h1>Toggle</h1><ov-toggle label="Email me about project activity" name="activity" checked></ov-toggle></main>';
+    case 'ov-dialog': return '<main class="demo"><p class="kicker">OVLIRA / COMPONENT</p><h1>Dialog</h1><ov-dialog heading="Archive this project?" description="People will lose access to the project workspace." open><p>This action can be reversed later from project settings.</p><ov-button slot="actions" variant="danger">Archive project</ov-button></ov-dialog></main>';
     case 'ov-select': return '<main class="demo"><p class="kicker">OVLIRA / COMPONENT</p><h1>Select</h1><ov-select label="Region"></ov-select></main>';
     case 'ov-button': return '<main class="demo"><p class="kicker">OVLIRA / COMPONENT</p><h1>Button</h1><ov-button variant="primary">Continue</ov-button></main>';
     case 'ov-badge': return '<main class="demo"><p class="kicker">OVLIRA / COMPONENT</p><h1>Badge</h1><ov-badge tone="accent">Ready</ov-badge></main>';

@@ -194,6 +194,39 @@
     }
   },
   {
+    "id": "component.dialog",
+    "kind": "component",
+    "title": "Dialog",
+    "description": "A native dialog for interruptive decisions with explicit open and modal semantics.",
+    "category": "feedback",
+    "tags": ["dialog", "modal", "confirmation", "overlay", "decision"],
+    "api": {
+      "tag": "ov-dialog",
+      "importPath": "./components/ovlira/dialog.js",
+      "props": [
+        { "name": "open", "type": "boolean", "description": "Whether the dialog is currently shown.", "default": "false", "reflected": true },
+        { "name": "modal", "type": "boolean", "description": "Whether opening blocks the rest of the document with a modal backdrop.", "default": "false", "reflected": true },
+        { "name": "heading", "type": "string", "description": "Accessible dialog heading.", "required": true, "reflected": true },
+        { "name": "description", "type": "string", "description": "Optional supporting context.", "reflected": true },
+        { "name": "dismissible", "type": "boolean", "description": "Whether the close action and Escape can dismiss the dialog.", "default": "true", "reflected": true }
+      ],
+      "events": [
+        { "name": "close", "description": "Dispatched when the dialog closes through its close action, Escape, or an external open change." },
+        { "name": "cancel", "description": "Dispatched when Escape requests dismissal; cancel the event to keep the dialog open." }
+      ],
+      "slots": ["default: dialog body", "actions: compact dialog actions"],
+      "cssCustomProperties": [],
+      "parts": ["dialog", "surface", "header", "heading", "description", "body", "actions", "close"]
+    },
+    "guidance": {
+      "useWhen": ["A decision is genuinely interruptive and the user must resolve it before continuing."],
+      "avoidWhen": ["The message can stay in page context; use ov-alert or an inline confirmation instead."],
+      "constraints": ["Provide a specific heading and an action that explains the consequence.", "Use modal=true only when losing the current context is acceptable or essential.", "Keep the body concise and offer a clear way to dismiss when the decision is not mandatory."],
+      "requiredProps": ["heading"],
+      "example": "examples/components/dialog.md"
+    }
+  },
+  {
     "id": "component.select",
     "kind": "component",
     "title": "Select",

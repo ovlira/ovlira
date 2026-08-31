@@ -6,6 +6,7 @@
 - Added `ov-checkbox`, a labelled native boolean field with checked, required, disabled, and help/error states.
 - Added `ov-radio-group`, a labelled native single-choice field with property-assigned options, required, disabled, and help/error states.
 - Added `ov-toggle`, a compact native switch for immediate boolean settings with checked, disabled, and help/error states.
+- Added `ov-dialog`, a native dialog with explicit open/modal semantics, accessible heading and description, dismissible behavior, and action/body slots.
 - Made recipe adaptation explicit: focused guidance now returns content regions and supported data, action, and navigation extension points, and generated starters preserve those seams in their markup.
 - Removed the unsupported `package-manager-cache` publish-workflow input.
 
