@@ -1,9 +1,14 @@
 import { promises as fs } from 'node:fs';
+import { execFile as execFileCallback } from 'node:child_process';
 import os from 'node:os';
 import path from 'node:path';
+import { promisify } from 'node:util';
 import { describe, expect, it } from 'vitest';
 import { metadataReport } from '../src/catalogue/index.js';
 import { runCli, validateProject } from '../src/cli/index.js';
+import { packageVersion } from '../src/version.js';
+
+const execFile = promisify(execFileCallback);
 
 async function tempProject() { return fs.mkdtemp(path.join(os.tmpdir(), 'ovlira-test-')); }
 
@@ -50,6 +55,20 @@ describe('ovlira CLI', () => {
     expect(JSON.parse(inspectCapture.stdout[0])).toMatchObject({ id: 'component.input', section: 'api', data: { tag: 'ov-input' } });
   });
 
+  it('rejects invalid and unknown options with structured errors', async () => {
+    const invalidSection = ioCapture();
+    expect(await runCli(['inspect', 'component.input', '--section', 'bogus', '--json'], process.cwd(), invalidSection.io)).toBe(1);
+    expect(JSON.parse(invalidSection.stdout[0])).toMatchObject({ version: 1, error: { code: 'cli.invalid-option' } });
+
+    const unknownOption = ioCapture();
+    expect(await runCli(['search', 'input', '--bogus', '--json'], process.cwd(), unknownOption.io)).toBe(1);
+    expect(JSON.parse(unknownOption.stdout[0])).toMatchObject({ version: 1, error: { code: 'cli.unknown-option' } });
+
+    const invalidLimit = ioCapture();
+    expect(await runCli(['search', 'input', '--limit', 'nope', '--json'], process.cwd(), invalidLimit.io)).toBe(1);
+    expect(JSON.parse(invalidLimit.stdout[0])).toMatchObject({ version: 1, error: { code: 'cli.invalid-option' } });
+  });
+
   it('validates metadata and exposes a normalized registry index', async () => {
     expect(metadataReport).toMatchObject({ version: 1, valid: true, componentCount: 10, recipeCount: 6 });
     expect(metadataReport.issues).toEqual([]);
@@ -92,8 +111,10 @@ describe('ovlira CLI', () => {
       const check = ioCapture();
       expect(await runCli(['check', '--cwd', project, '--json'], project, check.io)).toBe(0);
       expect(JSON.parse(check.stdout[0])).toMatchObject({ version: 1, ok: true, diagnostics: [] });
+      await fs.symlink(path.join(process.cwd(), 'node_modules'), path.join(project, 'node_modules'), 'dir');
+      await execFile('npm', ['run', 'build'], { cwd: project, env: { ...process.env, NO_COLOR: '1' } });
     }
-  });
+  }, 30_000);
 
   it('keeps add idempotent and protects local edits unless forced', async () => {
     const project = await tempProject();
@@ -119,6 +140,21 @@ describe('ovlira CLI', () => {
     expect(await runCli(['add', 'component.input', '--cwd', explicitEntryProject, '--entry', 'src/app.ts', '--json'], explicitEntryProject, explicitEntry.io)).toBe(0);
     expect(JSON.parse(explicitEntry.stdout[0]).entry).toBe('src/app.ts');
     expect(await fs.readFile(path.join(explicitEntryProject, 'src/app.ts'), 'utf8')).toContain('ov-input');
+  });
+
+  it('preflights add conflicts without partially changing the project', async () => {
+    const project = await tempProject();
+    expect(await runCli(['init', '.'], project, ioCapture().io)).toBe(0);
+    await fs.writeFile(path.join(project, 'src/main.ts'), `document.body.innerHTML = '<h1>Existing app</h1>';\n`);
+    await fs.writeFile(path.join(project, 'src/ovlira-example.ts'), '// user-owned example\n');
+    const beforeManifest = await fs.readFile(path.join(project, '.ovlira.json'), 'utf8');
+
+    const capture = ioCapture();
+    expect(await runCli(['add', 'page.settings', '--cwd', project, '--json'], project, capture.io)).toBe(1);
+    const result = JSON.parse(capture.stdout[0]);
+    expect(result.conflicts).toEqual(['src/ovlira-example.ts']);
+    expect(await fs.readFile(path.join(project, '.ovlira.json'), 'utf8')).toBe(beforeManifest);
+    await expect(fs.access(path.join(project, 'src/components/ovlira/input.ts'))).rejects.toThrow();
   });
 
   it('preserves the user-owned theme while adding more components', async () => {
@@ -177,6 +213,16 @@ describe('ovlira CLI', () => {
       'a11y.heading-jump',
     ]));
     expect(result.diagnostics.every((diagnostic) => diagnostic.suggestion.length > 0)).toBe(true);
+  });
+
+  it('checks heading hierarchy independently for each source entry', async () => {
+    const project = await tempProject();
+    await fs.mkdir(path.join(project, 'src'), { recursive: true });
+    await fs.writeFile(path.join(project, '.ovlira.json'), JSON.stringify({ version: 1, added: [], recipes: [], entry: 'src/main.ts' }));
+    await fs.writeFile(path.join(project, 'src/main.ts'), `document.body.innerHTML = '<h1>Home</h1><h2>Overview</h2>';\n`);
+    await fs.writeFile(path.join(project, 'src/other.ts'), `document.body.innerHTML = '<h3>Other page</h3>';\n`);
+    const result = await validateProject(project);
+    expect(result.diagnostics).toEqual(expect.arrayContaining([expect.objectContaining({ ruleId: 'a11y.heading-start', file: 'src/other.ts' })]));
   });
 
   it('passes the valid fixture', async () => {

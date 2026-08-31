@@ -6,9 +6,9 @@ on:
   workflow_dispatch:
     inputs:
       release_tag:
-        description: Git tag to publish, for example v0.2.1
+        description: Git tag to publish, for example v0.2.2
         required: true
-        default: v0.2.1
+        default: v0.2.2
 
 permissions:
   contents: read
@@ -45,8 +45,8 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Run release checks
-        run: npm test
+      - name: Run package release checks
+        run: npm run release:check:package
 
       - name: Regenerate Custom Elements Manifest
         run: npm run manifest

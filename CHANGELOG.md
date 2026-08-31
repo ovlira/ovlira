@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+## 0.2.2 — project safety and release hardening
+
+- Hardened `add` with conflict preflight so failed operations do not partially update a project manifest or generated files.
+- Added deterministic errors for unknown and invalid CLI options.
+- Scoped heading diagnostics to each source entry and added generated-project build coverage for every recipe.
+- Centralized the CLI and evaluator version lookup from `package.json`.
 - Added a user-owned `src/styles/ovlira-theme.css` to newly generated projects.
 - Preserved customized theme files across repeated `add` operations and recognized the v0.2 `ovlira-tokens.css` filename.
 - Replaced generic recipe placeholders with complete, state-switchable starter screens for all shipped recipes.

@@ -7,6 +7,7 @@ import { createHash } from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 import { performance } from 'node:perf_hooks';
 import { runCli } from '../cli/index.js';
+import { packageVersion } from '../version.js';
 
 type Kind = 'component' | 'recipe';
 type Section = 'api' | 'guidance' | 'example';
@@ -103,7 +104,7 @@ export interface EvalReport {
   version: 1;
   generatedAt: string;
   mode: 'live' | 'offline';
-  tool: { name: 'ovlira'; version: '0.2.1' };
+  tool: { name: 'ovlira'; version: string };
   profile: { transport: 'codex-exec'; hash: string; model: string };
   scenarios: ScenarioRun[];
   summary: {
@@ -155,7 +156,7 @@ export async function runEvaluator(options: EvalOptions = {}): Promise<EvalRepor
     version: 1,
     generatedAt: new Date().toISOString(),
     mode,
-    tool: { name: 'ovlira', version: '0.2.1' },
+    tool: { name: 'ovlira', version: packageVersion },
     profile: {
       transport: 'codex-exec',
       hash: hashValue({ ...codexProfile, model }),

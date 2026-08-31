@@ -42,7 +42,7 @@ npm version patch
 git push origin main --follow-tags
 ```
 
-Then create and publish a GitHub Release for the matching tag, such as `v0.2.1`. The publish workflow checks that the tag version exactly matches `package.json` before publishing.
+Then create and publish a GitHub Release for the matching tag, such as `v0.2.2`. The publish workflow checks that the tag version exactly matches `package.json` before publishing.
 
 Before relying on the workflow, configure an npm trusted publisher for `@ovlira/cli`:
 
@@ -52,9 +52,9 @@ Before relying on the workflow, configure an npm trusted publisher for `@ovlira/
 - Workflow filename: `publish.yml`
 - Allowed action: npm publish
 
-The workflow grants only `contents: read` and `id-token: write`, runs the release checks, and publishes with provenance. It does not store an npm token in GitHub. See the [npm trusted publishing documentation](https://docs.npmjs.com/trusted-publishers/) for the current npm configuration screens and requirements.
+The workflow grants only `contents: read` and `id-token: write`, runs the package release checks, and publishes with provenance. Browser/screenshot checks remain in the macOS CI job because their approved baselines are platform-specific. It does not store an npm token in GitHub. See the [npm trusted publishing documentation](https://docs.npmjs.com/trusted-publishers/) for the current npm configuration screens and requirements.
 
-Trusted publishing requires npm CLI 11.5.1 or later and Node 22.14.0 or later. The workflow uses Node 24 and installs the latest npm 11.x before publishing. If a release run fails after a package has already been published, do not rerun it for the same version; npm never reuses a published name/version pair. For a failed unpublished release, use the workflow's manual `Run workflow` action with the existing tag, such as `v0.2.1`.
+Trusted publishing requires npm CLI 11.5.1 or later and Node 22.14.0 or later. The workflow uses Node 24 and installs the latest npm 11.x before publishing. If a release run fails after a package has already been published, do not rerun it for the same version; npm never reuses a published name/version pair. For a failed unpublished release, use the workflow's manual `Run workflow` action with the existing tag, such as `v0.2.2`.
 
 ## CI
 

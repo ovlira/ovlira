@@ -1,6 +1,6 @@
 {
   "name": "@ovlira/cli",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "A local, token-efficient UI prototyping toolkit for coding agents.",
   "keywords": [
     "design-system",
@@ -67,7 +67,8 @@
     "test:visual": "playwright test tests/browser/visual.spec.ts tests/browser/reference.spec.ts tests/browser/marketing.spec.ts",
     "test:visual:update": "playwright test tests/browser/visual.spec.ts tests/browser/reference.spec.ts tests/browser/marketing.spec.ts --update-snapshots",
     "test:ui": "playwright test",
-    "release:check": "npm test && npm run manifest && npm run check:fixtures && npm run reference:design:build && npm run review:visual:build && npm run marketing:build && npm run test:ui && npm pack --dry-run",
+    "release:check:package": "npm test && npm run manifest && npm run check:fixtures && npm run reference:design:build && npm run review:visual:build && npm run marketing:build && npm pack --dry-run",
+    "release:check": "npm run release:check:package && npm run test:ui",
     "eval:codex": "npm run build && node dist/evals/runner.js",
     "benchmark:codex": "npm run build && node dist/evals/runner.js --runs 3",
     "eval:codex:offline": "npm run build && node dist/evals/runner.js --offline",

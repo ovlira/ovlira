@@ -3,6 +3,7 @@ import os from 'node:os';
 import path from 'node:path';
 import { spawn } from 'node:child_process';
 import { describe, expect, it } from 'vitest';
+import { packageVersion } from '../src/version.js';
 
 function runNode(entry: string, args: string[]) {
   return new Promise<{ code: number | null; stdout: string; stderr: string }>((resolve, reject) => {
@@ -24,7 +25,7 @@ describe('published CLI entrypoint', () => {
       await fs.symlink(path.resolve('dist/cli/bin.js'), link);
       const result = await runNode(link, ['--version']);
       expect(result).toMatchObject({ code: 0, stderr: '' });
-      expect(result.stdout.trim()).toBe('0.2.1');
+      expect(result.stdout.trim()).toBe(packageVersion);
       const help = await runNode(link, ['--help']);
       expect(help.code).toBe(0);
       expect(help.stdout).toContain('ovlira — local, agent-first UI building blocks');

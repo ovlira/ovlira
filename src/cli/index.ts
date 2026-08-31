@@ -5,6 +5,7 @@ import { fileURLToPath } from 'node:url';
 import { catalogue, catalogueSchemaVersion, componentForTag, components, metadataReport, recipes, registryIndex, resolveDescriptor, searchCatalogue } from '../catalogue/index.js';
 import { recipeFixtureMarkup, recipeFixtureStyles, type RecipeFixtureId } from '../recipes/fixtures.js';
 import { collectAssignedProperties } from '../validator/ast.js';
+import { packageVersion } from '../version.js';
 import type { ComponentDescriptor, Descriptor, Diagnostic, ProjectManifest, RecipeDescriptor } from '../catalogue/types.js';
 import tokens from '../tokens/tokens.json' with { type: 'json' };
 
@@ -33,6 +34,7 @@ interface ParsedArgs {
   limit: number;
   section?: 'api' | 'guidance' | 'example';
   entry?: string;
+  parseError?: { code: string; message: string; suggestion: string };
 }
 
 interface FileText {
@@ -53,6 +55,7 @@ function resolvePackageRoot() {
 export async function runCli(argv: string[], startingCwd = process.cwd(), io: CliIO = defaultIO): Promise<number> {
   const args = parseArgs(argv, startingCwd);
   const cwd = args.cwd;
+  if (args.parseError) return writeCliError(args, io, args.parseError.code, args.parseError.message, args.parseError.suggestion);
   try {
     switch (args.command) {
       case 'init': return await initProject(cwd, args, io);
@@ -67,7 +70,7 @@ export async function runCli(argv: string[], startingCwd = process.cwd(), io: Cl
       case '--help':
       case '-h': helpCommand(io); return 0;
       case 'version':
-      case '--version': io.stdout('0.2.1'); return 0;
+      case '--version': io.stdout(packageVersion); return 0;
       default:
         io.stderr(`Unknown command “${args.command}”. Run “ovlira help” for available commands.`);
         return 1;
@@ -97,32 +100,54 @@ function parseArgs(argv: string[], startingCwd: string): ParsedArgs {
   let limit = 8;
   let section: ParsedArgs['section'];
   let entry: string | undefined;
+  let parseError: ParsedArgs['parseError'];
   let index = 0;
-  const nextValue = () => argv[++index] ?? '';
+  const setParseError = (error: NonNullable<ParsedArgs['parseError']>) => { parseError ??= error; };
+  const nextValue = (option: string, allowLeadingDash = false) => {
+    const candidate = argv[index + 1];
+    if (candidate === undefined || (!allowLeadingDash && candidate.startsWith('-'))) {
+      setParseError({ code: 'cli.missing-option-value', message: `Option “${option}” requires a value.`, suggestion: `Pass a value after ${option}.` });
+      return '';
+    }
+    index += 1;
+    return candidate;
+  };
+  const setLimit = (raw: string) => {
+    const parsed = Number(raw);
+    if (!Number.isInteger(parsed) || parsed < 1) {
+      setParseError({ code: 'cli.invalid-option', message: `Invalid --limit value “${raw}”.`, suggestion: 'Use a positive whole number for --limit.' });
+      return;
+    }
+    limit = parsed;
+  };
   for (; index < argv.length; index += 1) {
     const arg = argv[index];
     if (arg === '--json') json = true;
     else if (arg === '--force') force = true;
-    else if (arg === '--cwd') cwd = path.resolve(startingCwd, nextValue());
-    else if (arg === '--format') format = nextValue();
+    else if (arg === '--cwd') cwd = path.resolve(startingCwd, nextValue('--cwd'));
+    else if (arg === '--format') format = nextValue('--format');
     else if (arg.startsWith('--format=')) format = arg.slice('--format='.length);
-    else if (arg === '--kind') kind = nextValue() as ParsedArgs['kind'];
+    else if (arg === '--kind') kind = nextValue('--kind') as ParsedArgs['kind'];
     else if (arg.startsWith('--kind=')) kind = arg.slice('--kind='.length) as ParsedArgs['kind'];
-    else if (arg === '--tag') tag = nextValue();
+    else if (arg === '--tag') tag = nextValue('--tag');
     else if (arg.startsWith('--tag=')) tag = arg.slice('--tag='.length);
-    else if (arg === '--category') category = nextValue();
+    else if (arg === '--category') category = nextValue('--category');
     else if (arg.startsWith('--category=')) category = arg.slice('--category='.length);
-    else if (arg === '--limit') limit = Number(nextValue()) || 8;
-    else if (arg.startsWith('--limit=')) limit = Number(arg.slice('--limit='.length)) || 8;
-    else if (arg === '--section') section = nextValue() as ParsedArgs['section'];
+    else if (arg === '--limit') setLimit(nextValue('--limit', true));
+    else if (arg.startsWith('--limit=')) setLimit(arg.slice('--limit='.length));
+    else if (arg === '--section') section = nextValue('--section') as ParsedArgs['section'];
     else if (arg.startsWith('--section=')) section = arg.slice('--section='.length) as ParsedArgs['section'];
-    else if (arg === '--entry') entry = nextValue();
+    else if (arg === '--entry') entry = nextValue('--entry');
     else if (arg.startsWith('--entry=')) entry = arg.slice('--entry='.length);
     else if ((arg === '--help' || arg === '-h') && !positional.length) positional.push('help');
     else if ((arg === '--version' || arg === '-v') && !positional.length) positional.push('version');
     else if (!arg.startsWith('-')) positional.push(arg);
+    else setParseError({ code: 'cli.unknown-option', message: `Unknown option “${arg}”.`, suggestion: 'Run “ovlira help” to see supported options.' });
   }
-  return { command: positional.shift() ?? 'help', positional, json, cwd: path.resolve(cwd), format, force, kind, tag, category, limit: Math.max(1, Math.min(limit, 100)), section, entry };
+  if (!parseError && kind && !['component', 'recipe'].includes(kind)) parseError = { code: 'cli.invalid-option', message: `Invalid --kind value “${kind}”.`, suggestion: 'Use --kind component or --kind recipe.' };
+  if (!parseError && section && !['api', 'guidance', 'example'].includes(section)) parseError = { code: 'cli.invalid-option', message: `Invalid --section value “${section}”.`, suggestion: 'Use --section api, --section guidance, or --section example.' };
+  if (!parseError && format && !['css', 'json'].includes(format)) parseError = { code: 'cli.invalid-option', message: `Invalid --format value “${format}”.`, suggestion: 'Use --format css or --format json.' };
+  return { command: positional.shift() ?? 'help', positional, json, cwd: path.resolve(cwd), format, force, kind, tag, category, limit: Math.max(1, Math.min(limit, 100)), section, entry, parseError };
 }
 
 function helpCommand(io: CliIO) {
@@ -252,77 +277,91 @@ async function addCommand(args: ParsedArgs, io: CliIO): Promise<number> {
   if (!item) return writeCliError(args, io, 'catalogue.not-found', `Unknown catalogue entry “${requested}”.`, `Try “ovlira search ${requested}”.`);
   const manifestPath = path.join(target, '.ovlira.json');
   const manifest = await readManifest(manifestPath);
-  if (args.entry) manifest.entry = projectRelativePath(target, args.entry);
   const tags = item.kind === 'component' ? [item.api.tag] : item.components;
-  const changed: string[] = [];
-  const skipped: string[] = [];
-  const conflicts: string[] = [];
-  const record = (relative: string, status: FileStatus) => {
-    if (status === 'changed') changed.push(relative);
-    else if (status === 'skipped') skipped.push(relative);
-    else conflicts.push(relative);
+  const nextManifest: ProjectManifest = {
+    version: manifest.version,
+    added: [...manifest.added],
+    recipes: [...manifest.recipes],
+    entry: args.entry ? projectRelativePath(target, args.entry) : manifest.entry,
   };
+  for (const tag of tags) if (!nextManifest.added.includes(tag)) nextManifest.added.push(tag);
+  if (item.kind === 'recipe' && !nextManifest.recipes.includes(item.id)) nextManifest.recipes.push(item.id);
+
+  const plans: PlannedFile[] = [];
   for (const tag of tags) {
     const component = componentForTag(tag);
     if (!component) continue;
     const file = `${component.api.tag.replace('ov-', '')}.ts`;
     const destination = path.join(target, 'src', 'components', 'ovlira', file);
-    const relative = projectRelativePath(target, destination);
-    const status = await copyTemplate(path.join(sourceRoot, 'components', file), destination, args.force);
-    record(relative, status);
-    if (status !== 'conflict' && !manifest.added.includes(tag)) manifest.added.push(tag);
+    plans.push({
+      absolute: destination,
+      relative: projectRelativePath(target, destination),
+      content: await fs.readFile(path.join(sourceRoot, 'components', file), 'utf8'),
+    });
   }
   const theme = await projectTheme(target);
-  const themeStatus = await copyUserTemplate(tokenCssPath, theme.absolute);
-  record(theme.relative, themeStatus);
-  if (item.kind === 'recipe' && !conflicts.length && !manifest.recipes.includes(item.id)) manifest.recipes.push(item.id);
-  await fs.writeFile(manifestPath, JSON.stringify(manifest, null, 2) + '\n');
-  const entryPath = path.join(target, manifest.entry);
-  let entryWritten = false;
+  plans.push({ absolute: theme.absolute, relative: theme.relative, content: await fs.readFile(tokenCssPath, 'utf8'), preserveExisting: true });
+  const entryPath = path.join(target, nextManifest.entry);
   const entryExists = await exists(entryPath);
   const entryIsStarter = entryExists && (await fs.readFile(entryPath, 'utf8')).includes('ovlira add page.settings');
+  const entryWritten = !entryExists || entryIsStarter || Boolean(args.entry);
   if (!entryExists || entryIsStarter || args.entry) {
-    const entry = item.kind === 'recipe' ? recipeEntry(item, theme.fileName) : componentEntry(item, theme.fileName);
-    record(projectRelativePath(target, entryPath), await writeProjectFile(entryPath, entry, args.force || entryIsStarter || !entryExists));
-    entryWritten = true;
+    plans.push({
+      absolute: entryPath,
+      relative: projectRelativePath(target, entryPath),
+      content: item.kind === 'recipe' ? recipeEntry(item, theme.fileName) : componentEntry(item, theme.fileName),
+      forceWhenStarter: entryIsStarter || !entryExists,
+    });
   } else {
     const examplePath = path.join(target, 'src', 'ovlira-example.ts');
-    record(projectRelativePath(target, examplePath), await writeProjectFile(examplePath, item.kind === 'recipe' ? recipeEntry(item, theme.fileName) : componentEntry(item, theme.fileName), args.force));
+    plans.push({
+      absolute: examplePath,
+      relative: projectRelativePath(target, examplePath),
+      content: item.kind === 'recipe' ? recipeEntry(item, theme.fileName) : componentEntry(item, theme.fileName),
+    });
   }
   const barrelPath = path.join(target, 'src', 'ovlira.generated.ts');
-  const barrel = `${orderedAddedTags(manifest.added).map((tag) => `import './components/ovlira/${tag.replace('ov-', '')}.js';`).join('\n')}\n`;
-  record(projectRelativePath(target, barrelPath), await writeProjectFile(barrelPath, barrel, args.force));
-  const result = { version: 1, ok: conflicts.length === 0, id: item.id, kind: item.kind, added: tags, files: [...changed, ...skipped], changed, skipped, conflicts, entry: entryWritten ? manifest.entry : 'src/ovlira-example.ts' };
+  const barrel = `${orderedAddedTags(nextManifest.added).map((tag) => `import './components/ovlira/${tag.replace('ov-', '')}.js';`).join('\n')}\n`;
+  plans.push({ absolute: barrelPath, relative: projectRelativePath(target, barrelPath), content: barrel });
+
+  const statuses = await Promise.all(plans.map(async (plan) => ({ plan, status: await plannedFileStatus(plan, args.force) })));
+  const conflicts = statuses.filter(({ status }) => status === 'conflict').map(({ plan }) => plan.relative);
+  if (conflicts.length && !args.force) {
+    const result = { version: 1, ok: false, id: item.id, kind: item.kind, added: tags, files: [], changed: [], skipped: [], conflicts, entry: entryWritten ? nextManifest.entry : 'src/ovlira-example.ts' };
+    if (args.json) io.stdout(JSON.stringify(result, null, 2));
+    else io.stdout(`Could not safely add ${item.id}\n${conflicts.map((file) => `  conflict ${file}`).join('\n')}`);
+    return 1;
+  }
+
+  for (const { plan, status } of statuses) if (status === 'changed') {
+    await fs.mkdir(path.dirname(plan.absolute), { recursive: true });
+    await fs.writeFile(plan.absolute, plan.content);
+  }
+  await fs.writeFile(manifestPath, JSON.stringify(nextManifest, null, 2) + '\n');
+  const changed = statuses.filter(({ status }) => status === 'changed').map(({ plan }) => plan.relative);
+  const skipped = statuses.filter(({ status }) => status === 'skipped').map(({ plan }) => plan.relative);
+  const result = { version: 1, ok: true, id: item.id, kind: item.kind, added: tags, files: [...changed, ...skipped], changed, skipped, conflicts: [], entry: entryWritten ? nextManifest.entry : 'src/ovlira-example.ts' };
   if (args.json) io.stdout(JSON.stringify(result, null, 2));
-  else io.stdout(`${conflicts.length ? `Could not safely add ${item.id}` : `Added ${item.id}`}\n${changed.map((file) => `  changed ${file}`).join('\n')}${skipped.map((file) => `  kept ${file}`).join('\n')}${conflicts.map((file) => `  conflict ${file}`).join('\n')}`);
-  return conflicts.length ? 1 : 0;
+  else io.stdout(`Added ${item.id}\n${changed.map((file) => `  changed ${file}`).join('\n')}${skipped.map((file) => `  kept ${file}`).join('\n')}`);
+  return 0;
 }
 
 type FileStatus = 'changed' | 'skipped' | 'conflict';
 
-async function copyTemplate(source: string, destination: string, force: boolean): Promise<FileStatus> {
-  return writeProjectFile(destination, await fs.readFile(source, 'utf8'), force);
+interface PlannedFile {
+  absolute: string;
+  relative: string;
+  content: string;
+  preserveExisting?: boolean;
+  forceWhenStarter?: boolean;
 }
 
-async function copyUserTemplate(source: string, destination: string): Promise<FileStatus> {
-  if (!await exists(destination)) {
-    await fs.mkdir(path.dirname(destination), { recursive: true });
-    await fs.copyFile(source, destination);
-    return 'changed';
-  }
-  return 'skipped';
-}
-
-async function writeProjectFile(destination: string, content: string, force: boolean): Promise<FileStatus> {
-  if (!await exists(destination)) {
-    await fs.mkdir(path.dirname(destination), { recursive: true });
-    await fs.writeFile(destination, content);
-    return 'changed';
-  }
-  if (await fs.readFile(destination, 'utf8') === content) return 'skipped';
-  if (!force) return 'conflict';
-  await fs.writeFile(destination, content);
-  return 'changed';
+async function plannedFileStatus(plan: PlannedFile, force: boolean): Promise<FileStatus> {
+  if (!await exists(plan.absolute)) return 'changed';
+  if (plan.preserveExisting) return 'skipped';
+  if (await fs.readFile(plan.absolute, 'utf8') === plan.content) return 'skipped';
+  if (force || plan.forceWhenStarter) return 'changed';
+  return 'conflict';
 }
 
 function projectRelativePath(project: string, requested: string): string {
@@ -594,20 +633,20 @@ function flattenTokenValues(value: unknown): string[] {
 }
 
 function validateHeadings(files: FileText[], diagnostics: Diagnostic[]) {
-  const headings: { level: number; file: FileText; index: number }[] = [];
   for (const file of files) {
     if (file.relative.startsWith('src/components/ovlira/')) continue;
+    const headings: { level: number; index: number }[] = [];
     const pattern = /<h([1-6])\b/gi;
     let match: RegExpExecArray | null;
-    while ((match = pattern.exec(file.text))) headings.push({ level: Number(match[1]), file, index: match.index });
+    while ((match = pattern.exec(file.text))) headings.push({ level: Number(match[1]), index: match.index });
     if (!/<h1\b/i.test(file.text)) {
       const pageHeader = /<ov-page-header\b[^>]*\btitle\s*=/i.exec(file.text);
-      if (pageHeader) headings.push({ level: 1, file, index: pageHeader.index });
+      if (pageHeader) headings.push({ level: 1, index: pageHeader.index });
     }
+    headings.sort((a, b) => a.index - b.index);
+    if (headings[0] && headings[0].level !== 1) pushDiagnostic(diagnostics, 'a11y.heading-start', 'warning', `Heading hierarchy starts at h${headings[0].level}.`, file, headings[0].index, 'Start the main page hierarchy with one h1.');
+    for (let index = 1; index < headings.length; index += 1) if (headings[index].level - headings[index - 1].level > 1) pushDiagnostic(diagnostics, 'a11y.heading-jump', 'warning', `Heading hierarchy jumps from h${headings[index - 1].level} to h${headings[index].level}.`, file, headings[index].index, 'Use the next heading level or restructure the section.');
   }
-  headings.sort((a, b) => a.file.relative.localeCompare(b.file.relative) || a.index - b.index);
-  if (headings[0] && headings[0].level !== 1) pushDiagnostic(diagnostics, 'a11y.heading-start', 'warning', `Heading hierarchy starts at h${headings[0].level}.`, headings[0].file, headings[0].index, 'Start the main page hierarchy with one h1.');
-  for (let index = 1; index < headings.length; index += 1) if (headings[index].level - headings[index - 1].level > 1) pushDiagnostic(diagnostics, 'a11y.heading-jump', 'warning', `Heading hierarchy jumps from h${headings[index - 1].level} to h${headings[index].level}.`, headings[index].file, headings[index].index, 'Use the next heading level or restructure the section.');
 }
 
 function pushDiagnostic(diagnostics: Diagnostic[], ruleId: string, severity: Diagnostic['severity'], message: string, file: FileText, index: number, suggestion: string) {
