@@ -44,19 +44,20 @@ export class OvCombobox extends LitElement {
   private userInput = false;
 
   static styles = css`
+    *, *::before, *::after { box-sizing: border-box; }
     :host { display: block; position: relative; }
     .field { display: grid; gap: 0.35rem; }
     label { color: var(--ov-text, var(--ov-color-ink, #171717)); font: 500 var(--ov-text-sm, 0.82rem) / 1.3 var(--ov-font-sans, sans-serif); }
     label span { color: var(--ov-bad, var(--ov-color-danger, #b42318)); margin-inline-start: 0.2rem; }
     .control { position: relative; }
-    input { appearance: none; background: transparent; border: 0; border-block-end: 1px solid var(--ov-border, var(--ov-color-line, rgb(0 0 0 / 0.10))); border-radius: 0; color: var(--ov-text, var(--ov-color-ink, #171717)); font: 400 var(--ov-text-md, 0.875rem) / 1.3 var(--ov-font-sans, sans-serif); min-height: var(--ov-touch-target, 2.75rem); padding: 0.62rem 0; transition: border-color var(--ov-motion-fast, 120ms) ease, box-shadow var(--ov-motion-fast, 120ms) ease; width: 100%; }
+    input { appearance: none; background: transparent; border: 0; border-block-end: 1px solid var(--ov-border, var(--ov-color-line, rgb(0 0 0 / 0.10))); border-radius: 0; color: var(--ov-text, var(--ov-color-ink, #171717)); font: 400 var(--ov-text-md, 0.875rem) / 1.3 var(--ov-font-sans, sans-serif); min-height: var(--ov-control-height, 2.5rem); padding: 0.5rem 0; transition: border-color var(--ov-motion-fast, 120ms) ease, box-shadow var(--ov-motion-fast, 120ms) ease; width: 100%; }
     input::placeholder { color: var(--ov-faint, #767676); }
     input:focus-visible { border-block-end-color: var(--ov-field-accent, var(--ov-focus, var(--ov-color-accent-strong, #525252))); box-shadow: inset 0 -1px 0 var(--ov-field-accent, var(--ov-focus, var(--ov-color-accent-strong, #525252))); outline: 2px solid transparent; }
     input[aria-invalid='true'] { border-block-end-color: var(--ov-bad, var(--ov-color-danger, #b42318)); }
     input:disabled { cursor: not-allowed; opacity: 0.56; }
     .listbox { background: var(--ov-surface-raised, var(--ov-color-surface-raised, #fff)); border: 1px solid var(--ov-border, var(--ov-color-line, rgb(0 0 0 / 0.10))); border-radius: var(--ov-radius-lg, 8px); box-shadow: var(--ov-shadow-md, 0 10px 30px rgb(0 0 0 / 0.12)); inset-block-start: calc(100% + 0.35rem); inset-inline: 0; max-block-size: 15rem; overflow-y: auto; padding: 0.3rem; position: absolute; z-index: 10; }
     .listbox[hidden] { display: none; }
-    .option { align-items: center; border-radius: var(--ov-radius-sm, 5px); color: var(--ov-text, var(--ov-color-ink, #171717)); cursor: pointer; display: flex; font: 400 var(--ov-text-sm, 0.82rem) / 1.3 var(--ov-font-sans, sans-serif); min-height: var(--ov-touch-target, 2.75rem); padding: 0.55rem 0.65rem; }
+    .option { align-items: center; border-radius: var(--ov-radius-sm, 5px); color: var(--ov-text, var(--ov-color-ink, #171717)); cursor: pointer; display: flex; font: 400 var(--ov-text-sm, 0.82rem) / 1.3 var(--ov-font-sans, sans-serif); min-height: var(--ov-control-height, 2.5rem); padding: 0.45rem 0.65rem; }
     .option.active, .option:hover { background: var(--ov-hover, var(--ov-color-accent, rgb(0 0 0 / 0.055))); }
     .option[aria-disabled='true'] { cursor: not-allowed; opacity: 0.5; }
     .no-results { color: var(--ov-muted, var(--ov-color-muted, #6f6f6f)); cursor: default; }

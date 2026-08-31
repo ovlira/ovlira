@@ -175,6 +175,17 @@ test('combobox keyboard navigation selects the active option', async ({ page }) 
   await expect(input).toHaveAttribute('aria-expanded', 'false');
 });
 
+test('combobox preview keeps the field and dropdown options compact', async ({ page }) => {
+  await openMarketing(page);
+  await page.locator('[data-catalogue-select="ov-combobox"]').click();
+  const host = page.locator('[data-component-preview] ov-combobox').first();
+  const input = host.getByRole('combobox', { name: 'Project owner' });
+  await input.click();
+  const heights = await host.locator('input, [role="option"]').evaluateAll((elements) => elements.map((element) => element.getBoundingClientRect().height));
+  expect(heights[0]).toBeLessThanOrEqual(40.5);
+  expect(heights.slice(1).every((height) => height <= 40.5)).toBe(true);
+});
+
 test('tabs preview exposes related panels and keyboard selection', async ({ page }) => {
   await openMarketing(page);
   await page.locator('[data-catalogue-select="ov-tabs"]').click();
