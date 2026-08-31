@@ -668,6 +668,106 @@
     }
   },
   {
+    "id": "component.accordion",
+    "kind": "component",
+    "title": "Accordion",
+    "description": "A native disclosure group for revealing related content on demand.",
+    "category": "layout",
+    "tags": ["accordion", "disclosure", "content", "details", "sections"],
+    "api": {
+      "tag": "ov-accordion",
+      "importPath": "./components/ovlira/accordion.js",
+      "props": [
+        { "name": "items", "type": "AccordionItem[]", "description": "Disclosure definitions assigned as a property." },
+        { "name": "openItems", "type": "string[]", "description": "Values of the currently expanded disclosures." },
+        { "name": "multiple", "type": "boolean", "description": "Whether more than one disclosure may remain open.", "default": "false", "reflected": true }
+      ],
+      "events": [{ "name": "change", "detail": "{ value: string; open: boolean; openItems: string[] }", "description": "Dispatched when a disclosure opens or closes." }],
+      "slots": ["${value}: panel content for each item value"],
+      "cssCustomProperties": [],
+      "parts": ["accordion", "item", "summary", "panel"]
+    },
+    "guidance": {
+      "useWhen": ["Related content can be progressively disclosed without changing the page task."],
+      "avoidWhen": ["Users need to compare panels simultaneously or switch between peer views; use visible sections or ov-tabs instead."],
+      "constraints": ["Assign stable values and concise labels to every item.", "Provide panel content through a named slot matching each item value.", "Keep the first useful answer visible when the content is essential to completing the task."],
+      "requiredProps": [],
+      "example": "examples/components/accordion.md"
+    }
+  },
+  {
+    "id": "component.slider",
+    "kind": "component",
+    "title": "Slider",
+    "description": "A labelled native range control for bounded numeric values.",
+    "category": "forms",
+    "tags": ["form", "range", "numeric", "input", "control"],
+    "api": {
+      "tag": "ov-slider",
+      "importPath": "./components/ovlira/slider.js",
+      "props": [
+        { "name": "label", "type": "string", "description": "Visible accessible label.", "required": true, "reflected": true },
+        { "name": "name", "type": "string", "description": "Native form field name.", "reflected": true },
+        { "name": "value", "type": "number", "description": "Current numeric value.", "default": "50", "reflected": true },
+        { "name": "min", "type": "number", "description": "Lowest allowed value.", "default": "0", "reflected": true },
+        { "name": "max", "type": "number", "description": "Highest allowed value.", "default": "100", "reflected": true },
+        { "name": "step", "type": "number", "description": "Allowed value increment.", "default": "1", "reflected": true },
+        { "name": "showValue", "type": "boolean", "description": "Shows the current value beside the label.", "default": "true", "reflected": true },
+        { "name": "disabled", "type": "boolean", "description": "Prevents interaction.", "default": "false", "reflected": true },
+        { "name": "error", "type": "string", "description": "Validation message." },
+        { "name": "helpText", "type": "string", "description": "Supporting guidance.", "reflected": false }
+      ],
+      "events": [
+        { "name": "input", "detail": "{ value: number }", "description": "Dispatched while the value changes." },
+        { "name": "change", "detail": "{ value: number }", "description": "Dispatched when the value is committed." }
+      ],
+      "slots": [],
+      "cssCustomProperties": ["--ov-field-accent"],
+      "parts": ["field", "label", "value", "slider", "message"]
+    },
+    "guidance": {
+      "useWhen": ["A user needs to choose a value within a bounded numeric range and the relative position is meaningful."],
+      "avoidWhen": ["The exact number matters more than relative adjustment; use ov-input with an appropriate numeric type instead."],
+      "constraints": ["Provide a visible label and meaningful min, max, and step values.", "Show or otherwise expose the current value when the result is not obvious from the control.", "Keep the owning application responsible for formatting and applying the selected value."],
+      "requiredProps": ["label"],
+      "example": "examples/components/slider.md"
+    }
+  },
+  {
+    "id": "component.file-upload",
+    "kind": "component",
+    "title": "File upload",
+    "description": "A labelled native file picker with optional drag-and-drop support.",
+    "category": "forms",
+    "tags": ["form", "file", "upload", "attachment", "dropzone"],
+    "api": {
+      "tag": "ov-file-upload",
+      "importPath": "./components/ovlira/file-upload.js",
+      "props": [
+        { "name": "label", "type": "string", "description": "Visible accessible label.", "required": true, "reflected": true },
+        { "name": "name", "type": "string", "description": "Native file field name.", "reflected": true },
+        { "name": "accept", "type": "string", "description": "Accepted file types passed to the native picker.", "reflected": true },
+        { "name": "multiple", "type": "boolean", "description": "Allows more than one file.", "default": "false", "reflected": true },
+        { "name": "required", "type": "boolean", "description": "Requires at least one file.", "default": "false", "reflected": true },
+        { "name": "disabled", "type": "boolean", "description": "Prevents selecting or dropping files.", "default": "false", "reflected": true },
+        { "name": "files", "type": "File[]", "description": "Selected files assigned by the component after picking or dropping." },
+        { "name": "error", "type": "string", "description": "Validation message." },
+        { "name": "helpText", "type": "string", "description": "Supporting guidance.", "reflected": false }
+      ],
+      "events": [{ "name": "change", "detail": "{ files: File[] }", "description": "Dispatched when files are selected or dropped." }],
+      "slots": [],
+      "cssCustomProperties": [],
+      "parts": ["field", "label", "file-list", "file", "message"]
+    },
+    "guidance": {
+      "useWhen": ["A task needs one or more user-provided files as an attachment or import input."],
+      "avoidWhen": ["The application can create the data locally or a simple text field is sufficient."],
+      "constraints": ["Keep the native file input available to keyboard and assistive technology users.", "Validate type, size, and content in the owning application rather than trusting accept.", "Show selected filenames and communicate errors near the field."],
+      "requiredProps": ["label"],
+      "example": "examples/components/file-upload.md"
+    }
+  },
+  {
     "id": "component.tooltip",
     "kind": "component",
     "title": "Tooltip",

@@ -71,7 +71,7 @@ test('catalogue uses a desktop master detail split and a mobile detail replaceme
 
 test('catalogue preview coverage includes every shipped component', async ({ page }) => {
   await openMarketing(page);
-  for (const id of ['ov-button', 'ov-input', 'ov-textarea', 'ov-checkbox', 'ov-radio-group', 'ov-toggle', 'ov-dialog', 'ov-select', 'ov-spinner', 'ov-menu', 'ov-pagination', 'ov-combobox', 'ov-tabs', 'ov-toast', 'ov-progress', 'ov-skeleton', 'ov-tooltip', 'ov-avatar', 'ov-breadcrumbs', 'ov-badge', 'ov-card', 'ov-alert', 'ov-page-header', 'ov-empty-state', 'ov-data-table', 'ov-application-shell']) {
+  for (const id of ['ov-button', 'ov-input', 'ov-textarea', 'ov-checkbox', 'ov-radio-group', 'ov-toggle', 'ov-dialog', 'ov-select', 'ov-spinner', 'ov-menu', 'ov-pagination', 'ov-combobox', 'ov-tabs', 'ov-toast', 'ov-progress', 'ov-skeleton', 'ov-tooltip', 'ov-avatar', 'ov-breadcrumbs', 'ov-accordion', 'ov-slider', 'ov-file-upload', 'ov-badge', 'ov-card', 'ov-alert', 'ov-page-header', 'ov-empty-state', 'ov-data-table', 'ov-application-shell']) {
     await page.locator(`[data-catalogue-select="${id}"]`).click();
     await expect(page.locator('[data-component-preview]')).toBeVisible();
     await expect(page.locator(`[data-component-preview] ${id}`).first()).toBeVisible();
@@ -259,6 +259,41 @@ test('breadcrumbs preview links parent locations and marks the current page', as
   await expect(host.getByRole('link', { name: 'Projects' })).toHaveAttribute('href', '#catalogue');
   await expect(host.getByRole('link', { name: 'Northstar studio' })).toBeVisible();
   await expect(host.locator('[aria-current="page"]')).toHaveText('Settings');
+});
+
+test('accordion preview opens one disclosure at a time', async ({ page }) => {
+  await openMarketing(page);
+  await page.locator('[data-catalogue-select="ov-accordion"]').click();
+  const host = page.locator('[data-component-preview] ov-accordion').first();
+  await expect(host.locator('summary')).toHaveCount(2);
+  await host.locator('summary').first().click();
+  await expect(host.locator('details').first()).toHaveAttribute('open', '');
+  await expect(host.locator('[part="panel"]').first()).toBeVisible();
+  await expect(host.locator('[slot="summary"]')).toContainText('A concise overview of the project.');
+  await host.locator('summary').nth(1).click();
+  await expect(host.locator('details').nth(1)).toHaveAttribute('open', '');
+  await expect(host.locator('details').first()).not.toHaveAttribute('open');
+});
+
+test('slider preview exposes a labelled native range and current value', async ({ page }) => {
+  await openMarketing(page);
+  await page.locator('[data-catalogue-select="ov-slider"]').click();
+  const host = page.locator('[data-component-preview] ov-slider').first();
+  const slider = host.getByRole('slider', { name: 'Opacity' });
+  await expect(slider).toHaveValue('68');
+  await expect(host.locator('[part="value"]')).toHaveText('68');
+  await slider.fill('82');
+  await expect(host.locator('[part="value"]')).toHaveText('82');
+});
+
+test('file upload preview keeps a native picker and selected file list', async ({ page }) => {
+  await openMarketing(page);
+  await page.locator('[data-catalogue-select="ov-file-upload"]').click();
+  const host = page.locator('[data-component-preview] ov-file-upload').first();
+  const input = host.locator('input[type="file"]');
+  await expect(input).toHaveAttribute('aria-labelledby', /ov-file-upload-/);
+  await input.setInputFiles({ name: 'project.zip', mimeType: 'application/zip', buffer: Buffer.from('archive') });
+  await expect(host.locator('[part="file-list"]')).toContainText('project.zip');
 });
 
 for (const theme of ['light', 'dark'] as const) {

@@ -273,6 +273,61 @@ describe('Ovlira components', () => {
     expect(element.shadowRoot?.querySelectorAll('[aria-hidden="true"]')).toHaveLength(2);
   });
 
+  it('renders accordion disclosures and keeps open item state property-backed', async () => {
+    document.body.innerHTML = '<ov-accordion></ov-accordion>';
+    const element = document.querySelector('ov-accordion') as import('../src/components/accordion.js').OvAccordion;
+    element.items = [{ value: 'summary', label: 'Project summary' }, { value: 'members', label: 'Members' }];
+    element.innerHTML = '<p slot="summary">A concise overview.</p><p slot="members">Three people have access.</p>';
+    await element.updateComplete;
+    const details = [...(element.shadowRoot?.querySelectorAll<HTMLDetailsElement>('details') ?? [])];
+    expect(details).toHaveLength(2);
+    expect(details[0]?.querySelector('[part="panel"]')?.getAttribute('role')).toBe('region');
+    details[0]?.querySelector('summary')?.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+    details[0]!.open = true;
+    details[0]?.dispatchEvent(new Event('toggle', { bubbles: true }));
+    await element.updateComplete;
+    expect(element.openItems).toEqual(['summary']);
+    expect(element.shadowRoot?.querySelector('[part="summary"]')?.getAttribute('aria-controls')).toContain('ov-accordion-');
+  });
+
+  it('keeps slider range semantics and emits numeric input details', async () => {
+    document.body.innerHTML = '<ov-slider label="Opacity" min="0" max="100" value="50" step="5" show-value></ov-slider>';
+    const element = document.querySelector('ov-slider') as import('../src/components/slider.js').OvSlider;
+    await element.updateComplete;
+    const input = element.shadowRoot?.querySelector<HTMLInputElement>('input[type="range"]');
+    expect(input?.getAttribute('min')).toBe('0');
+    expect(input?.getAttribute('max')).toBe('100');
+    expect(input?.getAttribute('step')).toBe('5');
+    expect(element.shadowRoot?.querySelector('[part="value"]')?.textContent).toBe('50');
+    const inputEvent = vi.fn();
+    element.addEventListener('input', inputEvent);
+    input!.value = '65';
+    input?.dispatchEvent(new Event('input', { bubbles: true, composed: true }));
+    await element.updateComplete;
+    expect(element.value).toBe(65);
+    expect(element.shadowRoot?.querySelector('[part="value"]')?.textContent).toBe('65');
+    expect((inputEvent.mock.calls[0]?.[0] as CustomEvent).detail).toEqual({ value: 65 });
+  });
+
+  it('keeps file upload input labelled and lists selected files', async () => {
+    document.body.innerHTML = '<ov-file-upload label="Project archive" name="archive" accept=".zip" required></ov-file-upload>';
+    const element = document.querySelector('ov-file-upload') as import('../src/components/file-upload.js').OvFileUpload;
+    await element.updateComplete;
+    const input = element.shadowRoot?.querySelector<HTMLInputElement>('input[type="file"]');
+    expect(input?.getAttribute('aria-labelledby')).toContain('ov-file-upload-');
+    expect(input?.required).toBe(true);
+    const file = new File(['archive'], 'project.zip', { type: 'application/zip' });
+    Object.defineProperty(input, 'files', { configurable: true, value: [file] });
+    const change = vi.fn();
+    element.addEventListener('change', change);
+    input?.dispatchEvent(new Event('change', { bubbles: true, composed: true }));
+    await element.updateComplete;
+    expect(element.files).toHaveLength(1);
+    expect(element.shadowRoot?.querySelector('.file-name')?.textContent).toBe('project.zip');
+    expect(change).toHaveBeenCalledTimes(1);
+    expect((change.mock.calls[0]?.[0] as CustomEvent).detail.files[0]).toBe(file);
+  });
+
   it('renders property-backed table data without requiring JSON attributes', async () => {
     document.body.innerHTML = '<ov-data-table caption="Projects"></ov-data-table>';
     const element = document.querySelector('ov-data-table') as import('../src/components/data-table.js').OvDataTable;
