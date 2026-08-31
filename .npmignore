@@ -1,1 +1,9 @@
 examples/visual-review/dist
+
+# Local build caches from the Astro marketing example.
+**/.astro/
+**/node_modules/
+examples/marketing/.astro/
+examples/marketing/node_modules/
+examples/marketing/examples/marketing/.astro/
+examples/marketing/examples/marketing/node_modules/

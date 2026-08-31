@@ -117,6 +117,18 @@ Human visual approval of the six recipe starters follows the focused [visual rev
 
 The review protocol uses one consolidated Vite app. Start it with `npm run review:visual` after the build; use its left navigation to move through all six recipe fixtures.
 
+The repository also includes a static Astro marketing side at [`examples/marketing`](./examples/marketing). It turns the same catalogue and contract into a compact product story with interactive workflow, bounded catalogue search, recipe previews, theme switching, and the browser-review proof. Run `npm run marketing:dev` to develop it or `npm run marketing:build` to produce the static output.
+
+The authored [`DESIGN.md`](./DESIGN.md) and executable [`ui.html`](./ui.html) are the visual authority. Run `npm run reference:design` to inspect that reference. The canonical recipe fixtures are shared by CLI generation and the review harness, while Playwright verifies interactions, accessibility, overflow, touch targets, and approved screenshots:
+
+```bash
+npx playwright install chromium
+npm run test:browser
+npm run test:visual
+```
+
+Use `npm run test:visual:update` only when a human has approved an intentional visual change.
+
 The next testing layer is also available offline. Structured specs are validated by Ovlira, executed through the real CLI, and can be rendered into disposable Vitest files:
 
 ```bash
@@ -145,11 +157,12 @@ The component layer is standard custom elements, so Lit and plain HTML consume i
 ```text
 src/components    Lit implementations and TypeScript types
 src/catalogue     compact component/recipe descriptors
+src/recipes       canonical markup and layout shared by generation and review
 src/tokens        token JSON and CSS export
 src/cli           CLI, local registry, and validator
 docs              decisions, spikes, architecture, workflow, metadata, validation, roadmap
 examples          component/recipe snippets and framework portability examples
-tests              unit, CLI, vertical-slice, and valid/invalid fixtures
+tests              unit, CLI, browser, screenshot, and valid/invalid fixtures
 ```
 
 ## Current limitations

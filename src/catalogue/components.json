@@ -74,12 +74,13 @@
         { "name": "label", "type": "string", "description": "Visible accessible label.", "required": true, "reflected": true },
         { "name": "options", "type": "SelectOption[]", "description": "Options assigned as a property." },
         { "name": "value", "type": "string", "description": "Selected option value." },
-        { "name": "required", "type": "boolean", "description": "Marks the field as required.", "default": "false", "reflected": true }
+        { "name": "required", "type": "boolean", "description": "Marks the field as required.", "default": "false", "reflected": true },
+        { "name": "error", "type": "string", "description": "Validation message." }
       ],
       "events": [{ "name": "change", "description": "Native change event retargeted from the shadow root." }],
       "slots": [],
       "cssCustomProperties": ["--ov-field-accent"],
-      "parts": ["field", "label", "select"]
+      "parts": ["field", "label", "select", "message"]
     },
     "guidance": {
       "useWhen": ["The choice list is short enough to scan without search."],

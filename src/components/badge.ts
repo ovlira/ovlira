@@ -7,11 +7,11 @@ export class OvBadge extends LitElement {
 
   static styles = css`
     :host { display: inline-block; }
-    span { background: var(--ov-color-canvas, #f4f1e8); border: 1px solid var(--ov-color-line, #d7d9cf); border-radius: var(--ov-radius-pill, 999px); color: var(--ov-color-ink, #1d211d); display: inline-flex; font: 650 var(--ov-text-xs, 0.72rem) / 1 var(--ov-font-mono, monospace); letter-spacing: 0.02em; padding: 0.42rem 0.62rem; }
-    .accent { background: var(--ov-color-accent, #c7f36b); border-color: transparent; }
-    .success { background: var(--ov-color-success, #bce8bb); border-color: transparent; }
-    .warning { background: var(--ov-color-warning, #f5d58c); border-color: transparent; }
-    .danger { background: var(--ov-color-danger, #f3b0a8); border-color: transparent; }
+    span { background: transparent; border: 1px solid var(--ov-border, var(--ov-color-line, rgb(0 0 0 / 0.10))); border-radius: var(--ov-radius-sm, 5px); color: var(--ov-muted, var(--ov-color-muted, #6f6f6f)); display: inline-flex; font: 500 var(--ov-text-xs, 0.72rem) / 1.1 var(--ov-font-sans, sans-serif); padding: 0.28rem 0.45rem; }
+    .accent { color: var(--ov-text, var(--ov-color-ink, #171717)); }
+    .success { border-color: currentColor; color: var(--ov-good, var(--ov-color-success, #15743a)); }
+    .warning { border-color: currentColor; color: var(--ov-warn, var(--ov-color-warning, #805c00)); }
+    .danger { border-color: currentColor; color: var(--ov-bad, var(--ov-color-danger, #b42318)); }
   `;
 
   render() { return html`<span part="badge" class=${this.tone}><slot></slot></span>`; }

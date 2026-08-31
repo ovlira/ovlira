@@ -1,4 +1,4 @@
-import { LitElement, css, html } from 'lit';
+import { LitElement, css, html, nothing } from 'lit';
 
 let inputId = 0;
 
@@ -29,25 +29,26 @@ export class OvInput extends LitElement {
 
   static styles = css`
     :host { display: block; }
-    .field { display: grid; gap: 0.45rem; }
-    label { color: var(--ov-color-ink, #1d211d); font: 650 var(--ov-text-sm, 0.84rem) / 1.2 var(--ov-font-mono, monospace); }
-    .required { color: var(--ov-color-accent-strong, #7cad24); margin-left: 0.2rem; }
+    .field { display: grid; gap: 0.35rem; }
+    label { color: var(--ov-text, var(--ov-color-ink, #171717)); font: 500 var(--ov-text-sm, 0.82rem) / 1.3 var(--ov-font-sans, sans-serif); }
+    .required { color: var(--ov-bad, var(--ov-color-danger, #b42318)); margin-inline-start: 0.2rem; }
     input {
-      background: var(--ov-color-surface, #fffdf6);
-      border: 1px solid var(--ov-color-line, #d7d9cf);
-      border-radius: var(--ov-radius-sm, 0.35rem);
-      color: var(--ov-color-ink, #1d211d);
-      font: 500 var(--ov-text-md, 1rem) / 1.2 var(--ov-font-sans, sans-serif);
-      min-height: 2.75rem;
-      padding: 0.7rem 0.8rem;
-      transition: border 140ms ease, box-shadow 140ms ease;
+      background: transparent;
+      border: 0;
+      border-block-end: 1px solid var(--ov-border, var(--ov-color-line, rgb(0 0 0 / 0.10)));
+      border-radius: 0;
+      color: var(--ov-text, var(--ov-color-ink, #171717));
+      font: 400 var(--ov-text-md, 0.875rem) / 1.3 var(--ov-font-sans, sans-serif);
+      min-height: var(--ov-touch-target, 2.75rem);
+      padding: 0.62rem 0;
+      transition: border-color var(--ov-motion-fast, 120ms) ease, box-shadow var(--ov-motion-fast, 120ms) ease;
     }
-    input::placeholder { color: var(--ov-color-muted, #687066); }
-    input:focus { border-color: var(--ov-field-accent, var(--ov-color-accent-strong, #7cad24)); box-shadow: 0 0 0 3px rgb(199 243 107 / 0.35); outline: none; }
-    input[aria-invalid="true"] { border-color: var(--ov-color-danger, #f3b0a8); }
-    input:disabled { background: var(--ov-color-canvas, #f4f1e8); cursor: not-allowed; opacity: 0.65; }
-    .message { color: var(--ov-color-muted, #687066); font: 500 var(--ov-text-xs, 0.72rem) / 1.4 var(--ov-font-sans, sans-serif); }
-    .message.error { color: #9d3328; }
+    input::placeholder { color: var(--ov-faint, #767676); }
+    input:focus-visible { border-block-end-color: var(--ov-field-accent, var(--ov-focus, var(--ov-color-accent-strong, #525252))); box-shadow: inset 0 -1px 0 var(--ov-field-accent, var(--ov-focus, var(--ov-color-accent-strong, #525252))); outline: 2px solid transparent; }
+    input[aria-invalid="true"] { border-block-end-color: var(--ov-bad, var(--ov-color-danger, #b42318)); }
+    input:disabled { cursor: not-allowed; opacity: 0.56; }
+    .message { color: var(--ov-muted, var(--ov-color-muted, #6f6f6f)); font: 400 var(--ov-text-xs, 0.72rem) / 1.4 var(--ov-font-sans, sans-serif); }
+    .message.error { color: var(--ov-bad, var(--ov-color-danger, #b42318)); }
   `;
 
   render() {
@@ -58,14 +59,14 @@ export class OvInput extends LitElement {
         <input
           part="input"
           id=${this.inputId}
-          name=${this.name || nothingValue}
+          name=${this.name || nothing}
           type=${this.type}
           .value=${this.value}
-          placeholder=${this.placeholder || nothingValue}
+          placeholder=${this.placeholder || nothing}
           ?required=${this.required}
           ?disabled=${this.disabled}
           aria-invalid=${this.error ? 'true' : 'false'}
-          aria-describedby=${this.error || this.helpText ? messageId : nothingValue}
+          aria-describedby=${this.error || this.helpText ? messageId : nothing}
           @input=${this.handleInput}
         />
         ${this.error || this.helpText ? html`<div id=${messageId} class="message ${this.error ? 'error' : ''}" part="message">${this.error || this.helpText}</div>` : ''}
@@ -79,7 +80,6 @@ export class OvInput extends LitElement {
   }
 }
 
-const nothingValue = '';
 customElements.define('ov-input', OvInput);
 
 declare global {

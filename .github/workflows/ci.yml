@@ -49,3 +49,29 @@ jobs:
 
       - name: Inspect package contents
         run: npm pack --dry-run
+
+  ui:
+    name: Browser and visual gates
+    runs-on: macos-14
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22.x'
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install pinned Chromium
+        run: npx playwright install chromium
+
+      - name: Build visual authority, fixture harness, and marketing side
+        run: npm run reference:design:build && npm run review:visual:build && npm run marketing:build
+
+      - name: Run interactions, accessibility, responsive, and screenshot gates
+        run: npm run test:ui

@@ -8,11 +8,11 @@
     "tags": ["settings", "account", "form", "profile", "preferences"],
     "useWhen": ["Users need to manage several account settings."],
     "avoidWhen": ["The page contains only one short form."],
-    "components": ["ov-application-shell", "ov-page-header", "ov-card", "ov-input", "ov-select", "ov-button", "ov-alert", "ov-badge"],
+    "components": ["ov-application-shell", "ov-page-header", "ov-input", "ov-select", "ov-button", "ov-alert"],
     "requiredStates": ["loading", "error", "success"],
     "constraints": ["Use one primary action per form section.", "Do not place destructive actions beside the primary save action.", "Keep settings grouped by user intent."],
     "example": "examples/settings-page",
-    "composition": ["Application shell", "Page header", "One card per settings section", "Inline feedback near the affected section"]
+    "composition": ["Application shell", "Page header", "Aligned settings sections separated by rules", "Inline feedback near the affected section"]
   },
   {
     "id": "page.search",
@@ -53,11 +53,11 @@
     "tags": ["detail", "record", "profile", "view", "read"],
     "useWhen": ["Users need to understand one record before acting on it."],
     "avoidWhen": ["Users mainly compare many records at once."],
-    "components": ["ov-page-header", "ov-card", "ov-badge", "ov-alert", "ov-button", "ov-input"],
+    "components": ["ov-page-header", "ov-badge", "ov-alert", "ov-button", "ov-input"],
     "requiredStates": ["loading", "error"],
     "constraints": ["Put the record identity and status above secondary fields.", "Keep destructive actions visually and spatially separate."],
     "example": "examples/recipes/detail-page.md",
-    "composition": ["Page header", "Identity summary", "Grouped detail cards", "Contextual action group"]
+    "composition": ["Page header", "Identity summary", "Aligned detail sections separated by rules", "Contextual action group"]
   },
   {
     "id": "state.empty",
@@ -68,7 +68,7 @@
     "tags": ["empty", "zero", "first-run", "onboarding"],
     "useWhen": ["A collection is valid but currently contains no records."],
     "avoidWhen": ["The collection request failed or is still loading."],
-    "components": ["ov-empty-state", "ov-button", "ov-alert"],
+    "components": ["ov-page-header", "ov-empty-state", "ov-button", "ov-alert"],
     "requiredStates": ["empty"],
     "constraints": ["Say what is empty and how to create the first item.", "Do not use an empty state to hide a loading or error condition."],
     "example": "examples/recipes/empty-state-page.md",
@@ -83,7 +83,7 @@
     "tags": ["shell", "navigation", "layout", "app"],
     "useWhen": ["Several screens share a persistent navigation and content frame."],
     "avoidWhen": ["A single screen needs no persistent navigation."],
-    "components": ["ov-application-shell", "ov-page-header"],
+    "components": ["ov-application-shell", "ov-page-header", "ov-button"],
     "requiredStates": [],
     "constraints": ["Keep the rail useful at narrow widths.", "Use native links inside the nav slot."],
     "example": "examples/recipes/application-shell.md",

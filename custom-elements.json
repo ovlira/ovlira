@@ -97,6 +97,19 @@
               "default": "'Primary navigation'",
               "attribute": "nav-label",
               "reflects": true
+            },
+            {
+              "kind": "method",
+              "name": "handleHeaderSlot",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "event",
+                  "type": {
+                    "text": "Event"
+                  }
+                }
+              ]
             }
           ],
           "attributes": [
@@ -357,6 +370,19 @@
               "default": "'md'",
               "attribute": "padding",
               "reflects": true
+            },
+            {
+              "kind": "method",
+              "name": "handleOptionalSlot",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "event",
+                  "type": {
+                    "text": "Event"
+                  }
+                }
+              ]
             }
           ],
           "attributes": [
@@ -969,6 +995,16 @@
             },
             {
               "kind": "field",
+              "name": "error",
+              "privacy": "public",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "attribute": "error"
+            },
+            {
+              "kind": "field",
               "name": "selectId",
               "privacy": "private",
               "readonly": true,
@@ -1044,6 +1080,14 @@
               },
               "default": "''",
               "fieldName": "helpText"
+            },
+            {
+              "name": "error",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "fieldName": "error"
             }
           ],
           "superclass": {

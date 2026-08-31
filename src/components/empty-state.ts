@@ -8,14 +8,13 @@ export class OvEmptyState extends LitElement {
 
   static styles = css`
     :host { display: block; }
-    section { align-items: center; background: var(--ov-color-surface, #fffdf6); border: 1px dashed var(--ov-color-line, #d7d9cf); border-radius: var(--ov-radius-lg, 1rem); display: flex; flex-direction: column; min-height: 14rem; justify-content: center; padding: 2rem; text-align: center; }
-    .glyph { align-items: center; background: var(--ov-color-accent, #c7f36b); border-radius: var(--ov-radius-md, 0.65rem); display: flex; font: 800 1.2rem / 1 var(--ov-font-mono, monospace); height: 2.6rem; justify-content: center; margin-bottom: 1rem; transform: rotate(-4deg); width: 2.6rem; }
-    h2 { color: var(--ov-color-ink, #1d211d); font: 700 var(--ov-text-lg, 1.25rem) / 1.2 var(--ov-font-sans, sans-serif); margin: 0; }
-    p { color: var(--ov-color-muted, #687066); font: 500 var(--ov-text-sm, 0.84rem) / var(--ov-line-body, 1.55) var(--ov-font-sans, sans-serif); margin: 0.55rem 0 1.2rem; max-width: 30rem; }
+    section { align-items: flex-start; display: flex; flex-direction: column; justify-content: center; min-height: 10rem; padding-block: 1.5rem; text-align: start; }
+    h2 { color: var(--ov-text, var(--ov-color-ink, #171717)); font: 600 var(--ov-text-lg, 1rem) / 1.3 var(--ov-font-sans, sans-serif); margin: 0; }
+    p { color: var(--ov-muted, var(--ov-color-muted, #6f6f6f)); font: 400 var(--ov-text-sm, 0.82rem) / var(--ov-line-body, 1.55) var(--ov-font-sans, sans-serif); margin: 0.4rem 0 1rem; max-width: 34rem; }
   `;
 
   render() {
-    return html`<section part="state" aria-labelledby="title"><div class="glyph" aria-hidden="true">∅</div><h2 id="title" part="title">${this.title}</h2><p part="description" ?hidden=${!this.description}>${this.description}</p><div part="action"><slot name="action"></slot></div></section>`;
+    return html`<section part="state" aria-labelledby="title"><h2 id="title" part="title">${this.title}</h2><p part="description" ?hidden=${!this.description}>${this.description}</p><div part="action"><slot name="action"></slot></div></section>`;
   }
 }
 

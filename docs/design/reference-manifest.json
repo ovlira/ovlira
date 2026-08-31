@@ -1,0 +1,31 @@
+{
+  "version": 1,
+  "id": "ovlira-default-2026-08-31",
+  "visualAuthority": {
+    "rules": "../../DESIGN.md",
+    "reference": "../../ui.html"
+  },
+  "viewports": [
+    { "name": "wide", "width": 1440, "height": 900 },
+    { "name": "tablet", "width": 768, "height": 1024 },
+    { "name": "narrow", "width": 375, "height": 812 }
+  ],
+  "schemes": ["light", "dark"],
+  "automation": {
+    "referenceScreenshots": "../../tests/browser/reference.spec.ts-snapshots",
+    "recipeScreenshots": "../../tests/browser/visual.spec.ts-snapshots",
+    "interactionAndAccessibility": "../../tests/browser/review.spec.ts"
+  },
+  "baselineStatus": "approved",
+  "baselineApproval": {
+    "decision": "pass",
+    "date": "2026-08-31",
+    "source": "user-confirmed review"
+  },
+  "contrastingThemeStatus": "not-supplied",
+  "notes": [
+    "The HTML reference defines the default product language; it is not the production application architecture.",
+    "Dark mode is a color scheme of the default theme and is not the separate contrasting theme required by the v0.3 roadmap.",
+    "Screenshot baselines become authoritative only after explicit human approval."
+  ]
+}

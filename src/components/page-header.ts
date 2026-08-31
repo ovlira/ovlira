@@ -9,13 +9,13 @@ export class OvPageHeader extends LitElement {
 
   static styles = css`
     :host { display: block; }
-    header { align-items: end; display: flex; gap: 2rem; justify-content: space-between; padding: 0 0 1.5rem; }
+    header { align-items: flex-start; display: flex; gap: 1.5rem; justify-content: space-between; padding-block-end: 2rem; }
     .copy { min-width: 0; }
-    .eyebrow { color: var(--ov-color-accent-strong, #7cad24); font: 700 var(--ov-text-xs, 0.72rem) / 1 var(--ov-font-mono, monospace); letter-spacing: 0.12em; margin-bottom: 0.65rem; text-transform: uppercase; }
-    h1 { color: var(--ov-color-ink, #1d211d); font: 700 var(--ov-text-xl, 3.25rem) / var(--ov-line-tight, 1.15) var(--ov-font-sans, sans-serif); letter-spacing: -0.055em; margin: 0; }
-    p { color: var(--ov-color-muted, #687066); font: 500 var(--ov-text-md, 1rem) / var(--ov-line-body, 1.55) var(--ov-font-sans, sans-serif); margin: 0.85rem 0 0; max-width: 48rem; }
-    .actions { align-items: center; display: flex; flex-wrap: wrap; gap: 0.6rem; justify-content: end; }
-    @media (max-width: 40rem) { header { align-items: start; flex-direction: column; gap: 1.25rem; } .actions { justify-content: start; } }
+    .eyebrow { color: var(--ov-faint, #767676); font: 600 var(--ov-text-xs, 0.72rem) / 1.2 var(--ov-font-sans, sans-serif); letter-spacing: 0.08em; margin-block-end: 0.5rem; text-transform: uppercase; }
+    h1 { color: var(--ov-text, var(--ov-color-ink, #171717)); font: 600 var(--ov-text-xl, 1.3rem) / var(--ov-line-tight, 1.2) var(--ov-font-sans, sans-serif); letter-spacing: -0.025em; margin: 0; text-wrap: balance; }
+    p { color: var(--ov-muted, var(--ov-color-muted, #6f6f6f)); font: 400 var(--ov-text-md, 0.875rem) / var(--ov-line-body, 1.55) var(--ov-font-sans, sans-serif); margin: 0.55rem 0 0; max-width: 38rem; text-wrap: pretty; }
+    .actions { align-items: center; display: flex; flex: 0 0 auto; flex-wrap: wrap; gap: 0.5rem; justify-content: flex-end; }
+    @media (max-width: 40rem) { header { flex-direction: column; gap: 1rem; } .actions { justify-content: flex-start; } }
   `;
 
   render() {

@@ -26,28 +26,29 @@ export class OvButton extends LitElement {
     button {
       align-items: center;
       border: 1px solid transparent;
-      border-radius: var(--ov-button-radius, var(--ov-radius-md, 0.65rem));
+      border-radius: var(--ov-button-radius, var(--ov-radius-md, 7px));
       cursor: pointer;
       display: inline-flex;
-      font: 650 var(--ov-text-sm, 0.84rem) / 1 var(--ov-font-mono, monospace);
-      gap: 0.55rem;
+      font: 500 var(--ov-text-md, 0.875rem) / 1 var(--ov-font-sans, sans-serif);
+      gap: 0.45rem;
       justify-content: center;
-      min-height: 2.65rem;
-      padding: 0.75rem 1rem;
-      transition: transform 140ms ease, box-shadow 140ms ease, background 140ms ease;
+      min-height: var(--ov-control-height, 2.5rem);
+      padding: 0.65rem 0.9rem;
+      transition: background-color var(--ov-motion-fast, 120ms) ease, border-color var(--ov-motion-fast, 120ms) ease, opacity var(--ov-motion-fast, 120ms) ease, transform var(--ov-motion-fast, 120ms) ease-out;
     }
-    button:hover:not(:disabled) { transform: translateY(-1px); box-shadow: var(--ov-shadow-sm); }
-    button:active:not(:disabled) { transform: translateY(0); }
-    button:focus-visible { outline: 3px solid var(--ov-color-accent, #c7f36b); outline-offset: 3px; }
+    button:active:not(:disabled) { transform: scale(0.98); }
+    button:focus-visible { outline: 2px solid var(--ov-focus, var(--ov-color-accent-strong, #525252)); outline-offset: 2px; }
     button:disabled { cursor: not-allowed; opacity: 0.56; }
-    button.primary { background: var(--ov-color-ink, #1d211d); color: var(--ov-color-surface, #fffdf6); }
-    button.secondary { background: var(--ov-color-surface, #fffdf6); border-color: var(--ov-color-line, #d7d9cf); color: var(--ov-color-ink, #1d211d); }
-    button.quiet { background: transparent; color: var(--ov-color-ink, #1d211d); }
-    button.danger { background: var(--ov-color-danger, #f3b0a8); color: var(--ov-color-ink, #1d211d); }
-    button.sm { min-height: 2.1rem; padding: 0.55rem 0.75rem; }
-    button.lg { min-height: 3.1rem; padding: 0.9rem 1.2rem; }
+    button.primary { background: var(--ov-text, var(--ov-color-ink, #171717)); color: var(--ov-bg, var(--ov-color-canvas, #ffffff)); }
+    button.secondary { background: transparent; border-color: var(--ov-border, var(--ov-color-line, rgb(0 0 0 / 0.10))); color: var(--ov-text, var(--ov-color-ink, #171717)); }
+    button.quiet { background: transparent; color: var(--ov-muted, var(--ov-color-muted, #6f6f6f)); padding-inline: 0.55rem; }
+    button.danger { background: var(--ov-bad, var(--ov-color-danger, #b42318)); color: var(--ov-surface, var(--ov-color-surface, #ffffff)); }
+    button.sm { min-height: 2.25rem; padding: 0.55rem 0.75rem; }
+    button.lg { min-height: 2.75rem; padding: 0.75rem 1rem; }
     .spinner { animation: spin 800ms linear infinite; border: 2px solid currentColor; border-right-color: transparent; border-radius: 50%; height: 0.8rem; width: 0.8rem; }
     @keyframes spin { to { transform: rotate(360deg); } }
+    @media (hover: hover) { button.primary:hover:not(:disabled), button.danger:hover:not(:disabled) { opacity: 0.86; } button.secondary:hover:not(:disabled), button.quiet:hover:not(:disabled) { background: var(--ov-hover, var(--ov-color-accent, rgb(0 0 0 / 0.055))); color: var(--ov-text, var(--ov-color-ink, #171717)); } }
+    @media (max-width: 47.5rem) { button, button.sm, button.lg { min-height: var(--ov-touch-target, 2.75rem); } }
     @media (prefers-reduced-motion: reduce) { button { transition: none; } .spinner { animation: none; } }
   `;
 
@@ -55,7 +56,7 @@ export class OvButton extends LitElement {
     return html`
       <button
         part="button"
-        class=${this.variant}
+        class=${`${this.variant} ${this.size}`}
         ?disabled=${this.disabled || this.loading}
         type=${this.type}
         aria-busy=${this.loading ? 'true' : 'false'}

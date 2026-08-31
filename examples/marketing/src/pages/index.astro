@@ -1,0 +1,251 @@
+---
+import components from '../../../../src/catalogue/components.json';
+import recipes from '../../../../src/catalogue/recipes.json';
+import '../styles.css';
+
+const catalogue = [
+  ...components.map((item) => ({
+    id: item.api.tag,
+    type: 'component',
+    category: item.category,
+    summary: item.description,
+    useFor: item.guidance.useWhen[0],
+    avoidFor: item.guidance.avoidWhen[0],
+    states: item.guidance.requiredProps?.length ? `requires ${item.guidance.requiredProps.join(', ')}` : 'default, focus, disabled',
+    output: 'Custom element',
+    rules: item.guidance.constraints.map((detail, index) => ({ title: index === 0 ? 'Guidance' : 'Constraint', detail })),
+  })),
+  ...recipes.map((item) => ({
+    id: item.id,
+    type: 'recipe',
+    category: item.category,
+    summary: item.description,
+    useFor: item.useWhen[0],
+    avoidFor: item.avoidWhen[0],
+    states: item.requiredStates.length ? item.requiredStates.join(', ') : 'default',
+    output: 'Recipe',
+    rules: item.constraints.map((detail, index) => ({ title: index === 0 ? 'Constraint' : 'Recipe rule', detail })),
+  })),
+];
+
+const nav = [
+  { id: 'catalogue', label: 'Catalogue' },
+  { id: 'workflow', label: 'Workflow' },
+  { id: 'tokens', label: 'Tokens' },
+  { id: 'validation', label: 'Validation' },
+  { id: 'about', label: 'About' },
+];
+
+const pages = {
+  catalogue: { eyebrow: 'Local catalogue', title: 'Components and recipes', description: 'Search the smallest useful set of human-designed building blocks, then inspect only the guidance an agent needs.' },
+  workflow: { eyebrow: 'Agent path', title: 'Short, deterministic workflow', description: 'Keep retrieval bounded and local: search, inspect, add, compose, then check.' },
+  tokens: { eyebrow: 'Theme', title: 'Replaceable design tokens', description: 'A compact semantic theme surface that projects can own and change without rewriting component internals.' },
+  validation: { eyebrow: 'Guardrails', title: 'Source-level validation', description: 'Catch obvious catalogue misuse and token violations before visual review.' },
+  about: { eyebrow: 'Ovlira 0.2', title: 'Human design, agent composition', description: 'A local UI prototyping toolkit designed around token efficiency, portability and deterministic constraints.' },
+};
+
+const workflow = ['search', 'inspect', 'add', 'compose', 'check'];
+const tokens = [
+  { name: '--ov-bg', use: 'Primary application surface', sample: 'var(--ov-bg)' },
+  { name: '--ov-text', use: 'Primary readable foreground', sample: 'var(--ov-text)' },
+  { name: '--ov-muted', use: 'Secondary labels and controls', sample: 'var(--ov-muted)' },
+  { name: '--ov-faint', use: 'Low-priority metadata', sample: 'var(--ov-faint)' },
+  { name: '--ov-border', use: 'Subtle structural boundaries', sample: 'var(--ov-border)' },
+  { name: '--ov-good', use: 'Successful or healthy state', sample: 'var(--ov-good)' },
+  { name: '--ov-warn', use: 'Attention or warning state', sample: 'var(--ov-warn)' },
+  { name: '--ov-bad', use: 'Error or destructive state', sample: 'var(--ov-bad)' },
+  { name: '--ov-font-sans', use: 'Global UI typography' },
+  { name: '--ov-space-*', use: 'Approved spacing scale' },
+];
+const validation = [
+  ['Unknown custom elements', 'Reject unregistered ov-* tags.'],
+  ['Required labels and captions', 'Check component metadata for mandatory accessible text.'],
+  ['Invalid nesting', 'Use catalogue composition metadata to flag disallowed structures.'],
+  ['Recipe state markers', 'Require declared loading, empty, error or success markers.'],
+  ['Primary action count', 'Catch multiple primary buttons inside a marked task region.'],
+  ['Literal design values', 'Flag obvious unapproved colour and token-category literals.'],
+  ['Heading hierarchy', 'Catch basic structural heading problems.'],
+].map(([title, detail]) => ({ title, detail }));
+---
+
+<!doctype html>
+<html lang="en" data-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="description" content="Ovlira is a local catalogue of human-designed UI guidance for coding agents." />
+    <meta name="theme-color" content="#ffffff" />
+    <title>Ovlira 0.2 · Local UI guidance</title>
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">Skip to content</a>
+    <div class="app">
+      <aside class="sidebar">
+        <div class="brand">
+          <div class="brand-row"><div class="brand-name">Ovlira</div><span class="version">0.2</span></div>
+          <p>Local UI guidance for coding agents.</p>
+        </div>
+        <nav aria-label="Toolkit">
+          <div class="nav-label">Toolkit</div>
+          {nav.map((item, index) => (
+            <button class:list={['nav-button', index === 0 && 'active']} type="button" data-view-trigger={item.id} aria-current={index === 0 ? 'page' : undefined}>{item.label}</button>
+          ))}
+        </nav>
+        <div class="sidebar-spacer"></div>
+        <div class="sidebar-meta">Local catalogue<br />Deterministic output</div>
+      </aside>
+
+      <main id="main-content" class="main">
+        <div class="content">
+          <div class="mobile-nav" aria-label="Toolkit">
+            {nav.map((item, index) => (
+              <button class:list={[index === 0 && 'active']} type="button" data-view-trigger={item.id} aria-current={index === 0 ? 'page' : undefined}>{item.label}</button>
+            ))}
+          </div>
+
+          <header class="topbar">
+            <div>
+              <div class="eyebrow" data-page-eyebrow>{pages.catalogue.eyebrow}</div>
+              <h1 class="page-title" data-page-title>{pages.catalogue.title}</h1>
+              <p class="page-description" data-page-description>{pages.catalogue.description}</p>
+            </div>
+            <div class="top-actions"><button class="icon-button" type="button" data-theme-toggle aria-label="Switch to dark theme"><span aria-hidden="true">◐</span></button></div>
+          </header>
+
+          <section class="view" data-view="catalogue" aria-labelledby="catalogue-heading">
+            <div class="summary">
+              <div class="summary-item"><div class="summary-value">10</div><div class="summary-label">Components</div></div>
+              <div class="summary-item"><div class="summary-value">6</div><div class="summary-label">Recipes</div></div>
+              <div class="summary-item"><div class="summary-value good">Valid</div><div class="summary-label">Metadata contract</div></div>
+              <div class="summary-item"><div class="summary-value">8 max</div><div class="summary-label">Search results</div></div>
+            </div>
+            <section class="section">
+              <h2 id="catalogue-heading" class="section-heading">Catalogue</h2>
+              <div class="search"><label for="catalogue-search" class="sr-only">Search components and recipes</label><input id="catalogue-search" data-catalogue-search type="search" placeholder="Search components and recipes" /></div>
+              <div class="filters" role="group" aria-label="Filter catalogue">
+                <button class="filter active" type="button" data-catalogue-filter="all" aria-pressed="true">All</button>
+                <button class="filter" type="button" data-catalogue-filter="component" aria-pressed="false">Components</button>
+                <button class="filter" type="button" data-catalogue-filter="recipe" aria-pressed="false">Recipes</button>
+              </div>
+              <div class="catalogue-count" data-catalogue-count aria-live="polite">16 entries</div>
+              <ul class="catalogue" data-catalogue-list>
+                {catalogue.map((item) => (
+                  <li class="catalogue-row" data-catalogue-row data-kind={item.type} data-search={`${item.id} ${item.type} ${item.category} ${item.summary} ${item.useFor}`}>
+                    <button class="catalogue-button" type="button" data-catalogue-select={item.id} aria-pressed="false"><span class="item-main"><span class="item-name">{item.id}</span><span class="item-detail">{item.summary}</span></span><span class="item-type">{item.type}</span></button>
+                  </li>
+                ))}
+              </ul>
+              <div class="empty" data-catalogue-empty hidden>No catalogue entries match this search.</div>
+            </section>
+            <section class="detail" data-detail hidden aria-live="polite"></section>
+          </section>
+
+          <section class="view" data-view="workflow" aria-labelledby="workflow-heading" hidden>
+            <section class="section"><h2 id="workflow-heading" class="section-heading">Agent workflow</h2><div class="workflow">{workflow.map((step, index) => <div class="workflow-step"><strong>{step}</strong><span>0{index + 1}</span></div>)}</div></section>
+            <section class="section"><h2 class="section-heading">Typical run</h2><div class="rule-list">
+              <div class="rule"><div class="rule-title">Search narrowly</div><div class="rule-detail">Return a maximum of eight compact catalogue candidates rather than the entire system.</div></div>
+              <div class="rule"><div class="rule-title">Inspect one descriptor</div><div class="rule-detail">Retrieve only API, guidance or example metadata needed for the current task.</div></div>
+              <div class="rule"><div class="rule-title">Copy only what is required</div><div class="rule-detail">Add the selected recipe, its component source and the user-owned theme into the local project.</div></div>
+              <div class="rule"><div class="rule-title">Compose locally</div><div class="rule-detail">The generated project remains ordinary Vite + TypeScript and can be edited without an Ovlira runtime dependency.</div></div>
+              <div class="rule"><div class="rule-title">Check deterministically</div><div class="rule-detail">Run source-level validation and return stable diagnostics with practical fixes.</div></div>
+            </div><div class="command"><div class="command-label">Example</div><code>ovlira search "settings page" --json → ovlira inspect page.settings --json → ovlira add page.settings → ovlira check --json</code></div></section>
+          </section>
+
+          <section class="view" data-view="tokens" aria-labelledby="tokens-heading" hidden>
+            <div class="notice"><strong>Theme values stay user-owned.</strong> Components consume semantic <code>--ov-*</code> properties rather than arbitrary literals.</div>
+            <section class="section"><h2 id="tokens-heading" class="section-heading">Core tokens</h2><div class="token-list">{tokens.map((token) => <div class="token-row"><div class="token-name">{token.name}</div><div class="token-use">{token.use}</div>{token.sample && <div class="token-sample" style={`background: ${token.sample}`} aria-hidden="true"></div>}</div>)}</div></section>
+            <section class="section"><h2 class="section-heading">Commands</h2><div class="rule-list"><div class="rule"><div class="rule-title"><code>ovlira tokens --format json</code></div><div class="rule-detail">Compact token data for agents and tooling.</div></div><div class="rule"><div class="rule-title"><code>ovlira tokens --format css</code></div><div class="rule-detail">CSS custom properties for direct project use.</div></div></div></section>
+          </section>
+
+          <section class="view" data-view="validation" aria-labelledby="validation-heading" hidden>
+            <div class="notice good"><strong>0 errors.</strong> Example project passes the current source-level checks.</div>
+            <section class="section"><h2 id="validation-heading" class="section-heading">Checks</h2><div class="validation-list">{validation.map((rule) => <div class="validation-row"><div><div class="validation-title">{rule.title}</div><div class="validation-detail">{rule.detail}</div></div><div class="status good">Pass</div></div>)}</div></section>
+            <section class="section"><h2 class="section-heading">Boundary</h2><p class="page-description">Validation is intentionally source-level. It does not prove visual quality, runtime behaviour, browser transitions or every accessibility concern.</p></section>
+          </section>
+
+          <section class="view" data-view="about" aria-labelledby="about-heading" hidden>
+            <section class="section"><h2 id="about-heading" class="section-heading">Purpose</h2><p class="page-description">Ovlira gives coding agents a compact catalogue of human-designed UI decisions without sending an entire design system into model context.</p></section>
+            <section class="section"><h2 class="section-heading">Division of responsibility</h2><div class="rule-list"><div class="rule"><div class="rule-title">Humans own visual design</div><div class="rule-detail">Components, recipes, defaults and composition constraints are deliberately designed and reviewed.</div></div><div class="rule"><div class="rule-title">Agents own composition</div><div class="rule-detail">Agents retrieve the smallest relevant guidance, adapt domain content and implement application behaviour.</div></div><div class="rule"><div class="rule-title">The CLI owns retrieval and guardrails</div><div class="rule-detail">Search, inspect, add and check remain local, deterministic and easy to audit.</div></div></div></section>
+            <section class="section"><h2 class="section-heading">Not trying to be</h2><dl class="fields"><div class="field"><dt>Visual editor</dt><dd>No</dd></div><div class="field"><dt>Hosted service</dt><dd>No</dd></div><div class="field"><dt>Backend</dt><dd>No</dd></div><div class="field"><dt>MCP server</dt><dd>No</dd></div></dl></section>
+          </section>
+        </div>
+      </main>
+    </div>
+
+    <script define:vars={{ catalogue, pages }}>
+      const root = document.documentElement;
+      const viewButtons = [...document.querySelectorAll('[data-view-trigger]')];
+      const views = [...document.querySelectorAll('[data-view]')];
+      const pageEyebrow = document.querySelector('[data-page-eyebrow]');
+      const pageTitle = document.querySelector('[data-page-title]');
+      const pageDescription = document.querySelector('[data-page-description]');
+      const themeButton = document.querySelector('[data-theme-toggle]');
+      const setTheme = (theme) => {
+        root.dataset.theme = theme;
+        localStorage.setItem('ovlira-theme', theme);
+        themeButton?.setAttribute('aria-label', `Switch to ${theme === 'dark' ? 'light' : 'dark'} theme`);
+      };
+      const storedTheme = localStorage.getItem('ovlira-theme');
+      if (storedTheme === 'dark' || storedTheme === 'light') setTheme(storedTheme);
+      themeButton?.addEventListener('click', () => setTheme(root.dataset.theme === 'dark' ? 'light' : 'dark'));
+
+      const openView = (id) => {
+        const page = pages[id];
+        if (!page) return;
+        views.forEach((view) => { view.hidden = view.dataset.view !== id; });
+        viewButtons.forEach((button) => {
+          const active = button.dataset.viewTrigger === id;
+          button.classList.toggle('active', active);
+          if (active) button.setAttribute('aria-current', 'page'); else button.removeAttribute('aria-current');
+        });
+        if (pageEyebrow) pageEyebrow.textContent = page.eyebrow;
+        if (pageTitle) pageTitle.textContent = page.title;
+        if (pageDescription) pageDescription.textContent = page.description;
+        if (id !== 'catalogue') document.querySelector('[data-detail]')?.setAttribute('hidden', '');
+      };
+      viewButtons.forEach((button) => button.addEventListener('click', () => openView(button.dataset.viewTrigger)));
+
+      const search = document.querySelector('[data-catalogue-search]');
+      const count = document.querySelector('[data-catalogue-count]');
+      const empty = document.querySelector('[data-catalogue-empty]');
+      const rows = [...document.querySelectorAll('[data-catalogue-row]')];
+      let filter = 'all';
+      const updateCatalogue = () => {
+        const query = search?.value.trim().toLowerCase() || '';
+        let visible = 0;
+        rows.forEach((row) => {
+          const matchesQuery = row.dataset.search?.toLowerCase().includes(query) ?? false;
+          const matchesFilter = filter === 'all' || row.dataset.kind === filter;
+          const show = matchesQuery && matchesFilter;
+          row.hidden = !show;
+          if (show) visible += 1;
+        });
+        if (count) count.textContent = `${visible} ${visible === 1 ? 'entry' : 'entries'}`;
+        if (empty) empty.hidden = visible > 0;
+      };
+      search?.addEventListener('input', updateCatalogue);
+      document.querySelectorAll('[data-catalogue-filter]').forEach((button) => button.addEventListener('click', () => {
+        filter = button.dataset.catalogueFilter || 'all';
+        document.querySelectorAll('[data-catalogue-filter]').forEach((item) => { const active = item === button; item.classList.toggle('active', active); item.setAttribute('aria-pressed', String(active)); });
+        updateCatalogue();
+      }));
+
+      const detail = document.querySelector('[data-detail]');
+      const escapeHtml = (value) => String(value).replace(/[&<>"']/g, (character) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[character]);
+      const renderDetail = (id) => {
+        const item = catalogue.find((entry) => entry.id === id);
+        if (!item || !detail) return;
+        document.querySelectorAll('[data-catalogue-select]').forEach((button) => { const selected = button.dataset.catalogueSelect === id; button.classList.toggle('selected', selected); button.setAttribute('aria-pressed', String(selected)); });
+        detail.innerHTML = `<div class="detail-head"><div><h2 class="detail-title">${escapeHtml(item.id)}</h2><div class="detail-meta">${escapeHtml(item.type)} · ${escapeHtml(item.category)}</div></div><button class="text-button" type="button" data-detail-close>Close</button></div><section class="section"><h3 class="section-heading">Descriptor</h3><dl class="fields"><div class="field"><dt>Use for</dt><dd>${escapeHtml(item.useFor)}</dd></div><div class="field"><dt>Avoid for</dt><dd>${escapeHtml(item.avoidFor)}</dd></div><div class="field"><dt>States</dt><dd>${escapeHtml(item.states)}</dd></div><div class="field"><dt>Output</dt><dd>${escapeHtml(item.output)}</dd></div></dl></section><section class="section"><h3 class="section-heading">Guidance</h3><ul class="rule-list">${item.rules.map((rule) => `<li class="rule"><div class="rule-title">${escapeHtml(rule.title)}</div><div class="rule-detail">${escapeHtml(rule.detail)}</div></li>`).join('')}</ul></section><div class="command"><div class="command-label">Inspect</div><code>ovlira inspect ${escapeHtml(item.id)} --section guidance --json</code></div>`;
+        detail.hidden = false;
+        detail.querySelector('[data-detail-close]')?.addEventListener('click', () => { detail.hidden = true; });
+      };
+      document.querySelectorAll('[data-catalogue-select]').forEach((button) => button.addEventListener('click', () => renderDetail(button.dataset.catalogueSelect)));
+      document.addEventListener('keydown', (event) => {
+        if (event.key === '/' && document.activeElement?.tagName !== 'INPUT') { event.preventDefault(); search?.focus(); }
+        if (event.key === 'Escape' && detail && !detail.hidden) detail.hidden = true;
+      });
+      updateCatalogue();
+    </script>
+  </body>
+</html>

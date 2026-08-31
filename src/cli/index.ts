@@ -3,6 +3,7 @@ import { promises as fs } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { catalogue, catalogueSchemaVersion, componentForTag, components, metadataReport, recipes, registryIndex, resolveDescriptor, searchCatalogue } from '../catalogue/index.js';
+import { recipeFixtureMarkup, recipeFixtureStyles, type RecipeFixtureId } from '../recipes/fixtures.js';
 import { collectAssignedProperties } from '../validator/ast.js';
 import type { ComponentDescriptor, Descriptor, Diagnostic, ProjectManifest, RecipeDescriptor } from '../catalogue/types.js';
 import tokens from '../tokens/tokens.json' with { type: 'json' };
@@ -371,41 +372,14 @@ if (app) {
 function globalStyles(): string {
   return `* { box-sizing: border-box; }
 html, body, #app { margin: 0; min-height: 100%; }
-body { background: var(--ov-color-canvas); color: var(--ov-color-ink); font-family: var(--ov-font-sans); }
-.starter { margin: 12vh auto; max-width: 42rem; padding: var(--ov-space-8); }
-.starter h1 { font-size: var(--ov-text-xl); letter-spacing: -0.07em; line-height: 0.95; margin: 0 0 var(--ov-space-4); }
-.starter p:not(.kicker) { color: var(--ov-color-muted); font-size: var(--ov-text-lg); max-width: 34rem; }
-.kicker, code { font: 700 var(--ov-text-xs) / 1.2 var(--ov-font-mono); letter-spacing: 0.12em; text-transform: uppercase; }
-code { background: var(--ov-color-ink); color: var(--ov-color-accent); display: inline-block; margin-top: var(--ov-space-4); padding: var(--ov-space-3) var(--ov-space-4); text-transform: none; }
-.demo { margin: 10vh auto; max-width: 52rem; padding: 0 var(--ov-space-6); }
-.demo h1 { font-size: var(--ov-text-xl); letter-spacing: -0.07em; line-height: 0.95; margin: 0 0 var(--ov-space-6); }
-.demo ov-alert, .demo ov-empty-state, .demo ov-data-table { margin-top: var(--ov-space-6); }
-.brand-mark { color: var(--ov-color-surface); display: grid; font: 800 1.1rem / 1 var(--ov-font-mono); letter-spacing: -0.04em; text-decoration: none; }
-.brand-mark span { color: var(--ov-color-accent); font-size: var(--ov-text-xs); letter-spacing: 0.08em; margin-top: 0.35rem; }
-.utility { align-items: center; color: var(--ov-color-muted); display: flex; font: 700 var(--ov-text-xs) / 1 var(--ov-font-mono); gap: var(--ov-space-3); justify-content: space-between; letter-spacing: 0.08em; }
-.settings-page { max-width: 70rem; }
-.state-stack { display: grid; gap: var(--ov-space-3); margin-bottom: var(--ov-space-6); }
-.settings-grid { display: grid; gap: var(--ov-space-6); grid-template-columns: repeat(2, minmax(0, 1fr)); }
-.card-heading { display: grid; gap: var(--ov-space-1); }
-.card-heading h2 { font-size: var(--ov-text-lg); letter-spacing: -0.04em; margin: 0; }
-.card-heading p { color: var(--ov-color-muted); font-size: var(--ov-text-sm); margin: 0.2rem 0 0; }
-.card-kicker { color: var(--ov-color-accent-strong); font: 700 var(--ov-text-xs) / 1 var(--ov-font-mono); letter-spacing: 0.1em; text-transform: uppercase; }
-.field-grid { display: grid; gap: var(--ov-space-4); }
-.card-actions { align-items: center; display: flex; gap: var(--ov-space-4); justify-content: space-between; }
-.hint { color: var(--ov-color-muted); font: 500 var(--ov-text-xs) / 1.3 var(--ov-font-mono); }
-.state-switcher { align-items: center; border-bottom: 1px solid var(--ov-color-line); display: flex; flex-wrap: wrap; gap: var(--ov-space-2); margin: 0 0 var(--ov-space-6); padding: 0 0 var(--ov-space-3); }
-.state-switcher-label { color: var(--ov-color-muted); font: 700 var(--ov-text-xs) / 1.2 var(--ov-font-mono); letter-spacing: 0.08em; margin-right: var(--ov-space-2); text-transform: uppercase; }
-.state-button { background: transparent; border: 0; border-radius: var(--ov-radius-sm); color: var(--ov-color-ink); cursor: pointer; font: 650 var(--ov-text-xs) / 1.2 var(--ov-font-mono); min-height: 2.1rem; padding: var(--ov-space-2) var(--ov-space-3); }
-.state-button:hover, .state-button[aria-pressed="true"] { background: var(--ov-color-accent); }
-.state-button:focus-visible { outline: 3px solid var(--ov-color-accent-strong); outline-offset: 2px; }
-.search-controls { align-items: end; display: grid; gap: var(--ov-space-3); grid-template-columns: minmax(0, 1fr) minmax(11rem, 0.35fr) auto; margin-bottom: var(--ov-space-6); }
-.overview-grid, .detail-grid { display: grid; gap: var(--ov-space-6); grid-template-columns: repeat(2, minmax(0, 1fr)); }
-.detail-list { display: grid; gap: var(--ov-space-3); margin: 0; }
-.detail-list div { align-items: baseline; border-bottom: 1px solid var(--ov-color-line); display: flex; gap: var(--ov-space-4); justify-content: space-between; padding-bottom: var(--ov-space-3); }
-.detail-list dt { color: var(--ov-color-muted); font: 700 var(--ov-text-xs) / 1.2 var(--ov-font-mono); text-transform: uppercase; }
-.detail-list dd { color: var(--ov-color-ink); font: 500 var(--ov-text-sm) / 1.4 var(--ov-font-sans); margin: 0; }
-.state-copy { color: var(--ov-color-muted); margin: 0; }
-@media (max-width: 56rem) { .settings-grid, .overview-grid, .detail-grid { grid-template-columns: 1fr; } .search-controls { grid-template-columns: 1fr; } }
+body { background: var(--ov-bg, var(--ov-color-canvas)); color: var(--ov-text, var(--ov-color-ink)); font-family: var(--ov-font-sans); font-size: var(--ov-text-md); -webkit-font-smoothing: antialiased; }
+button, input, select { font: inherit; }
+.starter, .demo { margin: 12vh auto; max-width: var(--ov-content-narrow, 34rem); padding-inline: var(--ov-space-6); }
+.starter h1, .demo h1 { font-size: var(--ov-text-xl); font-weight: 600; letter-spacing: -0.025em; line-height: var(--ov-line-tight); margin: 0 0 var(--ov-space-4); }
+.starter p:not(.kicker) { color: var(--ov-muted, var(--ov-color-muted)); line-height: var(--ov-line-body); }
+.kicker { color: var(--ov-faint, var(--ov-color-muted)); font: 600 var(--ov-text-xs) / 1.2 var(--ov-font-sans); letter-spacing: 0.08em; text-transform: uppercase; }
+code { font-family: var(--ov-font-mono); overflow-wrap: anywhere; }
+${recipeFixtureStyles}
 `;
 }
 
@@ -438,21 +412,21 @@ function componentMarkup(item: ComponentDescriptor): string {
 }
 
 function recipeEntry(recipe: RecipeDescriptor, theme = themeFileName): string {
-  const markup = recipe.id === 'page.settings' ? settingsMarkup() : genericRecipeMarkup(recipe);
+  const markup = recipeFixtureMarkup(recipe.id as RecipeFixtureId);
   const setup = recipeSetup(recipe);
   const behavior = recipeBehavior(recipe);
   return `import './ovlira.generated.js';\nimport './styles/${theme}';\nimport './styles.css';\n\nconst app = document.querySelector<HTMLDivElement>('#app');\nif (app) {\n  app.innerHTML = \`${markup}\`;\n  ${setup}\n  const stateButtons = app.querySelectorAll<HTMLElement>('[data-ovlira-state-target]');\n  const states = app.querySelectorAll<HTMLElement>('[data-ovlira-state]');\n  const showState = (name: string) => {\n    states.forEach((state) => { state.hidden = state.dataset.ovliraState !== name; });\n    stateButtons.forEach((button) => { button.setAttribute('aria-pressed', String(button.dataset.ovliraStateTarget === name)); });\n  };\n  stateButtons.forEach((button) => button.addEventListener('click', () => showState(button.dataset.ovliraStateTarget ?? '')));\n  ${behavior}\n}\n`;
 }
 
 function recipeSetup(recipe: RecipeDescriptor): string {
-  if (recipe.id === 'page.settings') return "const selects = app.querySelectorAll('ov-select'); selects.forEach((select) => { select.options = [{ value: 'eu', label: 'Europe' }, { value: 'us', label: 'United States' }]; });";
-  if (recipe.id === 'page.search') return "const select = app.querySelector('ov-select'); if (select) select.options = [{ value: 'all', label: 'All statuses' }, { value: 'active', label: 'Active' }, { value: 'archived', label: 'Archived' }]; const table = app.querySelector('ov-data-table'); if (table) { table.columns = [{ key: 'name', label: 'Name' }, { key: 'owner', label: 'Owner' }, { key: 'status', label: 'Status' }]; table.rows = [{ name: 'Northstar studio', owner: 'Maya Chen', status: 'Active' }, { name: 'Field notes', owner: 'Jon Bell', status: 'Archived' }]; }";
+  if (recipe.id === 'page.settings') return "const selects = app.querySelectorAll('ov-select'); if (selects[0]) selects[0].options = [{ value: 'eu', label: 'Europe' }, { value: 'us', label: 'United States' }]; if (selects[1]) selects[1].options = [{ value: 'monday', label: 'Monday' }, { value: 'sunday', label: 'Sunday' }];";
+  if (recipe.id === 'page.search') return "const select = app.querySelector('ov-select'); if (select) select.options = [{ value: 'all', label: 'All statuses' }, { value: 'active', label: 'Active' }, { value: 'archived', label: 'Archived' }]; const table = app.querySelector('ov-data-table'); if (table) { table.columns = [{ key: 'name', label: 'Name' }, { key: 'owner', label: 'Owner' }, { key: 'status', label: 'Status' }]; table.rows = [{ name: 'Northstar studio', owner: 'Maya Chen', status: 'Active' }, { name: 'Field notes', owner: 'Jon Bell', status: 'Archived' }, { name: 'Signal house', owner: 'Anika Rao', status: 'Active' }]; }";
   if (recipe.id === 'page.crud-table') return "const dataTable = app.querySelector('ov-data-table'); if (dataTable) { dataTable.columns = [{ key: 'name', label: 'Name' }, { key: 'owner', label: 'Owner' }, { key: 'updated', label: 'Updated' }]; dataTable.rows = [{ name: 'Northstar studio', owner: 'Maya Chen', updated: 'Today' }, { name: 'Field notes', owner: 'Jon Bell', updated: 'Yesterday' }]; }";
   return '';
 }
 
 function recipeBehavior(recipe: RecipeDescriptor): string {
-  if (recipe.id === 'page.settings') return "app.querySelectorAll<HTMLElement>('[data-ovlira-action=\\\"save\\\"]').forEach((button) => button.addEventListener('click', () => showState('success')));";
+  if (recipe.id === 'page.settings') return "app.querySelectorAll<HTMLElement>('[data-ovlira-action=\\\"save\\\"]').forEach((button) => button.addEventListener('click', () => { const status = app.querySelector<HTMLElement & { heading?: string }>('[data-settings-status]'); if (status) { status.heading = 'Changes saved'; status.textContent = 'Your workspace details are up to date.'; } showState('success'); }));";
   if (recipe.id === 'page.search') return `const readValue = (selector: string) => { const host = app.querySelector<HTMLElement & { value?: string }>(selector); const native = host?.shadowRoot?.querySelector<HTMLInputElement | HTMLSelectElement>('input, select'); return native?.value ?? host?.value ?? ''; };
   const searchTable = app.querySelector('ov-data-table');
   app.querySelector<HTMLElement>('[data-ovlira-action="search"]')?.addEventListener('click', () => {
@@ -463,6 +437,7 @@ function recipeBehavior(recipe: RecipeDescriptor): string {
       const rows = [
         { name: 'Northstar studio', owner: 'Maya Chen', status: 'Active' },
         { name: 'Field notes', owner: 'Jon Bell', status: 'Archived' },
+        { name: 'Signal house', owner: 'Anika Rao', status: 'Active' },
       ].filter((row) => (!query || Object.values(row).some((value) => value.toLowerCase().includes(query))) && (!status || status === 'all' || row.status.toLowerCase() === status));
       if (searchTable) searchTable.rows = rows;
       const count = app.querySelector<HTMLElement>('[data-ovlira-result-count]');
@@ -470,16 +445,16 @@ function recipeBehavior(recipe: RecipeDescriptor): string {
       showState(rows.length ? 'results' : 'empty');
     }, 180);
   });
-  app.querySelector<HTMLElement>('[data-ovlira-action="create"]')?.addEventListener('click', () => {
-    if (searchTable) searchTable.rows = [{ name: 'Northstar studio', owner: 'Maya Chen', status: 'Active' }, { name: 'Field notes', owner: 'Jon Bell', status: 'Archived' }];
+  app.querySelector<HTMLElement>('[data-ovlira-action="search-create"]')?.addEventListener('click', () => {
+    if (searchTable) searchTable.rows = [{ name: 'Northstar studio', owner: 'Maya Chen', status: 'Active' }, { name: 'Field notes', owner: 'Jon Bell', status: 'Archived' }, { name: 'Signal house', owner: 'Anika Rao', status: 'Active' }];
     const count = app.querySelector<HTMLElement>('[data-ovlira-result-count]');
-    if (count) count.textContent = '2 matches';
+    if (count) count.textContent = '3 matches';
     showState('results');
   });`;
   if (recipe.id === 'page.crud-table') return `const readValue = (selector: string) => { const host = app.querySelector<HTMLElement & { value?: string }>(selector); const native = host?.shadowRoot?.querySelector<HTMLInputElement | HTMLSelectElement>('input, select'); return native?.value ?? host?.value ?? ''; };
   const table = app.querySelector('ov-data-table');
   const createForm = app.querySelector<HTMLElement>('[data-ovlira-create-form]');
-  app.querySelectorAll<HTMLElement>('[data-ovlira-action="create"]').forEach((button) => button.addEventListener('click', () => { if (createForm) createForm.hidden = false; }));
+  app.querySelectorAll<HTMLElement>('[data-ovlira-action="create"]').forEach((button) => button.addEventListener('click', () => { if (createForm) { createForm.hidden = false; requestAnimationFrame(() => createForm.querySelector('ov-input')?.shadowRoot?.querySelector('input')?.focus()); } }));
   app.querySelector<HTMLElement>('[data-ovlira-action="save"]')?.addEventListener('click', () => {
     const name = readValue('[data-ovlira-create-input]').trim() || 'Untitled project';
     if (table) table.rows = [{ name, owner: 'You', updated: 'Just now' }, ...table.rows];
@@ -488,59 +463,12 @@ function recipeBehavior(recipe: RecipeDescriptor): string {
   });`;
   if (recipe.id === 'page.detail') return `const readValue = (selector: string) => { const host = app.querySelector<HTMLElement & { value?: string }>(selector); const native = host?.shadowRoot?.querySelector<HTMLInputElement | HTMLSelectElement>('input, select'); return native?.value ?? host?.value ?? ''; };
   const editForm = app.querySelector<HTMLElement>('[data-ovlira-edit-form]');
-  app.querySelector<HTMLElement>('[data-ovlira-action="edit"]')?.addEventListener('click', () => { if (editForm) editForm.hidden = false; });
-  app.querySelector<HTMLElement>('[data-ovlira-action="save-detail"]')?.addEventListener('click', () => { const name = readValue('[data-ovlira-detail-input]').trim(); const header = app.querySelector('ov-page-header'); if (header && name) header.title = name; if (editForm) editForm.hidden = true; showState('ready'); });`;
-  if (recipe.id === 'state.empty') return "const emptyState = app.querySelector<HTMLElement>('[data-ovlira-state=empty]'); const successState = app.querySelector<HTMLElement>('[data-ovlira-state=success]'); app.querySelector<HTMLElement>('[data-ovlira-action=\\\"create\\\"]')?.addEventListener('click', () => { if (emptyState) emptyState.hidden = true; if (successState) successState.hidden = false; });";
-  if (recipe.id === 'shell.application') return "app.querySelectorAll<HTMLAnchorElement>('[data-ovlira-nav]').forEach((link) => link.addEventListener('click', () => { app.querySelectorAll('[data-ovlira-nav]').forEach((item) => item.removeAttribute('aria-current')); link.setAttribute('aria-current', 'page'); }));";
+  app.querySelector<HTMLElement>('[data-ovlira-action="edit"]')?.addEventListener('click', () => { if (editForm) { editForm.hidden = false; requestAnimationFrame(() => editForm.querySelector('ov-input')?.shadowRoot?.querySelector('input')?.focus()); } });
+  app.querySelector<HTMLElement>('[data-ovlira-action="save-detail"]')?.addEventListener('click', () => { const name = readValue('[data-ovlira-detail-input]').trim(); const header = app.querySelector('ov-page-header'); if (header && name) header.title = name; if (editForm) editForm.hidden = true; showState('ready'); });
+  app.querySelector<HTMLElement>('[data-ovlira-action="back"]')?.addEventListener('click', () => { if (editForm) editForm.hidden = true; showState('ready'); });`;
+  if (recipe.id === 'state.empty') return "const emptyState = app.querySelector<HTMLElement>('[data-ovlira-state=empty]'); const successState = app.querySelector<HTMLElement>('[data-ovlira-state=success]'); app.querySelector<HTMLElement>('[data-ovlira-action=\\\"create-empty\\\"]')?.addEventListener('click', () => { if (emptyState) emptyState.hidden = true; if (successState) successState.hidden = false; });";
+  if (recipe.id === 'shell.application') return "app.querySelectorAll<HTMLAnchorElement>('[data-ovlira-nav]').forEach((link) => link.addEventListener('click', (event) => { event.preventDefault(); app.querySelectorAll('[data-ovlira-nav]').forEach((item) => item.removeAttribute('aria-current')); link.setAttribute('aria-current', 'page'); const destination = link.dataset.ovliraNav ?? 'Overview'; const utility = app.querySelector<HTMLElement>('[data-shell-utility]'); if (utility) utility.textContent = 'Workspace · ' + destination; const header = app.querySelector<HTMLElement & { title?: string }>('[data-shell-header]'); if (header) header.title = destination === 'Overview' ? 'Project overview' : destination; })); app.querySelector<HTMLElement>('[data-ovlira-action=\"new\"]')?.addEventListener('click', () => { const activity = app.querySelector<HTMLElement>('[data-shell-activity]'); if (activity) activity.textContent = 'New project flow opened. Keep the shell in place while the task changes.'; });";
   return '';
-}
-
-function settingsMarkup(): string {
-  return `<ov-application-shell>
-  <a slot="brand" class="brand-mark" href="/">OVLIRA <span>LOCAL UI KIT</span></a>
-  <a slot="nav" href="/" aria-current="page">Workspace</a>
-  <a slot="nav" href="/activity">Activity</a>
-  <a slot="nav" href="/members">Members</a>
-  <span slot="header" class="utility">LOCAL / SETTINGS <ov-badge tone="accent">Prototype</ov-badge></span>
-  <div class="settings-page">
-    <ov-page-header eyebrow="Control surface" title="Workspace settings" description="Keep the everyday details of your workspace clear, current, and easy to hand off."></ov-page-header>
-    <nav class="state-switcher" aria-label="Preview settings state"><span class="state-switcher-label">Preview state</span><button type="button" class="state-button" data-ovlira-state-target="success" aria-pressed="true">Saved</button><button type="button" class="state-button" data-ovlira-state-target="loading" aria-pressed="false">Loading</button><button type="button" class="state-button" data-ovlira-state-target="error" aria-pressed="false">Error</button></nav>
-    <div class="state-stack">
-      <div data-ovlira-state="loading" hidden>Loading settings…</div>
-      <ov-alert data-ovlira-state="error" tone="danger" heading="Could not save" hidden>Check the highlighted fields and try again.</ov-alert>
-      <ov-alert data-ovlira-state="success" tone="success" heading="Changes saved">Your workspace details are up to date.</ov-alert>
-    </div>
-    <div class="settings-grid">
-      <section data-ovlira-region="identity">
-        <ov-card>
-          <div slot="header" class="card-heading"><span class="card-kicker">01 / identity</span><h2>Workspace profile</h2><p>The details teammates see when they join your space.</p></div>
-          <div class="field-grid"><ov-input label="Workspace name" value="Northstar studio" required></ov-input><ov-input label="Workspace URL" value="northstar" required></ov-input></div>
-          <div slot="footer" class="card-actions"><span class="hint">Last synced just now</span><ov-button variant="primary" data-ovlira-action="save">Save profile</ov-button></div>
-        </ov-card>
-      </section>
-      <section data-ovlira-region="preferences">
-        <ov-card>
-          <div slot="header" class="card-heading"><span class="card-kicker">02 / preferences</span><h2>Default preferences</h2><p>Set the defaults that keep new work moving.</p></div>
-          <div class="field-grid"><ov-select label="Default region" required></ov-select><ov-select label="Week starts on" required></ov-select></div>
-          <div slot="footer" class="card-actions"><span class="hint">Applies to new members</span><ov-button variant="primary" data-ovlira-action="save">Save preferences</ov-button></div>
-        </ov-card>
-      </section>
-    </div>
-  </div>
-</ov-application-shell>`;
-}
-
-function genericRecipeMarkup(recipe: RecipeDescriptor): string {
-  if (recipe.id === 'shell.application') return `<ov-application-shell>
-  <a slot="brand" class="brand-mark" href="/">OVLIRA <span>LOCAL UI KIT</span></a>
-  <a slot="nav" data-ovlira-nav href="/" aria-current="page">Overview</a><a slot="nav" data-ovlira-nav href="/projects">Projects</a><a slot="nav" data-ovlira-nav href="/activity">Activity</a>
-  <span slot="header" class="utility">LOCAL / OVERVIEW <ov-badge tone="accent">Prototype</ov-badge></span>
-  <div class="demo shell-demo"><ov-page-header eyebrow="Application frame" title="Project overview" description="A persistent shell for a focused local product surface."><span slot="actions"><ov-button variant="primary" data-ovlira-action="new">New project</ov-button></span></ov-page-header><div class="overview-grid"><ov-card><span slot="header" class="card-heading"><span class="card-kicker">At a glance</span><strong>Keep the next step visible</strong></span><p>Use the shell for persistent navigation, then let each screen stay focused on one task.</p><span slot="footer" class="hint">Three active projects</span></ov-card><ov-card><span slot="header" class="card-heading"><span class="card-kicker">Recent activity</span><strong>Small updates, clear context</strong></span><p>Give people a lightweight trail of what changed without turning the overview into a dashboard.</p><span slot="footer" class="hint">Updated a few minutes ago</span></ov-card></div></div>
-</ov-application-shell>`;
-  if (recipe.id === 'state.empty') return `<main class="demo"><p class="kicker">OVLIRA / RECIPE</p><section data-ovlira-state="empty"><ov-empty-state title="Nothing here yet" description="Create the first record to begin."><ov-button slot="action" variant="primary" data-ovlira-action="create">Create record</ov-button></ov-empty-state></section><section data-ovlira-state="success" hidden><ov-alert tone="success" heading="Record created">The first record is ready to open.</ov-alert></section></main>`;
-  if (recipe.id === 'page.detail') return `<main class="demo"><p class="kicker">OVLIRA / RECIPE</p><ov-page-header eyebrow="Record" title="Northstar studio" description="A focused view of one record before taking action."><span slot="actions"><ov-button variant="secondary">Back</ov-button><ov-button variant="primary" data-ovlira-action="edit">Edit record</ov-button></span></ov-page-header><div class="inline-edit" data-ovlira-edit-form hidden><ov-input label="Record name" value="Northstar studio" data-ovlira-detail-input></ov-input><ov-button variant="primary" data-ovlira-action="save-detail">Save name</ov-button></div><nav class="state-switcher" aria-label="Preview detail state"><span class="state-switcher-label">Preview state</span><button type="button" class="state-button" data-ovlira-state-target="ready" aria-pressed="true">Ready</button><button type="button" class="state-button" data-ovlira-state-target="loading" aria-pressed="false">Loading</button><button type="button" class="state-button" data-ovlira-state-target="error" aria-pressed="false">Error</button></nav><section class="detail-grid" data-ovlira-state="ready"><ov-card><span slot="header" class="card-heading"><span class="card-kicker">Identity</span><strong>Workspace profile <ov-badge tone="success">Active</ov-badge></strong></span><dl class="detail-list"><div><dt>Owner</dt><dd>Maya Chen</dd></div><div><dt>Region</dt><dd>Europe</dd></div><div><dt>Created</dt><dd>12 March 2026</dd></div></dl></ov-card><ov-card><span slot="header" class="card-heading"><span class="card-kicker">Context</span><strong>What to know</strong></span><p>Keep the identity and current status above secondary fields so the next action is easy to understand.</p></ov-card></section><section data-ovlira-state="loading" hidden><ov-card><p class="state-copy">Loading the record summary…</p></ov-card></section><section data-ovlira-state="error" hidden><ov-alert tone="danger" heading="Could not load record">Check the connection and try again.</ov-alert></section></main>`;
-  if (recipe.id === 'page.search') return `<main class="demo"><p class="kicker">OVLIRA / RECIPE</p><ov-page-header eyebrow="Find" title="Search records" description="Keep the query, result count, and next action in the same view."></ov-page-header><div class="search-controls" data-ovlira-region="search"><ov-input label="Search records" placeholder="Name, email, or ID" data-ovlira-search-input></ov-input><ov-select label="Status" data-ovlira-search-status></ov-select><ov-button variant="primary" data-ovlira-action="search">Search</ov-button></div><p class="result-count" aria-live="polite" data-ovlira-result-count>2 matches</p><nav class="state-switcher" aria-label="Preview search state"><span class="state-switcher-label">Preview state</span><button type="button" class="state-button" data-ovlira-state-target="results" aria-pressed="true">Results</button><button type="button" class="state-button" data-ovlira-state-target="loading" aria-pressed="false">Loading</button><button type="button" class="state-button" data-ovlira-state-target="empty" aria-pressed="false">Empty</button><button type="button" class="state-button" data-ovlira-state-target="error" aria-pressed="false">Error</button></nav><section data-ovlira-state="results"><ov-data-table caption="Search results"></ov-data-table></section><section data-ovlira-state="loading" hidden><ov-alert tone="info" heading="Searching">Looking for records that match your query.</ov-alert></section><section data-ovlira-state="empty" hidden><ov-empty-state title="No matching records" description="Try a broader search or create a new record."><ov-button slot="action" variant="primary" data-ovlira-action="create">Create record</ov-button></ov-empty-state></section><section data-ovlira-state="error" hidden><ov-alert tone="danger" heading="Search unavailable">Check the connection and try again.</ov-alert></section></main>`;
-  return `<main class="demo"><p class="kicker">OVLIRA / RECIPE</p><ov-page-header eyebrow="Collection" title="${recipe.title}" description="${recipe.description}"><span slot="actions"><ov-button variant="primary" data-ovlira-action="create">Create record</ov-button></span></ov-page-header><nav class="state-switcher" aria-label="Preview collection state"><span class="state-switcher-label">Preview state</span><button type="button" class="state-button" data-ovlira-state-target="records" aria-pressed="true">Records</button><button type="button" class="state-button" data-ovlira-state-target="loading" aria-pressed="false">Loading</button><button type="button" class="state-button" data-ovlira-state-target="empty" aria-pressed="false">Empty</button><button type="button" class="state-button" data-ovlira-state-target="error" aria-pressed="false">Error</button><button type="button" class="state-button" data-ovlira-state-target="success" aria-pressed="false">Saved</button></nav><section data-ovlira-state="records"><ov-data-table caption="Projects"></ov-data-table></section><section data-ovlira-state="loading" hidden><ov-alert tone="info" heading="Loading projects">Fetching the latest records.</ov-alert></section><section data-ovlira-state="empty" hidden><ov-empty-state title="No projects yet" description="Create the first project to begin."><ov-button slot="action" variant="primary" data-ovlira-action="create">Create project</ov-button></ov-empty-state></section><section data-ovlira-state="error" hidden><ov-alert tone="danger" heading="Could not load projects">Check the connection and try again.</ov-alert></section><section data-ovlira-state="success" hidden><ov-alert tone="success" heading="Project created">The new project is ready to open.</ov-alert></section><div class="inline-create" data-ovlira-create-form hidden><ov-input label="Project name" placeholder="e.g. Northstar studio" data-ovlira-create-input></ov-input><ov-button variant="primary" data-ovlira-action="save">Create project</ov-button></div></main>`;
 }
 
 async function checkCommand(cwd: string, args: ParsedArgs, io: CliIO): Promise<number> {

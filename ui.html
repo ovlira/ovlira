@@ -1,0 +1,1485 @@
+<!DOCTYPE html>
+<html lang="en" data-ovlira-reference="ovlira-default-2026-08-31">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ovlira 0.2</title>
+  <link rel="stylesheet" href="./inter.css">
+  <script>
+    (() => {
+      const saved = localStorage.getItem('ovlira-theme')
+      const system = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+      document.documentElement.dataset.theme = saved || system
+    })()
+  </script>
+  <style>
+    :root {
+      color-scheme: light;
+
+      --bg: #fff;
+      --text: #171717;
+      --muted: #6f6f6f;
+      --faint: #767676;
+      --hover: rgba(0,0,0,.055);
+      --border: rgba(0,0,0,.10);
+
+      --good: #16803a;
+      --warn: #a96800;
+      --bad: #bb3030;
+
+      --sidebar: 14rem;
+      --content: 48rem;
+    }
+
+    :root[data-theme="dark"] {
+      color-scheme: dark;
+
+      --bg: #111;
+      --text: #eee;
+      --muted: #a0a0a0;
+      --faint: #8a8a8a;
+      --hover: rgba(255,255,255,.07);
+      --border: rgba(255,255,255,.10);
+
+      --good: #61c77d;
+      --warn: #e7a93b;
+      --bad: #ef6a6a;
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    html {
+      min-height: 100%;
+      background: var(--bg);
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Inter, system-ui, sans-serif;
+      font-size: 14px;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    .skip-link {
+      position: fixed;
+      inset-block-start: .75rem;
+      inset-inline-start: .75rem;
+      z-index: 10;
+      padding: .55rem .75rem;
+      border-radius: 6px;
+      background: var(--text);
+      color: var(--bg);
+      text-decoration: none;
+      transform: translateY(-200%);
+    }
+
+    .skip-link:focus {
+      transform: translateY(0);
+    }
+
+    button,
+    input {
+      font: inherit;
+    }
+
+    button {
+      color: inherit;
+    }
+
+    button:focus-visible,
+    input:focus-visible {
+      outline: 2px solid var(--muted);
+      outline-offset: 2px;
+    }
+
+    [v-cloak] {
+      display: none;
+    }
+
+    .app {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: var(--sidebar) minmax(0, 1fr);
+    }
+
+    .sidebar {
+      min-height: 100vh;
+      border-right: 1px solid var(--border);
+      padding: 2.2rem 1.1rem 1.5rem;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .brand {
+      padding: 0 .55rem;
+      margin-bottom: 2.2rem;
+    }
+
+    .brand-row {
+      display: flex;
+      align-items: baseline;
+      gap: .45rem;
+    }
+
+    .brand-name {
+      margin: 0;
+      font-size: 1.05rem;
+      font-weight: 600;
+      letter-spacing: -.02em;
+    }
+
+    .version {
+      color: var(--faint);
+      font-size: .78rem;
+    }
+
+    .brand p {
+      margin: .45rem 0 0;
+      color: var(--muted);
+      font-size: .84rem;
+      line-height: 1.45;
+    }
+
+    .nav-group + .nav-group {
+      margin-top: 1.8rem;
+    }
+
+    .nav-label {
+      margin: 0 .55rem .55rem;
+      color: var(--faint);
+      font-size: .68rem;
+      font-weight: 600;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    .nav-button {
+      appearance: none;
+      border: 0;
+      width: 100%;
+      padding: .48rem .55rem;
+      border-radius: 6px;
+      background: transparent;
+      color: var(--muted);
+      text-align: left;
+      cursor: pointer;
+      min-height: 2.5rem;
+    }
+
+    .nav-button:hover {
+      background: var(--hover);
+      color: var(--text);
+    }
+
+    .nav-button.active {
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    .sidebar-spacer {
+      flex: 1;
+    }
+
+    .sidebar-meta {
+      padding: .8rem .55rem 0;
+      border-top: 1px solid var(--border);
+      color: var(--faint);
+      font-size: .78rem;
+      line-height: 1.5;
+    }
+
+    .main {
+      min-width: 0;
+      padding: clamp(2.2rem, 6vw, 5.5rem) clamp(1.4rem, 5vw, 4rem) 5rem;
+    }
+
+    .content {
+      width: min(100%, var(--content));
+      margin: 0 auto;
+    }
+
+    .topbar {
+      margin-bottom: 2.6rem;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 1.5rem;
+    }
+
+    .eyebrow {
+      margin-bottom: .5rem;
+      color: var(--faint);
+      font-size: .72rem;
+      font-weight: 600;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    .page-title {
+      margin: 0;
+      font-size: 1.3rem;
+      font-weight: 600;
+      letter-spacing: -.025em;
+    }
+
+    .page-description {
+      max-width: 38rem;
+      margin: .55rem 0 0;
+      color: var(--muted);
+      line-height: 1.55;
+    }
+
+    .top-actions {
+      display: flex;
+      align-items: center;
+      gap: .15rem;
+      flex: 0 0 auto;
+    }
+
+    .icon-button {
+      appearance: none;
+      width: 2.5rem;
+      height: 2.5rem;
+      border: 0;
+      border-radius: 6px;
+      padding: 0;
+      display: grid;
+      place-items: center;
+      background: transparent;
+      color: var(--muted);
+      cursor: pointer;
+    }
+
+    .icon-button:hover {
+      background: var(--hover);
+      color: var(--text);
+    }
+
+    .icon-button svg {
+      width: 1.05rem;
+      height: 1.05rem;
+      stroke: currentColor;
+    }
+
+    .summary {
+      margin-bottom: 2.4rem;
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0,1fr));
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .summary-item {
+      padding: .95rem 0;
+    }
+
+    .summary-item + .summary-item {
+      padding-left: 1rem;
+      border-left: 1px solid var(--border);
+    }
+
+    .summary-value {
+      font-size: 1rem;
+      font-weight: 500;
+    }
+
+    .summary-label {
+      margin-top: .2rem;
+      color: var(--faint);
+      font-size: .78rem;
+    }
+
+    .summary-value.good {
+      color: var(--good);
+    }
+
+    .section + .section {
+      margin-top: 2.8rem;
+    }
+
+    .section-heading {
+      margin: 0 0 1rem;
+      color: var(--faint);
+      font-size: .7rem;
+      font-weight: 600;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    .search {
+      margin-bottom: 1.25rem;
+    }
+
+    .search input {
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      width: 100%;
+      padding: .62rem 0;
+      background: transparent;
+      color: var(--text);
+      font-size: 1rem;
+      outline: 0;
+    }
+
+    .search input::placeholder {
+      color: var(--faint);
+    }
+
+    .search input:focus {
+      border-color: var(--muted);
+    }
+
+    .filters {
+      margin-bottom: 1.2rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .filter {
+      appearance: none;
+      border: 0;
+      min-height: 2.5rem;
+      padding: .45rem 0;
+      background: transparent;
+      color: var(--muted);
+      cursor: pointer;
+    }
+
+    .filter:hover,
+    .filter.active {
+      color: var(--text);
+    }
+
+    .catalogue {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .catalogue-row {
+      margin-inline: -.7rem;
+    }
+
+    .catalogue-button {
+      appearance: none;
+      border: 0;
+      width: 100%;
+      border-radius: 8px;
+      padding: .62rem .7rem;
+      display: grid;
+      grid-template-columns: minmax(0,1fr) auto;
+      gap: 1rem;
+      align-items: center;
+      background: transparent;
+      color: inherit;
+      text-align: left;
+      cursor: pointer;
+    }
+
+    .catalogue-button:hover {
+      background: var(--hover);
+    }
+
+    .catalogue-button.selected {
+      background: var(--hover);
+    }
+
+    .item-main {
+      min-width: 0;
+    }
+
+    .item-name {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      font-weight: 500;
+    }
+
+    .item-detail {
+      margin-top: .18rem;
+      color: var(--faint);
+      font-size: .8rem;
+      line-height: 1.35;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .item-type {
+      color: var(--muted);
+      font-size: .8rem;
+      white-space: nowrap;
+    }
+
+    .empty {
+      padding: 1rem 0;
+      color: var(--muted);
+      line-height: 1.55;
+    }
+
+    .detail {
+      margin-top: 2.6rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .detail-head {
+      margin-bottom: 2.2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 1rem;
+    }
+
+    .detail-title {
+      margin: 0;
+      font-size: 1.22rem;
+      font-weight: 600;
+      letter-spacing: -.02em;
+    }
+
+    .detail-meta {
+      margin-top: .32rem;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+
+    .text-button {
+      appearance: none;
+      border: 0;
+      min-height: 2.5rem;
+      padding: .45rem 0;
+      display: inline-flex;
+      align-items: center;
+      background: transparent;
+      color: var(--muted);
+      cursor: pointer;
+    }
+
+    .text-button:hover {
+      color: var(--text);
+    }
+
+    .fields {
+      margin: 0;
+    }
+
+    .field {
+      padding: .42rem 0;
+      display: grid;
+      grid-template-columns: minmax(8rem,.75fr) 1.5fr;
+      gap: 1rem;
+    }
+
+    .field dt {
+      color: var(--muted);
+    }
+
+    .field dd {
+      margin: 0;
+      overflow-wrap: anywhere;
+    }
+
+    .rule-list {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .rule {
+      padding: .78rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .rule:first-child {
+      border-top: 1px solid var(--border);
+    }
+
+    .rule-title {
+      font-weight: 500;
+    }
+
+    .rule-detail {
+      margin-top: .22rem;
+      color: var(--muted);
+      line-height: 1.48;
+    }
+
+    .command {
+      margin-top: 1.25rem;
+      border-top: 1px solid var(--border);
+      padding-top: 1rem;
+    }
+
+    .command-label {
+      margin-bottom: .45rem;
+      color: var(--faint);
+      font-size: .75rem;
+    }
+
+    code,
+    pre {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    }
+
+    .command code {
+      color: var(--text);
+      font-size: .84rem;
+      overflow-wrap: anywhere;
+    }
+
+    .notice {
+      margin-bottom: 1.6rem;
+      color: var(--muted);
+      line-height: 1.55;
+    }
+
+    .notice strong {
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    .notice.good strong {
+      color: var(--good);
+    }
+
+    .validation-row {
+      padding: .8rem 0;
+      display: grid;
+      grid-template-columns: minmax(0,1fr) auto;
+      gap: 1rem;
+      border-bottom: 1px solid var(--border);
+      align-items: start;
+    }
+
+    .validation-row:first-child {
+      border-top: 1px solid var(--border);
+    }
+
+    .validation-title {
+      font-weight: 500;
+    }
+
+    .validation-detail {
+      margin-top: .22rem;
+      color: var(--muted);
+      font-size: .84rem;
+      line-height: 1.45;
+    }
+
+    .status {
+      color: var(--muted);
+      white-space: nowrap;
+    }
+
+    .status.good {
+      color: var(--good);
+    }
+
+    .status.warn {
+      color: var(--warn);
+    }
+
+    .status.bad {
+      color: var(--bad);
+    }
+
+    .token-row {
+      padding: .62rem 0;
+      display: grid;
+      grid-template-columns: minmax(12rem, .9fr) 1.4fr auto;
+      gap: 1rem;
+      border-bottom: 1px solid var(--border);
+      align-items: center;
+    }
+
+    .token-row:first-child {
+      border-top: 1px solid var(--border);
+    }
+
+    .token-name {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: .82rem;
+    }
+
+    .token-use {
+      color: var(--muted);
+    }
+
+    .token-sample {
+      width: 1.05rem;
+      height: 1.05rem;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+    }
+
+    .workflow {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: .6rem;
+    }
+
+    .workflow-step {
+      padding: .7rem 0;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+    }
+
+    .workflow-step strong {
+      display: block;
+      margin-bottom: .2rem;
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    .workflow-step span {
+      color: var(--faint);
+      font-size: .78rem;
+    }
+
+    .mobile-nav {
+      display: none;
+    }
+
+    @media (max-width: 760px) {
+      .app {
+        display: block;
+      }
+
+      .sidebar {
+        display: none;
+      }
+
+      .main {
+        padding-top: 1.4rem;
+      }
+
+      .mobile-nav {
+        margin-bottom: 2rem;
+        display: flex;
+        gap: 1rem;
+        overflow-x: auto;
+      }
+
+      .mobile-nav button {
+        appearance: none;
+        border: 0;
+        min-height: 44px;
+        padding: .65rem 0;
+        background: transparent;
+        color: var(--muted);
+        white-space: nowrap;
+      }
+
+      .mobile-nav button.active {
+        color: var(--text);
+      }
+
+      .summary {
+        grid-template-columns: repeat(2, minmax(0,1fr));
+      }
+
+      .icon-button,
+      .filter,
+      .text-button {
+        min-height: 44px;
+      }
+
+      .icon-button {
+        width: 44px;
+        height: 44px;
+      }
+
+      .summary-item:nth-child(3) {
+        border-left: 0;
+      }
+
+      .summary-item:nth-child(n+3) {
+        border-top: 1px solid var(--border);
+      }
+
+      .workflow {
+        grid-template-columns: 1fr;
+        gap: 0;
+      }
+
+      .field {
+        grid-template-columns: 1fr;
+        gap: .2rem;
+      }
+
+      .token-row {
+        grid-template-columns: minmax(0,1fr) auto;
+      }
+
+      .token-use {
+        grid-column: 1 / -1;
+        grid-row: 2;
+      }
+    }
+
+    @media (max-width: 430px) {
+      .topbar {
+        align-items: flex-start;
+      }
+
+      .summary {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .summary-item + .summary-item {
+        padding-left: .8rem;
+      }
+
+      .catalogue-button {
+        grid-template-columns: 1fr;
+        gap: .2rem;
+      }
+
+      .item-type {
+        font-size: .76rem;
+      }
+
+      .detail-head {
+        display: block;
+      }
+
+      .detail-head .text-button {
+        margin-top: .8rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <div id="app" v-cloak>
+    <div class="app">
+      <aside class="sidebar">
+        <div class="brand">
+          <div class="brand-row">
+            <div class="brand-name">Ovlira</div>
+            <span class="version">0.2</span>
+          </div>
+          <p>Local UI guidance for coding agents.</p>
+        </div>
+
+        <nav>
+          <div class="nav-group">
+            <div class="nav-label">Toolkit</div>
+            <button
+              v-for="item in nav"
+              :key="item.id"
+              class="nav-button"
+              :class="{ active: view === item.id }"
+              :aria-current="view === item.id ? 'page' : undefined"
+              type="button"
+              @click="openView(item.id)"
+            >
+              {{ item.label }}
+            </button>
+          </div>
+        </nav>
+
+        <div class="sidebar-spacer"></div>
+
+        <div class="sidebar-meta">
+          Local catalogue<br>
+          Deterministic output
+        </div>
+      </aside>
+
+      <main id="main-content" class="main">
+        <div class="content">
+          <div class="mobile-nav">
+            <button
+              v-for="item in nav"
+              :key="item.id"
+              :class="{ active: view === item.id }"
+              :aria-current="view === item.id ? 'page' : undefined"
+              type="button"
+              @click="openView(item.id)"
+            >
+              {{ item.label }}
+            </button>
+          </div>
+
+          <header class="topbar">
+            <div>
+              <div class="eyebrow">{{ page.eyebrow }}</div>
+              <h1 class="page-title">{{ page.title }}</h1>
+              <p class="page-description">{{ page.description }}</p>
+            </div>
+
+            <div class="top-actions">
+              <button
+                class="icon-button"
+                type="button"
+                :aria-label="theme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme'"
+                @click="toggleTheme"
+              >
+                <svg v-if="theme === 'dark'" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round">
+                  <circle cx="12" cy="12" r="4"></circle>
+                  <path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M6.3 17.7l-1.4 1.4M19.1 4.9l-1.4 1.4"></path>
+                </svg>
+
+                <svg v-else viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round">
+                  <path d="M21 12.8A9 9 0 1 1 11.2 3 7 7 0 0 0 21 12.8z"></path>
+                </svg>
+              </button>
+            </div>
+          </header>
+
+          <template v-if="view === 'catalogue'">
+            <div class="summary">
+              <div class="summary-item">
+                <div class="summary-value">10</div>
+                <div class="summary-label">Components</div>
+              </div>
+              <div class="summary-item">
+                <div class="summary-value">6</div>
+                <div class="summary-label">Recipes</div>
+              </div>
+              <div class="summary-item">
+                <div class="summary-value good">Valid</div>
+                <div class="summary-label">Metadata contract</div>
+              </div>
+              <div class="summary-item">
+                <div class="summary-value">8 max</div>
+                <div class="summary-label">Search results</div>
+              </div>
+            </div>
+
+            <section class="section">
+              <h3 class="section-heading">Catalogue</h3>
+
+              <div class="search">
+                <input
+                  v-model="query"
+                  type="search"
+                  placeholder="Search components and recipes"
+                  aria-label="Search components and recipes"
+                >
+              </div>
+
+              <div class="filters">
+                <button
+                  v-for="filterItem in filters"
+                  :key="filterItem.id"
+                  class="filter"
+                  :class="{ active: filter === filterItem.id }"
+                  :aria-pressed="filter === filterItem.id"
+                  type="button"
+                  @click="filter = filterItem.id"
+                >
+                  {{ filterItem.label }}
+                </button>
+              </div>
+
+              <ul v-if="filteredCatalogue.length" class="catalogue">
+                <li
+                  v-for="item in filteredCatalogue"
+                  :key="item.id"
+                  class="catalogue-row"
+                >
+                  <button
+                    class="catalogue-button"
+                    :class="{ selected: selected?.id === item.id }"
+                    :aria-pressed="selected?.id === item.id"
+                    type="button"
+                    @click="selected = item"
+                  >
+                    <div class="item-main">
+                      <div class="item-name">{{ item.id }}</div>
+                      <div class="item-detail">{{ item.summary }}</div>
+                    </div>
+                    <div class="item-type">{{ item.type }}</div>
+                  </button>
+                </li>
+              </ul>
+
+              <div v-else class="empty">No catalogue entries match this search.</div>
+            </section>
+
+            <section v-if="selected" class="detail">
+              <div class="detail-head">
+                <div>
+                  <h3 class="detail-title">{{ selected.id }}</h3>
+                  <div class="detail-meta">{{ selected.type }} · {{ selected.category }}</div>
+                </div>
+
+                <button class="text-button" type="button" @click="selected = null">Close</button>
+              </div>
+
+              <section class="section">
+                <h4 class="section-heading">Descriptor</h4>
+
+                <dl class="fields">
+                  <div class="field">
+                    <dt>Use for</dt>
+                    <dd>{{ selected.useFor }}</dd>
+                  </div>
+                  <div class="field">
+                    <dt>Avoid for</dt>
+                    <dd>{{ selected.avoidFor }}</dd>
+                  </div>
+                  <div class="field">
+                    <dt>States</dt>
+                    <dd>{{ selected.states }}</dd>
+                  </div>
+                  <div class="field">
+                    <dt>Output</dt>
+                    <dd>{{ selected.output }}</dd>
+                  </div>
+                </dl>
+              </section>
+
+              <section class="section">
+                <h4 class="section-heading">Guidance</h4>
+
+                <ul class="rule-list">
+                  <li v-for="rule in selected.rules" :key="rule.title" class="rule">
+                    <div class="rule-title">{{ rule.title }}</div>
+                    <div class="rule-detail">{{ rule.detail }}</div>
+                  </li>
+                </ul>
+              </section>
+
+              <div class="command">
+                <div class="command-label">Inspect</div>
+                <code>ovlira inspect {{ selected.id }} --section guidance --json</code>
+              </div>
+            </section>
+          </template>
+
+          <template v-if="view === 'workflow'">
+            <section class="section">
+              <h3 class="section-heading">Agent workflow</h3>
+
+              <div class="workflow">
+                <div v-for="(step, index) in workflow" :key="step.name" class="workflow-step">
+                  <strong>{{ step.name }}</strong>
+                  <span>0{{ index + 1 }}</span>
+                </div>
+              </div>
+            </section>
+
+            <section class="section">
+              <h3 class="section-heading">Typical run</h3>
+
+              <div class="rule-list">
+                <div class="rule">
+                  <div class="rule-title">Search narrowly</div>
+                  <div class="rule-detail">Return a maximum of eight compact catalogue candidates rather than the entire system.</div>
+                </div>
+                <div class="rule">
+                  <div class="rule-title">Inspect one descriptor</div>
+                  <div class="rule-detail">Retrieve only API, guidance or example metadata needed for the current task.</div>
+                </div>
+                <div class="rule">
+                  <div class="rule-title">Copy only what is required</div>
+                  <div class="rule-detail">Add the selected recipe, its component source and the user-owned theme into the local project.</div>
+                </div>
+                <div class="rule">
+                  <div class="rule-title">Compose locally</div>
+                  <div class="rule-detail">The generated project remains ordinary Vite + TypeScript and can be edited without Ovlira runtime dependency.</div>
+                </div>
+                <div class="rule">
+                  <div class="rule-title">Check deterministically</div>
+                  <div class="rule-detail">Run source-level validation and return stable diagnostics with practical fixes.</div>
+                </div>
+              </div>
+
+              <div class="command">
+                <div class="command-label">Example</div>
+                <code>ovlira search "settings page" --json → ovlira inspect page.settings --json → ovlira add page.settings → ovlira check --json</code>
+              </div>
+            </section>
+          </template>
+
+          <template v-if="view === 'tokens'">
+            <div class="notice">
+              <strong>Theme values stay user-owned.</strong>
+              Components consume semantic <code>--ov-*</code> properties rather than arbitrary literals.
+            </div>
+
+            <section class="section">
+              <h3 class="section-heading">Core tokens</h3>
+
+              <div
+                v-for="token in tokens"
+                :key="token.name"
+                class="token-row"
+              >
+                <div class="token-name">{{ token.name }}</div>
+                <div class="token-use">{{ token.use }}</div>
+                <div
+                  v-if="token.sample"
+                  class="token-sample"
+                  :style="{ background: token.sample }"
+                  aria-hidden="true"
+                ></div>
+              </div>
+            </section>
+
+            <section class="section">
+              <h3 class="section-heading">Commands</h3>
+              <div class="rule-list">
+                <div class="rule">
+                  <div class="rule-title"><code>ovlira tokens --format json</code></div>
+                  <div class="rule-detail">Compact token data for agents and tooling.</div>
+                </div>
+                <div class="rule">
+                  <div class="rule-title"><code>ovlira tokens --format css</code></div>
+                  <div class="rule-detail">CSS custom properties for direct project use.</div>
+                </div>
+              </div>
+            </section>
+          </template>
+
+          <template v-if="view === 'validation'">
+            <div class="notice good">
+              <strong>0 errors.</strong> Example project passes the current source-level checks.
+            </div>
+
+            <section class="section">
+              <h3 class="section-heading">Checks</h3>
+
+              <div
+                v-for="rule in validation"
+                :key="rule.title"
+                class="validation-row"
+              >
+                <div>
+                  <div class="validation-title">{{ rule.title }}</div>
+                  <div class="validation-detail">{{ rule.detail }}</div>
+                </div>
+                <div class="status" :class="rule.statusClass">{{ rule.status }}</div>
+              </div>
+            </section>
+
+            <section class="section">
+              <h3 class="section-heading">Boundary</h3>
+              <p class="page-description">
+                Validation is intentionally source-level. It does not prove visual quality, runtime behaviour,
+                browser transitions or every accessibility concern.
+              </p>
+            </section>
+          </template>
+
+          <template v-if="view === 'about'">
+            <section class="section">
+              <h3 class="section-heading">Purpose</h3>
+              <p class="page-description">
+                Ovlira gives coding agents a compact catalogue of human-designed UI decisions without sending
+                an entire design system into model context.
+              </p>
+            </section>
+
+            <section class="section">
+              <h3 class="section-heading">Division of responsibility</h3>
+              <div class="rule-list">
+                <div class="rule">
+                  <div class="rule-title">Humans own visual design</div>
+                  <div class="rule-detail">Components, recipes, defaults and composition constraints are deliberately designed and reviewed.</div>
+                </div>
+                <div class="rule">
+                  <div class="rule-title">Agents own composition</div>
+                  <div class="rule-detail">Agents retrieve the smallest relevant guidance, adapt domain content and implement application behaviour.</div>
+                </div>
+                <div class="rule">
+                  <div class="rule-title">The CLI owns retrieval and guardrails</div>
+                  <div class="rule-detail">Search, inspect, add and check remain local, deterministic and easy to audit.</div>
+                </div>
+              </div>
+            </section>
+
+            <section class="section">
+              <h3 class="section-heading">Not trying to be</h3>
+              <dl class="fields">
+                <div class="field"><dt>Visual editor</dt><dd>No</dd></div>
+                <div class="field"><dt>Hosted service</dt><dd>No</dd></div>
+                <div class="field"><dt>Backend</dt><dd>No</dd></div>
+                <div class="field"><dt>MCP server</dt><dd>No</dd></div>
+              </dl>
+            </section>
+          </template>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script type="module">
+    import { createApp, ref, computed } from './node_modules/vue/dist/vue.esm-browser.js'
+
+    createApp({
+      setup() {
+        const theme = ref(document.documentElement.dataset.theme || 'light')
+        const view = ref('catalogue')
+        const query = ref('')
+        const filter = ref('all')
+        const selected = ref(null)
+
+        const nav = [
+          { id: 'catalogue', label: 'Catalogue' },
+          { id: 'workflow', label: 'Workflow' },
+          { id: 'tokens', label: 'Tokens' },
+          { id: 'validation', label: 'Validation' },
+          { id: 'about', label: 'About' }
+        ]
+
+        const pages = {
+          catalogue: {
+            eyebrow: 'Local catalogue',
+            title: 'Components and recipes',
+            description: 'Search the smallest useful set of human-designed building blocks, then inspect only the guidance an agent needs.'
+          },
+          workflow: {
+            eyebrow: 'Agent path',
+            title: 'Short, deterministic workflow',
+            description: 'Keep retrieval bounded and local: search, inspect, add, compose, then check.'
+          },
+          tokens: {
+            eyebrow: 'Theme',
+            title: 'Replaceable design tokens',
+            description: 'A compact semantic theme surface that projects can own and change without rewriting component internals.'
+          },
+          validation: {
+            eyebrow: 'Guardrails',
+            title: 'Source-level validation',
+            description: 'Catch obvious catalogue misuse and token violations before visual review.'
+          },
+          about: {
+            eyebrow: 'Ovlira 0.2',
+            title: 'Human design, agent composition',
+            description: 'A local UI prototyping toolkit designed around token efficiency, portability and deterministic constraints.'
+          }
+        }
+
+        const filters = [
+          { id: 'all', label: 'All' },
+          { id: 'component', label: 'Components' },
+          { id: 'recipe', label: 'Recipes' }
+        ]
+
+        const catalogue = [
+          {
+            id: 'ov-button',
+            type: 'component',
+            category: 'Action',
+            summary: 'Primary, secondary and quiet actions with constrained hierarchy.',
+            useFor: 'Task actions, form submission and compact local controls.',
+            avoidFor: 'Using multiple primary actions within the same task region.',
+            states: 'default, hover, focus, disabled, loading',
+            output: 'Custom element',
+            rules: [
+              { title: 'One primary action', detail: 'Use one dominant action inside a marked task region; downgrade supporting actions.' },
+              { title: 'Keep labels explicit', detail: 'Prefer short verb-led labels over ambiguous icon-only actions unless the icon is conventional.' }
+            ]
+          },
+          {
+            id: 'ov-input',
+            type: 'component',
+            category: 'Form',
+            summary: 'Labelled text input with predictable error and help states.',
+            useFor: 'Single-line textual user input.',
+            avoidFor: 'Selecting from a known fixed set of options.',
+            states: 'default, focus, disabled, error',
+            output: 'Custom element',
+            rules: [
+              { title: 'Labels are required', detail: 'Every input must expose an accessible, visible or intentionally hidden label.' },
+              { title: 'Use semantic errors', detail: 'Error text explains the correction rather than only changing colour.' }
+            ]
+          },
+          {
+            id: 'ov-select',
+            type: 'component',
+            category: 'Form',
+            summary: 'Compact selection control for bounded option sets.',
+            useFor: 'Small to medium known option lists.',
+            avoidFor: 'Free-form search or very large datasets.',
+            states: 'default, focus, disabled, error',
+            output: 'Custom element',
+            rules: [
+              { title: 'Use native semantics', detail: 'Preserve selection semantics and keyboard behaviour rather than simulating a menu unnecessarily.' },
+              { title: 'Keep option text concise', detail: 'If each option needs significant explanation, use a different composition.' }
+            ]
+          },
+          {
+            id: 'ov-badge',
+            type: 'component',
+            category: 'Status',
+            summary: 'Low-noise categorical marker for small amounts of metadata.',
+            useFor: 'Short categorical states where inline text alone is insufficient.',
+            avoidFor: 'Decorating every row or turning ordinary metadata into pills.',
+            states: 'neutral, success, warning, error',
+            output: 'Custom element',
+            rules: [
+              { title: 'Use sparingly', detail: 'Prefer plain semantic text unless the badge shape adds genuine scanning value.' },
+              { title: 'Never rely on colour alone', detail: 'The text must communicate the state independently of colour.' }
+            ]
+          },
+          {
+            id: 'ov-card',
+            type: 'component',
+            category: 'Structure',
+            summary: 'Bounded surface for content that genuinely needs containment.',
+            useFor: 'Independent movable or comparable content groups.',
+            avoidFor: 'Default page sectioning or every block of content.',
+            states: 'default',
+            output: 'Custom element',
+            rules: [
+              { title: 'Containment must be justified', detail: 'Spacing and typography should solve hierarchy before introducing a card.' },
+              { title: 'Avoid nesting', detail: 'Nested cards are usually a sign that the composition should be simplified.' }
+            ]
+          },
+          {
+            id: 'ov-alert',
+            type: 'component',
+            category: 'Status',
+            summary: 'Contextual notice for important success, warning or error information.',
+            useFor: 'Meaningful state changes and actionable system feedback.',
+            avoidFor: 'Routine helper text or low-priority metadata.',
+            states: 'info, success, warning, error',
+            output: 'Custom element',
+            rules: [
+              { title: 'Match prominence to severity', detail: 'Do not use an alert surface for information that can remain inline.' },
+              { title: 'Make the next action obvious', detail: 'Warnings and errors should explain what the user can do next when possible.' }
+            ]
+          },
+          {
+            id: 'ov-page-header',
+            type: 'component',
+            category: 'Structure',
+            summary: 'Compact title, description and action alignment for application pages.',
+            useFor: 'Application-level page titles and context.',
+            avoidFor: 'Large marketing hero sections.',
+            states: 'default',
+            output: 'Custom element',
+            rules: [
+              { title: 'Keep hierarchy compressed', detail: 'Titles should orient the user without consuming a large portion of the viewport.' },
+              { title: 'Limit actions', detail: 'Only page-level actions belong in the header.' }
+            ]
+          },
+          {
+            id: 'ov-empty-state',
+            type: 'component',
+            category: 'State',
+            summary: 'Concise explanation and next action when useful content is absent.',
+            useFor: 'True empty datasets and initial states.',
+            avoidFor: 'Temporary loading or filtered zero-result states that need different wording.',
+            states: 'empty',
+            output: 'Custom element',
+            rules: [
+              { title: 'Explain what is true', detail: 'State the absence clearly without filler or marketing language.' },
+              { title: 'Offer one useful action', detail: 'Include a next step only when there is a meaningful one.' }
+            ]
+          },
+          {
+            id: 'ov-data-table',
+            type: 'component',
+            category: 'Data',
+            summary: 'Dense structured data display with explicit caption and column semantics.',
+            useFor: 'Comparable multi-column records.',
+            avoidFor: 'Small key/value groups or mobile-first card substitutes.',
+            states: 'default, loading, empty, error',
+            output: 'Custom element',
+            rules: [
+              { title: 'Caption is required', detail: 'Every table needs meaningful context for what the rows represent.' },
+              { title: 'Preserve density', detail: 'Avoid excessive row height, decorative badges and duplicated labels.' }
+            ]
+          },
+          {
+            id: 'ov-application-shell',
+            type: 'component',
+            category: 'Shell',
+            summary: 'Minimal application frame with navigation and main content region.',
+            useFor: 'Small local tools and product interfaces with stable top-level navigation.',
+            avoidFor: 'Marketing pages or visual editor canvases.',
+            states: 'default',
+            output: 'Custom element',
+            rules: [
+              { title: 'Navigation stays quiet', detail: 'Use text hierarchy and subtle interaction states rather than heavy tab chrome.' },
+              { title: 'Content remains primary', detail: 'The shell should disappear perceptually when the user is working.' }
+            ]
+          },
+          {
+            id: 'page.settings',
+            type: 'recipe',
+            category: 'Page',
+            summary: 'Settings page with grouped configuration, labels and compact controls.',
+            useFor: 'Product preferences, account configuration and bounded system settings.',
+            avoidFor: 'Complex setup flows requiring branching or extensive explanation.',
+            states: 'loading, success, error',
+            output: 'Recipe',
+            rules: [
+              { title: 'Group by concept', detail: 'Use section headings and spacing before introducing extra containers.' },
+              { title: 'Put controls on the decision edge', detail: 'Align toggles and compact actions consistently opposite their labels.' }
+            ]
+          },
+          {
+            id: 'page.search',
+            type: 'recipe',
+            category: 'Page',
+            summary: 'Search-first page with filters, results and explicit zero-result behaviour.',
+            useFor: 'Compact catalogue and object discovery.',
+            avoidFor: 'Exploratory dashboards without a clear query model.',
+            states: 'loading, empty, error, success',
+            output: 'Recipe',
+            rules: [
+              { title: 'Search is visually primary', detail: 'The query input should be easy to find without becoming oversized.' },
+              { title: 'Filters stay textual', detail: 'Use quiet filter controls unless a stronger visual treatment materially improves scanning.' }
+            ]
+          },
+          {
+            id: 'page.crud-table',
+            type: 'recipe',
+            category: 'Page',
+            summary: 'Task-focused data table with restrained creation and row actions.',
+            useFor: 'Administrative datasets and compact record management.',
+            avoidFor: 'Narrative content or highly visual collections.',
+            states: 'loading, empty, error, success',
+            output: 'Recipe',
+            rules: [
+              { title: 'Keep the primary task singular', detail: 'Creation may be primary; row utilities should remain secondary or contextual.' },
+              { title: 'Do not turn every value into a component', detail: 'Plain text should remain the default table cell treatment.' }
+            ]
+          },
+          {
+            id: 'page.detail',
+            type: 'recipe',
+            category: 'Page',
+            summary: 'Record detail composition using aligned fields and small semantic sections.',
+            useFor: 'Inspecting a single object with actions and metadata.',
+            avoidFor: 'Large editing surfaces where most values are simultaneously editable.',
+            states: 'loading, error, success',
+            output: 'Recipe',
+            rules: [
+              { title: 'Align labels and values', detail: 'Use a stable grid for key/value information instead of independent cards.' },
+              { title: 'Keep metadata quiet', detail: 'Timestamps, IDs and secondary context should not compete with the object itself.' }
+            ]
+          },
+          {
+            id: 'state.empty',
+            type: 'recipe',
+            category: 'State',
+            summary: 'Minimal empty-state composition with optional recovery action.',
+            useFor: 'Initial or genuine absence of content.',
+            avoidFor: 'Errors, loading or zero search results with distinct user intent.',
+            states: 'empty',
+            output: 'Recipe',
+            rules: [
+              { title: 'No decorative filler', detail: 'Do not add illustration merely because the screen has little content.' },
+              { title: 'Match copy to context', detail: 'Say what is missing and what the user can do next.' }
+            ]
+          },
+          {
+            id: 'shell.application',
+            type: 'recipe',
+            category: 'Shell',
+            summary: 'Focused application shell with stable navigation and responsive content.',
+            useFor: 'Small internal tools and local review apps.',
+            avoidFor: 'Canvas-based editing environments.',
+            states: 'default',
+            output: 'Recipe',
+            rules: [
+              { title: 'Keep shell width economical', detail: 'Navigation should occupy only the space needed to remain legible.' },
+              { title: 'Responsive, not redesigned', detail: 'Collapse navigation while preserving content hierarchy and spacing logic.' }
+            ]
+          }
+        ]
+
+        const workflow = [
+          { name: 'search' },
+          { name: 'inspect' },
+          { name: 'add' },
+          { name: 'compose' },
+          { name: 'check' }
+        ]
+
+        const tokens = [
+          { name: '--ov-bg', use: 'Primary application surface', sample: 'var(--bg)' },
+          { name: '--ov-text', use: 'Primary readable foreground', sample: 'var(--text)' },
+          { name: '--ov-muted', use: 'Secondary labels and controls', sample: 'var(--muted)' },
+          { name: '--ov-faint', use: 'Low-priority metadata', sample: 'var(--faint)' },
+          { name: '--ov-border', use: 'Subtle structural boundaries', sample: 'var(--border)' },
+          { name: '--ov-good', use: 'Successful or healthy state', sample: 'var(--good)' },
+          { name: '--ov-warn', use: 'Attention or warning state', sample: 'var(--warn)' },
+          { name: '--ov-bad', use: 'Error or destructive state', sample: 'var(--bad)' },
+          { name: '--ov-font-sans', use: 'Global UI typography' },
+          { name: '--ov-space-*', use: 'Approved spacing scale' }
+        ]
+
+        const validation = [
+          { title: 'Unknown custom elements', detail: 'Reject unregistered ov-* tags.', status: 'Pass', statusClass: 'good' },
+          { title: 'Required labels and captions', detail: 'Check component metadata for mandatory accessible text.', status: 'Pass', statusClass: 'good' },
+          { title: 'Invalid nesting', detail: 'Use catalogue composition metadata to flag disallowed structures.', status: 'Pass', statusClass: 'good' },
+          { title: 'Recipe state markers', detail: 'Require declared loading, empty, error or success markers.', status: 'Pass', statusClass: 'good' },
+          { title: 'Primary action count', detail: 'Catch multiple primary buttons inside a marked task region.', status: 'Pass', statusClass: 'good' },
+          { title: 'Literal design values', detail: 'Flag obvious unapproved colour and token-category literals.', status: 'Pass', statusClass: 'good' },
+          { title: 'Heading hierarchy', detail: 'Catch basic structural heading problems.', status: 'Pass', statusClass: 'good' }
+        ]
+
+        const page = computed(() => pages[view.value])
+
+        const filteredCatalogue = computed(() => {
+          const term = query.value.trim().toLowerCase()
+
+          return catalogue
+            .filter(item => filter.value === 'all' || item.type === filter.value)
+            .filter(item => {
+              if (!term) return true
+              return [
+                item.id,
+                item.type,
+                item.category,
+                item.summary,
+                item.useFor
+              ].join(' ').toLowerCase().includes(term)
+            })
+            .slice(0, term ? 8 : catalogue.length)
+        })
+
+        function toggleTheme() {
+          theme.value = theme.value === 'dark' ? 'light' : 'dark'
+          document.documentElement.dataset.theme = theme.value
+          localStorage.setItem('ovlira-theme', theme.value)
+        }
+
+        function openView(next) {
+          view.value = next
+          selected.value = null
+        }
+
+        return {
+          theme,
+          view,
+          query,
+          filter,
+          selected,
+          nav,
+          page,
+          filters,
+          filteredCatalogue,
+          workflow,
+          tokens,
+          validation,
+          toggleTheme,
+          openView
+        }
+      }
+    }).mount('#app')
+  </script>
+</body>
+</html>

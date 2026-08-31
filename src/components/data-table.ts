@@ -14,13 +14,15 @@ export class OvDataTable extends LitElement {
 
   static styles = css`
     :host { display: block; overflow-x: auto; }
-    table { border-collapse: collapse; color: var(--ov-color-ink, #1d211d); min-width: 100%; text-align: left; }
-    caption { color: var(--ov-color-muted, #687066); font: 700 var(--ov-text-xs, 0.72rem) / 1.2 var(--ov-font-mono, monospace); letter-spacing: 0.08em; margin-bottom: 0.8rem; text-align: left; text-transform: uppercase; }
-    th { background: var(--ov-color-canvas, #f4f1e8); font: 700 var(--ov-text-xs, 0.72rem) / 1.2 var(--ov-font-mono, monospace); letter-spacing: 0.04em; text-transform: uppercase; }
-    td { font: 500 var(--ov-text-sm, 0.84rem) / 1.4 var(--ov-font-sans, sans-serif); }
-    th, td { border-bottom: 1px solid var(--ov-color-line, #d7d9cf); padding: 0.85rem 1rem; white-space: nowrap; }
-    tbody tr:hover { background: rgb(199 243 107 / 0.12); }
-    .empty { color: var(--ov-color-muted, #687066); font-style: italic; }
+    table { border-collapse: collapse; color: var(--ov-text, var(--ov-color-ink, #171717)); font-variant-numeric: tabular-nums; min-width: 100%; text-align: start; }
+    caption { color: var(--ov-faint, #767676); font: 600 var(--ov-text-xs, 0.72rem) / 1.2 var(--ov-font-sans, sans-serif); letter-spacing: 0.08em; margin-block-end: 0.75rem; text-align: start; text-transform: uppercase; }
+    th { color: var(--ov-faint, #767676); font: 600 var(--ov-text-xs, 0.72rem) / 1.2 var(--ov-font-sans, sans-serif); letter-spacing: 0.05em; text-transform: uppercase; }
+    td { font: 400 var(--ov-text-sm, 0.82rem) / 1.45 var(--ov-font-sans, sans-serif); }
+    th, td { border-bottom: 1px solid var(--ov-border, var(--ov-color-line, rgb(0 0 0 / 0.10))); padding: 0.68rem 0.75rem; white-space: nowrap; }
+    th:first-child, td:first-child { padding-inline-start: 0; }
+    th:last-child, td:last-child { padding-inline-end: 0; }
+    .empty { color: var(--ov-muted, var(--ov-color-muted, #6f6f6f)); font-style: normal; }
+    @media (hover: hover) { tbody tr:hover { background: var(--ov-hover, var(--ov-color-accent, rgb(0 0 0 / 0.055))); } }
   `;
 
   render() {

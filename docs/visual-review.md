@@ -2,7 +2,7 @@
 
 This is the approval protocol for the six shipped recipe starters. It is a design review, not a request for an agent to redesign the catalogue. Review the generated screen as a user would see it, record defects, and leave component source unchanged while deciding whether the fixture passes.
 
-The agent scope ends at fixture wiring, behavior, accessibility checks, and evidence capture. Only a human designer may choose new visual direction or approve changes to the theme and component styling.
+The agent scope ends at fixture wiring, behavior, accessibility checks, and evidence capture. Only a human designer may choose new visual direction or approve changes to the theme, component styling, or screenshot baselines. The current reference package is indexed in [`design/reference-manifest.json`](./design/reference-manifest.json).
 
 ## What a reviewer signs off
 
@@ -30,15 +30,29 @@ npm run review:visual
 
 Open the local URL printed by Vite. Leave that one server running while you switch between Settings, Search, CRUD table, Detail, Empty state, and Application shell in the left navigation. Stop it with `Ctrl-C` when the review is complete.
 
-The app's baseline interactions are deliberately small but observable: save settings shows a success state, search filters the sample rows, CRUD creates a new row, detail edits the record name, Empty state reveals a created result, and shell navigation changes the page context. These are harness interactions; generated starter parity is a separate v0.3 requirement.
+The app's baseline interactions are deliberately small but observable: save settings shows a success state, search filters the sample rows, CRUD creates a new row, detail edits the record name, Empty state reveals a created result, and shell navigation changes the page context. CLI-generated starters use the same canonical fixture markup and expose the same action seams.
 
 If you see `Missing script: "dev"`, you are in the checkout root or an old per-recipe fixture. Run `npm run review:visual` from the checkout root instead. The generated `init` projects still contain their own `dev` script, but they are no longer the review workflow.
 
-The review app is the canonical visual surface for this phase. Generated recipe starters remain a separate output contract; interaction parity with those starters is tracked in the roadmap before v0.3 exit.
+The review app is the canonical review surface for this phase. Generated recipe starters remain a separate output contract, but both paths import the same fixture definitions from `src/recipes/fixtures.ts` so the compositions cannot silently drift.
+
+## Automated gates
+
+Install the pinned Chromium build once, then run the browser gates:
+
+```bash
+npx playwright install chromium
+npm run test:browser
+npm run test:visual
+```
+
+`test:browser` covers baseline interactions, axe WCAG checks in light and dark schemes, horizontal overflow at all three widths, and 44px touch targets at 375px. `test:visual` compares every default state in both schemes at all three widths and every additional required state at 1440px.
+
+`npm run test:visual:update` creates candidate baselines. It is not an approval action. A human reviews those images, records the decision, and then changes `baselineStatus` in [`design/reference-manifest.json`](./design/reference-manifest.json) to `approved` in the same reviewed change. Intentional visual changes repeat that process; agents must not refresh snapshots merely to make a failed comparison pass.
 
 ## Review sequence
 
-Use a browser viewport of 1440 × 900, 768 × 1024, and 375 × 812. The middle width is deliberately below the shell's 56rem breakpoint; the narrow width catches wrapping and touch-target problems.
+Use a browser viewport of 1440 × 900, 768 × 1024, and 375 × 812. The middle width exercises the compact desktop boundary; the narrow width catches wrapping and touch-target problems.
 
 For each recipe:
 
@@ -57,7 +71,7 @@ The generated state controls are:
 | `page.search` | Results, Loading, Empty, Error |
 | `page.crud-table` | Records, Loading, Empty, Error, Saved |
 | `page.detail` | Ready, Loading, Error |
-| `state.empty` | Empty (no switcher; confirm the one next action) |
+| `state.empty` | Empty, then the observable Success result from its one next action |
 | `shell.application` | Default shell (no state switcher; check nav and overview) |
 
 ## What to look for
@@ -89,7 +103,7 @@ Copy this table into the review issue or pull request and attach screenshots for
 | `page.search` | Default | 1440 / 768 / 375 | Results, Loading, Empty, Error |  |  |
 | `page.crud-table` | Default | 1440 / 768 / 375 | Records, Loading, Empty, Error, Saved |  |  |
 | `page.detail` | Default | 1440 / 768 / 375 | Ready, Loading, Error |  |  |
-| `state.empty` | Default | 1440 / 768 / 375 | Empty |  |  |
+| `state.empty` | Default | 1440 / 768 / 375 | Empty, Success |  |  |
 | `shell.application` | Default | 1440 / 768 / 375 | Default shell |  |  |
 | All six | Contrasting | 1440 / 375 | Representative default + required states |  |  |
 

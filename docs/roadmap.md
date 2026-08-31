@@ -63,11 +63,11 @@ The initial release proves the technical vertical slice:
 
 The important gaps are product gaps rather than missing infrastructure:
 
-- the token export is a useful start, but it is not yet a complete, documented theme contract;
-- some component visual values still sit outside the global token surface;
-- the recipe starters are composed visual fixtures with baseline local interactions; they still need domain-data seams and stronger deterministic interaction checks;
-- the consolidated review app covers all six fixtures, and generated starters now expose the same baseline action seams;
-- there is no explicit designer contribution and visual approval gate; and
+- the default theme contract and authored reference are now explicit, but the separate designer-supplied contrasting theme is still outstanding;
+- the ten components now consume the semantic theme surface, while intentional structural CSS remains component-owned;
+- the six canonical recipe fixtures now share markup between generation and review and have deterministic interaction, accessibility, responsive, and screenshot checks;
+- the consolidated review app covers all six fixtures and generated starters expose the same baseline action seams;
+- the designer contribution checklist and visual approval mechanism exist, but the current candidate baselines still need human sign-off; and
 - token usage is reported by evaluations, and deterministic CLI response budgets are now enforced in CI; provider token accounting remains a separate measurement.
 
 The existing generated-spec and runtime-validation work remains useful test infrastructure. Expanding it is not the product priority until these gaps are closed.
