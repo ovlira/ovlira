@@ -75,7 +75,6 @@ button:focus-visible, a:focus-visible, input:focus-visible { outline: 2px solid 
 .catalogue-row { margin-inline: -.7rem; }
 .catalogue-button { appearance: none; width: 100%; display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 1rem; padding: .62rem .7rem; border: 0; border-radius: var(--ov-radius-lg); background: transparent; color: inherit; text-align: start; cursor: pointer; }
 .catalogue-button:hover, .catalogue-button.selected { background: var(--hover); }
-.catalogue-button.selected { box-shadow: inset 2px 0 0 var(--text); }
 .catalogue-button.selected .item-detail, .catalogue-button.selected .item-type { color: var(--text); }
 .item-main { min-width: 0; }
 .item-name { display: block; overflow: hidden; font-weight: 500; text-overflow: ellipsis; white-space: nowrap; }
