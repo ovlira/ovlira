@@ -226,6 +226,7 @@ describe('ovlira CLI', () => {
       expect(await runCli(['add', id, '--cwd', project, '--json'], project, addCapture.io)).toBe(0);
       expect(JSON.parse(addCapture.stdout[0]).added).toContain(tag);
       expect(await fs.readFile(path.join(project, 'src/main.ts'), 'utf8')).toContain(`<${tag}`);
+      if (tag === 'ov-drawer') expect(await fs.readFile(path.join(project, 'src/main.ts'), 'utf8')).toContain('data-drawer-open');
       expect(await runCli(['check', '--cwd', project, '--json'], project, ioCapture().io)).toBe(0);
       await fs.symlink(path.join(process.cwd(), 'node_modules'), path.join(project, 'node_modules'), 'dir');
       await execFile('npm', ['run', 'build'], { cwd: project, env: { ...process.env, NO_COLOR: '1' } });

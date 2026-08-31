@@ -74,8 +74,10 @@ test('catalogue preview coverage includes every shipped component', async ({ pag
   for (const id of ['ov-button', 'ov-input', 'ov-textarea', 'ov-checkbox', 'ov-radio-group', 'ov-toggle', 'ov-dialog', 'ov-select', 'ov-spinner', 'ov-menu', 'ov-pagination', 'ov-combobox', 'ov-tabs', 'ov-toast', 'ov-progress', 'ov-skeleton', 'ov-tooltip', 'ov-avatar', 'ov-breadcrumbs', 'ov-accordion', 'ov-slider', 'ov-file-upload', 'ov-date-input', 'ov-stepper', 'ov-drawer', 'ov-badge', 'ov-card', 'ov-alert', 'ov-page-header', 'ov-empty-state', 'ov-data-table', 'ov-application-shell']) {
     await page.locator(`[data-catalogue-select="${id}"]`).click();
     await expect(page.locator('[data-component-preview]')).toBeVisible();
-    await expect(page.locator(`[data-component-preview] ${id}`).first()).toBeVisible();
-    if (id === 'ov-drawer') await page.locator('[data-component-preview] ov-drawer').first().getByRole('button', { name: 'Close', exact: true }).click();
+    if (id === 'ov-drawer') {
+      await expect(page.locator('[data-component-preview] [data-drawer-open]')).toBeVisible();
+      await expect(page.locator('[data-component-preview] ov-drawer')).toHaveCount(1);
+    } else await expect(page.locator(`[data-component-preview] ${id}`).first()).toBeVisible();
   }
 });
 
@@ -304,6 +306,8 @@ test('date input preview exposes native date constraints', async ({ page }) => {
   const input = host.locator('input[type="date"]');
   await expect(input).toHaveValue('2026-03-12');
   await expect(input).toHaveAttribute('min', '2026-01-01');
+  await expect(input).toHaveCSS('box-sizing', 'border-box');
+  await expect(input).toHaveCSS('height', '44px');
 });
 
 test('stepper preview exposes current workflow progress', async ({ page }) => {
@@ -341,9 +345,20 @@ test('drawer preview opens a native side-panel dialog', async ({ page }) => {
   await page.locator('[data-catalogue-select="ov-drawer"]').click();
   const host = page.locator('[data-component-preview] ov-drawer').first();
   const drawer = host.locator('dialog');
+  const trigger = page.locator('[data-component-preview] [data-drawer-open]');
+  await expect(trigger).toBeVisible();
+  await expect(drawer).toBeHidden();
+  await trigger.click();
   await expect(drawer).toBeVisible();
   await expect(drawer).toHaveAttribute('aria-labelledby', /ov-drawer-/);
   await expect(host).toContainText('Choose filters that apply to this view.');
+  const apply = host.getByRole('button', { name: 'Apply filters', exact: true });
+  await expect(apply).toBeVisible();
+  const surfaceBox = await host.locator('[part="surface"]').boundingBox();
+  const applyBox = await apply.boundingBox();
+  expect(surfaceBox).not.toBeNull();
+  expect(applyBox).not.toBeNull();
+  expect((applyBox?.y ?? 0) + (applyBox?.height ?? 0)).toBeLessThanOrEqual((surfaceBox?.y ?? 0) + (surfaceBox?.height ?? 0) + 1);
   await host.getByRole('button', { name: 'Close', exact: true }).click();
   await expect(drawer).toBeHidden();
 });

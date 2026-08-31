@@ -292,7 +292,7 @@ const validation = [
           'ov-file-upload': '<ov-file-upload label="Project archive" accept=".zip" name="archive"></ov-file-upload>',
           'ov-date-input': '<ov-date-input label="Launch date" name="launch-date" min="2026-01-01" value="2026-03-12"></ov-date-input>',
           'ov-stepper': '<ov-stepper></ov-stepper>',
-          'ov-drawer': '<ov-drawer heading="Filters" description="Refine the visible projects." open><p>Choose filters that apply to this view.</p><div slot="actions"><ov-button>Apply filters</ov-button></div></ov-drawer>',
+          'ov-drawer': '<div class="preview-stack"><ov-button data-drawer-open>Open filters</ov-button><ov-drawer heading="Filters" description="Refine the visible projects."><p>Choose filters that apply to this view.</p><div slot="actions"><ov-button>Apply filters</ov-button></div></ov-drawer></div>',
           'ov-badge': '<div class="preview-actions"><ov-badge>Neutral</ov-badge><ov-badge tone="accent">Accent</ov-badge><ov-badge tone="success">Ready</ov-badge><ov-badge tone="warning">Review</ov-badge><ov-badge tone="danger">Blocked</ov-badge></div>',
           'ov-card': '<ov-card padding="md"><span slot="header">Account settings</span><p>One bounded group for related content; hierarchy stays shallow.</p><span slot="footer"><ov-button variant="quiet" size="sm">Open settings</ov-button></span></ov-card>',
           'ov-alert': '<div class="preview-stack"><ov-alert heading="Saved" tone="success">Your changes are ready to use.</ov-alert><ov-alert heading="Needs attention" tone="warning">Review the highlighted fields before continuing.</ov-alert><ov-alert heading="Could not save" tone="danger">Try again or check your connection.</ov-alert></div>',
@@ -338,6 +338,9 @@ const validation = [
           stepper.items = [{ value: 'details', label: 'Details' }, { value: 'access', label: 'Access' }, { value: 'review', label: 'Review' }];
           stepper.value = 'access';
         }
+        const drawer = detail.querySelector('ov-drawer');
+        const drawerTrigger = detail.querySelector('[data-drawer-open]');
+        drawerTrigger?.addEventListener('click', () => { if (drawer) drawer.open = true; });
         const table = detail.querySelector('ov-data-table');
         if (table) { table.columns = [{ key: 'name', label: 'Name' }, { key: 'state', label: 'State' }]; table.rows = [{ name: 'Ovlira', state: 'Ready' }, { name: 'Reference', state: 'Approved' }]; }
         detail.querySelector('[data-detail-close]')?.addEventListener('click', () => closeDetail({ restoreFocus: true }));
