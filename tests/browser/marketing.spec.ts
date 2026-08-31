@@ -37,17 +37,15 @@ test('catalogue uses a desktop master detail split and a mobile detail replaceme
   await page.setViewportSize({ width: 1440, height: 900 });
   await openMarketing(page);
   const listPanel = page.locator('[data-catalogue-list-panel]');
-  const placeholder = page.locator('[data-detail-empty]');
   const detail = page.locator('[data-detail]');
   const button = page.locator('[data-catalogue-select="ov-button"]');
 
   await expect(listPanel).toBeVisible();
   await expect(detail).toBeHidden();
-  await expect(placeholder).toBeVisible();
+  await expect(listPanel).toHaveCSS('grid-column-end', '-1');
   await button.click();
   await expect(listPanel).toBeVisible();
   await expect(detail).toBeVisible();
-  await expect(placeholder).toBeHidden();
   await expect(page.getByRole('button', { name: 'Back to catalogue', exact: true })).toBeHidden();
   await expect(page.getByRole('button', { name: 'Close', exact: true })).toBeVisible();
   await expect(button).toHaveClass(/selected/);
@@ -63,11 +61,10 @@ test('catalogue uses a desktop master detail split and a mobile detail replaceme
   await page.getByRole('button', { name: 'Back to catalogue', exact: true }).click();
   await expect(listPanel).toBeVisible();
   await expect(detail).toBeHidden();
-  await expect(placeholder).toBeHidden();
   await expect(button).toHaveAttribute('aria-pressed', 'false');
 
   await page.setViewportSize({ width: 1440, height: 900 });
-  await expect(placeholder).toBeVisible();
+  await expect(listPanel).toHaveCSS('grid-column-end', '-1');
 });
 
 test('catalogue preview coverage includes every shipped component', async ({ page }) => {

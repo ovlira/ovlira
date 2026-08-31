@@ -138,11 +138,6 @@ const validation = [
                 </ul>
                 <div class="empty" data-catalogue-empty hidden>No catalogue entries match this search.</div>
               </section>
-              <section class="detail detail-placeholder" data-detail-empty aria-labelledby="catalogue-detail-empty-heading">
-                <div class="section-heading">Inspect an entry</div>
-                <h2 id="catalogue-detail-empty-heading" class="detail-title">Choose a catalogue item</h2>
-                <p class="detail-placeholder-copy">Select a component or recipe to see its descriptor, rendered preview, and guidance.</p>
-              </section>
               <section class="detail" data-detail hidden aria-live="polite"></section>
             </div>
           </section>
@@ -220,7 +215,6 @@ const validation = [
       const rows = [...document.querySelectorAll('[data-catalogue-row]')];
       const catalogueLayout = document.querySelector('[data-catalogue-layout]');
       const catalogueListPanel = document.querySelector('[data-catalogue-list-panel]');
-      const detailPlaceholder = document.querySelector('[data-detail-empty]');
       const detail = document.querySelector('[data-detail]');
       let filter = 'all';
       let selectedId = null;
@@ -228,9 +222,8 @@ const validation = [
       const syncCatalogueLayout = () => {
         const small = isSmallScreen();
         const hasDetail = Boolean(selectedId) && detail && !detail.hidden;
-        catalogueLayout?.classList.toggle('detail-open', Boolean(hasDetail) && small);
+        catalogueLayout?.classList.toggle('detail-open', Boolean(hasDetail));
         if (catalogueListPanel) catalogueListPanel.hidden = Boolean(hasDetail) && small;
-        if (detailPlaceholder) detailPlaceholder.hidden = Boolean(hasDetail) || small;
       };
       const closeDetail = ({ restoreFocus = false } = {}) => {
         if (!detail) return;

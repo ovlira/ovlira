@@ -70,6 +70,7 @@ button:focus-visible, a:focus-visible, input:focus-visible { outline: 2px solid 
 .filter:hover, .filter.active { color: var(--text); }
 .catalogue-count { margin-block-end: .4rem; color: var(--faint); font-size: .75rem; }
 .catalogue-layout { display: grid; grid-template-columns: minmax(15rem, .8fr) minmax(0, 1.2fr); align-items: start; gap: 2rem; }
+.catalogue-layout:not(.detail-open) .catalogue-list-panel { grid-column: 1 / -1; }
 .catalogue-list-panel { min-width: 0; }
 .catalogue { margin: 0; padding: 0; list-style: none; }
 .catalogue-row { margin-inline: -.7rem; }
@@ -83,8 +84,6 @@ button:focus-visible, a:focus-visible, input:focus-visible { outline: 2px solid 
 .empty { padding-block: 1rem; color: var(--muted); line-height: 1.55; }
 
 .detail { position: sticky; top: 2rem; max-height: calc(100vh - 4rem); margin: 0; padding: 0 0 1rem 2rem; overflow: auto; border-block-start: 0; border-inline-start: 1px solid var(--border); }
-.detail-placeholder { min-height: 18rem; }
-.detail-placeholder-copy { max-width: 22rem; margin: .7rem 0 0; color: var(--muted); line-height: 1.55; }
 .detail-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; margin-block-end: 2.2rem; }
 .detail-actions { display: flex; align-items: center; gap: .9rem; flex: 0 0 auto; }
 .detail-title { margin: 0; font-size: 1.22rem; font-weight: 600; letter-spacing: -.02em; }
@@ -147,7 +146,6 @@ code, pre { font-family: var(--ov-font-mono); }
   .summary { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .catalogue-layout { display: block; }
   .catalogue-layout.detail-open .detail { padding-block-start: 0; border-block-start: 0; }
-  .detail-placeholder { display: none; }
   .detail { position: static; max-height: none; padding: 2rem 0 1rem; overflow: visible; border-block-start: 1px solid var(--border); border-inline-start: 0; }
   .detail-back { display: inline-flex; }
   .detail-close { display: none; }
