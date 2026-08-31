@@ -85,7 +85,7 @@ describe('ovlira CLI', () => {
   });
 
   it('validates metadata and exposes a normalized registry index', async () => {
-    expect(metadataReport).toMatchObject({ version: 1, valid: true, componentCount: 15, recipeCount: 6 });
+    expect(metadataReport).toMatchObject({ version: 1, valid: true, componentCount: 35, recipeCount: 6 });
     expect(metadataReport.issues).toEqual([]);
     const capture = ioCapture();
     expect(await runCli(['metadata', '--json'], process.cwd(), capture.io)).toBe(0);
@@ -217,6 +217,21 @@ describe('ovlira CLI', () => {
     await fs.symlink(path.join(process.cwd(), 'node_modules'), path.join(project, 'node_modules'), 'dir');
     await execFile('npm', ['run', 'build'], { cwd: project, env: { ...process.env, NO_COLOR: '1' } });
   }, 30_000);
+
+  for (const [id, tag] of [['component.spinner', 'ov-spinner'], ['component.menu', 'ov-menu'], ['component.pagination', 'ov-pagination'], ['component.combobox', 'ov-combobox'], ['component.tabs', 'ov-tabs'], ['component.toast', 'ov-toast'], ['component.progress', 'ov-progress'], ['component.skeleton', 'ov-skeleton'], ['component.tooltip', 'ov-tooltip'], ['component.avatar', 'ov-avatar'], ['component.breadcrumbs', 'ov-breadcrumbs'], ['component.accordion', 'ov-accordion'], ['component.slider', 'ov-slider'], ['component.file-upload', 'ov-file-upload'], ['component.date-input', 'ov-date-input'], ['component.stepper', 'ov-stepper'], ['component.drawer', 'ov-drawer'], ['component.number-input', 'ov-number-input'], ['component.popover', 'ov-popover'], ['component.tree', 'ov-tree'] as const]) {
+    it(`generates a buildable standalone ${tag} starter`, async () => {
+      const project = await tempProject();
+      expect(await runCli(['init', '.'], project, ioCapture().io)).toBe(0);
+      const addCapture = ioCapture();
+      expect(await runCli(['add', id, '--cwd', project, '--json'], project, addCapture.io)).toBe(0);
+      expect(JSON.parse(addCapture.stdout[0]).added).toContain(tag);
+      expect(await fs.readFile(path.join(project, 'src/main.ts'), 'utf8')).toContain(`<${tag}`);
+      if (tag === 'ov-drawer') expect(await fs.readFile(path.join(project, 'src/main.ts'), 'utf8')).toContain('data-drawer-open');
+      expect(await runCli(['check', '--cwd', project, '--json'], project, ioCapture().io)).toBe(0);
+      await fs.symlink(path.join(process.cwd(), 'node_modules'), path.join(project, 'node_modules'), 'dir');
+      await execFile('npm', ['run', 'build'], { cwd: project, env: { ...process.env, NO_COLOR: '1' } });
+    }, 30_000);
+  }
 
   it('preflights add conflicts without partially changing the project', async () => {
     const project = await tempProject();

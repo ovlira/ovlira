@@ -7,9 +7,10 @@ const viewports = [
   { name: 'tablet', width: 768, height: 1024 },
   { name: 'narrow', width: 375, height: 812 },
 ] as const;
+const themes = ['light', 'dark', 'contrast'] as const;
 
 for (const fixture of recipeFixtures) {
-  for (const theme of ['light', 'dark'] as const) {
+  for (const theme of themes) {
     for (const viewport of viewports) {
       test(`${fixture.id} ${fixture.defaultState} ${theme} ${viewport.name}`, async ({ page }) => {
         await page.setViewportSize(viewport);
@@ -27,4 +28,3 @@ for (const fixture of recipeFixtures) {
     }
   }
 }
-

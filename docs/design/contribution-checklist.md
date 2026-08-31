@@ -27,7 +27,9 @@ Use this checklist before a component, recipe, theme, or intentional visual chan
 ## Evidence and approval
 
 - `npm run release:check` passes.
-- Candidate screenshots were generated with `npm run test:visual:update` and visually reviewed rather than automatically accepted.
+- Approved component baselines pass the focused matrix documented in [`component-visual-review.md`](./component-visual-review.md).
+- Recipe and reference candidates were generated with `npm run test:visual:update`; component candidates were generated with `npm run test:component-visual:update`.
+- Candidate screenshots were visually reviewed rather than automatically accepted.
 - The review record marks each fixture Pass, Revise, or Block and links any defects.
-- An approved baseline update and its `reference-manifest.json` status change are reviewed together.
+- An approved baseline update and the corresponding visual-manifest status change are reviewed together.
 - Any intentional visual change is human-approved; an agent has not redesigned around a failing baseline.

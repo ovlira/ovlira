@@ -1,0 +1,1528 @@
+{
+  "version": 2,
+  "catalogue": "../../src/catalogue/components.json",
+  "suite": "../../tests/browser/component-visual.review.ts",
+  "config": "../../playwright.component-visual.config.ts",
+  "screenshots": "../../tests/browser/component-visual.review.ts-snapshots",
+  "viewports": [
+    {
+      "name": "wide",
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "name": "tablet",
+      "width": 768,
+      "height": 1024,
+      "scope": "catalogue overview only"
+    },
+    {
+      "name": "narrow",
+      "width": 375,
+      "height": 812
+    }
+  ],
+  "schemes": [
+    "light",
+    "dark"
+  ],
+  "baselineStatus": "approved",
+  "releaseGate": true,
+  "approval": {
+    "decision": "pass",
+    "date": "2026-08-31",
+    "source": "user-confirmed review"
+  },
+  "catalogueOverviewDecision": "pass",
+  "catalogueOverview": [
+    {
+      "file": "catalogue-detail-dark-wide-darwin.png",
+      "sha256": "830897d7e93e40976a6cc54db97c8aeaba3cd46fe0364ad1b45e6968a667b169",
+      "status": "approved"
+    },
+    {
+      "file": "catalogue-detail-light-wide-darwin.png",
+      "sha256": "ddb3a72b770429297cedef4b9d769084067bc7208e24921c086bf10266568cc7",
+      "status": "approved"
+    },
+    {
+      "file": "catalogue-overview-dark-narrow-darwin.png",
+      "sha256": "982b63dde3d88c0f1eac8c225b18c873ef380831e14b41ed6eb646aef641a480",
+      "status": "approved"
+    },
+    {
+      "file": "catalogue-overview-dark-tablet-darwin.png",
+      "sha256": "3c4b92266b1890036353bd0f98acf57bf7100a2bdbc7613aff1433ead8563a55",
+      "status": "approved"
+    },
+    {
+      "file": "catalogue-overview-dark-wide-darwin.png",
+      "sha256": "0413507d72f5dc4264f9bd735c9ec57bb3c47eca4b2599347e58c0365c574d81",
+      "status": "approved"
+    },
+    {
+      "file": "catalogue-overview-light-narrow-darwin.png",
+      "sha256": "285717f6b90fcf85f7c146a414d898ad17f27ba5f076efb6fd20c0a71cc5df9e",
+      "status": "approved"
+    },
+    {
+      "file": "catalogue-overview-light-tablet-darwin.png",
+      "sha256": "630f885f4cca891384fd91f44d2988daf8024d8f8b9034875db840ed0354a94b",
+      "status": "approved"
+    },
+    {
+      "file": "catalogue-overview-light-wide-darwin.png",
+      "sha256": "5e1f24e4110a77efeaf4894c9e6bb1ec79edaa5df040e4aa03c0d94390313523",
+      "status": "approved"
+    }
+  ],
+  "components": [
+    {
+      "tag": "ov-button",
+      "descriptorId": "component.button",
+      "decision": "pass",
+      "reviewNotes": "",
+      "snapshots": [
+        {
+          "file": "ov-button-dark-wide-darwin.png",
+          "sha256": "5e9f2147a61e46f87377399e13ae2fd4d95652a3fb5e7b5a8c521892417f956e",
+          "theme": "dark",
+          "viewport": "wide",
+          "state": "default",
+          "status": "approved"
+        },
+        {
+          "file": "ov-button-light-narrow-darwin.png",
+          "sha256": "f53020d6c922019937c6f6af69a916b0534a672e6807f76722d16f7506db9330",
+          "theme": "light",
+          "viewport": "narrow",
+          "state": "default",
+          "status": "approved"
+        },
+        {
+          "file": "ov-button-light-wide-darwin.png",
+          "sha256": "793187ce473c087b79ce5f6dad15e7e0e14b09e7ed3b8f8d18740997cba097fb",
+          "theme": "light",
+          "viewport": "wide",
+          "state": "default",
+          "status": "approved"
+        },
+        {
+          "file": "ov-button-light-wide-disabled-darwin.png",
+          "sha256": "c33b8aec155a5e1250c0ec248add2db0acf59b529d27d89af65000be7882bf2f",
+          "theme": "light",
+          "viewport": "wide",
+          "state": "disabled",
+          "status": "approved"
+        },
+        {
+          "file": "ov-button-light-wide-loading-darwin.png",
+          "sha256": "6ba330c9965a737fd4198f79e57f3d6483cb1561212836be29ee7f742d04b13f",
+          "theme": "light",
+          "viewport": "wide",
+          "state": "loading",
+          "status": "approved"
+        }
+      ]
+    },
+    {
+      "tag": "ov-textarea",
+      "descriptorId": "component.textarea",
+      "decision": "pass",
+      "reviewNotes": "",
+      "snapshots": [
+        {
+          "file": "ov-textarea-dark-wide-darwin.png",
+          "sha256": "fd1a66853b2873202fa0ddcb9d146c5250b9a41cdb5ddba44a71beea7f1dd892",
+          "theme": "dark",
+          "viewport": "wide",
+          "state": "default",
+          "status": "approved"
+        },
+        {
+          "file": "ov-textarea-light-narrow-darwin.png",
+          "sha256": "3a1555f684b5582f25bd4fab33907a1c8044f70eaeb25474c54d6b9d559705a3",
+          "theme": "light",
+          "viewport": "narrow",
+          "state": "default",
+          "status": "approved"
+        },
+        {
+          "file": "ov-textarea-light-wide-darwin.png",
+          "sha256": "7658948484e2e2ae6335ec723466e819c3cf75f4c7df685e5db6e6b793816870",
+          "theme": "light",
+          "viewport": "wide",
+          "state": "default",
+          "status": "approved"
+        },
+        {
+          "file": "ov-textarea-light-wide-disabled-darwin.png",
+          "sha256": "c405f2a5757d515b57c38f2c17175bde62ea723d0882b0674ec86b1ce4c0c1ab",
+          "theme": "light",
+          "viewport": "wide",
+          "state": "disabled",
+          "status": "approved"
+        },
+        {
+          "file": "ov-textarea-light-wide-error-darwin.png",
+          "sha256": "c3ddad6b0abbcbd4a919a89f59bff80705a05b3131f82e5c00dc61a921e9d9af",
+          "theme": "light",
+          "viewport": "wide",
+          "state": "error",
+          "status": "approved"
+        }
+      ]
+    },
+    {
+      "tag": "ov-checkbox",
+      "descriptorId": "component.checkbox",
+      "decision": "pass",
+      "reviewNotes": "",
+      "snapshots": [
+        {
+          "file": "ov-checkbox-dark-wide-darwin.png",
+          "sha256": "494ad37c03eac9baf82465aeb69d9cec92df83279cc2dd8877485849e6af0ca3",
+          "theme": "dark",
+          "viewport": "wide",
+          "state": "default",
+          "status": "approved"
+        },
+        {
+          "file": "ov-checkbox-light-narrow-darwin.png",
+          "sha256": "050f1c769236fc3f15bdb6ad3690144ddc6c7ea459010be2e4faeae37817be0e",
+          "theme": "light",
+          "viewport": "narrow",
+          "state": "default",
+          "status": "approved"
+        },
+        {
+          "file": "ov-checkbox-light-wide-darwin.png",
+          "sha256": "cc60776c048fef8153ba8a634763516a14101f8f2d9eec6b3336ba09d0b83ead",
+          "theme": "light",
+          "viewport": "wide",
+          "state": "default",
+          "status": "approved"
+        },
+        {
+          "file": "ov-checkbox-light-wide-disabled-darwin.png",
+          "sha256": "1ae745e8da93e781b0fcfd974b2a379801e17df15be38f4b405edabebd95e5d4",
+          "theme": "light",
+          "viewport": "wide",
+          "state": "disabled",
+          "status": "approved"
+        },
+        {
+          "file": "ov-checkbox-light-wide-error-darwin.png",
+          "sha256": "9df231d9807f00c01a810921e469eb0a703c7605bd8a46428c80010b54d9b51e",
+          "theme": "light",
+          "viewport": "wide",
+          "state": "error",
+          "status": "approved"
+        }
+      ]
+    },
+    {
+      "tag": "ov-radio-group",
+      "descriptorId": "component.radio-group",
+      "decision": "pass",
+      "reviewNotes": "",
+      "snapshots": [
+        {
+          "file": "ov-radio-group-dark-wide-darwin.png",
+          "sha256": "ac602fb0f4a886abb5a34975b7279630951b5d3f7c137841e06573fb3ae3a991",
+          "theme": "dark",
+          "viewport": "wide",
+          "state": "default",
+          "status": "approved"
+        },
+        {
+          "file": "ov-radio-group-light-narrow-darwin.png",
+          "sha256": "bf80317e9a0f63efb7829cedad6354d7b610a8fd8bbcd3ae8e2fb3b06290490a",
+          "theme": "light",
+          "viewport": "narrow",
+          "state": "default",
+          "status": "approved"
+        },
+        {
+          "file": "ov-radio-group-light-wide-darwin.png",
+          "sha256": "96b6c83f609db0e476ffb3a2aca849d94ddead64ae8f2ef6b5d07adeb1bc1bfb",
+          "theme": "light",
+          "viewport": "wide",
+          "state": "default",
+          "status": "approved"
+        },
+        {
+          "file": "ov-radio-group-light-wide-disabled-darwin.png",
+          "sha256": "a71dd88a1d16ad165d59448efec367aebbef36c9c29b3b77c1811c81cdbe74c9",
+          "theme": "light",
+          "viewport": "wide",
+          "state": "disabled",
+          "status": "approved"
+        },
+        {
+          "file": "ov-radio-group-light-wide-error-darwin.png",
+          "sha256": "1218a05ebff98719c5a3b535040a49c45ee10be80f6b5be17c960fd942388992",
+          "theme": "light",
+          "viewport": "wide",
+          "state": "error",
+          "status": "approved"
+        }
+      ]
+    },
+    {
+      "tag": "ov-toggle",
+      "descriptorId": "component.toggle",
+      "decision": "pass",
+      "reviewNotes": "",
+      "snapshots": [
+        {
+          "file": "ov-toggle-dark-wide-darwin.png",
+          "sha256": "2d81313e65b5b2f6d4b775baf35f8076024b2185587d599f9e851bd8ff04a3e8",
+          "theme": "dark",
+          "viewport": "wide",
+          "state": "default",
+          "status": "approved"
+        },
+        {
+          "file": "ov-toggle-light-narrow-darwin.png",
+          "sha256": "fade010069f4ad04c9927154b75c866a4419c91e9da7693bac3f7e3e76070507",
+          "theme": "light",
+          "viewport": "narrow",
+          "state": "default",
+          "status": "approved"
+        },
+        {
+          "file": "ov-toggle-light-wide-darwin.png",
+          "sha256": "5d5747e835abf5bf8f1769e2506b9f6a455a13748cd6361358faf286e33d995f",
+          "theme": "light",
+          "viewport": "wide",
+          "state": "default",
+          "status": "approved"
+        },
+        {
+          "file": "ov-toggle-light-wide-disabled-darwin.png",
+          "sha256": "ef0aa851531033981bd74510f3945008c196ce7df8432787f5e01f12584447d4",
+          "theme": "light",
+          "viewport": "wide",
+          "state": "disabled",
+          "status": "approved"
+        },
+        {
+          "file": "ov-toggle-light-wide-error-darwin.png",
+          "sha256": "82a3d59e44c906f9ea733cb0663849d8537a79dd8306df1449788b142ffc5cce",
+          "theme": "light",
+          "viewport": "wide",
+          "state": "error",
+          "status": "approved"
+        }
+      ]
+    },
+    {
+      "tag": "ov-input",
+      "descriptorId": "component.input",
+      "decision": "pass",
+      "reviewNotes": "",
+      "snapshots": [
+        {
+          "file": "ov-input-dark-wide-darwin.png",
+          "sha256": "4496beda6a13f47de36992ecbb4508f759283e44084852d056c91fd3f29edbcb",
+          "theme": "dark",
+          "viewport": "wide",
+          "state": "default",
+          "status": "approved"
+        },
+        {
+          "file": "ov-input-light-narrow-darwin.png",
+          "sha256": "dba5d70ff7467cf0f4908104959f2a40eaa59a0ea90b007164ae3e65da961851",
+          "theme": "light",
+          "viewport": "narrow",
+          "state": "default",
+          "status": "approved"
+        },
+        {
+          "file": "ov-input-light-wide-darwin.png",
+          "sha256": "fcebe993cda9a94e85bfc239e43356fa27b47a6f1e31dba8239f85898eb8bc7a",
+          "theme": "light",
+          "viewport": "wide",
+          "state": "default",
+          "status": "approved"
+        },
+        {
+          "file": "ov-input-light-wide-error-darwin.png",
+          "sha256": "ba4d424e63ebcdef4a3a46ba2c6adee6d627257062adafe2ec0b2ed2022fb928",
+          "theme": "light",
+          "viewport": "wide",
+          "state": "error",
+          "status": "approved"
+        }
+      ]
+    },
+    {
+      "tag": "ov-dialog",
+      "descriptorId": "component.dialog",
+      "decision": "pass",
+      "reviewNotes": "",
+      "snapshots": [
+        {
+          "file": "ov-dialog-dark-wide-darwin.png",
+          "sha256": "51e2ed63852742d4087708eddfe0fcb6d5f6864a5f25de80ebb74e5ee272d421",
+          "theme": "dark",
+          "viewport": "wide",
+          "state": "default",
+          "status": "approved"
+        },
+        {
+          "file": "ov-dialog-light-narrow-darwin.png",
+          "sha256": "f06bcd085196fe27ae180d744178fae71f23336afd49e171772bf46e845663f3",
+          "theme": "light",
+          "viewport": "narrow",
+          "state": "default",
+          "status": "approved"
+        },
+        {
+          "file": "ov-dialog-light-wide-darwin.png",
+          "sha256": "05c26ad85fec90df47573d43060be92c71e8e4db7c8e5f55c2c35118abc0702b",
+          "theme": "light",
+          "viewport": "wide",
+          "state": "default",
+          "status": "approved"
+        },
+        {
+          "file": "ov-dialog-light-wide-open-darwin.png",
+          "sha256": "4be0173af5c436228c6cef6f557487bd354d725b891c8d35dbe8f10d4fd0011e",
+          "theme": "light",
+          "viewport": "wide",
+          "state": "open",
+          "status": "approved"
+        }
+      ]
+    },
+    {
+      "tag": "ov-select",
+      "descriptorId": "component.select",
+      "decision": "pass",
+      "reviewNotes": "",
+      "snapshots": [
+        {
+          "file": "ov-select-dark-wide-darwin.png",
+          "sha256": "be9076de747454e79b972487f2112b2508e8b3ad702905697a0a08250cf49561",
+          "theme": "dark",
+          "viewport": "wide",
+          "state": "default",
+          "status": "approved"
+        },
+        {
+          "file": "ov-select-light-narrow-darwin.png",
+          "sha256": "7ec71384f6a4dcfa532be463f42b0e6cb8ef2ce919e3f8a02783fa68f469797c",
+          "theme": "light",
+          "viewport": "narrow",
+          "state": "default",
+          "status": "approved"
+        },
+        {
+          "file": "ov-select-light-wide-darwin.png",
+          "sha256": "648d7e838236204e11b63ecfac0b1653e5e896dac24c46fddb23af6e0662ef45",
+          "theme": "light",
+          "viewport": "wide",
+          "state": "default",
+          "status": "approved"
+        },
+        {
+          "file": "ov-select-light-wide-error-darwin.png",
+          "sha256": "14e633a00c620dc126faab95635e043ca9b61137995c4c4eade3fb80251711ff",
+          "theme": "light",
+          "viewport": "wide",
+          "state": "error",
+          "status": "approved"
+        }
+      ]
+    },
+    {
+      "tag": "ov-badge",
+      "descriptorId": "component.badge",
+      "decision": "pass",
+      "reviewNotes": "",
+      "snapshots": [
+        {
+          "file": "ov-badge-dark-wide-darwin.png",
+          "sha256": "198cd0b4dc3786a820ccef01b49abde30e2b3a6ae99e74af44af9aa3bc1ff9b5",
+          "theme": "dark",
+          "viewport": "wide",
+          "state": "default",
+          "status": "approved"
+        },
+        {
+          "file": "ov-badge-light-narrow-darwin.png",
+          "sha256": "57885ce392f9a178d2a3375a9990d65dd2409a4f48f5818e1b45493a850b0ebb",
+          "theme": "light",
+          "viewport": "narrow",
+          "state": "default",
+          "status": "approved"
+        },
+        {
+          "file": "ov-badge-light-wide-darwin.png",
+          "sha256": "1b2d5795b10e9e78e3e91aaf6ba4d933d69f507350bca64c4a4003abf44ec482",
+          "theme": "light",
+          "viewport": "wide",
+          "state": "default",
+          "status": "approved"
+        }
+      ]
+    },
+    {
+      "tag": "ov-card",
+      "descriptorId": "component.card",
+      "decision": "pass",
+      "reviewNotes": "",
+      "snapshots": [
+        {
+          "file": "ov-card-dark-wide-darwin.png",
+          "sha256": "bc7b7c64bcd0b4e2ba474bacd523f4fbd8dcdb48c0ecb7b043a1060d8350b057",
+          "theme": "dark",
+          "viewport": "wide",
+          "state": "default",
+          "status": "approved"
+        },
+        {
+          "file": "ov-card-light-narrow-darwin.png",
+          "sha256": "202540d69ec29f817b94a5bb7590d82ffb1dfb1e25c4ac4ced076613b60fddce",
+          "theme": "light",
+          "viewport": "narrow",
+          "state": "default",
+          "status": "approved"
+        },
+        {
+          "file": "ov-card-light-wide-darwin.png",
+          "sha256": "1c0b315f05069a8f19dc53771c83342aea31e3fa0d8ffda4589a9bc609292a55",
+          "theme": "light",
+          "viewport": "wide",
+          "state": "default",
+          "status": "approved"
+        }
+      ]
+    },
+    {
+      "tag": "ov-alert",
+      "descriptorId": "component.alert",
+      "decision": "pass",
+      "reviewNotes": "",
+      "snapshots": [
+        {
+          "file": "ov-alert-dark-wide-darwin.png",
+          "sha256": "e1cc47e8394ccbf55f87361393540564d402b87551d249429f44648cbc0d8000",
+          "theme": "dark",
+          "viewport": "wide",
+          "state": "default",
+          "status": "approved"
+        },
+        {
+          "file": "ov-alert-light-narrow-darwin.png",
+          "sha256": "751675b6669afa3fc20583f6ea6417e09747485a9dcb2ccc113d7bc618ab1c12",
+          "theme": "light",
+          "viewport": "narrow",
+          "state": "default",
+          "status": "approved"
+        },
+        {
+          "file": "ov-alert-light-wide-darwin.png",
+          "sha256": "23af43a55e7aa212d62d336269fc9bf7c0346891d44871e045d270ea9ba656c0",
+          "theme": "light",
+          "viewport": "wide",
+          "state": "default",
+          "status": "approved"
+        }
+      ]
+    },
+    {
+      "tag": "ov-page-header",
+      "descriptorId": "component.page-header",
+      "decision": "pass",
+      "reviewNotes": "",
+      "snapshots": [
+        {
+          "file": "ov-page-header-dark-wide-darwin.png",
+          "sha256": "2c8999bcefbde30fdb6177722701d284171e32cc07a6386031e2b0dcd051a066",
+          "theme": "dark",
+          "viewport": "wide",
+          "state": "default",
+          "status": "approved"
+        },
+        {
+          "file": "ov-page-header-light-narrow-darwin.png",
+          "sha256": "2c575a07bfb1908b94d75c625772f050e02523322f141b53860413e5dfc6b21d",
+          "theme": "light",
+          "viewport": "narrow",
+          "state": "default",
+          "status": "approved"
+        },
+        {
+          "file": "ov-page-header-light-wide-darwin.png",
+          "sha256": "8c54e153c34f079ddbd625da661a0c475cabe91409e587fc4036e441a6f96dfd",
+          "theme": "light",
+          "viewport": "wide",
+          "state": "default",
+          "status": "approved"
+        }
+      ]
+    },
+    {
+      "tag": "ov-empty-state",
+      "descriptorId": "component.empty-state",
+      "decision": "pass",
+      "reviewNotes": "",
+      "snapshots": [
+        {
+          "file": "ov-empty-state-dark-wide-darwin.png",
+          "sha256": "365530722ac4dc2ff0ddde40c95d24ca10212275999fca91085f38f48bb8ff7f",
+          "theme": "dark",
+          "viewport": "wide",
+          "state": "default",
+          "status": "approved"
+        },
+        {
+          "file": "ov-empty-state-light-narrow-darwin.png",
+          "sha256": "197227e85347fafd197d1140e03752f94dcd7f72539128b0bed82596c60061f5",
+          "theme": "light",
+          "viewport": "narrow",
+          "state": "default",
+          "status": "approved"
+        },
+        {
+          "file": "ov-empty-state-light-wide-darwin.png",
+          "sha256": "608375c2965df2f04f688be66284caec75a657d534663f91b2a5c42994ab8470",
+          "theme": "light",
+          "viewport": "wide",
+          "state": "default",
+          "status": "approved"
+        }
+      ]
+    },
+    {
+      "tag": "ov-data-table",
+      "descriptorId": "component.data-table",
+      "decision": "pass",
+      "reviewNotes": "",
+      "snapshots": [
+        {
+          "file": "ov-data-table-dark-wide-darwin.png",
+          "sha256": "21fb0b4e7450ffed1ceee1d50c2e9795ddc9a695e7e392f298c3b777b7b58eab",
+          "theme": "dark",
+          "viewport": "wide",
+          "state": "default",
+          "status": "approved"
+        },
+        {
+          "file": "ov-data-table-light-narrow-darwin.png",
+          "sha256": "121fa4024a1962518587a86d5e42b6af9ff567ae92e9f6f070217251687948cc",
+          "theme": "light",
+          "viewport": "narrow",
+          "state": "default",
+          "status": "approved"
+        },
+        {
+          "file": "ov-data-table-light-wide-darwin.png",
+          "sha256": "e7ecad78e12517737da2fb3399cecfcc1125e4428330cf4d2efd6f02e69dc9c3",
+          "theme": "light",
+          "viewport": "wide",
+          "state": "default",
+          "status": "approved"
+        }
+      ]
+    },
+    {
+      "tag": "ov-application-shell",
+      "descriptorId": "component.application-shell",
+      "decision": "pass",
+      "reviewNotes": "",
+      "snapshots": [
+        {
+          "file": "ov-application-shell-dark-wide-darwin.png",
+          "sha256": "eaf9628451a01b68a52303801d019b45a09864429fe313808c7aded0f7d374e6",
+          "theme": "dark",
+          "viewport": "wide",
+          "state": "default",
+          "status": "approved"
+        },
+        {
+          "file": "ov-application-shell-light-narrow-darwin.png",
+          "sha256": "039c01c809d8ce00aa729b463de5a6d220e195bc7f0961b8e6e2a4606729aed9",
+          "theme": "light",
+          "viewport": "narrow",
+          "state": "default",
+          "status": "approved"
+        },
+        {
+          "file": "ov-application-shell-light-wide-darwin.png",
+          "sha256": "cb4d4536716b1505b679981ef941e52b74b48e35d0844a42960b9f26135e7a50",
+          "theme": "light",
+          "viewport": "wide",
+          "state": "default",
+          "status": "approved"
+        }
+      ]
+    },
+    {
+      "tag": "ov-spinner",
+      "descriptorId": "component.spinner",
+      "decision": "pass",
+      "reviewNotes": "",
+      "snapshots": [
+        {
+          "file": "ov-spinner-dark-wide-darwin.png",
+          "sha256": "d181d14305ae7e1629b5c6ca00092c83a81e58a84db2da1725b5585697bbf975",
+          "theme": "dark",
+          "viewport": "wide",
+          "state": "default",
+          "status": "approved"
+        },
+        {
+          "file": "ov-spinner-light-narrow-darwin.png",
+          "sha256": "1465e7ceae463282c2ced218b43828a28a7e37147b9a092cb655baac7d161669",
+          "theme": "light",
+          "viewport": "narrow",
+          "state": "default",
+          "status": "approved"
+        },
+        {
+          "file": "ov-spinner-light-wide-darwin.png",
+          "sha256": "b025a22b03118c296b6589024c93643ec496be9122b4e33751e2df318f32a32f",
+          "theme": "light",
+          "viewport": "wide",
+          "state": "default",
+          "status": "approved"
+        }
+      ]
+    },
+    {
+      "tag": "ov-menu",
+      "descriptorId": "component.menu",
+      "decision": "pass",
+      "reviewNotes": "",
+      "snapshots": [
+        {
+          "file": "ov-menu-dark-wide-darwin.png",
+          "sha256": "f99dbc9cb1c46b781db538ac6fdb51a07808a266e3fa928e53dd15ff6b7760f7",
+          "theme": "dark",
+          "viewport": "wide",
+          "state": "default",
+          "status": "approved"
+        },
+        {
+          "file": "ov-menu-light-narrow-darwin.png",
+          "sha256": "314fff01b46b5445c2b4c707e461c25bb8f101a33d81c1ab45a3633b583d2372",
+          "theme": "light",
+          "viewport": "narrow",
+          "state": "default",
+          "status": "approved"
+        },
+        {
+          "file": "ov-menu-light-wide-darwin.png",
+          "sha256": "7ee055c6edb740b1a234065404b390001e24df188c49414f1c1cdc757eb658d1",
+          "theme": "light",
+          "viewport": "wide",
+          "state": "default",
+          "status": "approved"
+        },
+        {
+          "file": "ov-menu-light-wide-disabled-darwin.png",
+          "sha256": "c44bbf0b609a0e368eb9a447a55dde79e92575b8afabd7f383ed9827c8ff7090",
+          "theme": "light",
+          "viewport": "wide",
+          "state": "disabled",
+          "status": "approved"
+        },
+        {
+          "file": "ov-menu-light-wide-open-darwin.png",
+          "sha256": "b96b4885234b66c0067e602aa6c001a1b196837ab79e2b97ad2c31f9b0c0460c",
+          "theme": "light",
+          "viewport": "wide",
+          "state": "open",
+          "status": "approved"
+        }
+      ]
+    },
+    {
+      "tag": "ov-pagination",
+      "descriptorId": "component.pagination",
+      "decision": "pass",
+      "reviewNotes": "",
+      "snapshots": [
+        {
+          "file": "ov-pagination-dark-wide-darwin.png",
+          "sha256": "8ccb6fc7b661a1412cf2a437faf149b76812b996e3bd53285b81d82910a83d2a",
+          "theme": "dark",
+          "viewport": "wide",
+          "state": "default",
+          "status": "approved"
+        },
+        {
+          "file": "ov-pagination-light-narrow-darwin.png",
+          "sha256": "f6706168013855976d81eb464365ea843c5454a8474d704182962e31e15361f4",
+          "theme": "light",
+          "viewport": "narrow",
+          "state": "default",
+          "status": "approved"
+        },
+        {
+          "file": "ov-pagination-light-wide-darwin.png",
+          "sha256": "2a5aeaf6f3f9fd237803d7fda68790adee8357cd671837a2bbd9eb168c27c4b1",
+          "theme": "light",
+          "viewport": "wide",
+          "state": "default",
+          "status": "approved"
+        },
+        {
+          "file": "ov-pagination-light-wide-disabled-darwin.png",
+          "sha256": "b039383ec0e322b1f2484c64a89bf3b85fb0c02836fe513c13799dffe87af0d2",
+          "theme": "light",
+          "viewport": "wide",
+          "state": "disabled",
+          "status": "approved"
+        },
+        {
+          "file": "ov-pagination-light-wide-selected-darwin.png",
+          "sha256": "f90761d172c6886bb55920d462b713a58b2d2fe7d2c7caacf8d7d1468e41aab4",
+          "theme": "light",
+          "viewport": "wide",
+          "state": "selected",
+          "status": "approved"
+        }
+      ]
+    },
+    {
+      "tag": "ov-combobox",
+      "descriptorId": "component.combobox",
+      "decision": "pass",
+      "reviewNotes": "",
+      "snapshots": [
+        {
+          "file": "ov-combobox-dark-wide-darwin.png",
+          "sha256": "c7ec3b1ff40b24230653762d89a8adf3d84a39b52c433eb6e96c55a61a29d240",
+          "theme": "dark",
+          "viewport": "wide",
+          "state": "default",
+          "status": "approved"
+        },
+        {
+          "file": "ov-combobox-light-narrow-darwin.png",
+          "sha256": "6df8b52000767a7f5cedf057504253a41586cc896a386f75ffbd44da96d356dc",
+          "theme": "light",
+          "viewport": "narrow",
+          "state": "default",
+          "status": "approved"
+        },
+        {
+          "file": "ov-combobox-light-wide-darwin.png",
+          "sha256": "494775b24d03975af49ee653ee1f44c26ec0a7fc24aac83d88181cd63f11ed4e",
+          "theme": "light",
+          "viewport": "wide",
+          "state": "default",
+          "status": "approved"
+        },
+        {
+          "file": "ov-combobox-light-wide-disabled-darwin.png",
+          "sha256": "11b879272e4fce48d1fb37b2f1cdb6730f19e10706332d591e80848657c47892",
+          "theme": "light",
+          "viewport": "wide",
+          "state": "disabled",
+          "status": "approved"
+        },
+        {
+          "file": "ov-combobox-light-wide-error-darwin.png",
+          "sha256": "16596b4565c7578e7ab7dc502419f5eba232ab0d68370426d7bc5e7b1272c50e",
+          "theme": "light",
+          "viewport": "wide",
+          "state": "error",
+          "status": "approved"
+        },
+        {
+          "file": "ov-combobox-light-wide-open-darwin.png",
+          "sha256": "a8e34e4bd3b44ea456b38e29bbedebf699c44f58bfe81b21eeccd6ca20cef3f4",
+          "theme": "light",
+          "viewport": "wide",
+          "state": "open",
+          "status": "approved"
+        }
+      ]
+    },
+    {
+      "tag": "ov-tabs",
+      "descriptorId": "component.tabs",
+      "decision": "pass",
+      "reviewNotes": "",
+      "snapshots": [
+        {
+          "file": "ov-tabs-dark-wide-darwin.png",
+          "sha256": "faaa94b60c0e37707050fba8a0437bc56bb501ebebd24c56c5e3ad560717c724",
+          "theme": "dark",
+          "viewport": "wide",
+          "state": "default",
+          "status": "approved"
+        },
+        {
+          "file": "ov-tabs-light-narrow-darwin.png",
+          "sha256": "d8919c9a9bf364135bdb27ce08fb264cdcd855f003e92c7fcdd5cff1f0b4ee10",
+          "theme": "light",
+          "viewport": "narrow",
+          "state": "default",
+          "status": "approved"
+        },
+        {
+          "file": "ov-tabs-light-wide-darwin.png",
+          "sha256": "045fa08b4b5e7f582ea39151b3214bca5f050e10d3399e84bbe272878d466f5b",
+          "theme": "light",
+          "viewport": "wide",
+          "state": "default",
+          "status": "approved"
+        },
+        {
+          "file": "ov-tabs-light-wide-selected-darwin.png",
+          "sha256": "232a6215138add55af6d1e7301dc177d03e93104f5851a8ec083da473408d2e0",
+          "theme": "light",
+          "viewport": "wide",
+          "state": "selected",
+          "status": "approved"
+        }
+      ]
+    },
+    {
+      "tag": "ov-toast",
+      "descriptorId": "component.toast",
+      "decision": "pass",
+      "reviewNotes": "",
+      "snapshots": [
+        {
+          "file": "ov-toast-dark-wide-darwin.png",
+          "sha256": "0e64fa31a29f3554e85784542afeaf856b53a12670147e5391d39d39a514595e",
+          "theme": "dark",
+          "viewport": "wide",
+          "state": "default",
+          "status": "approved"
+        },
+        {
+          "file": "ov-toast-light-narrow-darwin.png",
+          "sha256": "658cc6d0becc2fb9114a7e70d7e5909380ea264fbbff54d6d6e6068b50025342",
+          "theme": "light",
+          "viewport": "narrow",
+          "state": "default",
+          "status": "approved"
+        },
+        {
+          "file": "ov-toast-light-wide-darwin.png",
+          "sha256": "9bf0def822e368f6cb1129e4440da361bacadf15879795c01b2509ac09f1afb1",
+          "theme": "light",
+          "viewport": "wide",
+          "state": "default",
+          "status": "approved"
+        },
+        {
+          "file": "ov-toast-light-wide-open-darwin.png",
+          "sha256": "9a16aa522987ca73572b55eef290c68ff2259381c323c75aac0b9ef4d9a2f26d",
+          "theme": "light",
+          "viewport": "wide",
+          "state": "open",
+          "status": "approved"
+        }
+      ]
+    },
+    {
+      "tag": "ov-progress",
+      "descriptorId": "component.progress",
+      "decision": "pass",
+      "reviewNotes": "",
+      "snapshots": [
+        {
+          "file": "ov-progress-dark-wide-darwin.png",
+          "sha256": "6eca5814df69c268a90a20f4a111b4b66b8fbc879d3bc6e420a858042d37fb3d",
+          "theme": "dark",
+          "viewport": "wide",
+          "state": "default",
+          "status": "approved"
+        },
+        {
+          "file": "ov-progress-light-narrow-darwin.png",
+          "sha256": "6839cec18948aee13be9bfc7bc0e15bc9f54fdf7117fe4c94e207248d601a6da",
+          "theme": "light",
+          "viewport": "narrow",
+          "state": "default",
+          "status": "approved"
+        },
+        {
+          "file": "ov-progress-light-wide-darwin.png",
+          "sha256": "1db93a11a5ab550b81773a8090b467d6adc42fe1cf35d9041aecea2c8591399d",
+          "theme": "light",
+          "viewport": "wide",
+          "state": "default",
+          "status": "approved"
+        }
+      ]
+    },
+    {
+      "tag": "ov-skeleton",
+      "descriptorId": "component.skeleton",
+      "decision": "pass",
+      "reviewNotes": "",
+      "snapshots": [
+        {
+          "file": "ov-skeleton-dark-wide-darwin.png",
+          "sha256": "ccaea1b8750ac96b56fc7d027c02566d21ab89f81ed3a7660cdb052906a99123",
+          "theme": "dark",
+          "viewport": "wide",
+          "state": "default",
+          "status": "approved"
+        },
+        {
+          "file": "ov-skeleton-light-narrow-darwin.png",
+          "sha256": "89ed925e6f248f646935c1e298dcf93f74dec980bb9a631a67a76bbc6b40640b",
+          "theme": "light",
+          "viewport": "narrow",
+          "state": "default",
+          "status": "approved"
+        },
+        {
+          "file": "ov-skeleton-light-wide-darwin.png",
+          "sha256": "e2930066eda2a2ec365e8b64dc74cc067f7a93b766ac85569f07ac6fddd06f3c",
+          "theme": "light",
+          "viewport": "wide",
+          "state": "default",
+          "status": "approved"
+        }
+      ]
+    },
+    {
+      "tag": "ov-accordion",
+      "descriptorId": "component.accordion",
+      "decision": "pass",
+      "reviewNotes": "",
+      "snapshots": [
+        {
+          "file": "ov-accordion-dark-wide-darwin.png",
+          "sha256": "94cf5f01c5fcfc66daa5f83b56a49a6faebb1c8e62abf1f0970b5c55345ddaf8",
+          "theme": "dark",
+          "viewport": "wide",
+          "state": "default",
+          "status": "approved"
+        },
+        {
+          "file": "ov-accordion-light-narrow-darwin.png",
+          "sha256": "e4323f80cbd234e617745436841a8d0220961015550d58b6b3a9d7d624af27f1",
+          "theme": "light",
+          "viewport": "narrow",
+          "state": "default",
+          "status": "approved"
+        },
+        {
+          "file": "ov-accordion-light-wide-darwin.png",
+          "sha256": "4b6b80c5df022e228da4e4852a2d52b46742753c89a335a47d4af4e5acf9882c",
+          "theme": "light",
+          "viewport": "wide",
+          "state": "default",
+          "status": "approved"
+        },
+        {
+          "file": "ov-accordion-light-wide-expanded-darwin.png",
+          "sha256": "185ff81fc82ce08e16fb101ad996511e2111b353d35e77f2198bbf0ef9425f66",
+          "theme": "light",
+          "viewport": "wide",
+          "state": "expanded",
+          "status": "approved"
+        }
+      ]
+    },
+    {
+      "tag": "ov-slider",
+      "descriptorId": "component.slider",
+      "decision": "pass",
+      "reviewNotes": "",
+      "snapshots": [
+        {
+          "file": "ov-slider-dark-wide-darwin.png",
+          "sha256": "6852b8df89295e02bffd5ef8ce6aeccb24c7cfe541498b30f0251b4c66b70184",
+          "theme": "dark",
+          "viewport": "wide",
+          "state": "default",
+          "status": "approved"
+        },
+        {
+          "file": "ov-slider-light-narrow-darwin.png",
+          "sha256": "52704980e049e5ad651bd1edf702d58530b76da2e32b90ebf779c9b897c67ec9",
+          "theme": "light",
+          "viewport": "narrow",
+          "state": "default",
+          "status": "approved"
+        },
+        {
+          "file": "ov-slider-light-wide-darwin.png",
+          "sha256": "73d85aace7408049f60edc5504efe727bb35650f56e29ab2ff30691137b043fe",
+          "theme": "light",
+          "viewport": "wide",
+          "state": "default",
+          "status": "approved"
+        },
+        {
+          "file": "ov-slider-light-wide-disabled-darwin.png",
+          "sha256": "ebd2c3b52277c6d93c08320e9823cebe7b764b34624915d7b2d7c5f3eaaff673",
+          "theme": "light",
+          "viewport": "wide",
+          "state": "disabled",
+          "status": "approved"
+        },
+        {
+          "file": "ov-slider-light-wide-error-darwin.png",
+          "sha256": "76ca2ffef63299ffb3c6aa0319c00a73d84743791b733cc5b8e83582869d7535",
+          "theme": "light",
+          "viewport": "wide",
+          "state": "error",
+          "status": "approved"
+        }
+      ]
+    },
+    {
+      "tag": "ov-file-upload",
+      "descriptorId": "component.file-upload",
+      "decision": "pass",
+      "reviewNotes": "",
+      "snapshots": [
+        {
+          "file": "ov-file-upload-dark-wide-darwin.png",
+          "sha256": "8f498a5ad33a2915c5e2b1728c3147ad1b128a96ee4185c5172fea5def65128e",
+          "theme": "dark",
+          "viewport": "wide",
+          "state": "default",
+          "status": "approved"
+        },
+        {
+          "file": "ov-file-upload-light-narrow-darwin.png",
+          "sha256": "358610ca23164ad33643681a1b7045e54d02398cb56650036a4a73f766e0568f",
+          "theme": "light",
+          "viewport": "narrow",
+          "state": "default",
+          "status": "approved"
+        },
+        {
+          "file": "ov-file-upload-light-wide-darwin.png",
+          "sha256": "c986492bb642fcbb6cbf7ff000f3d6dd14758b728af64d672fd442ecd839a731",
+          "theme": "light",
+          "viewport": "wide",
+          "state": "default",
+          "status": "approved"
+        },
+        {
+          "file": "ov-file-upload-light-wide-disabled-darwin.png",
+          "sha256": "c574a4a2269d3a83611c9bc6888bb3462ebe4425062fbf3f538a0613bdfffb8b",
+          "theme": "light",
+          "viewport": "wide",
+          "state": "disabled",
+          "status": "approved"
+        },
+        {
+          "file": "ov-file-upload-light-wide-error-darwin.png",
+          "sha256": "8d9b15ad425e5f1773f5f9d43aff501e46a25f79737cb76f491f3d731424ecc0",
+          "theme": "light",
+          "viewport": "wide",
+          "state": "error",
+          "status": "approved"
+        },
+        {
+          "file": "ov-file-upload-light-wide-populated-darwin.png",
+          "sha256": "5c21662ed4fdfb6124b7ebfcb16f19d53ebb9dd08a5bf76f7da4bbbb2ca62cc9",
+          "theme": "light",
+          "viewport": "wide",
+          "state": "populated",
+          "status": "approved"
+        }
+      ]
+    },
+    {
+      "tag": "ov-date-input",
+      "descriptorId": "component.date-input",
+      "decision": "pass",
+      "reviewNotes": "",
+      "snapshots": [
+        {
+          "file": "ov-date-input-dark-wide-darwin.png",
+          "sha256": "21604d09d5673790e55604e52808c7f81e534d729bd112cac342c0a2707eac63",
+          "theme": "dark",
+          "viewport": "wide",
+          "state": "default",
+          "status": "approved"
+        },
+        {
+          "file": "ov-date-input-light-narrow-darwin.png",
+          "sha256": "2557f0ab292bb2c1c5a0368a2cd16bd0f23c72bb5bf48a71e3ed739fa8b7ff85",
+          "theme": "light",
+          "viewport": "narrow",
+          "state": "default",
+          "status": "approved"
+        },
+        {
+          "file": "ov-date-input-light-wide-darwin.png",
+          "sha256": "f926b24606ba96bb332b90230fd98c5ead9b0f32d856c1ecd050d1f6e2ac0a25",
+          "theme": "light",
+          "viewport": "wide",
+          "state": "default",
+          "status": "approved"
+        },
+        {
+          "file": "ov-date-input-light-wide-disabled-darwin.png",
+          "sha256": "348ac5561275b64b45523748ec788215e2f85f526ee91f9e2075a66215111fc7",
+          "theme": "light",
+          "viewport": "wide",
+          "state": "disabled",
+          "status": "approved"
+        },
+        {
+          "file": "ov-date-input-light-wide-error-darwin.png",
+          "sha256": "d6b1fac841dc256f8c1b0e59874ca5c4d264bb1ba9eebca7ed7352d54569bd52",
+          "theme": "light",
+          "viewport": "wide",
+          "state": "error",
+          "status": "approved"
+        }
+      ]
+    },
+    {
+      "tag": "ov-stepper",
+      "descriptorId": "component.stepper",
+      "decision": "pass",
+      "reviewNotes": "",
+      "snapshots": [
+        {
+          "file": "ov-stepper-dark-wide-darwin.png",
+          "sha256": "334eeee3c58db98aae5af12bcec477719cdfc1ae3c90d4cf8de3910991143659",
+          "theme": "dark",
+          "viewport": "wide",
+          "state": "default",
+          "status": "approved"
+        },
+        {
+          "file": "ov-stepper-light-narrow-darwin.png",
+          "sha256": "4cac32d0a9cf150b2c526fdf2cb4b0921cca54d0275d1e45c7a24e9d76a5d130",
+          "theme": "light",
+          "viewport": "narrow",
+          "state": "default",
+          "status": "approved"
+        },
+        {
+          "file": "ov-stepper-light-wide-darwin.png",
+          "sha256": "cd90a052489c321e73f0d2937e60e4b5f65ff2799610d3b4bc4ca0ef1e9c9031",
+          "theme": "light",
+          "viewport": "wide",
+          "state": "default",
+          "status": "approved"
+        },
+        {
+          "file": "ov-stepper-light-wide-selected-darwin.png",
+          "sha256": "aaedba25eda8c44b3a2b1df30ffc672b45c6ee006b59eb438edcc834ddb6bf49",
+          "theme": "light",
+          "viewport": "wide",
+          "state": "selected",
+          "status": "approved"
+        }
+      ]
+    },
+    {
+      "tag": "ov-drawer",
+      "descriptorId": "component.drawer",
+      "decision": "pass",
+      "reviewNotes": "",
+      "snapshots": [
+        {
+          "file": "ov-drawer-dark-wide-darwin.png",
+          "sha256": "15693618a272a4a0ed02442e1c9fc9db336037f3ce1a36cc99406de40fdebafc",
+          "theme": "dark",
+          "viewport": "wide",
+          "state": "default",
+          "status": "approved"
+        },
+        {
+          "file": "ov-drawer-light-narrow-darwin.png",
+          "sha256": "693bd2c886e6da4dc9b53592afbff02b400f82aaae9ae17b090c9f6f985e080e",
+          "theme": "light",
+          "viewport": "narrow",
+          "state": "default",
+          "status": "approved"
+        },
+        {
+          "file": "ov-drawer-light-wide-darwin.png",
+          "sha256": "8395751ccb8855e8dcdf82ef3c76885fbc97447c1f7f21b15e9eff0e422e2056",
+          "theme": "light",
+          "viewport": "wide",
+          "state": "default",
+          "status": "approved"
+        },
+        {
+          "file": "ov-drawer-light-wide-open-darwin.png",
+          "sha256": "b27518379839e6cf23327f7f8328289dbea1b1e482f86bdac3cfbdc5b0519d31",
+          "theme": "light",
+          "viewport": "wide",
+          "state": "open",
+          "status": "approved"
+        }
+      ]
+    },
+    {
+      "tag": "ov-number-input",
+      "descriptorId": "component.number-input",
+      "decision": "pass",
+      "reviewNotes": "",
+      "snapshots": [
+        {
+          "file": "ov-number-input-dark-wide-darwin.png",
+          "sha256": "ad56852e7aa6993358a706a5842607afacdf5a004150b379096118f77dd0c010",
+          "theme": "dark",
+          "viewport": "wide",
+          "state": "default",
+          "status": "approved"
+        },
+        {
+          "file": "ov-number-input-light-narrow-darwin.png",
+          "sha256": "bc99cbbcc4365fce9c2f0125ae08d79f45f023a190f7405e17c3b9e87e0ad20e",
+          "theme": "light",
+          "viewport": "narrow",
+          "state": "default",
+          "status": "approved"
+        },
+        {
+          "file": "ov-number-input-light-wide-darwin.png",
+          "sha256": "0e0d6fc5fa572f1576754e01425dc3a16c9e19a33de9cb1c9b749762c7deec5d",
+          "theme": "light",
+          "viewport": "wide",
+          "state": "default",
+          "status": "approved"
+        },
+        {
+          "file": "ov-number-input-light-wide-disabled-darwin.png",
+          "sha256": "9a608235a75b4a21f08f852ee45e1f1bba90757273ccd8de8a124f960306b98f",
+          "theme": "light",
+          "viewport": "wide",
+          "state": "disabled",
+          "status": "approved"
+        },
+        {
+          "file": "ov-number-input-light-wide-error-darwin.png",
+          "sha256": "5f47e6b978f3baa97546e652808282100016d4b355b032c5151b8731afab2331",
+          "theme": "light",
+          "viewport": "wide",
+          "state": "error",
+          "status": "approved"
+        }
+      ]
+    },
+    {
+      "tag": "ov-popover",
+      "descriptorId": "component.popover",
+      "decision": "pass",
+      "reviewNotes": "",
+      "snapshots": [
+        {
+          "file": "ov-popover-dark-wide-darwin.png",
+          "sha256": "2cff8056e041c94e38f72d3faa2bc1ffc3ab541e266eb03b9aa1feb9b39f1132",
+          "theme": "dark",
+          "viewport": "wide",
+          "state": "default",
+          "status": "approved"
+        },
+        {
+          "file": "ov-popover-light-narrow-darwin.png",
+          "sha256": "e8ad249fa876d3ca7e88c16373f721c3d5eb5d42b6c5499bc44c91103b78bd02",
+          "theme": "light",
+          "viewport": "narrow",
+          "state": "default",
+          "status": "approved"
+        },
+        {
+          "file": "ov-popover-light-wide-darwin.png",
+          "sha256": "f9c0d17a982d68f01d13569f1fbc22d39fbb9d1cc0782b11a6b253ec25a542a9",
+          "theme": "light",
+          "viewport": "wide",
+          "state": "default",
+          "status": "approved"
+        },
+        {
+          "file": "ov-popover-light-wide-disabled-darwin.png",
+          "sha256": "63239299fce82f8f2b9cf5ef59ee5c99ec97a3674c582dc12c94cad9b493fa54",
+          "theme": "light",
+          "viewport": "wide",
+          "state": "disabled",
+          "status": "approved"
+        },
+        {
+          "file": "ov-popover-light-wide-open-darwin.png",
+          "sha256": "991081d09cadc632a89b9294c18c7f64343071fc8e47e13331c945a33d7d99d1",
+          "theme": "light",
+          "viewport": "wide",
+          "state": "open",
+          "status": "approved"
+        }
+      ]
+    },
+    {
+      "tag": "ov-tree",
+      "descriptorId": "component.tree",
+      "decision": "pass",
+      "reviewNotes": "",
+      "snapshots": [
+        {
+          "file": "ov-tree-dark-wide-darwin.png",
+          "sha256": "ab3f70390d028132d4f5a0286fdd3547b810272dd6dfd0524ad88c413643a503",
+          "theme": "dark",
+          "viewport": "wide",
+          "state": "default",
+          "status": "approved"
+        },
+        {
+          "file": "ov-tree-light-narrow-darwin.png",
+          "sha256": "30c2ffdf772af1dce50aa0f69a8711c2da6c922a9603b6b4dfd18ba79ef164c6",
+          "theme": "light",
+          "viewport": "narrow",
+          "state": "default",
+          "status": "approved"
+        },
+        {
+          "file": "ov-tree-light-wide-collapsed-darwin.png",
+          "sha256": "ac127cb2c18ae983f9980335207b1276b11f20525ee67ae05af8c227b0c7200c",
+          "theme": "light",
+          "viewport": "wide",
+          "state": "collapsed",
+          "status": "approved"
+        },
+        {
+          "file": "ov-tree-light-wide-darwin.png",
+          "sha256": "e8f651e46e1070d0cc6fb5250368aeeb82efd7c5525115c4a31350ba049c1dec",
+          "theme": "light",
+          "viewport": "wide",
+          "state": "default",
+          "status": "approved"
+        },
+        {
+          "file": "ov-tree-light-wide-selected-darwin.png",
+          "sha256": "397e7ea7aceb8c8adfed9670deb555f3b226df649718f69ebe53fc6028cece0e",
+          "theme": "light",
+          "viewport": "wide",
+          "state": "selected",
+          "status": "approved"
+        }
+      ]
+    },
+    {
+      "tag": "ov-tooltip",
+      "descriptorId": "component.tooltip",
+      "decision": "pass",
+      "reviewNotes": "",
+      "snapshots": [
+        {
+          "file": "ov-tooltip-dark-wide-darwin.png",
+          "sha256": "7842885dc7f25651cd7d9e48c69ef0c1b0556d4f093e514dc798e355490cfb3a",
+          "theme": "dark",
+          "viewport": "wide",
+          "state": "default",
+          "status": "approved"
+        },
+        {
+          "file": "ov-tooltip-light-narrow-darwin.png",
+          "sha256": "a4a58b71955b0266a67f3c4425f6e84f4e93d7d773a72612c12817b3f5541387",
+          "theme": "light",
+          "viewport": "narrow",
+          "state": "default",
+          "status": "approved"
+        },
+        {
+          "file": "ov-tooltip-light-wide-darwin.png",
+          "sha256": "8e7b446cb8c2ac0aa8b5bc505114db7f2c09d30054d0843827226b65c251447d",
+          "theme": "light",
+          "viewport": "wide",
+          "state": "default",
+          "status": "approved"
+        },
+        {
+          "file": "ov-tooltip-light-wide-open-darwin.png",
+          "sha256": "e5d8dcc2e4918f2fec8b0a8fe6857d0a6932f6403b7373f40b0a9af94c967801",
+          "theme": "light",
+          "viewport": "wide",
+          "state": "open",
+          "status": "approved"
+        }
+      ]
+    },
+    {
+      "tag": "ov-avatar",
+      "descriptorId": "component.avatar",
+      "decision": "pass",
+      "reviewNotes": "",
+      "snapshots": [
+        {
+          "file": "ov-avatar-dark-wide-darwin.png",
+          "sha256": "9a55780f9174af74f14f17015bf8224c38cba0cc802bab41cf4823fe83536106",
+          "theme": "dark",
+          "viewport": "wide",
+          "state": "default",
+          "status": "approved"
+        },
+        {
+          "file": "ov-avatar-light-narrow-darwin.png",
+          "sha256": "c66bd9802dc7adbda369eea9a014d34e3abe5c755cf01f179b4334130e932440",
+          "theme": "light",
+          "viewport": "narrow",
+          "state": "default",
+          "status": "approved"
+        },
+        {
+          "file": "ov-avatar-light-wide-darwin.png",
+          "sha256": "fa8737ce45cfb935da2200bc40d7232a87daeb38a57d400f0866aeb4d13a1728",
+          "theme": "light",
+          "viewport": "wide",
+          "state": "default",
+          "status": "approved"
+        }
+      ]
+    },
+    {
+      "tag": "ov-breadcrumbs",
+      "descriptorId": "component.breadcrumbs",
+      "decision": "pass",
+      "reviewNotes": "",
+      "snapshots": [
+        {
+          "file": "ov-breadcrumbs-dark-wide-darwin.png",
+          "sha256": "cbf82675f5748c81f0f07f72bc16427fdaad41af8d9bb7853c6e219e3af83f6c",
+          "theme": "dark",
+          "viewport": "wide",
+          "state": "default",
+          "status": "approved"
+        },
+        {
+          "file": "ov-breadcrumbs-light-narrow-darwin.png",
+          "sha256": "53100d3430f4045ccd156e7e7083ee471c6aa1d28adbe6945bb7c8258084d801",
+          "theme": "light",
+          "viewport": "narrow",
+          "state": "default",
+          "status": "approved"
+        },
+        {
+          "file": "ov-breadcrumbs-light-wide-darwin.png",
+          "sha256": "7b6ee1285f9b4f87a18ef0e41e0dfeb89b26959a19c8928d3017e62ab37923d9",
+          "theme": "light",
+          "viewport": "wide",
+          "state": "default",
+          "status": "approved"
+        }
+      ]
+    }
+  ],
+  "observations": [
+    {
+      "component": "ov-drawer",
+      "theme": "light",
+      "viewport": "wide",
+      "state": "open",
+      "status": "accepted-in-review",
+      "detail": "The public contract declares right as the default placement, but the candidate capture renders the panel on the left."
+    }
+  ],
+  "notes": [
+    "The suite derives its default component matrix from the catalogue rather than duplicating a component list.",
+    "State captures are derived from public API properties plus bounded component-specific scenarios.",
+    "A changed or newly added screenshot resets its review decision to pending on manifest regeneration."
+  ]
+}

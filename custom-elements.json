@@ -4,6 +4,175 @@
   "modules": [
     {
       "kind": "javascript-module",
+      "path": "src/components/accordion.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "A native disclosure group for revealing related content on demand.",
+          "name": "OvAccordion",
+          "members": [
+            {
+              "kind": "field",
+              "name": "items",
+              "privacy": "public",
+              "type": {
+                "text": "AccordionItem[]"
+              },
+              "default": "[]",
+              "attribute": "items"
+            },
+            {
+              "kind": "field",
+              "name": "openItems",
+              "privacy": "public",
+              "type": {
+                "text": "string[]"
+              },
+              "default": "[]",
+              "attribute": "openItems"
+            },
+            {
+              "kind": "field",
+              "name": "multiple",
+              "privacy": "public",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "attribute": "multiple",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "instanceId",
+              "privacy": "private",
+              "readonly": true,
+              "default": "`ov-accordion-${++accordionId}`"
+            },
+            {
+              "kind": "method",
+              "name": "isOpen",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "value",
+                  "type": {
+                    "text": "string"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "handleSummaryClick",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "event",
+                  "type": {
+                    "text": "MouseEvent"
+                  }
+                },
+                {
+                  "name": "disabled",
+                  "default": "false"
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "handleSummaryKeydown",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "event",
+                  "type": {
+                    "text": "KeyboardEvent"
+                  }
+                },
+                {
+                  "name": "disabled",
+                  "default": "false"
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "handleToggle",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "event",
+                  "type": {
+                    "text": "Event"
+                  }
+                }
+              ]
+            }
+          ],
+          "events": [
+            {
+              "name": "change",
+              "type": {
+                "text": "CustomEvent"
+              }
+            }
+          ],
+          "attributes": [
+            {
+              "name": "items",
+              "type": {
+                "text": "AccordionItem[]"
+              },
+              "default": "[]",
+              "fieldName": "items"
+            },
+            {
+              "name": "openItems",
+              "type": {
+                "text": "string[]"
+              },
+              "default": "[]",
+              "fieldName": "openItems"
+            },
+            {
+              "name": "multiple",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "fieldName": "multiple"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "ov-accordion",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "OvAccordion",
+          "declaration": {
+            "name": "OvAccordion",
+            "module": "src/components/accordion.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "ov-accordion",
+          "declaration": {
+            "name": "OvAccordion",
+            "module": "src/components/accordion.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/alert.ts",
       "declarations": [
         {
@@ -151,6 +320,172 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/avatar.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "A compact identity marker with image, initials, and status fallbacks.",
+          "name": "OvAvatar",
+          "members": [
+            {
+              "kind": "field",
+              "name": "name",
+              "privacy": "public",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "attribute": "name",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "src",
+              "privacy": "public",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "attribute": "src",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "alt",
+              "privacy": "public",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "attribute": "alt",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "size",
+              "privacy": "public",
+              "type": {
+                "text": "AvatarSize"
+              },
+              "default": "'md'",
+              "attribute": "size",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "status",
+              "privacy": "public",
+              "type": {
+                "text": "AvatarStatus | ''"
+              },
+              "default": "''",
+              "attribute": "status",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "imageFailed",
+              "type": {
+                "text": "boolean"
+              },
+              "privacy": "private",
+              "default": "false"
+            },
+            {
+              "kind": "field",
+              "name": "initials",
+              "privacy": "private",
+              "readonly": true
+            },
+            {
+              "kind": "field",
+              "name": "accessibleLabel",
+              "privacy": "private",
+              "readonly": true
+            },
+            {
+              "kind": "field",
+              "name": "statusLabel",
+              "privacy": "private",
+              "readonly": true
+            },
+            {
+              "kind": "field",
+              "name": "handleImageError",
+              "privacy": "private"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "name",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "fieldName": "name"
+            },
+            {
+              "name": "src",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "fieldName": "src"
+            },
+            {
+              "name": "alt",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "fieldName": "alt"
+            },
+            {
+              "name": "size",
+              "type": {
+                "text": "AvatarSize"
+              },
+              "default": "'md'",
+              "fieldName": "size"
+            },
+            {
+              "name": "status",
+              "type": {
+                "text": "AvatarStatus | ''"
+              },
+              "default": "''",
+              "fieldName": "status"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "ov-avatar",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "OvAvatar",
+          "declaration": {
+            "name": "OvAvatar",
+            "module": "src/components/avatar.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "ov-avatar",
+          "declaration": {
+            "name": "OvAvatar",
+            "module": "src/components/avatar.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/badge.ts",
       "declarations": [
         {
@@ -203,6 +538,82 @@
           "declaration": {
             "name": "OvBadge",
             "module": "src/components/badge.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/breadcrumbs.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "A compact linked hierarchy with a clearly identified current location.",
+          "name": "OvBreadcrumbs",
+          "members": [
+            {
+              "kind": "field",
+              "name": "label",
+              "privacy": "public",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Breadcrumb'",
+              "attribute": "label",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "items",
+              "privacy": "public",
+              "type": {
+                "text": "BreadcrumbItem[]"
+              },
+              "default": "[]",
+              "attribute": "items"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Breadcrumb'",
+              "fieldName": "label"
+            },
+            {
+              "name": "items",
+              "type": {
+                "text": "BreadcrumbItem[]"
+              },
+              "default": "[]",
+              "fieldName": "items"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "ov-breadcrumbs",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "OvBreadcrumbs",
+          "declaration": {
+            "name": "OvBreadcrumbs",
+            "module": "src/components/breadcrumbs.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "ov-breadcrumbs",
+          "declaration": {
+            "name": "OvBreadcrumbs",
+            "module": "src/components/breadcrumbs.ts"
           }
         }
       ]
@@ -641,6 +1052,404 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/combobox.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "A labelled, searchable listbox for longer sets of known options.",
+          "name": "OvCombobox",
+          "members": [
+            {
+              "kind": "field",
+              "name": "label",
+              "privacy": "public",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "attribute": "label",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "name",
+              "privacy": "public",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "attribute": "name",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "value",
+              "privacy": "public",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "attribute": "value"
+            },
+            {
+              "kind": "field",
+              "name": "placeholder",
+              "privacy": "public",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "attribute": "placeholder",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "required",
+              "privacy": "public",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "attribute": "required",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "privacy": "public",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "attribute": "disabled",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "options",
+              "privacy": "public",
+              "type": {
+                "text": "ComboboxOption[]"
+              },
+              "default": "[]",
+              "attribute": "options"
+            },
+            {
+              "kind": "field",
+              "name": "helpText",
+              "privacy": "public",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "attribute": "help-text"
+            },
+            {
+              "kind": "field",
+              "name": "error",
+              "privacy": "public",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "attribute": "error"
+            },
+            {
+              "kind": "field",
+              "name": "open",
+              "privacy": "public",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "attribute": "open",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "instanceId",
+              "privacy": "private",
+              "readonly": true,
+              "default": "`ov-combobox-${++comboboxId}`"
+            },
+            {
+              "kind": "field",
+              "name": "query",
+              "type": {
+                "text": "string"
+              },
+              "privacy": "private",
+              "default": "''"
+            },
+            {
+              "kind": "field",
+              "name": "activeIndex",
+              "type": {
+                "text": "number"
+              },
+              "privacy": "private",
+              "default": "-1"
+            },
+            {
+              "kind": "field",
+              "name": "userInput",
+              "type": {
+                "text": "boolean"
+              },
+              "privacy": "private",
+              "default": "false"
+            },
+            {
+              "kind": "field",
+              "name": "selectedLabel",
+              "privacy": "private",
+              "readonly": true
+            },
+            {
+              "kind": "field",
+              "name": "filteredOptions",
+              "privacy": "private",
+              "readonly": true
+            },
+            {
+              "kind": "method",
+              "name": "syncQueryFromValue",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "activeOptionId",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "filtered",
+                  "type": {
+                    "text": "ComboboxOption[]"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "firstEnabledIndex",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "lastEnabledIndex",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "handleFocus",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "handleInput",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "handleKeydown",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "moveActive",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "direction",
+                  "type": {
+                    "text": "1 | -1"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "setActiveIndex",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "index",
+                  "type": {
+                    "text": "number"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "handleOptionPointerDown",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "event",
+                  "type": {
+                    "text": "PointerEvent"
+                  }
+                },
+                {
+                  "name": "index",
+                  "type": {
+                    "text": "number"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "selectOption",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "index",
+                  "type": {
+                    "text": "number"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "field",
+              "name": "handleDocumentPointerDown",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "closeList",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "restoreQuery",
+                  "type": {
+                    "text": "boolean"
+                  }
+                }
+              ]
+            }
+          ],
+          "events": [
+            {
+              "name": "change",
+              "type": {
+                "text": "CustomEvent"
+              }
+            }
+          ],
+          "attributes": [
+            {
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "fieldName": "label"
+            },
+            {
+              "name": "name",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "fieldName": "name"
+            },
+            {
+              "name": "value",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "fieldName": "value"
+            },
+            {
+              "name": "placeholder",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "fieldName": "placeholder"
+            },
+            {
+              "name": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "fieldName": "required"
+            },
+            {
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "fieldName": "disabled"
+            },
+            {
+              "name": "options",
+              "type": {
+                "text": "ComboboxOption[]"
+              },
+              "default": "[]",
+              "fieldName": "options"
+            },
+            {
+              "name": "help-text",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "fieldName": "helpText"
+            },
+            {
+              "name": "error",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "fieldName": "error"
+            },
+            {
+              "name": "open",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "fieldName": "open"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "ov-combobox",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "OvCombobox",
+          "declaration": {
+            "name": "OvCombobox",
+            "module": "src/components/combobox.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "ov-combobox",
+          "declaration": {
+            "name": "OvCombobox",
+            "module": "src/components/combobox.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/data-table.ts",
       "declarations": [
         {
@@ -729,6 +1538,243 @@
           "declaration": {
             "name": "OvDataTable",
             "module": "src/components/data-table.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/date-input.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "A labelled native date field with help, error, and range constraints.",
+          "name": "OvDateInput",
+          "members": [
+            {
+              "kind": "field",
+              "name": "label",
+              "privacy": "public",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "attribute": "label",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "name",
+              "privacy": "public",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "attribute": "name",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "value",
+              "privacy": "public",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "attribute": "value"
+            },
+            {
+              "kind": "field",
+              "name": "min",
+              "privacy": "public",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "attribute": "min",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "max",
+              "privacy": "public",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "attribute": "max",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "required",
+              "privacy": "public",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "attribute": "required",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "privacy": "public",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "attribute": "disabled",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "error",
+              "privacy": "public",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "attribute": "error"
+            },
+            {
+              "kind": "field",
+              "name": "helpText",
+              "privacy": "public",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "attribute": "help-text"
+            },
+            {
+              "kind": "field",
+              "name": "inputId",
+              "privacy": "private",
+              "readonly": true,
+              "default": "`ov-date-input-${++dateInputId}`"
+            },
+            {
+              "kind": "method",
+              "name": "updateValue",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "event",
+                  "type": {
+                    "text": "Event"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "field",
+              "name": "handleInput",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "handleChange",
+              "privacy": "private"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "fieldName": "label"
+            },
+            {
+              "name": "name",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "fieldName": "name"
+            },
+            {
+              "name": "value",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "fieldName": "value"
+            },
+            {
+              "name": "min",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "fieldName": "min"
+            },
+            {
+              "name": "max",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "fieldName": "max"
+            },
+            {
+              "name": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "fieldName": "required"
+            },
+            {
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "fieldName": "disabled"
+            },
+            {
+              "name": "error",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "fieldName": "error"
+            },
+            {
+              "name": "help-text",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "fieldName": "helpText"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "ov-date-input",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "OvDateInput",
+          "declaration": {
+            "name": "OvDateInput",
+            "module": "src/components/date-input.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "ov-date-input",
+          "declaration": {
+            "name": "OvDateInput",
+            "module": "src/components/date-input.ts"
           }
         }
       ]
@@ -949,6 +1995,239 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/drawer.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "A native dialog presented as a focused side panel for supplemental work.",
+          "name": "OvDrawer",
+          "members": [
+            {
+              "kind": "field",
+              "name": "open",
+              "privacy": "public",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "attribute": "open",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "modal",
+              "privacy": "public",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true",
+              "attribute": "modal",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "heading",
+              "privacy": "public",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "attribute": "heading",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "description",
+              "privacy": "public",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "attribute": "description",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "placement",
+              "privacy": "public",
+              "type": {
+                "text": "DrawerPlacement"
+              },
+              "default": "'right'",
+              "attribute": "placement",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "dismissible",
+              "privacy": "public",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true",
+              "attribute": "dismissible",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "hasActions",
+              "type": {
+                "text": "boolean"
+              },
+              "privacy": "private",
+              "default": "false"
+            },
+            {
+              "kind": "field",
+              "name": "nativeMode",
+              "type": {
+                "text": "'modal' | 'nonmodal' | null"
+              },
+              "privacy": "private",
+              "default": "null"
+            },
+            {
+              "kind": "field",
+              "name": "suppressNativeClose",
+              "type": {
+                "text": "boolean"
+              },
+              "privacy": "private",
+              "default": "false"
+            },
+            {
+              "kind": "field",
+              "name": "instanceId",
+              "privacy": "private",
+              "readonly": true,
+              "default": "`ov-drawer-${++drawerId}`"
+            },
+            {
+              "kind": "method",
+              "name": "handleActionsSlot",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "event",
+                  "type": {
+                    "text": "Event"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "syncNativeDialog",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "requestClose",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "closeNativeDialog",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "dialog",
+                  "type": {
+                    "text": "HTMLDialogElement"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "field",
+              "name": "handleNativeClose",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "handleNativeCancel",
+              "privacy": "private"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "open",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "fieldName": "open"
+            },
+            {
+              "name": "modal",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true",
+              "fieldName": "modal"
+            },
+            {
+              "name": "heading",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "fieldName": "heading"
+            },
+            {
+              "name": "description",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "fieldName": "description"
+            },
+            {
+              "name": "placement",
+              "type": {
+                "text": "DrawerPlacement"
+              },
+              "default": "'right'",
+              "fieldName": "placement"
+            },
+            {
+              "name": "dismissible",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true",
+              "fieldName": "dismissible"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "ov-drawer",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "OvDrawer",
+          "declaration": {
+            "name": "OvDrawer",
+            "module": "src/components/drawer.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "ov-drawer",
+          "declaration": {
+            "name": "OvDrawer",
+            "module": "src/components/drawer.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/empty-state.ts",
       "declarations": [
         {
@@ -1019,6 +2298,288 @@
           "declaration": {
             "name": "OvEmptyState",
             "module": "src/components/empty-state.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/file-upload.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "A labelled native file picker with optional drag-and-drop support.",
+          "name": "OvFileUpload",
+          "members": [
+            {
+              "kind": "field",
+              "name": "label",
+              "privacy": "public",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "attribute": "label",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "name",
+              "privacy": "public",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "attribute": "name",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "accept",
+              "privacy": "public",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "attribute": "accept",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "multiple",
+              "privacy": "public",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "attribute": "multiple",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "required",
+              "privacy": "public",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "attribute": "required",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "privacy": "public",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "attribute": "disabled",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "files",
+              "privacy": "public",
+              "type": {
+                "text": "File[]"
+              },
+              "default": "[]",
+              "attribute": "files"
+            },
+            {
+              "kind": "field",
+              "name": "helpText",
+              "privacy": "public",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "attribute": "help-text"
+            },
+            {
+              "kind": "field",
+              "name": "error",
+              "privacy": "public",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "attribute": "error"
+            },
+            {
+              "kind": "field",
+              "name": "inputId",
+              "privacy": "private",
+              "readonly": true,
+              "default": "`ov-file-upload-${++fileUploadId}`"
+            },
+            {
+              "kind": "field",
+              "name": "isDragging",
+              "type": {
+                "text": "boolean"
+              },
+              "privacy": "private",
+              "default": "false"
+            },
+            {
+              "kind": "field",
+              "name": "handleInput",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "handleDragEnter",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "handleDragOver",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "handleDragLeave",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "handleDrop",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "setFiles",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "nextFiles",
+                  "type": {
+                    "text": "File[]"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "formatSize",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "bytes",
+                  "type": {
+                    "text": "number"
+                  }
+                }
+              ]
+            }
+          ],
+          "events": [
+            {
+              "name": "change",
+              "type": {
+                "text": "CustomEvent"
+              }
+            }
+          ],
+          "attributes": [
+            {
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "fieldName": "label"
+            },
+            {
+              "name": "name",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "fieldName": "name"
+            },
+            {
+              "name": "accept",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "fieldName": "accept"
+            },
+            {
+              "name": "multiple",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "fieldName": "multiple"
+            },
+            {
+              "name": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "fieldName": "required"
+            },
+            {
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "fieldName": "disabled"
+            },
+            {
+              "name": "files",
+              "type": {
+                "text": "File[]"
+              },
+              "default": "[]",
+              "fieldName": "files"
+            },
+            {
+              "name": "help-text",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "fieldName": "helpText"
+            },
+            {
+              "name": "error",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "fieldName": "error"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "ov-file-upload",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "OvFileUpload",
+          "declaration": {
+            "name": "OvFileUpload",
+            "module": "src/components/file-upload.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "ov-file-upload",
+          "declaration": {
+            "name": "OvFileUpload",
+            "module": "src/components/file-upload.ts"
           }
         }
       ]
@@ -1260,6 +2821,510 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/menu.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "A compact action menu with native button and menuitem semantics.",
+          "name": "OvMenu",
+          "members": [
+            {
+              "kind": "field",
+              "name": "label",
+              "privacy": "public",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Actions'",
+              "attribute": "label",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "open",
+              "privacy": "public",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "attribute": "open",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "privacy": "public",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "attribute": "disabled",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "items",
+              "privacy": "public",
+              "type": {
+                "text": "MenuItem[]"
+              },
+              "default": "[]",
+              "attribute": "items"
+            },
+            {
+              "kind": "field",
+              "name": "instanceId",
+              "privacy": "private",
+              "readonly": true,
+              "default": "`ov-menu-${++menuId}`"
+            },
+            {
+              "kind": "field",
+              "name": "activeIndex",
+              "type": {
+                "text": "number"
+              },
+              "privacy": "private",
+              "default": "-1"
+            },
+            {
+              "kind": "field",
+              "name": "toggleMenu",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "handleTriggerKeydown",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "handleMenuKeydown",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "handleDocumentPointerDown",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "firstEnabledIndex",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "lastEnabledIndex",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "moveActive",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "direction",
+                  "type": {
+                    "text": "1 | -1"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "setActiveIndex",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "index",
+                  "type": {
+                    "text": "number"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "focusActiveItem",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "focusItem",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "index",
+                  "type": {
+                    "text": "number"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "selectItem",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "index",
+                  "type": {
+                    "text": "number"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "closeMenu",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "restoreFocus",
+                  "default": "true"
+                }
+              ]
+            }
+          ],
+          "events": [
+            {
+              "name": "open",
+              "type": {
+                "text": "Event"
+              }
+            },
+            {
+              "name": "close",
+              "type": {
+                "text": "Event"
+              }
+            },
+            {
+              "name": "select",
+              "type": {
+                "text": "CustomEvent"
+              }
+            }
+          ],
+          "attributes": [
+            {
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Actions'",
+              "fieldName": "label"
+            },
+            {
+              "name": "open",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "fieldName": "open"
+            },
+            {
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "fieldName": "disabled"
+            },
+            {
+              "name": "items",
+              "type": {
+                "text": "MenuItem[]"
+              },
+              "default": "[]",
+              "fieldName": "items"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "ov-menu",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "OvMenu",
+          "declaration": {
+            "name": "OvMenu",
+            "module": "src/components/menu.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "ov-menu",
+          "declaration": {
+            "name": "OvMenu",
+            "module": "src/components/menu.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/number-input.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "A labelled native number field with bounds, step, help, and error messaging.",
+          "name": "OvNumberInput",
+          "members": [
+            {
+              "kind": "field",
+              "name": "label",
+              "privacy": "public",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "attribute": "label",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "name",
+              "privacy": "public",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "attribute": "name",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "value",
+              "privacy": "public",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "attribute": "value"
+            },
+            {
+              "kind": "field",
+              "name": "min",
+              "privacy": "public",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "attribute": "min",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "max",
+              "privacy": "public",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "attribute": "max",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "step",
+              "privacy": "public",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "attribute": "step",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "required",
+              "privacy": "public",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "attribute": "required",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "privacy": "public",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "attribute": "disabled",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "error",
+              "privacy": "public",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "attribute": "error"
+            },
+            {
+              "kind": "field",
+              "name": "helpText",
+              "privacy": "public",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "attribute": "help-text"
+            },
+            {
+              "kind": "field",
+              "name": "inputId",
+              "privacy": "private",
+              "readonly": true,
+              "default": "`ov-number-input-${++numberInputId}`"
+            },
+            {
+              "kind": "method",
+              "name": "updateValue",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "event",
+                  "type": {
+                    "text": "Event"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "field",
+              "name": "handleInput",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "handleChange",
+              "privacy": "private"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "fieldName": "label"
+            },
+            {
+              "name": "name",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "fieldName": "name"
+            },
+            {
+              "name": "value",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "fieldName": "value"
+            },
+            {
+              "name": "min",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "fieldName": "min"
+            },
+            {
+              "name": "max",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "fieldName": "max"
+            },
+            {
+              "name": "step",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "fieldName": "step"
+            },
+            {
+              "name": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "fieldName": "required"
+            },
+            {
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "fieldName": "disabled"
+            },
+            {
+              "name": "error",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "fieldName": "error"
+            },
+            {
+              "name": "help-text",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "fieldName": "helpText"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "ov-number-input",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "OvNumberInput",
+          "declaration": {
+            "name": "OvNumberInput",
+            "module": "src/components/number-input.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "ov-number-input",
+          "declaration": {
+            "name": "OvNumberInput",
+            "module": "src/components/number-input.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/page-header.ts",
       "declarations": [
         {
@@ -1348,6 +3413,529 @@
           "declaration": {
             "name": "OvPageHeader",
             "module": "src/components/page-header.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/pagination.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "A compact, accessible page navigator that leaves data fetching to its owner.",
+          "name": "OvPagination",
+          "members": [
+            {
+              "kind": "field",
+              "name": "currentPage",
+              "privacy": "public",
+              "type": {
+                "text": "number"
+              },
+              "default": "1",
+              "attribute": "current-page",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "totalPages",
+              "privacy": "public",
+              "type": {
+                "text": "number"
+              },
+              "default": "1",
+              "attribute": "total-pages",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "label",
+              "privacy": "public",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Pagination'",
+              "attribute": "label",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "privacy": "public",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "attribute": "disabled",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "pageCount",
+              "privacy": "private",
+              "readonly": true
+            },
+            {
+              "kind": "field",
+              "name": "page",
+              "privacy": "private",
+              "readonly": true
+            },
+            {
+              "kind": "method",
+              "name": "pageItems",
+              "privacy": "private",
+              "return": {
+                "type": {
+                  "text": "PaginationItem[]"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "total",
+                  "type": {
+                    "text": "number"
+                  }
+                },
+                {
+                  "name": "current",
+                  "type": {
+                    "text": "number"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "goTo",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "page",
+                  "type": {
+                    "text": "number"
+                  }
+                }
+              ]
+            }
+          ],
+          "events": [
+            {
+              "name": "change",
+              "type": {
+                "text": "CustomEvent"
+              }
+            }
+          ],
+          "attributes": [
+            {
+              "name": "current-page",
+              "type": {
+                "text": "number"
+              },
+              "default": "1",
+              "fieldName": "currentPage"
+            },
+            {
+              "name": "total-pages",
+              "type": {
+                "text": "number"
+              },
+              "default": "1",
+              "fieldName": "totalPages"
+            },
+            {
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Pagination'",
+              "fieldName": "label"
+            },
+            {
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "fieldName": "disabled"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "ov-pagination",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "OvPagination",
+          "declaration": {
+            "name": "OvPagination",
+            "module": "src/components/pagination.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "ov-pagination",
+          "declaration": {
+            "name": "OvPagination",
+            "module": "src/components/pagination.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/popover.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "A non-modal floating surface for contextual content and controls.",
+          "name": "OvPopover",
+          "members": [
+            {
+              "kind": "field",
+              "name": "label",
+              "privacy": "public",
+              "type": {
+                "text": "string"
+              },
+              "default": "'More details'",
+              "attribute": "label",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "open",
+              "privacy": "public",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "attribute": "open",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "privacy": "public",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "attribute": "disabled",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "placement",
+              "privacy": "public",
+              "type": {
+                "text": "PopoverPlacement"
+              },
+              "default": "'bottom'",
+              "attribute": "placement",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "dismissible",
+              "privacy": "public",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true",
+              "attribute": "dismissible",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "instanceId",
+              "privacy": "private",
+              "readonly": true,
+              "default": "`ov-popover-${++popoverId}`"
+            },
+            {
+              "kind": "field",
+              "name": "toggleSurface",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "handleTriggerKeydown",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "handlePopoverKeydown",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "handleDocumentPointerDown",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "focusFirstContentControl",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "closeSurface",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "restoreFocus",
+                  "default": "true"
+                }
+              ]
+            }
+          ],
+          "events": [
+            {
+              "name": "open",
+              "type": {
+                "text": "Event"
+              }
+            },
+            {
+              "name": "close",
+              "type": {
+                "text": "Event"
+              }
+            }
+          ],
+          "attributes": [
+            {
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "'More details'",
+              "fieldName": "label"
+            },
+            {
+              "name": "open",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "fieldName": "open"
+            },
+            {
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "fieldName": "disabled"
+            },
+            {
+              "name": "placement",
+              "type": {
+                "text": "PopoverPlacement"
+              },
+              "default": "'bottom'",
+              "fieldName": "placement"
+            },
+            {
+              "name": "dismissible",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true",
+              "fieldName": "dismissible"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "ov-popover",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "OvPopover",
+          "declaration": {
+            "name": "OvPopover",
+            "module": "src/components/popover.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "ov-popover",
+          "declaration": {
+            "name": "OvPopover",
+            "module": "src/components/popover.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/progress.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "A labelled native progress indicator for determinate or indeterminate work.",
+          "name": "OvProgress",
+          "members": [
+            {
+              "kind": "field",
+              "name": "label",
+              "privacy": "public",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Progress'",
+              "attribute": "label",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "value",
+              "privacy": "public",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "attribute": "value",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "max",
+              "privacy": "public",
+              "type": {
+                "text": "number"
+              },
+              "default": "100",
+              "attribute": "max",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "indeterminate",
+              "privacy": "public",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "attribute": "indeterminate",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "showValue",
+              "privacy": "public",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "attribute": "show-value",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "instanceId",
+              "privacy": "private",
+              "readonly": true,
+              "default": "`ov-progress-${++progressId}`"
+            },
+            {
+              "kind": "field",
+              "name": "normalizedMax",
+              "privacy": "private",
+              "readonly": true
+            },
+            {
+              "kind": "method",
+              "name": "normalizedValue",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "max",
+                  "type": {
+                    "text": "number"
+                  }
+                }
+              ]
+            }
+          ],
+          "attributes": [
+            {
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Progress'",
+              "fieldName": "label"
+            },
+            {
+              "name": "value",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "fieldName": "value"
+            },
+            {
+              "name": "max",
+              "type": {
+                "text": "number"
+              },
+              "default": "100",
+              "fieldName": "max"
+            },
+            {
+              "name": "indeterminate",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "fieldName": "indeterminate"
+            },
+            {
+              "name": "show-value",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "fieldName": "showValue"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "ov-progress",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "OvProgress",
+          "declaration": {
+            "name": "OvProgress",
+            "module": "src/components/progress.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "ov-progress",
+          "declaration": {
+            "name": "OvProgress",
+            "module": "src/components/progress.ts"
           }
         }
       ]
@@ -1765,6 +4353,849 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/skeleton.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "A decorative loading placeholder; the owning region should expose aria-busy.",
+          "name": "OvSkeleton",
+          "members": [
+            {
+              "kind": "field",
+              "name": "variant",
+              "privacy": "public",
+              "type": {
+                "text": "SkeletonVariant"
+              },
+              "default": "'text'",
+              "attribute": "variant",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "lines",
+              "privacy": "public",
+              "type": {
+                "text": "number"
+              },
+              "default": "1",
+              "attribute": "lines",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "animated",
+              "privacy": "public",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true",
+              "attribute": "animated",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "normalizedVariant",
+              "type": {
+                "text": "SkeletonVariant"
+              },
+              "privacy": "private",
+              "readonly": true
+            }
+          ],
+          "attributes": [
+            {
+              "name": "variant",
+              "type": {
+                "text": "SkeletonVariant"
+              },
+              "default": "'text'",
+              "fieldName": "variant"
+            },
+            {
+              "name": "lines",
+              "type": {
+                "text": "number"
+              },
+              "default": "1",
+              "fieldName": "lines"
+            },
+            {
+              "name": "animated",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true",
+              "fieldName": "animated"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "ov-skeleton",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "OvSkeleton",
+          "declaration": {
+            "name": "OvSkeleton",
+            "module": "src/components/skeleton.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "ov-skeleton",
+          "declaration": {
+            "name": "OvSkeleton",
+            "module": "src/components/skeleton.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/slider.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "A labelled native range control for bounded numeric values.",
+          "name": "OvSlider",
+          "members": [
+            {
+              "kind": "field",
+              "name": "label",
+              "privacy": "public",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "attribute": "label",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "name",
+              "privacy": "public",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "attribute": "name",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "value",
+              "privacy": "public",
+              "type": {
+                "text": "number"
+              },
+              "default": "50",
+              "attribute": "value",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "min",
+              "privacy": "public",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "attribute": "min",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "max",
+              "privacy": "public",
+              "type": {
+                "text": "number"
+              },
+              "default": "100",
+              "attribute": "max",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "step",
+              "privacy": "public",
+              "type": {
+                "text": "number"
+              },
+              "default": "1",
+              "attribute": "step",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "showValue",
+              "privacy": "public",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true",
+              "attribute": "show-value",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "privacy": "public",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "attribute": "disabled",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "helpText",
+              "privacy": "public",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "attribute": "help-text"
+            },
+            {
+              "kind": "field",
+              "name": "error",
+              "privacy": "public",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "attribute": "error"
+            },
+            {
+              "kind": "field",
+              "name": "inputId",
+              "privacy": "private",
+              "readonly": true,
+              "default": "`ov-slider-${++sliderId}`"
+            },
+            {
+              "kind": "method",
+              "name": "updateValue",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "event",
+                  "type": {
+                    "text": "Event"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "field",
+              "name": "handleInput",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "handleChange",
+              "privacy": "private"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "fieldName": "label"
+            },
+            {
+              "name": "name",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "fieldName": "name"
+            },
+            {
+              "name": "value",
+              "type": {
+                "text": "number"
+              },
+              "default": "50",
+              "fieldName": "value"
+            },
+            {
+              "name": "min",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "fieldName": "min"
+            },
+            {
+              "name": "max",
+              "type": {
+                "text": "number"
+              },
+              "default": "100",
+              "fieldName": "max"
+            },
+            {
+              "name": "step",
+              "type": {
+                "text": "number"
+              },
+              "default": "1",
+              "fieldName": "step"
+            },
+            {
+              "name": "show-value",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true",
+              "fieldName": "showValue"
+            },
+            {
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "fieldName": "disabled"
+            },
+            {
+              "name": "help-text",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "fieldName": "helpText"
+            },
+            {
+              "name": "error",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "fieldName": "error"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "ov-slider",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "OvSlider",
+          "declaration": {
+            "name": "OvSlider",
+            "module": "src/components/slider.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "ov-slider",
+          "declaration": {
+            "name": "OvSlider",
+            "module": "src/components/slider.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/spinner.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "A small inline loading indicator with an accessible status label.",
+          "name": "OvSpinner",
+          "members": [
+            {
+              "kind": "field",
+              "name": "label",
+              "privacy": "public",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Loading'",
+              "attribute": "label",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "size",
+              "privacy": "public",
+              "type": {
+                "text": "'sm' | 'md'"
+              },
+              "default": "'sm'",
+              "attribute": "size",
+              "reflects": true
+            }
+          ],
+          "attributes": [
+            {
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Loading'",
+              "fieldName": "label"
+            },
+            {
+              "name": "size",
+              "type": {
+                "text": "'sm' | 'md'"
+              },
+              "default": "'sm'",
+              "fieldName": "size"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "ov-spinner",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "OvSpinner",
+          "declaration": {
+            "name": "OvSpinner",
+            "module": "src/components/spinner.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "ov-spinner",
+          "declaration": {
+            "name": "OvSpinner",
+            "module": "src/components/spinner.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/stepper.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "A compact ordered progress indicator for multi-step workflows.",
+          "name": "OvStepper",
+          "members": [
+            {
+              "kind": "field",
+              "name": "items",
+              "privacy": "public",
+              "type": {
+                "text": "StepperItem[]"
+              },
+              "default": "[]",
+              "attribute": "items"
+            },
+            {
+              "kind": "field",
+              "name": "value",
+              "privacy": "public",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "attribute": "value",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "orientation",
+              "privacy": "public",
+              "type": {
+                "text": "'horizontal' | 'vertical'"
+              },
+              "default": "'horizontal'",
+              "attribute": "orientation",
+              "reflects": true
+            },
+            {
+              "kind": "method",
+              "name": "derivedState",
+              "privacy": "private",
+              "return": {
+                "type": {
+                  "text": "StepState"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "index",
+                  "type": {
+                    "text": "number"
+                  }
+                },
+                {
+                  "name": "currentIndex",
+                  "type": {
+                    "text": "number"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "derivedConnectorState",
+              "privacy": "private",
+              "return": {
+                "type": {
+                  "text": "StepState"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "index",
+                  "type": {
+                    "text": "number"
+                  }
+                },
+                {
+                  "name": "state",
+                  "type": {
+                    "text": "StepState"
+                  }
+                },
+                {
+                  "name": "nextState",
+                  "type": {
+                    "text": "StepState | undefined"
+                  }
+                },
+                {
+                  "name": "currentIndex",
+                  "type": {
+                    "text": "number"
+                  }
+                }
+              ]
+            }
+          ],
+          "attributes": [
+            {
+              "name": "items",
+              "type": {
+                "text": "StepperItem[]"
+              },
+              "default": "[]",
+              "fieldName": "items"
+            },
+            {
+              "name": "value",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "fieldName": "value"
+            },
+            {
+              "name": "orientation",
+              "type": {
+                "text": "'horizontal' | 'vertical'"
+              },
+              "default": "'horizontal'",
+              "fieldName": "orientation"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "ov-stepper",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "OvStepper",
+          "declaration": {
+            "name": "OvStepper",
+            "module": "src/components/stepper.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "ov-stepper",
+          "declaration": {
+            "name": "OvStepper",
+            "module": "src/components/stepper.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/tabs.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "A controlled tablist with keyboard navigation and named panel slots.",
+          "name": "OvTabs",
+          "members": [
+            {
+              "kind": "field",
+              "name": "label",
+              "privacy": "public",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Tabs'",
+              "attribute": "label",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "value",
+              "privacy": "public",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "attribute": "value",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "orientation",
+              "privacy": "public",
+              "type": {
+                "text": "'horizontal' | 'vertical'"
+              },
+              "default": "'horizontal'",
+              "attribute": "orientation",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "items",
+              "privacy": "public",
+              "type": {
+                "text": "TabItem[]"
+              },
+              "default": "[]",
+              "attribute": "items"
+            },
+            {
+              "kind": "field",
+              "name": "instanceId",
+              "privacy": "private",
+              "readonly": true,
+              "default": "`ov-tabs-${++tabsId}`"
+            },
+            {
+              "kind": "field",
+              "name": "activeIndex",
+              "type": {
+                "text": "number"
+              },
+              "privacy": "private",
+              "default": "-1"
+            },
+            {
+              "kind": "field",
+              "name": "selectedValue",
+              "privacy": "private",
+              "readonly": true
+            },
+            {
+              "kind": "method",
+              "name": "ensureSelection",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "tabId",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "index",
+                  "type": {
+                    "text": "number"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "panelId",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "index",
+                  "type": {
+                    "text": "number"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "selectItem",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "index",
+                  "type": {
+                    "text": "number"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "handleKeydown",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "event",
+                  "type": {
+                    "text": "KeyboardEvent"
+                  }
+                },
+                {
+                  "name": "index",
+                  "type": {
+                    "text": "number"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "firstEnabledIndex",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "lastEnabledIndex",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "nextEnabledIndex",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "index",
+                  "type": {
+                    "text": "number"
+                  }
+                },
+                {
+                  "name": "direction",
+                  "type": {
+                    "text": "1 | -1"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "focusTab",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "index",
+                  "type": {
+                    "text": "number"
+                  }
+                }
+              ]
+            }
+          ],
+          "events": [
+            {
+              "name": "change",
+              "type": {
+                "text": "CustomEvent"
+              }
+            }
+          ],
+          "attributes": [
+            {
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Tabs'",
+              "fieldName": "label"
+            },
+            {
+              "name": "value",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "fieldName": "value"
+            },
+            {
+              "name": "orientation",
+              "type": {
+                "text": "'horizontal' | 'vertical'"
+              },
+              "default": "'horizontal'",
+              "fieldName": "orientation"
+            },
+            {
+              "name": "items",
+              "type": {
+                "text": "TabItem[]"
+              },
+              "default": "[]",
+              "fieldName": "items"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "ov-tabs",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "OvTabs",
+          "declaration": {
+            "name": "OvTabs",
+            "module": "src/components/tabs.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "ov-tabs",
+          "declaration": {
+            "name": "OvTabs",
+            "module": "src/components/tabs.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/textarea.ts",
       "declarations": [
         {
@@ -2000,6 +5431,275 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/toast.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "A transient, dismissible notification that an owning region places in the UI.",
+          "name": "OvToast",
+          "members": [
+            {
+              "kind": "field",
+              "name": "open",
+              "privacy": "public",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "attribute": "open",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "tone",
+              "privacy": "public",
+              "type": {
+                "text": "ToastTone"
+              },
+              "default": "'info'",
+              "attribute": "tone",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "heading",
+              "privacy": "public",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "attribute": "heading",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "duration",
+              "privacy": "public",
+              "type": {
+                "text": "number"
+              },
+              "default": "5000",
+              "attribute": "duration",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "dismissible",
+              "privacy": "public",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true",
+              "attribute": "dismissible",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "closeLabel",
+              "privacy": "public",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Dismiss notification'",
+              "attribute": "close-label",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "timer",
+              "type": {
+                "text": "number | undefined"
+              },
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "startedAt",
+              "type": {
+                "text": "number"
+              },
+              "privacy": "private",
+              "default": "0"
+            },
+            {
+              "kind": "field",
+              "name": "remaining",
+              "type": {
+                "text": "number"
+              },
+              "privacy": "private",
+              "default": "0"
+            },
+            {
+              "kind": "field",
+              "name": "hovered",
+              "type": {
+                "text": "boolean"
+              },
+              "privacy": "private",
+              "default": "false"
+            },
+            {
+              "kind": "field",
+              "name": "focused",
+              "type": {
+                "text": "boolean"
+              },
+              "privacy": "private",
+              "default": "false"
+            },
+            {
+              "kind": "field",
+              "name": "normalizedDuration",
+              "privacy": "private",
+              "readonly": true
+            },
+            {
+              "kind": "field",
+              "name": "dismiss",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "close",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "reason",
+                  "type": {
+                    "text": "ToastCloseReason"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "scheduleDismissal",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "pauseDismissal",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "handleMouseEnter",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "handleMouseLeave",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "handleFocusIn",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "handleFocusOut",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "resumeDismissal",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "clearTimer",
+              "privacy": "private"
+            }
+          ],
+          "events": [
+            {
+              "name": "close",
+              "type": {
+                "text": "CustomEvent"
+              }
+            }
+          ],
+          "attributes": [
+            {
+              "name": "open",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "fieldName": "open"
+            },
+            {
+              "name": "tone",
+              "type": {
+                "text": "ToastTone"
+              },
+              "default": "'info'",
+              "fieldName": "tone"
+            },
+            {
+              "name": "heading",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "fieldName": "heading"
+            },
+            {
+              "name": "duration",
+              "type": {
+                "text": "number"
+              },
+              "default": "5000",
+              "fieldName": "duration"
+            },
+            {
+              "name": "dismissible",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true",
+              "fieldName": "dismissible"
+            },
+            {
+              "name": "close-label",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Dismiss notification'",
+              "fieldName": "closeLabel"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "ov-toast",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "OvToast",
+          "declaration": {
+            "name": "OvToast",
+            "module": "src/components/toast.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "ov-toast",
+          "declaration": {
+            "name": "OvToast",
+            "module": "src/components/toast.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/toggle.ts",
       "declarations": [
         {
@@ -2211,6 +5911,527 @@
           "declaration": {
             "name": "OvToggle",
             "module": "src/components/toggle.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/tooltip.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "A supplemental tooltip that opens for pointer hover and keyboard focus.",
+          "name": "OvTooltip",
+          "members": [
+            {
+              "kind": "field",
+              "name": "content",
+              "privacy": "public",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "attribute": "content",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "label",
+              "privacy": "public",
+              "type": {
+                "text": "string"
+              },
+              "default": "'More information'",
+              "attribute": "label",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "placement",
+              "privacy": "public",
+              "type": {
+                "text": "TooltipPlacement"
+              },
+              "default": "'top'",
+              "attribute": "placement",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "open",
+              "privacy": "public",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "attribute": "open",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "instanceId",
+              "privacy": "private",
+              "readonly": true,
+              "default": "`ov-tooltip-${++tooltipId}`"
+            },
+            {
+              "kind": "field",
+              "name": "interactiveTrigger",
+              "type": {
+                "text": "boolean"
+              },
+              "privacy": "private",
+              "default": "false"
+            },
+            {
+              "kind": "field",
+              "name": "assignedTriggers",
+              "type": {
+                "text": "HTMLElement[]"
+              },
+              "privacy": "private",
+              "default": "[]"
+            },
+            {
+              "kind": "field",
+              "name": "triggerDescriptions",
+              "privacy": "private",
+              "default": "new Map<HTMLElement, string | null>()"
+            },
+            {
+              "kind": "field",
+              "name": "handleTriggerSlot",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "restoreTriggerDescriptions",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "show",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "hide",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "handleKeydown",
+              "privacy": "private"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "content",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "fieldName": "content"
+            },
+            {
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "'More information'",
+              "fieldName": "label"
+            },
+            {
+              "name": "placement",
+              "type": {
+                "text": "TooltipPlacement"
+              },
+              "default": "'top'",
+              "fieldName": "placement"
+            },
+            {
+              "name": "open",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "fieldName": "open"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "ov-tooltip",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "OvTooltip",
+          "declaration": {
+            "name": "OvTooltip",
+            "module": "src/components/tooltip.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "ov-tooltip",
+          "declaration": {
+            "name": "OvTooltip",
+            "module": "src/components/tooltip.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/tree.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "An accessible hierarchical tree for file, navigation, and nested resource structures.",
+          "name": "OvTree",
+          "members": [
+            {
+              "kind": "field",
+              "name": "label",
+              "privacy": "public",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Tree'",
+              "attribute": "label",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "items",
+              "privacy": "public",
+              "type": {
+                "text": "TreeItem[]"
+              },
+              "default": "[]",
+              "attribute": "items"
+            },
+            {
+              "kind": "field",
+              "name": "value",
+              "privacy": "public",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "attribute": "value",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "expanded",
+              "privacy": "public",
+              "type": {
+                "text": "string[]"
+              },
+              "default": "[]",
+              "attribute": "expanded"
+            },
+            {
+              "kind": "field",
+              "name": "activeValue",
+              "type": {
+                "text": "string"
+              },
+              "privacy": "private",
+              "default": "''"
+            },
+            {
+              "kind": "field",
+              "name": "instanceId",
+              "privacy": "private",
+              "readonly": true,
+              "default": "`ov-tree-${++treeId}`"
+            },
+            {
+              "kind": "method",
+              "name": "renderItems",
+              "privacy": "private",
+              "return": {
+                "type": {
+                  "text": "ReturnType<typeof html>[]"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "items",
+                  "type": {
+                    "text": "TreeItem[]"
+                  }
+                },
+                {
+                  "name": "parentValue",
+                  "type": {
+                    "text": "string"
+                  }
+                },
+                {
+                  "name": "level",
+                  "type": {
+                    "text": "number"
+                  }
+                },
+                {
+                  "name": "focusValue",
+                  "type": {
+                    "text": "string"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "handleItemFocus",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "value",
+                  "type": {
+                    "text": "string"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "handleItemClick",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "event",
+                  "type": {
+                    "text": "MouseEvent"
+                  }
+                },
+                {
+                  "name": "item",
+                  "type": {
+                    "text": "TreeItem"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "handleDisclosureClick",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "event",
+                  "type": {
+                    "text": "MouseEvent"
+                  }
+                },
+                {
+                  "name": "item",
+                  "type": {
+                    "text": "TreeItem"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "handleItemKeydown",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "event",
+                  "type": {
+                    "text": "KeyboardEvent"
+                  }
+                },
+                {
+                  "name": "item",
+                  "type": {
+                    "text": "TreeItem"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "focusVisibleItem",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "visible",
+                  "type": {
+                    "text": "VisibleTreeItem[]"
+                  }
+                },
+                {
+                  "name": "startIndex",
+                  "type": {
+                    "text": "number"
+                  }
+                },
+                {
+                  "name": "direction",
+                  "type": {
+                    "text": "1 | -1"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "focusTreeItem",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "value",
+                  "type": {
+                    "text": "string"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "selectItem",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "item",
+                  "type": {
+                    "text": "TreeItem"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "toggleItem",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "value",
+                  "type": {
+                    "text": "string"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "isExpanded",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "value",
+                  "type": {
+                    "text": "string"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "flattenVisible",
+              "privacy": "private",
+              "return": {
+                "type": {
+                  "text": "VisibleTreeItem[]"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "items",
+                  "default": "this.items"
+                },
+                {
+                  "name": "parentValue",
+                  "default": "''"
+                },
+                {
+                  "name": "level",
+                  "default": "1"
+                }
+              ]
+            }
+          ],
+          "events": [
+            {
+              "name": "select",
+              "type": {
+                "text": "CustomEvent"
+              }
+            },
+            {
+              "name": "toggle",
+              "type": {
+                "text": "CustomEvent"
+              }
+            }
+          ],
+          "attributes": [
+            {
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Tree'",
+              "fieldName": "label"
+            },
+            {
+              "name": "items",
+              "type": {
+                "text": "TreeItem[]"
+              },
+              "default": "[]",
+              "fieldName": "items"
+            },
+            {
+              "name": "value",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "fieldName": "value"
+            },
+            {
+              "name": "expanded",
+              "type": {
+                "text": "string[]"
+              },
+              "default": "[]",
+              "fieldName": "expanded"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "ov-tree",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "OvTree",
+          "declaration": {
+            "name": "OvTree",
+            "module": "src/components/tree.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "ov-tree",
+          "declaration": {
+            "name": "OvTree",
+            "module": "src/components/tree.ts"
           }
         }
       ]

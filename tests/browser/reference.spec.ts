@@ -8,8 +8,9 @@ const viewports = [
   { name: 'tablet', width: 768, height: 1024 },
   { name: 'narrow', width: 375, height: 812 },
 ] as const;
+const themes = ['light', 'dark', 'contrast'] as const;
 
-async function openReference(page: Page, theme: 'light' | 'dark') {
+async function openReference(page: Page, theme: typeof themes[number]) {
   await page.addInitScript((selectedTheme) => localStorage.setItem('ovlira-theme', selectedTheme), theme);
   await page.goto(referenceUrl);
   await page.locator('.app').waitFor();
@@ -17,7 +18,7 @@ async function openReference(page: Page, theme: 'light' | 'dark') {
   await page.evaluate(() => document.fonts.ready);
 }
 
-for (const theme of ['light', 'dark'] as const) {
+for (const theme of themes) {
   test(`authored reference has no automated accessibility violations in ${theme}`, async ({ page }) => {
     await openReference(page, theme);
     const results = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa']).analyze();

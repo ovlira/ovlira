@@ -54,7 +54,7 @@ Ovlira does not need to generate production backends, solve deployment, or provi
 The initial release proves the technical vertical slice:
 
 - one local npm package with no server or model dependency;
-- ten Lit components and six domain-neutral recipes;
+- thirty-five Lit components and six domain-neutral recipes;
 - bounded catalogue search and focused inspection;
 - source copying with conflict protection and explicit local ownership;
 - global CSS custom properties for the initial palette and typography;
@@ -63,18 +63,18 @@ The initial release proves the technical vertical slice:
 
 The important gaps are product gaps rather than missing infrastructure:
 
-- the default theme contract and authored reference are now explicit, but the separate designer-supplied contrasting theme is still outstanding;
-- the ten components now consume the semantic theme surface, while intentional structural CSS remains component-owned;
+- the default theme contract, authored reference, and deliberately contrasting theme are explicit, wired, and human-approved across the rendered baseline matrix;
+- the thirty-five components now consume the semantic theme surface, while intentional structural CSS remains component-owned;
 - the six canonical recipe fixtures now share markup between generation and review and have deterministic interaction, accessibility, responsive, and screenshot checks;
 - the consolidated review app covers all six fixtures and generated starters expose the same baseline action seams;
-- the designer contribution checklist and visual approval mechanism exist, but the current candidate baselines still need human sign-off; and
+- the designer contribution checklist and visual approval mechanism exist, and the current recipe, reference, and component baselines have human sign-off; and
 - token usage is reported by evaluations, and deterministic CLI response budgets are now enforced in CI; provider token accounting remains a separate measurement.
 
 The existing generated-spec and runtime-validation work remains useful test infrastructure. Expanding it is not the product priority until these gaps are closed.
 
 ## Now: v0.3 — make the existing promise real
 
-No net catalogue growth is planned for this phase. Improve the ten components and six recipes already shipped.
+Prioritize improving the thirty-five components and six recipes already shipped; add components only when they close a clear, generic UI gap.
 
 ### 1. Establish the theme contract
 
@@ -125,6 +125,8 @@ CI enforces these limits with the deterministic UTF-8 estimate documented in [`d
 
 ### v0.3 exit criteria
 
+**Status: complete — 2026-08-31.**
+
 - All six recipe fixtures are human-approved at three representative widths, following the [human visual review protocol](./visual-review.md).
 - A designer-supplied contrasting theme changes the full visual character of all fixtures without component edits.
 - Every recipe has baseline observable interactions, real switchable required states, and passes `ovlira check`.
@@ -167,7 +169,7 @@ Use the completed catalogue to prove that agents can build different prototypes 
 
 Catalogue growth begins only after v0.4 evidence shows a missing building block repeatedly blocks otherwise valid prototypes.
 
-- Cap the v1 catalogue at twenty components and ten recipes.
+- Stabilize a v1 core catalogue of twenty interaction components and ten recipes; keep the already-shipped composition and page-building helpers compatible as supporting entries.
 - Prefer completing a current recipe over adding a new category.
 - Add no domain-specific packs; domain range should come from composition, copy, data, and theming.
 - Stabilize the theme, descriptor, manifest, and diagnostic schemas with documented compatibility rules.
@@ -182,7 +184,7 @@ Every proposed component or recipe must satisfy all of these conditions:
 2. Existing catalogue items cannot express the need without an accessibility or interaction compromise.
 3. A human designer supplies or approves the complete visual and behavioural contract.
 4. Its metadata fits the established token budgets.
-5. It stays inside the v1 catalogue cap or replaces a less useful item.
+5. It fits the v1 core target or replaces a less useful item; supporting composition entries remain compatible with the recipes that use them.
 
 ## Work that is maintained but not expanded on the critical path
 

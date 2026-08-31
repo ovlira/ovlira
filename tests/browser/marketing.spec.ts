@@ -1,13 +1,28 @@
 import AxeBuilder from '@axe-core/playwright';
-import { expect, test } from '@playwright/test';
+import { expect, test, type Locator, type Page } from '@playwright/test';
+import { components } from '../../src/catalogue/index.js';
 
 const marketingUrl = 'http://127.0.0.1:4321/';
 
-async function openMarketing(page: import('@playwright/test').Page, theme: 'light' | 'dark' = 'light') {
+async function openMarketing(page: Page, theme: 'light' | 'dark' = 'light') {
   await page.goto(marketingUrl);
   await page.evaluate((selectedTheme) => { document.documentElement.dataset.theme = selectedTheme; }, theme);
   await page.waitForFunction(() => Boolean(document.querySelector('[data-view="catalogue"]')));
+  await page.evaluate(
+    (tags) => Promise.all(tags.map((tag) => customElements.whenDefined(tag))),
+    components.map((component) => component.api.tag),
+  );
   await page.evaluate(() => document.fonts.ready);
+}
+
+async function settleComponents(root: Locator) {
+  await root.evaluate(async (element) => {
+    const elements = [element, ...element.querySelectorAll('*')];
+    await Promise.all(elements.map((candidate) => {
+      const updateComplete = (candidate as Element & { updateComplete?: Promise<unknown> }).updateComplete;
+      return updateComplete ?? Promise.resolve();
+    }));
+  });
 }
 
 test('marketing surface follows the reference shell and exposes the agent loop', async ({ page }) => {
@@ -71,10 +86,13 @@ test('catalogue uses a desktop master detail split and a mobile detail replaceme
 
 test('catalogue preview coverage includes every shipped component', async ({ page }) => {
   await openMarketing(page);
-  for (const id of ['ov-button', 'ov-input', 'ov-textarea', 'ov-checkbox', 'ov-radio-group', 'ov-toggle', 'ov-dialog', 'ov-select', 'ov-badge', 'ov-card', 'ov-alert', 'ov-page-header', 'ov-empty-state', 'ov-data-table', 'ov-application-shell']) {
+  for (const id of components.map((component) => component.api.tag)) {
     await page.locator(`[data-catalogue-select="${id}"]`).click();
     await expect(page.locator('[data-component-preview]')).toBeVisible();
-    await expect(page.locator(`[data-component-preview] ${id}`).first()).toBeVisible();
+    if (id === 'ov-drawer') {
+      await expect(page.locator('[data-component-preview] [data-drawer-open]')).toBeVisible();
+      await expect(page.locator('[data-component-preview] ov-drawer')).toHaveCount(1);
+    } else await expect(page.locator(`[data-component-preview] ${id}`).first()).toBeVisible();
   }
 });
 
@@ -107,12 +125,309 @@ test('toggle preview renders a circular handle inside its track', async ({ page 
   expect(Math.abs((geometry.thumb?.width ?? 0) - (geometry.thumb?.height ?? 0))).toBeLessThan(0.5);
 });
 
+test('spinner preview exposes a polite loading status', async ({ page }) => {
+  await openMarketing(page);
+  await page.locator('[data-catalogue-select="ov-spinner"]').click();
+  const status = page.locator('[data-component-preview] [role="status"]').first();
+  await expect(status).toContainText('Loading projects');
+  await expect(status).toHaveAttribute('aria-live', 'polite');
+});
+
+test('menu preview opens, selects an action, and restores trigger focus', async ({ page }) => {
+  await openMarketing(page);
+  await page.locator('[data-catalogue-select="ov-menu"]').click();
+  const host = page.locator('[data-component-preview] ov-menu').first();
+  const trigger = host.locator('button.trigger');
+  await trigger.click();
+  await expect(trigger).toHaveAttribute('aria-expanded', 'true');
+  await expect(host.getByRole('menuitem', { name: 'Duplicate project' })).toBeVisible();
+  await host.getByRole('menuitem', { name: 'Duplicate project' }).click();
+  await expect(trigger).toBeFocused();
+  await expect(trigger).toHaveAttribute('aria-expanded', 'false');
+});
+
+test('menu keyboard navigation opens on Enter and closes on Escape', async ({ page }) => {
+  await openMarketing(page);
+  await page.locator('[data-catalogue-select="ov-menu"]').click();
+  const host = page.locator('[data-component-preview] ov-menu').first();
+  const trigger = host.locator('button.trigger');
+  await trigger.press('Enter');
+  await expect(host.getByRole('menuitem', { name: 'Duplicate project' })).toBeFocused();
+  await host.getByRole('menuitem', { name: 'Duplicate project' }).press('Escape');
+  await expect(trigger).toBeFocused();
+  await expect(trigger).toHaveAttribute('aria-expanded', 'false');
+});
+
+test('pagination preview exposes current page and navigation controls', async ({ page }) => {
+  await openMarketing(page);
+  await page.locator('[data-catalogue-select="ov-pagination"]').click();
+  const host = page.locator('[data-component-preview] ov-pagination').first();
+  await expect(host.locator('[aria-current="page"]')).toHaveText('4');
+  await expect(host.getByRole('button', { name: 'Previous page' })).toBeEnabled();
+  await expect(host.getByRole('button', { name: 'Next page' })).toBeEnabled();
+});
+
+test('combobox preview exposes filtering and listbox semantics', async ({ page }) => {
+  await openMarketing(page);
+  await page.locator('[data-catalogue-select="ov-combobox"]').click();
+  const host = page.locator('[data-component-preview] ov-combobox').first();
+  const input = host.getByRole('combobox', { name: 'Project owner' });
+  await input.click();
+  await expect(input).toHaveAttribute('aria-expanded', 'true');
+  await expect(host.getByRole('option')).toHaveCount(4);
+  await input.fill('Maya');
+  await expect(host.getByRole('option')).toHaveCount(1);
+  await host.getByRole('option', { name: 'Maya Chen' }).click();
+  await expect(input).toHaveValue('Maya Chen');
+});
+
+test('combobox keyboard navigation selects the active option', async ({ page }) => {
+  await openMarketing(page);
+  await page.locator('[data-catalogue-select="ov-combobox"]').click();
+  const host = page.locator('[data-component-preview] ov-combobox').first();
+  const input = host.getByRole('combobox', { name: 'Project owner' });
+  await input.click();
+  await input.press('ArrowDown');
+  await input.press('Enter');
+  await expect(input).toHaveValue('Maya Chen');
+  await expect(input).toHaveAttribute('aria-expanded', 'false');
+});
+
+test('combobox preview keeps the field and dropdown options compact', async ({ page }) => {
+  await openMarketing(page);
+  await page.locator('[data-catalogue-select="ov-combobox"]').click();
+  const host = page.locator('[data-component-preview] ov-combobox').first();
+  const input = host.getByRole('combobox', { name: 'Project owner' });
+  await input.click();
+  const heights = await host.locator('input, [role="option"]').evaluateAll((elements) => elements.map((element) => element.getBoundingClientRect().height));
+  expect(heights[0]).toBeLessThanOrEqual(40.5);
+  expect(heights.slice(1).every((height) => height <= 40.5)).toBe(true);
+});
+
+test('tabs preview exposes related panels and keyboard selection', async ({ page }) => {
+  await openMarketing(page);
+  await page.locator('[data-catalogue-select="ov-tabs"]').click();
+  const host = page.locator('[data-component-preview] ov-tabs').first();
+  await expect(host.getByRole('tablist')).toHaveAttribute('aria-label', 'Project views');
+  await expect(host.getByRole('tab', { name: 'Overview' })).toHaveAttribute('aria-selected', 'true');
+  await expect(host.locator('[slot="overview"]')).toContainText('A summary of the project.');
+  await host.getByRole('tab', { name: 'Overview' }).press('ArrowRight');
+  await expect(host.getByRole('tab', { name: 'Activity' })).toHaveAttribute('aria-selected', 'true');
+  await expect(host.locator('[slot="activity"]')).toContainText('Recent project activity.');
+});
+
+test('toast preview exposes a live region and dismissal control', async ({ page }) => {
+  await openMarketing(page);
+  await page.locator('[data-catalogue-select="ov-toast"]').click();
+  const host = page.locator('[data-component-preview] ov-toast').first();
+  await expect(host).toContainText('Your project is up to date.');
+  await host.getByRole('button', { name: 'Dismiss notification' }).click();
+  await expect(host).not.toHaveAttribute('open');
+});
+
+test('progress preview exposes native progress value and label', async ({ page }) => {
+  await openMarketing(page);
+  await page.locator('[data-catalogue-select="ov-progress"]').click();
+  const host = page.locator('[data-component-preview] ov-progress').first();
+  await expect.poll(() => host.locator('progress').evaluate((element) => String((element as HTMLProgressElement).value))).toBe('68');
+  await expect(host.locator('[part="value"]')).toHaveText('68%');
+  await expect(host.getByText('Importing projects', { exact: true })).toBeVisible();
+});
+
+test('skeleton preview remains decorative inside a busy region', async ({ page }) => {
+  await openMarketing(page);
+  await page.locator('[data-catalogue-select="ov-skeleton"]').click();
+  const host = page.locator('[data-component-preview]');
+  await expect(host.locator('[aria-busy="true"]')).toHaveAttribute('aria-label', 'Loading project details');
+  await expect(host.locator('ov-skeleton').first().locator('[aria-hidden="true"]')).toBeVisible();
+  const boxes = await host.locator('ov-skeleton').evaluateAll((elements) => elements.map((element) => {
+    const box = element.getBoundingClientRect();
+    return { top: box.top, bottom: box.bottom };
+  }));
+  expect(boxes[1]!.top - boxes[0]!.bottom).toBeGreaterThanOrEqual(16);
+});
+
+test('tooltip preview exposes supplemental content for keyboard users', async ({ page }) => {
+  await openMarketing(page);
+  await page.locator('[data-catalogue-select="ov-tooltip"]').click();
+  const host = page.locator('[data-component-preview] ov-tooltip').first();
+  await settleComponents(host);
+  const trigger = host.getByRole('button', { name: 'Search help' });
+  await expect(trigger).toHaveAttribute('aria-describedby', /ov-tooltip-/);
+  await trigger.focus();
+  await expect(host.getByRole('tooltip')).toBeVisible();
+  await expect(host.getByRole('tooltip')).toContainText('Keyboard shortcut: /');
+  await trigger.press('Escape');
+  await expect(host.getByRole('tooltip')).toBeHidden();
+});
+
+test('avatar preview exposes identity and presence semantics', async ({ page }) => {
+  await openMarketing(page);
+  await page.locator('[data-catalogue-select="ov-avatar"]').click();
+  const host = page.locator('[data-component-preview] ov-avatar').first();
+  await expect(host.locator('[part="avatar"]')).toHaveAttribute('aria-label', 'Maya Chen, Online');
+  await expect(host.locator('[part="initials"]')).toHaveText('MC');
+  await expect(host.locator('[part="status"]')).toHaveAttribute('aria-hidden', 'true');
+});
+
+test('breadcrumbs preview links parent locations and marks the current page', async ({ page }) => {
+  await openMarketing(page);
+  await page.locator('[data-catalogue-select="ov-breadcrumbs"]').click();
+  const host = page.locator('[data-component-preview] ov-breadcrumbs').first();
+  await expect(host.getByRole('navigation', { name: 'Project path' })).toBeVisible();
+  await expect(host.getByRole('link', { name: 'Projects' })).toHaveAttribute('href', '#catalogue');
+  await expect(host.getByRole('link', { name: 'Northstar studio' })).toBeVisible();
+  await expect(host.locator('[aria-current="page"]')).toHaveText('Settings');
+});
+
+test('accordion preview opens one disclosure at a time', async ({ page }) => {
+  await openMarketing(page);
+  await page.locator('[data-catalogue-select="ov-accordion"]').click();
+  const host = page.locator('[data-component-preview] ov-accordion').first();
+  await expect(host.locator('summary')).toHaveCount(2);
+  await host.locator('summary').first().click();
+  await expect(host.locator('details').first()).toHaveAttribute('open', '');
+  await expect(host.locator('[part="panel"]').first()).toBeVisible();
+  await expect(host.locator('[slot="summary"]')).toContainText('A concise overview of the project.');
+  await host.locator('summary').nth(1).click();
+  await expect(host.locator('details').nth(1)).toHaveAttribute('open', '');
+  await expect(host.locator('details').first()).not.toHaveAttribute('open');
+});
+
+test('slider preview exposes a labelled native range and current value', async ({ page }) => {
+  await openMarketing(page);
+  await page.locator('[data-catalogue-select="ov-slider"]').click();
+  const host = page.locator('[data-component-preview] ov-slider').first();
+  const slider = host.getByRole('slider', { name: 'Opacity' });
+  await expect(slider).toHaveValue('68');
+  await expect(host.locator('[part="value"]')).toHaveText('68');
+  await slider.fill('82');
+  await expect(host.locator('[part="value"]')).toHaveText('82');
+});
+
+test('file upload preview keeps a native picker and selected file list', async ({ page }) => {
+  await openMarketing(page);
+  await page.locator('[data-catalogue-select="ov-file-upload"]').click();
+  const host = page.locator('[data-component-preview] ov-file-upload').first();
+  const input = host.locator('input[type="file"]');
+  await expect(input).toHaveAttribute('aria-labelledby', /ov-file-upload-/);
+  await input.setInputFiles({ name: 'project.zip', mimeType: 'application/zip', buffer: Buffer.from('archive') });
+  await expect(host.locator('[part="file-list"]')).toContainText('project.zip');
+});
+
+test('date input preview exposes native date constraints', async ({ page }) => {
+  await openMarketing(page);
+  await page.locator('[data-catalogue-select="ov-date-input"]').click();
+  const host = page.locator('[data-component-preview] ov-date-input').first();
+  const input = host.locator('input[type="date"]');
+  await expect(input).toHaveValue('2026-03-12');
+  await expect(input).toHaveAttribute('min', '2026-01-01');
+  await expect(input).toHaveCSS('box-sizing', 'border-box');
+  await expect(input).toHaveCSS('height', '44px');
+});
+
+test('number input preview exposes native spinbutton constraints', async ({ page }) => {
+  await openMarketing(page);
+  await page.locator('[data-catalogue-select="ov-number-input"]').click();
+  const host = page.locator('[data-component-preview] ov-number-input').first();
+  const input = host.getByRole('spinbutton', { name: 'Seats' });
+  await expect(input).toHaveValue('4');
+  await expect(input).toHaveAttribute('min', '1');
+  await expect(input).toHaveAttribute('max', '24');
+  await expect(input).toHaveAttribute('step', '1');
+});
+
+test('popover preview exposes a dismissible contextual surface', async ({ page }) => {
+  await openMarketing(page);
+  await page.locator('[data-catalogue-select="ov-popover"]').click();
+  const host = page.locator('[data-component-preview] ov-popover').first();
+  const trigger = host.getByRole('button', { name: 'View details' });
+  const surface = host.getByRole('dialog', { name: 'Project details' });
+  await expect(trigger).toHaveAttribute('aria-expanded', 'false');
+  await trigger.click();
+  await expect(surface).toBeVisible();
+  await expect(host).toContainText('Last updated a few minutes ago by Maya Chen.');
+  await trigger.press('Escape');
+  await expect(surface).toBeHidden();
+  await expect(trigger).toBeFocused();
+});
+
+test('tree preview exposes nested selection and keyboard navigation', async ({ page }) => {
+  await openMarketing(page);
+  await page.locator('[data-catalogue-select="ov-tree"]').click();
+  const host = page.locator('[data-component-preview] ov-tree').first();
+  const tree = host.getByRole('tree', { name: 'Project files' });
+  await expect(tree).toBeVisible();
+  await expect(host.getByRole('treeitem', { name: 'main.ts' })).toHaveAttribute('aria-level', '2');
+  await expect(host.getByRole('treeitem', { name: 'main.ts' })).toHaveAttribute('aria-selected', 'true');
+  const source = host.getByRole('treeitem', { name: 'src' });
+  await source.getByRole('button', { name: 'Collapse src' }).click();
+  await expect(host.getByRole('treeitem', { name: 'main.ts' })).toBeHidden();
+  await source.getByRole('button', { name: 'Expand src' }).click();
+  await expect(host.getByRole('treeitem', { name: 'main.ts' })).toBeVisible();
+});
+
+test('stepper preview exposes current workflow progress', async ({ page }) => {
+  await openMarketing(page);
+  await page.locator('[data-catalogue-select="ov-stepper"]').click();
+  const host = page.locator('[data-component-preview] ov-stepper').first();
+  await expect(host.locator('[part="step"]')).toHaveCount(3);
+  await expect(host.locator('[part="step"][aria-current="step"] [part="label"]')).toHaveText('Access');
+  await expect(host.locator('[part="step"][data-state="complete"]')).toHaveCount(1);
+  await expect(host.locator('[part="connector"]')).toHaveCount(2);
+  await expect(host.locator('[part="connector"]').nth(0)).toHaveAttribute('data-state', 'complete');
+  await expect(host.locator('[part="connector"]').nth(1)).toHaveAttribute('data-state', 'current');
+  const geometry = await host.evaluate((element) => {
+    const steps = [...(element.shadowRoot?.querySelectorAll<HTMLElement>('[part="step"]') ?? [])];
+    return steps.map((step) => {
+      const marker = step.querySelector<HTMLElement>('[part="marker"]')?.getBoundingClientRect();
+      const label = step.querySelector<HTMLElement>('[part="label"]')?.getBoundingClientRect();
+      const connector = step.querySelector<HTMLElement>('[part="connector"]')?.getBoundingClientRect();
+      return {
+        markerCenter: marker ? marker.left + marker.width / 2 : 0,
+        labelCenter: label ? label.left + label.width / 2 : 0,
+        connectorRight: connector?.right ?? 0,
+        markerLeft: marker?.left ?? 0,
+      };
+    });
+  });
+  for (const step of geometry) expect(Math.abs(step.markerCenter - step.labelCenter)).toBeLessThan(1);
+  for (let index = 0; index < geometry.length - 1; index += 1) {
+    expect(Math.abs((geometry[index]?.connectorRight ?? 0) - (geometry[index + 1]?.markerLeft ?? 0))).toBeLessThan(1);
+  }
+});
+
+test('drawer preview opens a native side-panel dialog', async ({ page }) => {
+  await openMarketing(page);
+  await page.locator('[data-catalogue-select="ov-drawer"]').click();
+  const host = page.locator('[data-component-preview] ov-drawer').first();
+  const drawer = host.locator('dialog');
+  const trigger = page.locator('[data-component-preview] [data-drawer-open]');
+  await expect(trigger).toBeVisible();
+  await expect(drawer).toBeHidden();
+  await trigger.click();
+  await expect(drawer).toBeVisible();
+  await expect(drawer).toHaveAttribute('aria-labelledby', /ov-drawer-/);
+  await expect(host).toContainText('Choose filters that apply to this view.');
+  const apply = host.getByRole('button', { name: 'Apply filters', exact: true });
+  await expect(apply).toBeVisible();
+  const surfaceBox = await host.locator('[part="surface"]').boundingBox();
+  const applyBox = await apply.boundingBox();
+  expect(surfaceBox).not.toBeNull();
+  expect(applyBox).not.toBeNull();
+  expect((applyBox?.y ?? 0) + (applyBox?.height ?? 0)).toBeLessThanOrEqual((surfaceBox?.y ?? 0) + (surfaceBox?.height ?? 0) + 1);
+  await host.getByRole('button', { name: 'Close', exact: true }).click();
+  await expect(drawer).toBeHidden();
+});
+
 for (const theme of ['light', 'dark'] as const) {
   test(`rendered button preview remains stable in ${theme}`, async ({ page }) => {
     await page.setViewportSize({ width: 1440, height: 900 });
     await openMarketing(page, theme);
     await page.locator('[data-catalogue-select="ov-button"]').click();
-    await expect(page.locator('[data-component-preview]')).toHaveScreenshot(`marketing-preview-button-${theme}.png`);
+    const preview = page.locator('[data-component-preview]');
+    await settleComponents(preview);
+    await expect(preview).toHaveScreenshot(`marketing-preview-button-${theme}.png`);
   });
 }
 
@@ -122,7 +437,9 @@ for (const theme of ['light', 'dark'] as const) {
       await page.setViewportSize({ width: viewport.width, height: viewport.height });
       await openMarketing(page, theme);
       await page.locator('[data-catalogue-select="ov-button"]').click();
-      await expect(page.locator('[data-detail]')).toBeVisible();
+      const detail = page.locator('[data-detail]');
+      await expect(detail).toBeVisible();
+      await settleComponents(detail);
       await expect(page).toHaveScreenshot(`marketing-detail-${theme}-${viewport.name}.png`, { fullPage: true });
     });
   }

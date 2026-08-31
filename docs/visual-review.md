@@ -2,6 +2,8 @@
 
 This is the approval protocol for the six shipped recipe starters. It is a design review, not a request for an agent to redesign the catalogue. Review the generated screen as a user would see it, record defects, and leave component source unchanged while deciding whether the fixture passes.
 
+The focused candidate workflow for individual catalogue components is documented separately in [`design/component-visual-review.md`](./design/component-visual-review.md).
+
 The agent scope ends at fixture wiring, behavior, accessibility checks, and evidence capture. Only a human designer may choose new visual direction or approve changes to the theme, component styling, or screenshot baselines. The current reference package is indexed in [`design/reference-manifest.json`](./design/reference-manifest.json).
 
 ## What a reviewer signs off
@@ -16,7 +18,7 @@ Use these decisions:
 
 ## Start the single review app
 
-Use one Vite app for the entire behavior review. It lives in `examples/visual-review`, imports the shipped components and token export directly, and provides recipe navigation, state controls, and baseline interactions. It deliberately does not invent a theme; a designer supplies the visual reference and contrasting theme for the visual sign-off pass. No per-recipe `init`, `add`, or `npm install` is needed.
+Use one Vite app for the entire behavior review. It lives in `examples/visual-review`, imports the shipped components, token export, and approved [`ovlira-contrast-theme.css`](./design/ovlira-contrast-theme.css) directly, and provides recipe navigation, state controls, and baseline interactions. No per-recipe `init`, `add`, or `npm install` is needed.
 
 From the Ovlira checkout, run this exact block:
 
@@ -46,7 +48,7 @@ npm run test:browser
 npm run test:visual
 ```
 
-`test:browser` covers baseline interactions, axe WCAG checks in light and dark schemes, horizontal overflow at all three widths, and 44px touch targets at 375px. `test:visual` compares every default state in both schemes at all three widths and every additional required state at 1440px.
+`test:browser` covers baseline interactions, axe WCAG checks in light, dark, and contrast themes, horizontal overflow at all three widths, and 44px touch targets at 375px. `test:visual` compares every default state in all three themes at all three widths and every additional required state at 1440px.
 
 `npm run test:visual:update` creates candidate baselines. It is not an approval action. A human reviews those images, records the decision, and then changes `baselineStatus` in [`design/reference-manifest.json`](./design/reference-manifest.json) to `approved` in the same reviewed change. Intentional visual changes repeat that process; agents must not refresh snapshots merely to make a failed comparison pass.
 
@@ -89,9 +91,9 @@ If a check fails because a visual value is hard-coded in a component or recipe s
 
 ## Contrasting theme pass
 
-The second pass is designer-owned. The designer supplies the approved contrasting theme file or exact semantic token values; the agent only applies that artifact and verifies that the palette, typography, shape language, and density change globally while labels, states, and layout remain coherent. Check the approved theme at 1440px and 375px at minimum.
+The second pass is designer-owned. The approved contrasting artifact is [`design/ovlira-contrast-theme.css`](./design/ovlira-contrast-theme.css); the agent only applies it and verifies that palette, shape language, and density change globally while labels, states, and layout remain coherent. Check the approved theme at 1440px and 375px at minimum.
 
-If the designer has not supplied the contrasting artifact yet, mark this pass **Blocked — awaiting designer input**. Do not invent replacement values to make the checklist appear complete.
+The artifact and its generated recipe/reference screenshots received explicit Pass decisions on 2026-08-31. Their content digests are release-tested; any intentional change requires a new candidate generation and human review.
 
 ## Evidence record
 

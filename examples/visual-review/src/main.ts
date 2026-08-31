@@ -1,6 +1,7 @@
 import '@fontsource-variable/inter/wght.css';
 import '../../../src/components/index.ts';
 import '../../../src/tokens/tokens.css';
+import '../../../docs/design/ovlira-contrast-theme.css';
 import { recipeFixture, recipeFixtureMarkup, recipeFixtureStyles, recipeFixtures, type RecipeFixtureId } from '../../../src/recipes/fixtures.ts';
 import './styles.css';
 
@@ -10,6 +11,12 @@ interface TableRow {
   status?: string;
   updated?: string;
 }
+
+type ReviewTheme = 'light' | 'dark' | 'contrast';
+
+const reviewThemes: ReviewTheme[] = ['light', 'dark', 'contrast'];
+const themeLabels: Record<ReviewTheme, string> = { light: 'light', dark: 'dark', contrast: 'contrast' };
+const themeGlyphs: Record<ReviewTheme, string> = { light: '☼', dark: '◐', contrast: 'C' };
 
 const defaultSearchRows: TableRow[] = [
   { name: 'Northstar studio', owner: 'Maya Chen', status: 'Active' },
@@ -33,7 +40,7 @@ const initial = new URLSearchParams(window.location.search);
 const fixtureOnly = initial.get('mode') === 'fixture';
 let activeRecipe = validRecipe(initial.get('recipe')) ?? 'page.settings';
 let activeState = validState(activeRecipe, initial.get('state'));
-let theme: 'light' | 'dark' = initial.get('theme') === 'dark' ? 'dark' : 'light';
+let theme: ReviewTheme = validTheme(initial.get('theme')) ?? 'light';
 let searchRows = [...defaultSearchRows];
 let crudRows = [...defaultCrudRows];
 let detailName = 'Northstar studio';
@@ -43,6 +50,14 @@ render();
 
 function validRecipe(value: string | null): RecipeFixtureId | undefined {
   return recipeFixtures.some((fixture) => fixture.id === value) ? value as RecipeFixtureId : undefined;
+}
+
+function validTheme(value: string | null): ReviewTheme | undefined {
+  return reviewThemes.find((theme) => theme === value);
+}
+
+function nextTheme(value: ReviewTheme): ReviewTheme {
+  return reviewThemes[(reviewThemes.indexOf(value) + 1) % reviewThemes.length] ?? 'light';
 }
 
 function validState(recipeId: RecipeFixtureId, value: string | null): string {
@@ -76,11 +91,11 @@ function render() {
       <main id="review-main" class="review-main">
         <header class="review-topbar">
           <div><p class="eyebrow">${fixture.category} recipe</p><h1>${fixture.label}</h1><p>${fixture.description}</p></div>
-          <button type="button" class="theme-button" data-theme-toggle aria-label="Switch to ${theme === 'dark' ? 'light' : 'dark'} theme"><span aria-hidden="true">${theme === 'dark' ? '☼' : '◐'}</span></button>
+          <button type="button" class="theme-button" data-theme-toggle aria-label="Switch to ${themeLabels[nextTheme(theme)]} theme"><span aria-hidden="true">${themeGlyphs[nextTheme(theme)]}</span></button>
         </header>
         <div class="review-meta" aria-label="Review requirements"><span>1440 · 768 · 375</span><span>Required states</span><span>Keyboard pass</span></div>
         <div class="fixture-stage" data-testid="fixture-stage" data-recipe="${activeRecipe}" data-state="${activeState}">${recipeFixtureMarkup(activeRecipe)}</div>
-        <footer class="review-footer"><span><strong>Human sign-off:</strong> Pass, Revise, or Block</span><span>Default theme · ${theme} scheme</span></footer>
+        <footer class="review-footer"><span><strong>Human sign-off:</strong> Pass, Revise, or Block</span><span>${theme === 'contrast' ? 'Contrasting theme' : `Default theme · ${theme} scheme`}</span></footer>
       </main>
     </div>`;
 
@@ -98,7 +113,7 @@ function wireInteractions() {
   }));
 
   app.querySelector<HTMLButtonElement>('[data-theme-toggle]')?.addEventListener('click', () => {
-    theme = theme === 'dark' ? 'light' : 'dark';
+    theme = nextTheme(theme);
     document.documentElement.dataset.theme = theme;
     render();
   });

@@ -1,0 +1,37 @@
+/*
+ * Ovlira contrast theme.
+ *
+ * A deliberately different visual character from the default theme:
+ * warm paper-like surfaces, stronger ink/borders, squared geometry,
+ * and slightly denser controls.
+ *
+ * Apply with:
+ *   <html data-theme="contrast">
+ */
+
+:root[data-theme="contrast"] {
+  color-scheme: light;
+
+  --ov-bg: #f6f0df;
+  --ov-surface: #fffaf0;
+  --ov-surface-raised: #e7dfc9;
+
+  --ov-text: #15120f;
+  --ov-muted: #514b43;
+  --ov-faint: #675f55;
+
+  --ov-border: #2d2923;
+  --ov-hover: #f0df9a;
+  --ov-focus: #0b57d0;
+
+  --ov-info: #0b57d0;
+  --ov-good: #006b3c;
+  --ov-warn: #7a4300;
+  --ov-bad: #b42318;
+
+  /* Intentional geometry/density changes for a visibly distinct fixture. */
+  --ov-radius-sm: 0;
+  --ov-radius-md: 0;
+  --ov-radius-lg: 0;
+  --ov-control-height: 2.25rem;
+}
