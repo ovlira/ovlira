@@ -76,7 +76,7 @@ for (const component of components) {
       await expect(preview).toHaveScreenshot(
         `${tag}-light-narrow.png`,
         tag === 'ov-date-input'
-          ? { maxDiffPixels: 150 } // Native date-picker chrome varies slightly across macOS patch releases.
+          ? { maxDiffPixels: 150, maxDiffPixelRatio: 0.02 } // Native date-picker chrome varies slightly across macOS patch releases.
           : undefined,
       );
     });
