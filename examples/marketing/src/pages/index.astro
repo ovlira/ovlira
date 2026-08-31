@@ -124,7 +124,7 @@ const validation = [
 
           <section class="view" data-view="catalogue" aria-labelledby="catalogue-heading">
             <div class="summary">
-              <div class="summary-item"><div class="summary-value">10</div><div class="summary-label">Components</div></div>
+              <div class="summary-item"><div class="summary-value">11</div><div class="summary-label">Components</div></div>
               <div class="summary-item"><div class="summary-value">6</div><div class="summary-label">Recipes</div></div>
               <div class="summary-item"><div class="summary-value good">Valid</div><div class="summary-label">Metadata contract</div></div>
               <div class="summary-item"><div class="summary-value">8 max</div><div class="summary-label">Search results</div></div>
@@ -138,7 +138,7 @@ const validation = [
                   <button class="filter" type="button" data-catalogue-filter="component" aria-pressed="false">Components</button>
                   <button class="filter" type="button" data-catalogue-filter="recipe" aria-pressed="false">Recipes</button>
                 </div>
-                <div class="catalogue-count" data-catalogue-count aria-live="polite">16 entries</div>
+                <div class="catalogue-count" data-catalogue-count aria-live="polite">17 entries</div>
                 <ul class="catalogue" data-catalogue-list>
                   {catalogue.map((item) => (
                     <li class="catalogue-row" data-catalogue-row data-kind={item.type} data-search={`${item.id} ${item.type} ${item.category} ${item.summary} ${item.useFor}`}>
@@ -270,6 +270,7 @@ const validation = [
         const previews = {
           'ov-button': '<div class="preview-stack"><div class="preview-label">Intent</div><div class="preview-actions"><ov-button>Save changes</ov-button><ov-button variant="secondary">Review</ov-button><ov-button variant="quiet">Cancel</ov-button><ov-button variant="danger">Delete</ov-button></div><div class="preview-label">Progress</div><div class="preview-actions"><ov-button loading>Saving</ov-button><ov-button disabled>Unavailable</ov-button></div></div>',
           'ov-input': '<div class="preview-stack"><ov-input label="Project name" value="Ovlira" help-text="Visible to your team"></ov-input><ov-input label="Workspace ID" value="ovlira" error="Use a shorter identifier"></ov-input></div>',
+          'ov-textarea': '<div class="preview-stack"><ov-textarea label="Project description" rows="4" value="A local toolkit for focused work." help-text="Keep this concise and useful."></ov-textarea><ov-textarea label="Notes" rows="3" error="Add a little more context."></ov-textarea></div>',
           'ov-select': '<div class="preview-stack"><ov-select label="Theme" required></ov-select><ov-select label="Optional region" help-text="Choose a region when you are ready"></ov-select></div>',
           'ov-badge': '<div class="preview-actions"><ov-badge>Neutral</ov-badge><ov-badge tone="accent">Accent</ov-badge><ov-badge tone="success">Ready</ov-badge><ov-badge tone="warning">Review</ov-badge><ov-badge tone="danger">Blocked</ov-badge></div>',
           'ov-card': '<ov-card padding="md"><span slot="header">Account settings</span><p>One bounded group for related content; hierarchy stays shallow.</p><span slot="footer"><ov-button variant="quiet" size="sm">Open settings</ov-button></span></ov-card>',

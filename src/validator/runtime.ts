@@ -14,7 +14,7 @@ export interface RuntimeValidationOptions {
   requiredStates?: readonly string[];
 }
 
-const controlSelector = 'input, select, textarea, [role="textbox"], [role="combobox"], ov-input, ov-select';
+const controlSelector = 'input, select, textarea, [role="textbox"], [role="combobox"], ov-input, ov-select, ov-textarea';
 
 export function validateRuntimeDocument(root: ParentNode, options: RuntimeValidationOptions = {}): Diagnostic[] {
   const diagnostics: Diagnostic[] = [];

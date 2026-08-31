@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Added `ov-textarea`, a token-aware labelled multiline field with native form semantics, help/error messaging, and input events.
 - Made recipe adaptation explicit: focused guidance now returns content regions and supported data, action, and navigation extension points, and generated starters preserve those seams in their markup.
 - Removed the unsupported `package-manager-cache` publish-workflow input.
 

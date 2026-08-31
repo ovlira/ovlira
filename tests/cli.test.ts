@@ -48,7 +48,7 @@ describe('ovlira CLI', () => {
 
   it('supports bounded search filters and focused inspect sections', async () => {
     const searchCapture = ioCapture();
-    expect(await runCli(['search', 'field', '--kind', 'component', '--category', 'forms', '--limit', '1', '--json'], process.cwd(), searchCapture.io)).toBe(0);
+    expect(await runCli(['search', 'input', '--kind', 'component', '--category', 'forms', '--limit', '1', '--json'], process.cwd(), searchCapture.io)).toBe(0);
     expect(JSON.parse(searchCapture.stdout[0])).toMatchObject({ filters: { kind: 'component', category: 'forms', limit: 1 }, results: [{ id: 'component.input' }] });
     const inspectCapture = ioCapture();
     expect(await runCli(['inspect', 'ov-input', '--section', 'api', '--json'], process.cwd(), inspectCapture.io)).toBe(0);
@@ -85,7 +85,7 @@ describe('ovlira CLI', () => {
   });
 
   it('validates metadata and exposes a normalized registry index', async () => {
-    expect(metadataReport).toMatchObject({ version: 1, valid: true, componentCount: 10, recipeCount: 6 });
+    expect(metadataReport).toMatchObject({ version: 1, valid: true, componentCount: 11, recipeCount: 6 });
     expect(metadataReport.issues).toEqual([]);
     const capture = ioCapture();
     expect(await runCli(['metadata', '--json'], process.cwd(), capture.io)).toBe(0);
@@ -157,6 +157,18 @@ describe('ovlira CLI', () => {
     expect(JSON.parse(explicitEntry.stdout[0]).entry).toBe('src/app.ts');
     expect(await fs.readFile(path.join(explicitEntryProject, 'src/app.ts'), 'utf8')).toContain('ov-input');
   });
+
+  it('generates a buildable standalone textarea starter', async () => {
+    const project = await tempProject();
+    expect(await runCli(['init', '.'], project, ioCapture().io)).toBe(0);
+    const addCapture = ioCapture();
+    expect(await runCli(['add', 'component.textarea', '--cwd', project, '--json'], project, addCapture.io)).toBe(0);
+    expect(JSON.parse(addCapture.stdout[0]).added).toContain('ov-textarea');
+    expect(await fs.readFile(path.join(project, 'src/main.ts'), 'utf8')).toContain('<ov-textarea');
+    expect(await runCli(['check', '--cwd', project, '--json'], project, ioCapture().io)).toBe(0);
+    await fs.symlink(path.join(process.cwd(), 'node_modules'), path.join(project, 'node_modules'), 'dir');
+    await execFile('npm', ['run', 'build'], { cwd: project, env: { ...process.env, NO_COLOR: '1' } });
+  }, 30_000);
 
   it('preflights add conflicts without partially changing the project', async () => {
     const project = await tempProject();

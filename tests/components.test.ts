@@ -25,6 +25,19 @@ describe('Ovlira components', () => {
     expect(input?.required).toBe(true);
   });
 
+  it('keeps textarea label, rows, and help text in a native contract', async () => {
+    document.body.innerHTML = '<ov-textarea label="Project description" name="description" rows="5" help-text="Keep this concise." required></ov-textarea>';
+    const element = document.querySelector('ov-textarea') as import('../src/components/textarea.js').OvTextarea;
+    await element.updateComplete;
+    const label = element.shadowRoot?.querySelector('label');
+    const textarea = element.shadowRoot?.querySelector('textarea');
+    expect(label?.textContent).toContain('Project description');
+    expect(label?.htmlFor).toBe(textarea?.id);
+    expect(textarea?.rows).toBe(5);
+    expect(textarea?.required).toBe(true);
+    expect(element.shadowRoot?.querySelector('.message')?.textContent).toContain('Keep this concise.');
+  });
+
   it('renders property-backed table data without requiring JSON attributes', async () => {
     document.body.innerHTML = '<ov-data-table caption="Projects"></ov-data-table>';
     const element = document.querySelector('ov-data-table') as import('../src/components/data-table.js').OvDataTable;

@@ -30,6 +30,40 @@
     }
   },
   {
+    "id": "component.textarea",
+    "kind": "component",
+    "title": "Textarea",
+    "description": "A labelled native multiline text field with help, error, and required states.",
+    "category": "forms",
+    "tags": ["form", "text", "long-form", "field", "validation"],
+    "api": {
+      "tag": "ov-textarea",
+      "importPath": "./components/ovlira/textarea.js",
+      "props": [
+        { "name": "label", "type": "string", "description": "Visible accessible label.", "required": true, "reflected": true },
+        { "name": "name", "type": "string", "description": "Native form field name.", "reflected": true },
+        { "name": "value", "type": "string", "description": "Current textarea value." },
+        { "name": "placeholder", "type": "string", "description": "Optional prompt for the expected content.", "reflected": true },
+        { "name": "rows", "type": "number", "description": "Visible text rows.", "default": "4", "reflected": true },
+        { "name": "required", "type": "boolean", "description": "Marks the field as required.", "default": "false", "reflected": true },
+        { "name": "disabled", "type": "boolean", "description": "Prevents interaction.", "default": "false", "reflected": true },
+        { "name": "error", "type": "string", "description": "Validation message." },
+        { "name": "helpText", "type": "string", "description": "Supporting guidance.", "reflected": false }
+      ],
+      "events": [{ "name": "input", "description": "Native input event retargeted from the shadow root." }],
+      "slots": [],
+      "cssCustomProperties": ["--ov-field-accent"],
+      "parts": ["field", "label", "textarea", "message"]
+    },
+    "guidance": {
+      "useWhen": ["A user must enter a short-to-medium length multiline value."],
+      "avoidWhen": ["The response is a single short value; use ov-input instead."],
+      "constraints": ["Always provide a visible label; placeholder text is not a label.", "Keep the field sized to the expected response rather than the entire page."],
+      "requiredProps": ["label"],
+      "example": "examples/components/textarea.md"
+    }
+  },
+  {
     "id": "component.input",
     "kind": "component",
     "title": "Input",

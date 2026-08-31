@@ -412,7 +412,7 @@ function globalStyles(): string {
   return `* { box-sizing: border-box; }
 html, body, #app { margin: 0; min-height: 100%; }
 body { background: var(--ov-bg, var(--ov-color-canvas)); color: var(--ov-text, var(--ov-color-ink)); font-family: var(--ov-font-sans); font-size: var(--ov-text-md); -webkit-font-smoothing: antialiased; }
-button, input, select { font: inherit; }
+button, input, select, textarea { font: inherit; }
 .starter, .demo { margin: 12vh auto; max-width: var(--ov-content-narrow, 34rem); padding-inline: var(--ov-space-6); }
 .starter h1, .demo h1 { font-size: var(--ov-text-xl); font-weight: 600; letter-spacing: -0.025em; line-height: var(--ov-line-tight); margin: 0 0 var(--ov-space-4); }
 .starter p:not(.kicker) { color: var(--ov-muted, var(--ov-color-muted)); line-height: var(--ov-line-body); }
@@ -438,6 +438,7 @@ if (app) {
 function componentMarkup(item: ComponentDescriptor): string {
   switch (item.api.tag) {
     case 'ov-input': return '<main class="demo"><p class="kicker">OVLIRA / COMPONENT</p><h1>Input</h1><ov-input label="Workspace name" placeholder="e.g. Northstar"></ov-input></main>';
+    case 'ov-textarea': return '<main class="demo"><p class="kicker">OVLIRA / COMPONENT</p><h1>Textarea</h1><ov-textarea label="Project description" rows="5" placeholder="What is this project for?"></ov-textarea></main>';
     case 'ov-select': return '<main class="demo"><p class="kicker">OVLIRA / COMPONENT</p><h1>Select</h1><ov-select label="Region"></ov-select></main>';
     case 'ov-button': return '<main class="demo"><p class="kicker">OVLIRA / COMPONENT</p><h1>Button</h1><ov-button variant="primary">Continue</ov-button></main>';
     case 'ov-badge': return '<main class="demo"><p class="kicker">OVLIRA / COMPONENT</p><h1>Badge</h1><ov-badge tone="accent">Ready</ov-badge></main>';
