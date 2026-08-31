@@ -72,9 +72,11 @@ describe('Ovlira components', () => {
     await element.updateComplete;
     const label = element.shadowRoot?.querySelector('label');
     const toggle = element.shadowRoot?.querySelector('input[role="switch"]') as HTMLInputElement | null;
+    const thumb = element.shadowRoot?.querySelector('.toggle-control .thumb');
     expect(label?.htmlFor).toBe(toggle?.id);
     expect(toggle?.checked).toBe(true);
     expect(toggle?.getAttribute('aria-checked')).toBe('true');
+    expect(thumb).not.toBeNull();
     expect(element.shadowRoot?.querySelector('.message')?.textContent).toContain('You can change this at any time.');
   });
 

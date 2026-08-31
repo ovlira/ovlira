@@ -78,6 +78,20 @@ test('catalogue preview coverage includes every shipped component', async ({ pag
   }
 });
 
+test('toggle preview renders a circular handle inside its track', async ({ page }) => {
+  await openMarketing(page);
+  await page.locator('[data-catalogue-select="ov-toggle"]').click();
+  const geometry = await page.locator('[data-component-preview] ov-toggle').first().evaluate((host) => {
+    const root = host.shadowRoot;
+    const track = root?.querySelector<HTMLElement>('.toggle-control')?.getBoundingClientRect();
+    const thumb = root?.querySelector<HTMLElement>('.thumb')?.getBoundingClientRect();
+    return { track: track && { width: track.width, height: track.height }, thumb: thumb && { width: thumb.width, height: thumb.height } };
+  });
+  expect(geometry.track?.width ?? 0).toBeGreaterThan(geometry.thumb?.width ?? 0);
+  expect(geometry.thumb?.width ?? 0).toBeGreaterThan(10);
+  expect(Math.abs((geometry.thumb?.width ?? 0) - (geometry.thumb?.height ?? 0))).toBeLessThan(0.5);
+});
+
 for (const theme of ['light', 'dark'] as const) {
   test(`rendered button preview remains stable in ${theme}`, async ({ page }) => {
     await page.setViewportSize({ width: 1440, height: 900 });
