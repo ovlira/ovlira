@@ -71,7 +71,7 @@ test('catalogue uses a desktop master detail split and a mobile detail replaceme
 
 test('catalogue preview coverage includes every shipped component', async ({ page }) => {
   await openMarketing(page);
-  for (const id of ['ov-button', 'ov-input', 'ov-textarea', 'ov-select', 'ov-badge', 'ov-card', 'ov-alert', 'ov-page-header', 'ov-empty-state', 'ov-data-table', 'ov-application-shell']) {
+  for (const id of ['ov-button', 'ov-input', 'ov-textarea', 'ov-checkbox', 'ov-select', 'ov-badge', 'ov-card', 'ov-alert', 'ov-page-header', 'ov-empty-state', 'ov-data-table', 'ov-application-shell']) {
     await page.locator(`[data-catalogue-select="${id}"]`).click();
     await expect(page.locator('[data-component-preview]')).toBeVisible();
     await expect(page.locator(`[data-component-preview] ${id}`).first()).toBeVisible();
@@ -101,7 +101,7 @@ for (const theme of ['light', 'dark'] as const) {
 
 test('marketing catalogue search and filters stay bounded', async ({ page }) => {
   await openMarketing(page);
-  await page.getByRole('searchbox', { name: 'Search components and recipes' }).fill('settings');
+  await page.getByRole('searchbox', { name: 'Search components and recipes' }).fill('page.settings');
   await expect(page.getByText('1 entry')).toBeVisible();
   await expect(page.getByRole('button', { name: /page\.settings/ })).toBeVisible();
   await page.getByRole('searchbox', { name: 'Search components and recipes' }).fill('');

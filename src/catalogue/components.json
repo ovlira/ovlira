@@ -64,6 +64,39 @@
     }
   },
   {
+    "id": "component.checkbox",
+    "kind": "component",
+    "title": "Checkbox",
+    "description": "A labelled native checkbox for boolean settings and selectable options.",
+    "category": "forms",
+    "tags": ["form", "choice", "boolean", "selection", "field"],
+    "api": {
+      "tag": "ov-checkbox",
+      "importPath": "./components/ovlira/checkbox.js",
+      "props": [
+        { "name": "label", "type": "string", "description": "Visible accessible label.", "required": true, "reflected": true },
+        { "name": "name", "type": "string", "description": "Native form field name.", "reflected": true },
+        { "name": "value", "type": "string", "description": "Submitted checkbox value.", "default": "on", "reflected": true },
+        { "name": "checked", "type": "boolean", "description": "Whether the checkbox is selected.", "default": "false", "reflected": true },
+        { "name": "required", "type": "boolean", "description": "Requires the checkbox to be selected.", "default": "false", "reflected": true },
+        { "name": "disabled", "type": "boolean", "description": "Prevents interaction.", "default": "false", "reflected": true },
+        { "name": "error", "type": "string", "description": "Validation message." },
+        { "name": "helpText", "type": "string", "description": "Supporting guidance.", "reflected": false }
+      ],
+      "events": [{ "name": "change", "description": "Native change event retargeted from the shadow root." }],
+      "slots": [],
+      "cssCustomProperties": [],
+      "parts": ["field", "label", "checkbox", "message"]
+    },
+    "guidance": {
+      "useWhen": ["A user needs to turn one independent option on or off."],
+      "avoidWhen": ["The user must choose exactly one option; use ov-select or a radio group."],
+      "constraints": ["Keep the visible label next to the control and meaningful without color.", "Group related checkboxes with a native fieldset and legend."],
+      "requiredProps": ["label"],
+      "example": "examples/components/checkbox.md"
+    }
+  },
+  {
     "id": "component.input",
     "kind": "component",
     "title": "Input",

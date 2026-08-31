@@ -439,6 +439,7 @@ function componentMarkup(item: ComponentDescriptor): string {
   switch (item.api.tag) {
     case 'ov-input': return '<main class="demo"><p class="kicker">OVLIRA / COMPONENT</p><h1>Input</h1><ov-input label="Workspace name" placeholder="e.g. Northstar"></ov-input></main>';
     case 'ov-textarea': return '<main class="demo"><p class="kicker">OVLIRA / COMPONENT</p><h1>Textarea</h1><ov-textarea label="Project description" rows="5" placeholder="What is this project for?"></ov-textarea></main>';
+    case 'ov-checkbox': return '<main class="demo"><p class="kicker">OVLIRA / COMPONENT</p><h1>Checkbox</h1><ov-checkbox label="Keep me signed in" name="remember" checked></ov-checkbox></main>';
     case 'ov-select': return '<main class="demo"><p class="kicker">OVLIRA / COMPONENT</p><h1>Select</h1><ov-select label="Region"></ov-select></main>';
     case 'ov-button': return '<main class="demo"><p class="kicker">OVLIRA / COMPONENT</p><h1>Button</h1><ov-button variant="primary">Continue</ov-button></main>';
     case 'ov-badge': return '<main class="demo"><p class="kicker">OVLIRA / COMPONENT</p><h1>Badge</h1><ov-badge tone="accent">Ready</ov-badge></main>';

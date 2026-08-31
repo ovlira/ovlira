@@ -3,13 +3,14 @@ import { validateRuntimeDocument } from '../src/validator/runtime.js';
 
 describe('runtime DOM validation contract', () => {
   it('checks native and Ovlira control names without inspecting component internals', () => {
-    document.body.innerHTML = '<label for="name">Workspace name</label><input id="name"><ov-input label="Region"></ov-input><ov-textarea></ov-textarea><ov-input></ov-input>';
+    document.body.innerHTML = '<label for="name">Workspace name</label><input id="name"><ov-input label="Region"></ov-input><ov-textarea></ov-textarea><ov-checkbox></ov-checkbox><ov-input></ov-input>';
 
-    const diagnostics = validateRuntimeDocument(document, { definedTags: new Set(['ov-input', 'ov-textarea']) });
+    const diagnostics = validateRuntimeDocument(document, { definedTags: new Set(['ov-input', 'ov-textarea', 'ov-checkbox']) });
 
-    expect(diagnostics.map((diagnostic) => diagnostic.ruleId)).toEqual(['runtime.required-label', 'runtime.required-label']);
+    expect(diagnostics.map((diagnostic) => diagnostic.ruleId)).toEqual(['runtime.required-label', 'runtime.required-label', 'runtime.required-label']);
     expect(diagnostics[0]?.message).toContain('ov-textarea');
-    expect(diagnostics[1]?.message).toContain('ov-input');
+    expect(diagnostics[1]?.message).toContain('ov-checkbox');
+    expect(diagnostics[2]?.message).toContain('ov-input');
   });
 
   it('checks rendered heading order and marked recipe states', () => {

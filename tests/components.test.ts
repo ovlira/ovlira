@@ -38,6 +38,18 @@ describe('Ovlira components', () => {
     expect(element.shadowRoot?.querySelector('.message')?.textContent).toContain('Keep this concise.');
   });
 
+  it('keeps checkbox label, selection, and help text in a native contract', async () => {
+    document.body.innerHTML = '<ov-checkbox label="Keep me signed in" name="remember" checked help-text="Use this only on a private device." required></ov-checkbox>';
+    const element = document.querySelector('ov-checkbox') as import('../src/components/checkbox.js').OvCheckbox;
+    await element.updateComplete;
+    const label = element.shadowRoot?.querySelector('label');
+    const checkbox = element.shadowRoot?.querySelector('input[type="checkbox"]') as HTMLInputElement | null;
+    expect(label?.htmlFor).toBe(checkbox?.id);
+    expect(checkbox?.checked).toBe(true);
+    expect(checkbox?.required).toBe(true);
+    expect(element.shadowRoot?.querySelector('.message')?.textContent).toContain('Use this only on a private device.');
+  });
+
   it('renders property-backed table data without requiring JSON attributes', async () => {
     document.body.innerHTML = '<ov-data-table caption="Projects"></ov-data-table>';
     const element = document.querySelector('ov-data-table') as import('../src/components/data-table.js').OvDataTable;
