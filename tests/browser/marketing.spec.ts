@@ -17,11 +17,14 @@ async function openMarketing(page: Page, theme: 'light' | 'dark' = 'light') {
 
 async function settleComponents(root: Locator) {
   await root.evaluate(async (element) => {
-    const elements = [element, ...element.querySelectorAll('*')];
-    await Promise.all(elements.map((candidate) => {
-      const updateComplete = (candidate as Element & { updateComplete?: Promise<unknown> }).updateComplete;
-      return updateComplete ?? Promise.resolve();
-    }));
+    for (let pass = 0; pass < 3; pass += 1) {
+      const elements = [element, ...element.querySelectorAll('*')];
+      await Promise.all(elements.map((candidate) => {
+        const updateComplete = (candidate as Element & { updateComplete?: Promise<unknown> }).updateComplete;
+        return updateComplete ?? Promise.resolve();
+      }));
+      await new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
+    }
   });
 }
 
@@ -137,6 +140,7 @@ test('menu preview opens, selects an action, and restores trigger focus', async 
   await openMarketing(page);
   await page.locator('[data-catalogue-select="ov-menu"]').click();
   const host = page.locator('[data-component-preview] ov-menu').first();
+  await settleComponents(host);
   const trigger = host.locator('button.trigger');
   await trigger.click();
   await expect(trigger).toHaveAttribute('aria-expanded', 'true');
@@ -150,6 +154,7 @@ test('menu keyboard navigation opens on Enter and closes on Escape', async ({ pa
   await openMarketing(page);
   await page.locator('[data-catalogue-select="ov-menu"]').click();
   const host = page.locator('[data-component-preview] ov-menu').first();
+  await settleComponents(host);
   const trigger = host.locator('button.trigger');
   await trigger.press('Enter');
   await expect(host.getByRole('menuitem', { name: 'Duplicate project' })).toBeFocused();
