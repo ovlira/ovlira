@@ -130,6 +130,39 @@
     }
   },
   {
+    "id": "component.toggle",
+    "kind": "component",
+    "title": "Toggle",
+    "description": "A compact native switch for an immediate boolean setting.",
+    "category": "forms",
+    "tags": ["form", "toggle", "boolean", "setting", "field"],
+    "api": {
+      "tag": "ov-toggle",
+      "importPath": "./components/ovlira/toggle.js",
+      "props": [
+        { "name": "label", "type": "string", "description": "Visible accessible label.", "required": true, "reflected": true },
+        { "name": "name", "type": "string", "description": "Native form field name.", "reflected": true },
+        { "name": "value", "type": "string", "description": "Submitted switch value.", "default": "on", "reflected": true },
+        { "name": "checked", "type": "boolean", "description": "Whether the switch is enabled.", "default": "false", "reflected": true },
+        { "name": "required", "type": "boolean", "description": "Requires the switch to be enabled.", "default": "false", "reflected": true },
+        { "name": "disabled", "type": "boolean", "description": "Prevents interaction.", "default": "false", "reflected": true },
+        { "name": "error", "type": "string", "description": "Validation message." },
+        { "name": "helpText", "type": "string", "description": "Supporting guidance.", "reflected": false }
+      ],
+      "events": [{ "name": "change", "description": "Native change event retargeted from the shadow root." }],
+      "slots": [],
+      "cssCustomProperties": [],
+      "parts": ["field", "label", "toggle", "message"]
+    },
+    "guidance": {
+      "useWhen": ["A setting should switch on or off immediately without opening another flow."],
+      "avoidWhen": ["The user is selecting among options or triggering a one-time action; use ov-radio-group, ov-checkbox, or ov-button instead."],
+      "constraints": ["Keep the switch compact and pair it with an explicit text label.", "Use a toggle for an immediate setting, not for a submission or navigation action."],
+      "requiredProps": ["label"],
+      "example": "examples/components/toggle.md"
+    }
+  },
+  {
     "id": "component.input",
     "kind": "component",
     "title": "Input",

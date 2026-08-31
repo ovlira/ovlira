@@ -85,7 +85,7 @@ describe('ovlira CLI', () => {
   });
 
   it('validates metadata and exposes a normalized registry index', async () => {
-    expect(metadataReport).toMatchObject({ version: 1, valid: true, componentCount: 13, recipeCount: 6 });
+    expect(metadataReport).toMatchObject({ version: 1, valid: true, componentCount: 14, recipeCount: 6 });
     expect(metadataReport.issues).toEqual([]);
     const capture = ioCapture();
     expect(await runCli(['metadata', '--json'], process.cwd(), capture.io)).toBe(0);
@@ -189,6 +189,18 @@ describe('ovlira CLI', () => {
     expect(await runCli(['add', 'component.radio-group', '--cwd', project, '--json'], project, addCapture.io)).toBe(0);
     expect(JSON.parse(addCapture.stdout[0]).added).toContain('ov-radio-group');
     expect(await fs.readFile(path.join(project, 'src/main.ts'), 'utf8')).toContain('<ov-radio-group');
+    expect(await runCli(['check', '--cwd', project, '--json'], project, ioCapture().io)).toBe(0);
+    await fs.symlink(path.join(process.cwd(), 'node_modules'), path.join(project, 'node_modules'), 'dir');
+    await execFile('npm', ['run', 'build'], { cwd: project, env: { ...process.env, NO_COLOR: '1' } });
+  }, 30_000);
+
+  it('generates a buildable standalone toggle starter', async () => {
+    const project = await tempProject();
+    expect(await runCli(['init', '.'], project, ioCapture().io)).toBe(0);
+    const addCapture = ioCapture();
+    expect(await runCli(['add', 'component.toggle', '--cwd', project, '--json'], project, addCapture.io)).toBe(0);
+    expect(JSON.parse(addCapture.stdout[0]).added).toContain('ov-toggle');
+    expect(await fs.readFile(path.join(project, 'src/main.ts'), 'utf8')).toContain('<ov-toggle');
     expect(await runCli(['check', '--cwd', project, '--json'], project, ioCapture().io)).toBe(0);
     await fs.symlink(path.join(process.cwd(), 'node_modules'), path.join(project, 'node_modules'), 'dir');
     await execFile('npm', ['run', 'build'], { cwd: project, env: { ...process.env, NO_COLOR: '1' } });

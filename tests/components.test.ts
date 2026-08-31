@@ -66,6 +66,18 @@ describe('Ovlira components', () => {
     expect(radios.every((radio) => radio.required)).toBe(true);
   });
 
+  it('keeps toggle label, switch semantics, and checked state in a native contract', async () => {
+    document.body.innerHTML = '<ov-toggle label="Email me about project activity" name="activity" checked help-text="You can change this at any time."></ov-toggle>';
+    const element = document.querySelector('ov-toggle') as import('../src/components/toggle.js').OvToggle;
+    await element.updateComplete;
+    const label = element.shadowRoot?.querySelector('label');
+    const toggle = element.shadowRoot?.querySelector('input[role="switch"]') as HTMLInputElement | null;
+    expect(label?.htmlFor).toBe(toggle?.id);
+    expect(toggle?.checked).toBe(true);
+    expect(toggle?.getAttribute('aria-checked')).toBe('true');
+    expect(element.shadowRoot?.querySelector('.message')?.textContent).toContain('You can change this at any time.');
+  });
+
   it('renders property-backed table data without requiring JSON attributes', async () => {
     document.body.innerHTML = '<ov-data-table caption="Projects"></ov-data-table>';
     const element = document.querySelector('ov-data-table') as import('../src/components/data-table.js').OvDataTable;
