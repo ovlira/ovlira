@@ -284,6 +284,9 @@ const validation = [
           'ov-toast': '<ov-toast tone="success" heading="Saved" duration="0" open>Your project is up to date.</ov-toast>',
           'ov-progress': '<ov-progress label="Importing projects" value="68" max="100" show-value></ov-progress>',
           'ov-skeleton': '<section class="preview-stack" aria-busy="true" aria-label="Loading project details"><ov-skeleton variant="heading"></ov-skeleton><ov-skeleton variant="text" lines="3"></ov-skeleton></section>',
+          'ov-tooltip': '<ov-tooltip content="Keyboard shortcut: /"><button slot="trigger" type="button" aria-label="Search help">?</button></ov-tooltip>',
+          'ov-avatar': '<div class="preview-actions"><ov-avatar name="Maya Chen" status="online"></ov-avatar><ov-avatar name="Jon Bell" size="sm"></ov-avatar><ov-avatar name="Anika Rao" size="lg" status="away"></ov-avatar></div>',
+          'ov-breadcrumbs': '<ov-breadcrumbs label="Project path"></ov-breadcrumbs>',
           'ov-badge': '<div class="preview-actions"><ov-badge>Neutral</ov-badge><ov-badge tone="accent">Accent</ov-badge><ov-badge tone="success">Ready</ov-badge><ov-badge tone="warning">Review</ov-badge><ov-badge tone="danger">Blocked</ov-badge></div>',
           'ov-card': '<ov-card padding="md"><span slot="header">Account settings</span><p>One bounded group for related content; hierarchy stays shallow.</p><span slot="footer"><ov-button variant="quiet" size="sm">Open settings</ov-button></span></ov-card>',
           'ov-alert': '<div class="preview-stack"><ov-alert heading="Saved" tone="success">Your changes are ready to use.</ov-alert><ov-alert heading="Needs attention" tone="warning">Review the highlighted fields before continuing.</ov-alert><ov-alert heading="Could not save" tone="danger">Try again or check your connection.</ov-alert></div>',
@@ -317,6 +320,8 @@ const validation = [
           tabs.items = [{ value: 'overview', label: 'Overview' }, { value: 'activity', label: 'Activity' }, { value: 'settings', label: 'Settings' }];
           tabs.innerHTML = '<p slot="overview">A summary of the project.</p><p slot="activity">Recent project activity.</p><p slot="settings">Project preferences.</p>';
         }
+        const breadcrumbs = detail.querySelector('ov-breadcrumbs');
+        if (breadcrumbs) breadcrumbs.items = [{ label: 'Projects', href: '#catalogue' }, { label: 'Northstar studio', href: '#catalogue' }, { label: 'Settings' }];
         const table = detail.querySelector('ov-data-table');
         if (table) { table.columns = [{ key: 'name', label: 'Name' }, { key: 'state', label: 'State' }]; table.rows = [{ name: 'Ovlira', state: 'Ready' }, { name: 'Reference', state: 'Approved' }]; }
         detail.querySelector('[data-detail-close]')?.addEventListener('click', () => closeDetail({ restoreFocus: true }));

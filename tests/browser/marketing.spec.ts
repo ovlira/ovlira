@@ -71,7 +71,7 @@ test('catalogue uses a desktop master detail split and a mobile detail replaceme
 
 test('catalogue preview coverage includes every shipped component', async ({ page }) => {
   await openMarketing(page);
-  for (const id of ['ov-button', 'ov-input', 'ov-textarea', 'ov-checkbox', 'ov-radio-group', 'ov-toggle', 'ov-dialog', 'ov-select', 'ov-spinner', 'ov-menu', 'ov-pagination', 'ov-combobox', 'ov-tabs', 'ov-toast', 'ov-progress', 'ov-skeleton', 'ov-badge', 'ov-card', 'ov-alert', 'ov-page-header', 'ov-empty-state', 'ov-data-table', 'ov-application-shell']) {
+  for (const id of ['ov-button', 'ov-input', 'ov-textarea', 'ov-checkbox', 'ov-radio-group', 'ov-toggle', 'ov-dialog', 'ov-select', 'ov-spinner', 'ov-menu', 'ov-pagination', 'ov-combobox', 'ov-tabs', 'ov-toast', 'ov-progress', 'ov-skeleton', 'ov-tooltip', 'ov-avatar', 'ov-breadcrumbs', 'ov-badge', 'ov-card', 'ov-alert', 'ov-page-header', 'ov-empty-state', 'ov-data-table', 'ov-application-shell']) {
     await page.locator(`[data-catalogue-select="${id}"]`).click();
     await expect(page.locator('[data-component-preview]')).toBeVisible();
     await expect(page.locator(`[data-component-preview] ${id}`).first()).toBeVisible();
@@ -227,6 +227,38 @@ test('skeleton preview remains decorative inside a busy region', async ({ page }
     return { top: box.top, bottom: box.bottom };
   }));
   expect(boxes[1]!.top - boxes[0]!.bottom).toBeGreaterThanOrEqual(16);
+});
+
+test('tooltip preview exposes supplemental content for keyboard users', async ({ page }) => {
+  await openMarketing(page);
+  await page.locator('[data-catalogue-select="ov-tooltip"]').click();
+  const host = page.locator('[data-component-preview] ov-tooltip').first();
+  const trigger = host.getByRole('button', { name: 'Search help' });
+  await trigger.focus();
+  await expect(host.getByRole('tooltip')).toBeVisible();
+  await expect(trigger).toHaveAttribute('aria-describedby', /ov-tooltip-/);
+  await expect(host.getByRole('tooltip')).toContainText('Keyboard shortcut: /');
+  await trigger.press('Escape');
+  await expect(host.getByRole('tooltip')).toBeHidden();
+});
+
+test('avatar preview exposes identity and presence semantics', async ({ page }) => {
+  await openMarketing(page);
+  await page.locator('[data-catalogue-select="ov-avatar"]').click();
+  const host = page.locator('[data-component-preview] ov-avatar').first();
+  await expect(host.locator('[part="avatar"]')).toHaveAttribute('aria-label', 'Maya Chen, Online');
+  await expect(host.locator('[part="initials"]')).toHaveText('MC');
+  await expect(host.locator('[part="status"]')).toHaveAttribute('aria-hidden', 'true');
+});
+
+test('breadcrumbs preview links parent locations and marks the current page', async ({ page }) => {
+  await openMarketing(page);
+  await page.locator('[data-catalogue-select="ov-breadcrumbs"]').click();
+  const host = page.locator('[data-component-preview] ov-breadcrumbs').first();
+  await expect(host.getByRole('navigation', { name: 'Project path' })).toBeVisible();
+  await expect(host.getByRole('link', { name: 'Projects' })).toHaveAttribute('href', '#catalogue');
+  await expect(host.getByRole('link', { name: 'Northstar studio' })).toBeVisible();
+  await expect(host.locator('[aria-current="page"]')).toHaveText('Settings');
 });
 
 for (const theme of ['light', 'dark'] as const) {

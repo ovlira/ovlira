@@ -230,6 +230,49 @@ describe('Ovlira components', () => {
     expect(element.shadowRoot?.querySelector('.circle')).not.toBeNull();
   });
 
+  it('opens tooltip content for a slotted trigger and dismisses with Escape', async () => {
+    document.body.innerHTML = '<ov-tooltip content="Keyboard shortcut: /"><button slot="trigger" type="button" aria-label="Search help">?</button></ov-tooltip>';
+    const element = document.querySelector('ov-tooltip') as import('../src/components/tooltip.js').OvTooltip;
+    await element.updateComplete;
+    const trigger = element.querySelector('button') as HTMLButtonElement;
+    expect(trigger.getAttribute('aria-describedby')).toContain('ov-tooltip-');
+    trigger.focus();
+    await element.updateComplete;
+    expect(element.open).toBe(true);
+    expect(element.shadowRoot?.querySelector('[role="tooltip"]')?.textContent).toContain('Keyboard shortcut: /');
+    trigger.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true, composed: true }));
+    await element.updateComplete;
+    expect(element.open).toBe(false);
+  });
+
+  it('renders avatar initials, status semantics, and an image-error fallback', async () => {
+    document.body.innerHTML = '<ov-avatar name="Maya Chen" status="online"></ov-avatar>';
+    const element = document.querySelector('ov-avatar') as import('../src/components/avatar.js').OvAvatar;
+    await element.updateComplete;
+    const avatar = element.shadowRoot?.querySelector('[part="avatar"]');
+    expect(avatar?.getAttribute('role')).toBe('img');
+    expect(avatar?.getAttribute('aria-label')).toBe('Maya Chen, Online');
+    expect(element.shadowRoot?.querySelector('[part="status"]')?.getAttribute('aria-hidden')).toBe('true');
+    expect(element.shadowRoot?.querySelector('[part="initials"]')?.textContent).toBe('MC');
+    element.src = '/missing-avatar.png';
+    await element.updateComplete;
+    element.shadowRoot?.querySelector<HTMLImageElement>('img')?.dispatchEvent(new Event('error'));
+    await element.updateComplete;
+    expect(element.shadowRoot?.querySelector('[part="initials"]')?.textContent).toBe('MC');
+    expect(element.shadowRoot?.querySelector('img')).toBeNull();
+  });
+
+  it('renders linked parent breadcrumbs and marks only the current location', async () => {
+    document.body.innerHTML = '<ov-breadcrumbs label="Project path"></ov-breadcrumbs>';
+    const element = document.querySelector('ov-breadcrumbs') as import('../src/components/breadcrumbs.js').OvBreadcrumbs;
+    element.items = [{ label: 'Projects', href: '/projects' }, { label: 'Northstar studio', href: '/projects/northstar' }, { label: 'Settings' }];
+    await element.updateComplete;
+    expect(element.shadowRoot?.querySelector('nav')?.getAttribute('aria-label')).toBe('Project path');
+    expect(element.shadowRoot?.querySelectorAll('a')).toHaveLength(2);
+    expect(element.shadowRoot?.querySelector('[aria-current="page"]')?.textContent).toBe('Settings');
+    expect(element.shadowRoot?.querySelectorAll('[aria-hidden="true"]')).toHaveLength(2);
+  });
+
   it('renders property-backed table data without requiring JSON attributes', async () => {
     document.body.innerHTML = '<ov-data-table caption="Projects"></ov-data-table>';
     const element = document.querySelector('ov-data-table') as import('../src/components/data-table.js').OvDataTable;

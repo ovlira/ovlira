@@ -151,6 +151,172 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/avatar.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "A compact identity marker with image, initials, and status fallbacks.",
+          "name": "OvAvatar",
+          "members": [
+            {
+              "kind": "field",
+              "name": "name",
+              "privacy": "public",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "attribute": "name",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "src",
+              "privacy": "public",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "attribute": "src",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "alt",
+              "privacy": "public",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "attribute": "alt",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "size",
+              "privacy": "public",
+              "type": {
+                "text": "AvatarSize"
+              },
+              "default": "'md'",
+              "attribute": "size",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "status",
+              "privacy": "public",
+              "type": {
+                "text": "AvatarStatus | ''"
+              },
+              "default": "''",
+              "attribute": "status",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "imageFailed",
+              "type": {
+                "text": "boolean"
+              },
+              "privacy": "private",
+              "default": "false"
+            },
+            {
+              "kind": "field",
+              "name": "initials",
+              "privacy": "private",
+              "readonly": true
+            },
+            {
+              "kind": "field",
+              "name": "accessibleLabel",
+              "privacy": "private",
+              "readonly": true
+            },
+            {
+              "kind": "field",
+              "name": "statusLabel",
+              "privacy": "private",
+              "readonly": true
+            },
+            {
+              "kind": "field",
+              "name": "handleImageError",
+              "privacy": "private"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "name",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "fieldName": "name"
+            },
+            {
+              "name": "src",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "fieldName": "src"
+            },
+            {
+              "name": "alt",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "fieldName": "alt"
+            },
+            {
+              "name": "size",
+              "type": {
+                "text": "AvatarSize"
+              },
+              "default": "'md'",
+              "fieldName": "size"
+            },
+            {
+              "name": "status",
+              "type": {
+                "text": "AvatarStatus | ''"
+              },
+              "default": "''",
+              "fieldName": "status"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "ov-avatar",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "OvAvatar",
+          "declaration": {
+            "name": "OvAvatar",
+            "module": "src/components/avatar.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "ov-avatar",
+          "declaration": {
+            "name": "OvAvatar",
+            "module": "src/components/avatar.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/badge.ts",
       "declarations": [
         {
@@ -203,6 +369,82 @@
           "declaration": {
             "name": "OvBadge",
             "module": "src/components/badge.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/breadcrumbs.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "A compact linked hierarchy with a clearly identified current location.",
+          "name": "OvBreadcrumbs",
+          "members": [
+            {
+              "kind": "field",
+              "name": "label",
+              "privacy": "public",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Breadcrumb'",
+              "attribute": "label",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "items",
+              "privacy": "public",
+              "type": {
+                "text": "BreadcrumbItem[]"
+              },
+              "default": "[]",
+              "attribute": "items"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Breadcrumb'",
+              "fieldName": "label"
+            },
+            {
+              "name": "items",
+              "type": {
+                "text": "BreadcrumbItem[]"
+              },
+              "default": "[]",
+              "fieldName": "items"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "ov-breadcrumbs",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "OvBreadcrumbs",
+          "declaration": {
+            "name": "OvBreadcrumbs",
+            "module": "src/components/breadcrumbs.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "ov-breadcrumbs",
+          "declaration": {
+            "name": "OvBreadcrumbs",
+            "module": "src/components/breadcrumbs.ts"
           }
         }
       ]
@@ -3889,6 +4131,177 @@
           "declaration": {
             "name": "OvToggle",
             "module": "src/components/toggle.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/tooltip.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "A supplemental tooltip that opens for pointer hover and keyboard focus.",
+          "name": "OvTooltip",
+          "members": [
+            {
+              "kind": "field",
+              "name": "content",
+              "privacy": "public",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "attribute": "content",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "label",
+              "privacy": "public",
+              "type": {
+                "text": "string"
+              },
+              "default": "'More information'",
+              "attribute": "label",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "placement",
+              "privacy": "public",
+              "type": {
+                "text": "TooltipPlacement"
+              },
+              "default": "'top'",
+              "attribute": "placement",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "open",
+              "privacy": "public",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "attribute": "open",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "instanceId",
+              "privacy": "private",
+              "readonly": true,
+              "default": "`ov-tooltip-${++tooltipId}`"
+            },
+            {
+              "kind": "field",
+              "name": "interactiveTrigger",
+              "type": {
+                "text": "boolean"
+              },
+              "privacy": "private",
+              "default": "false"
+            },
+            {
+              "kind": "field",
+              "name": "assignedTriggers",
+              "type": {
+                "text": "HTMLElement[]"
+              },
+              "privacy": "private",
+              "default": "[]"
+            },
+            {
+              "kind": "field",
+              "name": "triggerDescriptions",
+              "privacy": "private",
+              "default": "new Map<HTMLElement, string | null>()"
+            },
+            {
+              "kind": "field",
+              "name": "handleTriggerSlot",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "restoreTriggerDescriptions",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "show",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "hide",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "handleKeydown",
+              "privacy": "private"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "content",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "fieldName": "content"
+            },
+            {
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "'More information'",
+              "fieldName": "label"
+            },
+            {
+              "name": "placement",
+              "type": {
+                "text": "TooltipPlacement"
+              },
+              "default": "'top'",
+              "fieldName": "placement"
+            },
+            {
+              "name": "open",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "fieldName": "open"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "ov-tooltip",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "OvTooltip",
+          "declaration": {
+            "name": "OvTooltip",
+            "module": "src/components/tooltip.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "ov-tooltip",
+          "declaration": {
+            "name": "OvTooltip",
+            "module": "src/components/tooltip.ts"
           }
         }
       ]

@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Added `ov-tooltip`, `ov-avatar`, and `ov-breadcrumbs` with property-backed APIs, accessible interaction and identity semantics, examples, CLI starters, and marketing previews. Visual baselines are pending human approval.
+
 - Added `ov-tabs`, `ov-toast`, `ov-progress`, and `ov-skeleton` with property-backed APIs, native interaction semantics, examples, CLI starters, and marketing previews. Visual baselines are pending human approval.
 
 - Added reviewed-batch candidates `ov-spinner`, `ov-menu`, `ov-pagination`, and `ov-combobox` with property-backed APIs, native interaction semantics, examples, CLI starters, and marketing previews. Visual baselines are pending human approval.

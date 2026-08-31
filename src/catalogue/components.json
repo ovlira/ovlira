@@ -666,5 +666,91 @@
       "requiredProps": [],
       "example": "examples/components/skeleton.md"
     }
+  },
+  {
+    "id": "component.tooltip",
+    "kind": "component",
+    "title": "Tooltip",
+    "description": "A supplemental tooltip that opens for pointer hover and keyboard focus.",
+    "category": "feedback",
+    "tags": ["tooltip", "hint", "help", "overlay", "accessible"],
+    "api": {
+      "tag": "ov-tooltip",
+      "importPath": "./components/ovlira/tooltip.js",
+      "props": [
+        { "name": "content", "type": "string", "description": "Supplemental explanation shown in the tooltip.", "required": true, "reflected": true },
+        { "name": "label", "type": "string", "description": "Fallback trigger label when no trigger slot is provided.", "default": "More information", "reflected": true },
+        { "name": "placement", "type": "'top' | 'right' | 'bottom' | 'left'", "description": "Preferred tooltip placement.", "default": "top", "reflected": true },
+        { "name": "open", "type": "boolean", "description": "Whether the tooltip is visible.", "default": "false", "reflected": true }
+      ],
+      "events": [],
+      "slots": ["trigger: the control or label that receives the supplemental description"],
+      "cssCustomProperties": [],
+      "parts": ["trigger", "tooltip"]
+    },
+    "guidance": {
+      "useWhen": ["A control or concise label needs a brief supplemental explanation on hover or focus."],
+      "avoidWhen": ["The content is required to understand or operate the control; use a visible label or help text instead."],
+      "constraints": ["Keep tooltip content short and supplemental.", "Support both pointer hover and keyboard focus, and allow Escape to dismiss.", "Never rely on a tooltip as the only accessible name for an interactive control."],
+      "requiredProps": ["content"],
+      "example": "examples/components/tooltip.md"
+    }
+  },
+  {
+    "id": "component.avatar",
+    "kind": "component",
+    "title": "Avatar",
+    "description": "A compact identity marker with image, initials, and status fallbacks.",
+    "category": "identity",
+    "tags": ["avatar", "identity", "user", "member", "status"],
+    "api": {
+      "tag": "ov-avatar",
+      "importPath": "./components/ovlira/avatar.js",
+      "props": [
+        { "name": "name", "type": "string", "description": "Identity used for the accessible label and initials.", "required": true, "reflected": true },
+        { "name": "src", "type": "string", "description": "Optional image URL.", "reflected": true },
+        { "name": "alt", "type": "string", "description": "Optional accessible identity override.", "reflected": true },
+        { "name": "size", "type": "'sm' | 'md' | 'lg'", "description": "Avatar diameter.", "default": "md", "reflected": true },
+        { "name": "status", "type": "'online' | 'away' | 'busy' | 'offline'", "description": "Optional presence status.", "reflected": true }
+      ],
+      "events": [{ "name": "image-error", "description": "Dispatched when the image cannot load and the initials fallback is shown." }],
+      "slots": [],
+      "cssCustomProperties": [],
+      "parts": ["avatar", "image", "initials", "status"]
+    },
+    "guidance": {
+      "useWhen": ["A user, member, owner, or contributor needs a compact visual identity marker."],
+      "avoidWhen": ["The identity is unknown or the label would be clearer as text alone."],
+      "constraints": ["Provide a meaningful name and keep the accessible label descriptive.", "Use an image only when it adds reliable identity value; initials remain the fallback.", "Treat presence status as supplemental and do not communicate critical state by colour alone."],
+      "requiredProps": ["name"],
+      "example": "examples/components/avatar.md"
+    }
+  },
+  {
+    "id": "component.breadcrumbs",
+    "kind": "component",
+    "title": "Breadcrumbs",
+    "description": "A compact linked hierarchy with a clearly identified current location.",
+    "category": "navigation",
+    "tags": ["breadcrumbs", "navigation", "hierarchy", "links", "location"],
+    "api": {
+      "tag": "ov-breadcrumbs",
+      "importPath": "./components/ovlira/breadcrumbs.js",
+      "props": [
+        { "name": "label", "type": "string", "description": "Accessible navigation label.", "default": "Breadcrumb", "reflected": true },
+        { "name": "items", "type": "BreadcrumbItem[]", "description": "Linked hierarchy assigned as a property." }
+      ],
+      "events": [],
+      "slots": [],
+      "cssCustomProperties": [],
+      "parts": ["nav", "list", "item", "link", "label", "current", "separator"]
+    },
+    "guidance": {
+      "useWhen": ["A nested resource or detail page benefits from a persistent path back to its parent locations."],
+      "avoidWhen": ["There is no meaningful hierarchy or a single back link communicates the route more clearly."],
+      "constraints": ["Use real links for parent locations and make only the final item current.", "Keep labels short enough to wrap or truncate without hiding the current location.", "Keep application routing and data ownership outside the component."],
+      "requiredProps": [],
+      "example": "examples/components/breadcrumbs.md"
+    }
   }
 ]

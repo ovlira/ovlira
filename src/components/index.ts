@@ -21,3 +21,6 @@ export * from './tabs.js';
 export * from './toast.js';
 export * from './progress.js';
 export * from './skeleton.js';
+export * from './tooltip.js';
+export * from './avatar.js';
+export * from './breadcrumbs.js';

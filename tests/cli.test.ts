@@ -85,7 +85,7 @@ describe('ovlira CLI', () => {
   });
 
   it('validates metadata and exposes a normalized registry index', async () => {
-    expect(metadataReport).toMatchObject({ version: 1, valid: true, componentCount: 23, recipeCount: 6 });
+    expect(metadataReport).toMatchObject({ version: 1, valid: true, componentCount: 26, recipeCount: 6 });
     expect(metadataReport.issues).toEqual([]);
     const capture = ioCapture();
     expect(await runCli(['metadata', '--json'], process.cwd(), capture.io)).toBe(0);
@@ -218,7 +218,7 @@ describe('ovlira CLI', () => {
     await execFile('npm', ['run', 'build'], { cwd: project, env: { ...process.env, NO_COLOR: '1' } });
   }, 30_000);
 
-  for (const [id, tag] of [['component.spinner', 'ov-spinner'], ['component.menu', 'ov-menu'], ['component.pagination', 'ov-pagination'], ['component.combobox', 'ov-combobox'], ['component.tabs', 'ov-tabs'], ['component.toast', 'ov-toast'], ['component.progress', 'ov-progress'], ['component.skeleton', 'ov-skeleton'] as const]) {
+  for (const [id, tag] of [['component.spinner', 'ov-spinner'], ['component.menu', 'ov-menu'], ['component.pagination', 'ov-pagination'], ['component.combobox', 'ov-combobox'], ['component.tabs', 'ov-tabs'], ['component.toast', 'ov-toast'], ['component.progress', 'ov-progress'], ['component.skeleton', 'ov-skeleton'], ['component.tooltip', 'ov-tooltip'], ['component.avatar', 'ov-avatar'], ['component.breadcrumbs', 'ov-breadcrumbs'] as const]) {
     it(`generates a buildable standalone ${tag} starter`, async () => {
       const project = await tempProject();
       expect(await runCli(['init', '.'], project, ioCapture().io)).toBe(0);

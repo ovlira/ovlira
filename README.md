@@ -60,7 +60,7 @@ For a catalogue overview, use `ovlira list` or `ovlira list --json`.
 
 The initial catalogue contains:
 
-- Components: `ov-button`, `ov-input`, `ov-textarea`, `ov-checkbox`, `ov-radio-group`, `ov-toggle`, `ov-dialog`, `ov-select`, `ov-spinner`, `ov-menu`, `ov-pagination`, `ov-combobox`, `ov-tabs`, `ov-toast`, `ov-progress`, `ov-skeleton`, `ov-badge`, `ov-card`, `ov-alert`, `ov-page-header`, `ov-empty-state`, `ov-data-table`, and `ov-application-shell`.
+- Components: `ov-button`, `ov-input`, `ov-textarea`, `ov-checkbox`, `ov-radio-group`, `ov-toggle`, `ov-dialog`, `ov-select`, `ov-spinner`, `ov-menu`, `ov-pagination`, `ov-combobox`, `ov-tabs`, `ov-toast`, `ov-progress`, `ov-skeleton`, `ov-tooltip`, `ov-avatar`, `ov-breadcrumbs`, `ov-badge`, `ov-card`, `ov-alert`, `ov-page-header`, `ov-empty-state`, `ov-data-table`, and `ov-application-shell`.
 - Recipes: `page.settings`, `page.search`, `page.crud-table`, `page.detail`, `state.empty`, and `shell.application`.
 
 Component descriptors keep runtime API metadata separate from Ovlira guidance. For example:
