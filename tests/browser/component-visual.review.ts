@@ -73,7 +73,12 @@ for (const component of components) {
 
     test('light narrow default', async ({ page }) => {
       const preview = await openComponentPreview(page, tag, 'light', narrow);
-      await expect(preview).toHaveScreenshot(`${tag}-light-narrow.png`);
+      await expect(preview).toHaveScreenshot(
+        `${tag}-light-narrow.png`,
+        tag === 'ov-date-input'
+          ? { maxDiffPixels: 150 } // Native date-picker chrome varies slightly across macOS patch releases.
+          : undefined,
+      );
     });
 
     const propNames = new Set(component.api.props.map((prop) => prop.name));
