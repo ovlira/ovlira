@@ -71,7 +71,7 @@ test('catalogue uses a desktop master detail split and a mobile detail replaceme
 
 test('catalogue preview coverage includes every shipped component', async ({ page }) => {
   await openMarketing(page);
-  for (const id of ['ov-button', 'ov-input', 'ov-textarea', 'ov-checkbox', 'ov-radio-group', 'ov-toggle', 'ov-dialog', 'ov-select', 'ov-spinner', 'ov-menu', 'ov-pagination', 'ov-combobox', 'ov-tabs', 'ov-toast', 'ov-progress', 'ov-skeleton', 'ov-tooltip', 'ov-avatar', 'ov-breadcrumbs', 'ov-accordion', 'ov-slider', 'ov-file-upload', 'ov-date-input', 'ov-stepper', 'ov-drawer', 'ov-badge', 'ov-card', 'ov-alert', 'ov-page-header', 'ov-empty-state', 'ov-data-table', 'ov-application-shell']) {
+  for (const id of ['ov-button', 'ov-input', 'ov-textarea', 'ov-checkbox', 'ov-radio-group', 'ov-toggle', 'ov-dialog', 'ov-select', 'ov-spinner', 'ov-menu', 'ov-pagination', 'ov-combobox', 'ov-tabs', 'ov-toast', 'ov-progress', 'ov-skeleton', 'ov-tooltip', 'ov-avatar', 'ov-breadcrumbs', 'ov-accordion', 'ov-slider', 'ov-file-upload', 'ov-date-input', 'ov-stepper', 'ov-drawer', 'ov-number-input', 'ov-popover', 'ov-tree', 'ov-badge', 'ov-card', 'ov-alert', 'ov-page-header', 'ov-empty-state', 'ov-data-table', 'ov-application-shell']) {
     await page.locator(`[data-catalogue-select="${id}"]`).click();
     await expect(page.locator('[data-component-preview]')).toBeVisible();
     if (id === 'ov-drawer') {
@@ -308,6 +308,47 @@ test('date input preview exposes native date constraints', async ({ page }) => {
   await expect(input).toHaveAttribute('min', '2026-01-01');
   await expect(input).toHaveCSS('box-sizing', 'border-box');
   await expect(input).toHaveCSS('height', '44px');
+});
+
+test('number input preview exposes native spinbutton constraints', async ({ page }) => {
+  await openMarketing(page);
+  await page.locator('[data-catalogue-select="ov-number-input"]').click();
+  const host = page.locator('[data-component-preview] ov-number-input').first();
+  const input = host.getByRole('spinbutton', { name: 'Seats' });
+  await expect(input).toHaveValue('4');
+  await expect(input).toHaveAttribute('min', '1');
+  await expect(input).toHaveAttribute('max', '24');
+  await expect(input).toHaveAttribute('step', '1');
+});
+
+test('popover preview exposes a dismissible contextual surface', async ({ page }) => {
+  await openMarketing(page);
+  await page.locator('[data-catalogue-select="ov-popover"]').click();
+  const host = page.locator('[data-component-preview] ov-popover').first();
+  const trigger = host.getByRole('button', { name: 'View details' });
+  const surface = host.getByRole('dialog', { name: 'Project details' });
+  await expect(trigger).toHaveAttribute('aria-expanded', 'false');
+  await trigger.click();
+  await expect(surface).toBeVisible();
+  await expect(host).toContainText('Last updated a few minutes ago by Maya Chen.');
+  await trigger.press('Escape');
+  await expect(surface).toBeHidden();
+  await expect(trigger).toBeFocused();
+});
+
+test('tree preview exposes nested selection and keyboard navigation', async ({ page }) => {
+  await openMarketing(page);
+  await page.locator('[data-catalogue-select="ov-tree"]').click();
+  const host = page.locator('[data-component-preview] ov-tree').first();
+  const tree = host.getByRole('tree', { name: 'Project files' });
+  await expect(tree).toBeVisible();
+  await expect(host.getByRole('treeitem', { name: 'main.ts' })).toHaveAttribute('aria-level', '2');
+  await expect(host.getByRole('treeitem', { name: 'main.ts' })).toHaveAttribute('aria-selected', 'true');
+  const source = host.getByRole('treeitem', { name: 'src' });
+  await source.getByRole('button', { name: 'Collapse src' }).click();
+  await expect(host.getByRole('treeitem', { name: 'main.ts' })).toBeHidden();
+  await source.getByRole('button', { name: 'Expand src' }).click();
+  await expect(host.getByRole('treeitem', { name: 'main.ts' })).toBeVisible();
 });
 
 test('stepper preview exposes current workflow progress', async ({ page }) => {

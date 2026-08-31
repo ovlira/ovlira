@@ -346,6 +346,65 @@ describe('Ovlira components', () => {
     expect((change.mock.calls[0]?.[0] as CustomEvent).detail).toEqual({ value: '2026-04-02' });
   });
 
+  it('keeps number input bounds and emits the string value', async () => {
+    document.body.innerHTML = '<ov-number-input label="Seats" min="1" max="24" step="1" value="4" required></ov-number-input>';
+    const element = document.querySelector('ov-number-input') as import('../src/components/number-input.js').OvNumberInput;
+    await element.updateComplete;
+    const input = element.shadowRoot?.querySelector<HTMLInputElement>('input[type="number"]');
+    expect(input?.type).toBe('number');
+    expect(input?.value).toBe('4');
+    expect(input?.min).toBe('1');
+    expect(input?.max).toBe('24');
+    expect(input?.step).toBe('1');
+    expect(input?.required).toBe(true);
+    const change = vi.fn();
+    element.addEventListener('change', change);
+    input!.value = '8';
+    input?.dispatchEvent(new Event('change', { bubbles: true, composed: true }));
+    await element.updateComplete;
+    expect(element.value).toBe('8');
+    expect((change.mock.calls[0]?.[0] as CustomEvent).detail).toEqual({ value: '8' });
+  });
+
+  it('opens and dismisses a labelled popover while restoring trigger focus', async () => {
+    document.body.innerHTML = '<ov-popover label="Project details"><span slot="trigger">View details</span><p>Last updated recently.</p></ov-popover>';
+    const element = document.querySelector('ov-popover') as import('../src/components/popover.js').OvPopover;
+    await element.updateComplete;
+    const trigger = element.shadowRoot?.querySelector<HTMLButtonElement>('[part="trigger"]');
+    const surface = element.shadowRoot?.querySelector<HTMLElement>('[part="popover"]');
+    expect(trigger?.getAttribute('aria-expanded')).toBe('false');
+    expect(surface?.hasAttribute('hidden')).toBe(true);
+    trigger?.click();
+    await element.updateComplete;
+    expect(element.open).toBe(true);
+    expect(trigger?.getAttribute('aria-expanded')).toBe('true');
+    expect(surface?.hasAttribute('hidden')).toBe(false);
+    trigger?.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true, composed: true }));
+    await element.updateComplete;
+    expect(element.open).toBe(false);
+    expect(document.activeElement).toBe(element);
+  });
+
+  it('renders nested tree semantics and toggles expanded parents', async () => {
+    document.body.innerHTML = '<ov-tree label="Project files"></ov-tree>';
+    const element = document.querySelector('ov-tree') as import('../src/components/tree.js').OvTree;
+    element.items = [{ value: 'src', label: 'src', children: [{ value: 'main', label: 'main.ts' }] }, { value: 'readme', label: 'README.md' }];
+    element.expanded = ['src'];
+    element.value = 'main';
+    await element.updateComplete;
+    const tree = element.shadowRoot?.querySelector('[role="tree"]');
+    const parent = element.shadowRoot?.querySelector<HTMLElement>('[part="item"][data-value="src"]');
+    const child = element.shadowRoot?.querySelector<HTMLElement>('[part="item"][data-value="main"]');
+    expect(tree?.getAttribute('aria-label')).toBe('Project files');
+    expect(parent?.getAttribute('aria-expanded')).toBe('true');
+    expect(child?.getAttribute('aria-level')).toBe('2');
+    expect(child?.getAttribute('aria-selected')).toBe('true');
+    parent?.querySelector<HTMLButtonElement>('[part="disclosure"]')?.click();
+    await element.updateComplete;
+    expect(element.expanded).toEqual([]);
+    expect(element.shadowRoot?.querySelector('[data-value="main"]')).toBeNull();
+  });
+
   it('renders stepper progress with aligned markers and stateful connectors', async () => {
     document.body.innerHTML = '<ov-stepper value="access" orientation="vertical"></ov-stepper>';
     const element = document.querySelector('ov-stepper') as import('../src/components/stepper.js').OvStepper;

@@ -867,6 +867,109 @@
     }
   },
   {
+    "id": "component.number-input",
+    "kind": "component",
+    "title": "Number input",
+    "description": "A labelled native numeric field with bounds and step controls.",
+    "category": "forms",
+    "tags": ["form", "numeric", "spinbutton", "input", "field"],
+    "api": {
+      "tag": "ov-number-input",
+      "importPath": "./components/ovlira/number-input.js",
+      "props": [
+        { "name": "label", "type": "string", "description": "Visible accessible label.", "required": true, "reflected": true },
+        { "name": "name", "type": "string", "description": "Native form field name.", "reflected": true },
+        { "name": "value", "type": "string", "description": "Current numeric value as a string." },
+        { "name": "min", "type": "string", "description": "Smallest allowed value.", "reflected": true },
+        { "name": "max", "type": "string", "description": "Largest allowed value.", "reflected": true },
+        { "name": "step", "type": "string", "description": "Native increment between values.", "reflected": true },
+        { "name": "required", "type": "boolean", "description": "Marks the field as required.", "default": "false", "reflected": true },
+        { "name": "disabled", "type": "boolean", "description": "Prevents interaction.", "default": "false", "reflected": true },
+        { "name": "error", "type": "string", "description": "Validation message." },
+        { "name": "helpText", "type": "string", "description": "Supporting guidance.", "reflected": false }
+      ],
+      "events": [
+        { "name": "input", "detail": "{ value: string }", "description": "Dispatched while the value changes." },
+        { "name": "change", "detail": "{ value: string }", "description": "Dispatched when the value is committed." }
+      ],
+      "slots": [],
+      "cssCustomProperties": ["--ov-field-accent"],
+      "parts": ["field", "label", "input", "message"]
+    },
+    "guidance": {
+      "useWhen": ["A user needs to enter a bounded quantity, count, or other numeric value."],
+      "avoidWhen": ["The value is continuous and better adjusted directly; use ov-slider for bounded range interaction."],
+      "constraints": ["Use min, max, and step when the domain has meaningful bounds.", "Keep value as a string at the component boundary so an empty field remains representable.", "Validate business rules in the owning form and communicate errors next to the field."],
+      "requiredProps": ["label"],
+      "example": "examples/components/number-input.md"
+    }
+  },
+  {
+    "id": "component.popover",
+    "kind": "component",
+    "title": "Popover",
+    "description": "A non-modal floating surface for contextual content and controls.",
+    "category": "layout",
+    "tags": ["popover", "overlay", "context", "floating", "surface"],
+    "api": {
+      "tag": "ov-popover",
+      "importPath": "./components/ovlira/popover.js",
+      "props": [
+        { "name": "label", "type": "string", "description": "Accessible trigger and surface label.", "default": "More details", "reflected": true },
+        { "name": "open", "type": "boolean", "description": "Whether the popover is visible.", "default": "false", "reflected": true },
+        { "name": "disabled", "type": "boolean", "description": "Prevents opening.", "default": "false", "reflected": true },
+        { "name": "placement", "type": "'top' | 'right' | 'bottom' | 'left'", "description": "Preferred surface placement.", "default": "bottom", "reflected": true },
+        { "name": "dismissible", "type": "boolean", "description": "Whether Escape and outside pointer input dismiss the surface.", "default": "true", "reflected": true }
+      ],
+      "events": [
+        { "name": "open", "description": "Dispatched when the popover opens." },
+        { "name": "close", "description": "Dispatched when the popover closes." }
+      ],
+      "slots": ["trigger: non-interactive trigger label", "default: contextual popover content"],
+      "cssCustomProperties": [],
+      "parts": ["trigger", "popover", "content"]
+    },
+    "guidance": {
+      "useWhen": ["Supporting controls or context should float beside the current task without interrupting it."],
+      "avoidWhen": ["The content is an interruptive decision or action menu; use ov-dialog or ov-menu instead."],
+      "constraints": ["Keep the trigger label meaningful and do not slot another interactive control inside it.", "Keep the surface concise and preserve a keyboard path to close it.", "Use placement as a preference only; the owning layout should avoid clipping the surface."],
+      "requiredProps": [],
+      "example": "examples/components/popover.md"
+    }
+  },
+  {
+    "id": "component.tree",
+    "kind": "component",
+    "title": "Tree",
+    "description": "An accessible hierarchical tree for nested resources and navigation.",
+    "category": "navigation",
+    "tags": ["tree", "hierarchy", "navigation", "nested", "resources"],
+    "api": {
+      "tag": "ov-tree",
+      "importPath": "./components/ovlira/tree.js",
+      "props": [
+        { "name": "label", "type": "string", "description": "Accessible tree label.", "default": "Tree", "reflected": true },
+        { "name": "items", "type": "TreeItem[]", "description": "Nested tree definitions assigned as a property." },
+        { "name": "value", "type": "string", "description": "Selected tree item value.", "reflected": true },
+        { "name": "expanded", "type": "string[]", "description": "Values of expanded parent items." }
+      ],
+      "events": [
+        { "name": "select", "detail": "{ value: string; label: string }", "description": "Dispatched when an enabled item is selected." },
+        { "name": "toggle", "detail": "{ value: string; expanded: boolean }", "description": "Dispatched when a parent item expands or collapses." }
+      ],
+      "slots": [],
+      "cssCustomProperties": [],
+      "parts": ["tree", "group", "item", "row", "disclosure", "label"]
+    },
+    "guidance": {
+      "useWhen": ["Users need to browse or select nested resources such as files, projects, or navigation sections."],
+      "avoidWhen": ["The hierarchy is shallow or users need to compare peer options; use breadcrumbs, links, or ov-tabs instead."],
+      "constraints": ["Use stable values and labels for every item.", "Keep expansion state in the owning application through the expanded property.", "Do not rely on indentation or colour alone to communicate hierarchy or selection; the component exposes native tree semantics and keyboard navigation."],
+      "requiredProps": [],
+      "example": "examples/components/tree.md"
+    }
+  },
+  {
     "id": "component.tooltip",
     "kind": "component",
     "title": "Tooltip",

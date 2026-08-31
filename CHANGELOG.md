@@ -3,6 +3,7 @@
 ## Unreleased
 
 - Added `ov-date-input`, `ov-stepper`, and `ov-drawer` with native date, workflow, and side-panel semantics, examples, CLI starters, and marketing previews. Visual baselines are pending human approval.
+- Added `ov-number-input`, `ov-popover`, and `ov-tree` for bounded numeric entry, contextual surfaces, and nested resource navigation, with catalogue contracts, examples, CLI starters, and marketing previews. Visual baselines are pending human approval.
 
 - Added `ov-accordion`, `ov-slider`, and `ov-file-upload` with native disclosure, range, and file-picker semantics, examples, CLI starters, and marketing previews. Visual baselines are pending human approval.
 
