@@ -822,7 +822,7 @@
       "events": [],
       "slots": [],
       "cssCustomProperties": [],
-      "parts": ["stepper", "step", "marker", "label", "description"]
+      "parts": ["stepper", "step", "track", "marker", "connector", "label", "description"]
     },
     "guidance": {
       "useWhen": ["A workflow has a known sequence and users benefit from seeing where they are and what remains."],

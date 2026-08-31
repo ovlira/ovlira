@@ -313,6 +313,27 @@ test('stepper preview exposes current workflow progress', async ({ page }) => {
   await expect(host.locator('[part="step"]')).toHaveCount(3);
   await expect(host.locator('[part="step"][aria-current="step"] [part="label"]')).toHaveText('Access');
   await expect(host.locator('[part="step"][data-state="complete"]')).toHaveCount(1);
+  await expect(host.locator('[part="connector"]')).toHaveCount(2);
+  await expect(host.locator('[part="connector"]').nth(0)).toHaveAttribute('data-state', 'complete');
+  await expect(host.locator('[part="connector"]').nth(1)).toHaveAttribute('data-state', 'current');
+  const geometry = await host.evaluate((element) => {
+    const steps = [...(element.shadowRoot?.querySelectorAll<HTMLElement>('[part="step"]') ?? [])];
+    return steps.map((step) => {
+      const marker = step.querySelector<HTMLElement>('[part="marker"]')?.getBoundingClientRect();
+      const label = step.querySelector<HTMLElement>('[part="label"]')?.getBoundingClientRect();
+      const connector = step.querySelector<HTMLElement>('[part="connector"]')?.getBoundingClientRect();
+      return {
+        markerCenter: marker ? marker.left + marker.width / 2 : 0,
+        labelCenter: label ? label.left + label.width / 2 : 0,
+        connectorRight: connector?.right ?? 0,
+        markerLeft: marker?.left ?? 0,
+      };
+    });
+  });
+  for (const step of geometry) expect(Math.abs(step.markerCenter - step.labelCenter)).toBeLessThan(1);
+  for (let index = 0; index < geometry.length - 1; index += 1) {
+    expect(Math.abs((geometry[index]?.connectorRight ?? 0) - (geometry[index + 1]?.markerLeft ?? 0))).toBeLessThan(1);
+  }
 });
 
 test('drawer preview opens a native side-panel dialog', async ({ page }) => {

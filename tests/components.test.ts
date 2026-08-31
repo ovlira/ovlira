@@ -346,7 +346,7 @@ describe('Ovlira components', () => {
     expect((change.mock.calls[0]?.[0] as CustomEvent).detail).toEqual({ value: '2026-04-02' });
   });
 
-  it('renders stepper progress with one current step and completed markers', async () => {
+  it('renders stepper progress with aligned markers and stateful connectors', async () => {
     document.body.innerHTML = '<ov-stepper value="access" orientation="vertical"></ov-stepper>';
     const element = document.querySelector('ov-stepper') as import('../src/components/stepper.js').OvStepper;
     element.items = [{ value: 'details', label: 'Details' }, { value: 'access', label: 'Access', description: 'Choose who can enter.' }, { value: 'review', label: 'Review' }];
@@ -357,6 +357,8 @@ describe('Ovlira components', () => {
     expect(steps[1]?.dataset.state).toBe('current');
     expect(steps[1]?.getAttribute('aria-current')).toBe('step');
     expect(steps[0]?.querySelector('[part="marker"]')?.textContent).toBe('✓');
+    expect(steps[0]?.querySelector('[part="connector"]')?.getAttribute('data-state')).toBe('complete');
+    expect(steps[1]?.querySelector('[part="connector"]')?.getAttribute('data-state')).toBe('current');
     expect(steps[1]?.textContent).toContain('Choose who can enter.');
   });
 

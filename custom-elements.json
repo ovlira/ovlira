@@ -4407,6 +4407,42 @@
                   }
                 }
               ]
+            },
+            {
+              "kind": "method",
+              "name": "derivedConnectorState",
+              "privacy": "private",
+              "return": {
+                "type": {
+                  "text": "StepState"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "index",
+                  "type": {
+                    "text": "number"
+                  }
+                },
+                {
+                  "name": "state",
+                  "type": {
+                    "text": "StepState"
+                  }
+                },
+                {
+                  "name": "nextState",
+                  "type": {
+                    "text": "StepState | undefined"
+                  }
+                },
+                {
+                  "name": "currentIndex",
+                  "type": {
+                    "text": "number"
+                  }
+                }
+              ]
             }
           ],
           "attributes": [
