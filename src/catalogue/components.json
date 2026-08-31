@@ -768,6 +768,105 @@
     }
   },
   {
+    "id": "component.date-input",
+    "kind": "component",
+    "title": "Date input",
+    "description": "A labelled native date field with help, error, and range constraints.",
+    "category": "forms",
+    "tags": ["form", "date", "calendar", "input", "field"],
+    "api": {
+      "tag": "ov-date-input",
+      "importPath": "./components/ovlira/date-input.js",
+      "props": [
+        { "name": "label", "type": "string", "description": "Visible accessible label.", "required": true, "reflected": true },
+        { "name": "name", "type": "string", "description": "Native form field name.", "reflected": true },
+        { "name": "value", "type": "string", "description": "Current ISO date value (YYYY-MM-DD)." },
+        { "name": "min", "type": "string", "description": "Earliest allowed ISO date.", "reflected": true },
+        { "name": "max", "type": "string", "description": "Latest allowed ISO date.", "reflected": true },
+        { "name": "required", "type": "boolean", "description": "Marks the field as required.", "default": "false", "reflected": true },
+        { "name": "disabled", "type": "boolean", "description": "Prevents interaction.", "default": "false", "reflected": true },
+        { "name": "error", "type": "string", "description": "Validation message." },
+        { "name": "helpText", "type": "string", "description": "Supporting guidance.", "reflected": false }
+      ],
+      "events": [
+        { "name": "input", "detail": "{ value: string }", "description": "Dispatched while the date changes." },
+        { "name": "change", "detail": "{ value: string }", "description": "Dispatched when the date is committed." }
+      ],
+      "slots": [],
+      "cssCustomProperties": ["--ov-field-accent"],
+      "parts": ["field", "label", "input", "message"]
+    },
+    "guidance": {
+      "useWhen": ["A user needs to enter one calendar date and the browser's native date affordance is appropriate."],
+      "avoidWhen": ["The task requires a date range, time zone, or multi-date calendar; keep that orchestration in the owning application."],
+      "constraints": ["Use ISO date strings for value, min, and max.", "Provide a visible label and communicate validation next to the field.", "Do not treat the browser date format as a stable display format for saved data."],
+      "requiredProps": ["label"],
+      "example": "examples/components/date-input.md"
+    }
+  },
+  {
+    "id": "component.stepper",
+    "kind": "component",
+    "title": "Stepper",
+    "description": "A compact ordered progress indicator for multi-step workflows.",
+    "category": "navigation",
+    "tags": ["stepper", "progress", "workflow", "steps", "navigation"],
+    "api": {
+      "tag": "ov-stepper",
+      "importPath": "./components/ovlira/stepper.js",
+      "props": [
+        { "name": "items", "type": "StepperItem[]", "description": "Step definitions assigned as a property." },
+        { "name": "value", "type": "string", "description": "Value of the current step.", "reflected": true },
+        { "name": "orientation", "type": "'horizontal' | 'vertical'", "description": "Step layout direction.", "default": "horizontal", "reflected": true }
+      ],
+      "events": [],
+      "slots": [],
+      "cssCustomProperties": [],
+      "parts": ["stepper", "step", "marker", "label", "description"]
+    },
+    "guidance": {
+      "useWhen": ["A workflow has a known sequence and users benefit from seeing where they are and what remains."],
+      "avoidWhen": ["The steps are independent destinations or users need to switch freely between peer views; use links or ov-tabs instead."],
+      "constraints": ["Use stable values and concise labels for every step.", "Expose one current step and communicate completion or error without relying on colour alone.", "Keep navigation and validation actions in the owning workflow rather than inside the indicator."],
+      "requiredProps": [],
+      "example": "examples/components/stepper.md"
+    }
+  },
+  {
+    "id": "component.drawer",
+    "kind": "component",
+    "title": "Drawer",
+    "description": "A native dialog presented as a focused side panel for supplemental work.",
+    "category": "layout",
+    "tags": ["drawer", "panel", "dialog", "overlay", "side-panel"],
+    "api": {
+      "tag": "ov-drawer",
+      "importPath": "./components/ovlira/drawer.js",
+      "props": [
+        { "name": "open", "type": "boolean", "description": "Whether the drawer is currently shown.", "default": "false", "reflected": true },
+        { "name": "modal", "type": "boolean", "description": "Whether opening blocks the rest of the document with a modal backdrop.", "default": "true", "reflected": true },
+        { "name": "heading", "type": "string", "description": "Accessible drawer heading.", "required": true, "reflected": true },
+        { "name": "description", "type": "string", "description": "Optional supporting context.", "reflected": true },
+        { "name": "placement", "type": "'left' | 'right'", "description": "Side from which the drawer enters.", "default": "right", "reflected": true },
+        { "name": "dismissible", "type": "boolean", "description": "Whether the close action and Escape can dismiss the drawer.", "default": "true", "reflected": true }
+      ],
+      "events": [
+        { "name": "close", "description": "Dispatched when the drawer closes through its close action, Escape, or an external open change." },
+        { "name": "cancel", "description": "Dispatched when Escape requests dismissal; cancel the event to keep the drawer open." }
+      ],
+      "slots": ["default: drawer body", "actions: compact drawer actions"],
+      "cssCustomProperties": [],
+      "parts": ["drawer", "surface", "header", "heading", "description", "body", "actions", "close"]
+    },
+    "guidance": {
+      "useWhen": ["Supplemental filters, navigation, or detail can be presented beside the current task without replacing its route."],
+      "avoidWhen": ["The decision is brief and interruptive; use ov-dialog, or keep the content inline when it does not need focus isolation."],
+      "constraints": ["Provide a specific heading and a clear close path.", "Use modal=false only when the current task remains safe and understandable beside the panel.", "Keep body content independently scrollable and keep actions concise."],
+      "requiredProps": ["heading"],
+      "example": "examples/components/drawer.md"
+    }
+  },
+  {
     "id": "component.tooltip",
     "kind": "component",
     "title": "Tooltip",

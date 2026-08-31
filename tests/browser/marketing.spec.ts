@@ -71,10 +71,11 @@ test('catalogue uses a desktop master detail split and a mobile detail replaceme
 
 test('catalogue preview coverage includes every shipped component', async ({ page }) => {
   await openMarketing(page);
-  for (const id of ['ov-button', 'ov-input', 'ov-textarea', 'ov-checkbox', 'ov-radio-group', 'ov-toggle', 'ov-dialog', 'ov-select', 'ov-spinner', 'ov-menu', 'ov-pagination', 'ov-combobox', 'ov-tabs', 'ov-toast', 'ov-progress', 'ov-skeleton', 'ov-tooltip', 'ov-avatar', 'ov-breadcrumbs', 'ov-accordion', 'ov-slider', 'ov-file-upload', 'ov-badge', 'ov-card', 'ov-alert', 'ov-page-header', 'ov-empty-state', 'ov-data-table', 'ov-application-shell']) {
+  for (const id of ['ov-button', 'ov-input', 'ov-textarea', 'ov-checkbox', 'ov-radio-group', 'ov-toggle', 'ov-dialog', 'ov-select', 'ov-spinner', 'ov-menu', 'ov-pagination', 'ov-combobox', 'ov-tabs', 'ov-toast', 'ov-progress', 'ov-skeleton', 'ov-tooltip', 'ov-avatar', 'ov-breadcrumbs', 'ov-accordion', 'ov-slider', 'ov-file-upload', 'ov-date-input', 'ov-stepper', 'ov-drawer', 'ov-badge', 'ov-card', 'ov-alert', 'ov-page-header', 'ov-empty-state', 'ov-data-table', 'ov-application-shell']) {
     await page.locator(`[data-catalogue-select="${id}"]`).click();
     await expect(page.locator('[data-component-preview]')).toBeVisible();
     await expect(page.locator(`[data-component-preview] ${id}`).first()).toBeVisible();
+    if (id === 'ov-drawer') await page.locator('[data-component-preview] ov-drawer').first().getByRole('button', { name: 'Close', exact: true }).click();
   }
 });
 
@@ -294,6 +295,36 @@ test('file upload preview keeps a native picker and selected file list', async (
   await expect(input).toHaveAttribute('aria-labelledby', /ov-file-upload-/);
   await input.setInputFiles({ name: 'project.zip', mimeType: 'application/zip', buffer: Buffer.from('archive') });
   await expect(host.locator('[part="file-list"]')).toContainText('project.zip');
+});
+
+test('date input preview exposes native date constraints', async ({ page }) => {
+  await openMarketing(page);
+  await page.locator('[data-catalogue-select="ov-date-input"]').click();
+  const host = page.locator('[data-component-preview] ov-date-input').first();
+  const input = host.locator('input[type="date"]');
+  await expect(input).toHaveValue('2026-03-12');
+  await expect(input).toHaveAttribute('min', '2026-01-01');
+});
+
+test('stepper preview exposes current workflow progress', async ({ page }) => {
+  await openMarketing(page);
+  await page.locator('[data-catalogue-select="ov-stepper"]').click();
+  const host = page.locator('[data-component-preview] ov-stepper').first();
+  await expect(host.locator('[part="step"]')).toHaveCount(3);
+  await expect(host.locator('[part="step"][aria-current="step"] [part="label"]')).toHaveText('Access');
+  await expect(host.locator('[part="step"][data-state="complete"]')).toHaveCount(1);
+});
+
+test('drawer preview opens a native side-panel dialog', async ({ page }) => {
+  await openMarketing(page);
+  await page.locator('[data-catalogue-select="ov-drawer"]').click();
+  const host = page.locator('[data-component-preview] ov-drawer').first();
+  const drawer = host.locator('dialog');
+  await expect(drawer).toBeVisible();
+  await expect(drawer).toHaveAttribute('aria-labelledby', /ov-drawer-/);
+  await expect(host).toContainText('Choose filters that apply to this view.');
+  await host.getByRole('button', { name: 'Close', exact: true }).click();
+  await expect(drawer).toBeHidden();
 });
 
 for (const theme of ['light', 'dark'] as const) {

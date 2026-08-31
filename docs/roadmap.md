@@ -54,7 +54,7 @@ Ovlira does not need to generate production backends, solve deployment, or provi
 The initial release proves the technical vertical slice:
 
 - one local npm package with no server or model dependency;
-- twenty-nine Lit components and six domain-neutral recipes;
+- thirty-two Lit components and six domain-neutral recipes;
 - bounded catalogue search and focused inspection;
 - source copying with conflict protection and explicit local ownership;
 - global CSS custom properties for the initial palette and typography;
@@ -64,7 +64,7 @@ The initial release proves the technical vertical slice:
 The important gaps are product gaps rather than missing infrastructure:
 
 - the default theme contract and authored reference are now explicit, but the separate designer-supplied contrasting theme is still outstanding;
-- the twenty-nine components now consume the semantic theme surface, while intentional structural CSS remains component-owned;
+- the thirty-two components now consume the semantic theme surface, while intentional structural CSS remains component-owned;
 - the six canonical recipe fixtures now share markup between generation and review and have deterministic interaction, accessibility, responsive, and screenshot checks;
 - the consolidated review app covers all six fixtures and generated starters expose the same baseline action seams;
 - the designer contribution checklist and visual approval mechanism exist, but the current candidate baselines still need human sign-off; and
@@ -74,7 +74,7 @@ The existing generated-spec and runtime-validation work remains useful test infr
 
 ## Now: v0.3 — make the existing promise real
 
-No further net catalogue growth is planned for this phase. Improve the twenty-nine components and six recipes already shipped.
+No further net catalogue growth is planned for this phase. Improve the thirty-two components and six recipes already shipped.
 
 ### 1. Establish the theme contract
 

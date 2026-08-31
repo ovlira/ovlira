@@ -328,6 +328,54 @@ describe('Ovlira components', () => {
     expect((change.mock.calls[0]?.[0] as CustomEvent).detail.files[0]).toBe(file);
   });
 
+  it('keeps date input constraints and emits the ISO value', async () => {
+    document.body.innerHTML = '<ov-date-input label="Launch date" min="2026-01-01" max="2026-12-31" value="2026-03-12" required></ov-date-input>';
+    const element = document.querySelector('ov-date-input') as import('../src/components/date-input.js').OvDateInput;
+    await element.updateComplete;
+    const input = element.shadowRoot?.querySelector<HTMLInputElement>('input[type="date"]');
+    expect(input?.value).toBe('2026-03-12');
+    expect(input?.min).toBe('2026-01-01');
+    expect(input?.max).toBe('2026-12-31');
+    expect(input?.required).toBe(true);
+    const change = vi.fn();
+    element.addEventListener('change', change);
+    input!.value = '2026-04-02';
+    input?.dispatchEvent(new Event('change', { bubbles: true, composed: true }));
+    await element.updateComplete;
+    expect(element.value).toBe('2026-04-02');
+    expect((change.mock.calls[0]?.[0] as CustomEvent).detail).toEqual({ value: '2026-04-02' });
+  });
+
+  it('renders stepper progress with one current step and completed markers', async () => {
+    document.body.innerHTML = '<ov-stepper value="access" orientation="vertical"></ov-stepper>';
+    const element = document.querySelector('ov-stepper') as import('../src/components/stepper.js').OvStepper;
+    element.items = [{ value: 'details', label: 'Details' }, { value: 'access', label: 'Access', description: 'Choose who can enter.' }, { value: 'review', label: 'Review' }];
+    await element.updateComplete;
+    const steps = [...(element.shadowRoot?.querySelectorAll<HTMLElement>('[part="step"]') ?? [])];
+    expect(steps).toHaveLength(3);
+    expect(steps[0]?.dataset.state).toBe('complete');
+    expect(steps[1]?.dataset.state).toBe('current');
+    expect(steps[1]?.getAttribute('aria-current')).toBe('step');
+    expect(steps[0]?.querySelector('[part="marker"]')?.textContent).toBe('✓');
+    expect(steps[1]?.textContent).toContain('Choose who can enter.');
+  });
+
+  it('opens and closes a drawer with native dialog semantics', async () => {
+    document.body.innerHTML = '<ov-drawer heading="Filters" description="Refine the visible projects." open><p>Choose filters.</p></ov-drawer>';
+    const element = document.querySelector('ov-drawer') as import('../src/components/drawer.js').OvDrawer;
+    await element.updateComplete;
+    const dialog = element.shadowRoot?.querySelector('dialog');
+    expect(dialog?.open).toBe(true);
+    expect(dialog?.getAttribute('aria-labelledby')).toContain('ov-drawer-');
+    expect(element.textContent).toContain('Choose filters.');
+    const close = vi.fn();
+    element.addEventListener('close', close);
+    element.shadowRoot?.querySelector<HTMLButtonElement>('[part="close"]')?.click();
+    await element.updateComplete;
+    expect(element.open).toBe(false);
+    expect(close).toHaveBeenCalledTimes(1);
+  });
+
   it('renders property-backed table data without requiring JSON attributes', async () => {
     document.body.innerHTML = '<ov-data-table caption="Projects"></ov-data-table>';
     const element = document.querySelector('ov-data-table') as import('../src/components/data-table.js').OvDataTable;
