@@ -119,25 +119,32 @@ const validation = [
               <div class="summary-item"><div class="summary-value good">Valid</div><div class="summary-label">Metadata contract</div></div>
               <div class="summary-item"><div class="summary-value">8 max</div><div class="summary-label">Search results</div></div>
             </div>
-            <section class="section">
-              <h2 id="catalogue-heading" class="section-heading">Catalogue</h2>
-              <div class="search"><label for="catalogue-search" class="sr-only">Search components and recipes</label><input id="catalogue-search" data-catalogue-search type="search" placeholder="Search components and recipes" /></div>
-              <div class="filters" role="group" aria-label="Filter catalogue">
-                <button class="filter active" type="button" data-catalogue-filter="all" aria-pressed="true">All</button>
-                <button class="filter" type="button" data-catalogue-filter="component" aria-pressed="false">Components</button>
-                <button class="filter" type="button" data-catalogue-filter="recipe" aria-pressed="false">Recipes</button>
-              </div>
-              <div class="catalogue-count" data-catalogue-count aria-live="polite">16 entries</div>
-              <ul class="catalogue" data-catalogue-list>
-                {catalogue.map((item) => (
-                  <li class="catalogue-row" data-catalogue-row data-kind={item.type} data-search={`${item.id} ${item.type} ${item.category} ${item.summary} ${item.useFor}`}>
-                    <button class="catalogue-button" type="button" data-catalogue-select={item.id} aria-pressed="false"><span class="item-main"><span class="item-name">{item.id}</span><span class="item-detail">{item.summary}</span></span><span class="item-type">{item.type}</span></button>
-                  </li>
-                ))}
-              </ul>
-              <div class="empty" data-catalogue-empty hidden>No catalogue entries match this search.</div>
-            </section>
-            <section class="detail" data-detail hidden aria-live="polite"></section>
+            <div class="catalogue-layout" data-catalogue-layout>
+              <section class="section catalogue-list-panel" data-catalogue-list-panel>
+                <h2 id="catalogue-heading" class="section-heading">Catalogue</h2>
+                <div class="search"><label for="catalogue-search" class="sr-only">Search components and recipes</label><input id="catalogue-search" data-catalogue-search type="search" placeholder="Search components and recipes" /></div>
+                <div class="filters" role="group" aria-label="Filter catalogue">
+                  <button class="filter active" type="button" data-catalogue-filter="all" aria-pressed="true">All</button>
+                  <button class="filter" type="button" data-catalogue-filter="component" aria-pressed="false">Components</button>
+                  <button class="filter" type="button" data-catalogue-filter="recipe" aria-pressed="false">Recipes</button>
+                </div>
+                <div class="catalogue-count" data-catalogue-count aria-live="polite">16 entries</div>
+                <ul class="catalogue" data-catalogue-list>
+                  {catalogue.map((item) => (
+                    <li class="catalogue-row" data-catalogue-row data-kind={item.type} data-search={`${item.id} ${item.type} ${item.category} ${item.summary} ${item.useFor}`}>
+                      <button class="catalogue-button" type="button" data-catalogue-select={item.id} aria-pressed="false"><span class="item-main"><span class="item-name">{item.id}</span><span class="item-detail">{item.summary}</span></span><span class="item-type">{item.type}</span></button>
+                    </li>
+                  ))}
+                </ul>
+                <div class="empty" data-catalogue-empty hidden>No catalogue entries match this search.</div>
+              </section>
+              <section class="detail detail-placeholder" data-detail-empty aria-labelledby="catalogue-detail-empty-heading">
+                <div class="section-heading">Inspect an entry</div>
+                <h2 id="catalogue-detail-empty-heading" class="detail-title">Choose a catalogue item</h2>
+                <p class="detail-placeholder-copy">Select a component or recipe to see its descriptor, rendered preview, and guidance.</p>
+              </section>
+              <section class="detail" data-detail hidden aria-live="polite"></section>
+            </div>
           </section>
 
           <section class="view" data-view="workflow" aria-labelledby="workflow-heading" hidden>
@@ -203,7 +210,7 @@ const validation = [
         if (pageEyebrow) pageEyebrow.textContent = page.eyebrow;
         if (pageTitle) pageTitle.textContent = page.title;
         if (pageDescription) pageDescription.textContent = page.description;
-        if (id !== 'catalogue') document.querySelector('[data-detail]')?.setAttribute('hidden', '');
+        if (id !== 'catalogue') closeDetail();
       };
       viewButtons.forEach((button) => button.addEventListener('click', () => openView(button.dataset.viewTrigger)));
 
@@ -211,7 +218,29 @@ const validation = [
       const count = document.querySelector('[data-catalogue-count]');
       const empty = document.querySelector('[data-catalogue-empty]');
       const rows = [...document.querySelectorAll('[data-catalogue-row]')];
+      const catalogueLayout = document.querySelector('[data-catalogue-layout]');
+      const catalogueListPanel = document.querySelector('[data-catalogue-list-panel]');
+      const detailPlaceholder = document.querySelector('[data-detail-empty]');
+      const detail = document.querySelector('[data-detail]');
       let filter = 'all';
+      let selectedId = null;
+      const isSmallScreen = () => window.matchMedia('(max-width: 760px)').matches;
+      const syncCatalogueLayout = () => {
+        const small = isSmallScreen();
+        const hasDetail = Boolean(selectedId) && detail && !detail.hidden;
+        catalogueLayout?.classList.toggle('detail-open', Boolean(hasDetail) && small);
+        if (catalogueListPanel) catalogueListPanel.hidden = Boolean(hasDetail) && small;
+        if (detailPlaceholder) detailPlaceholder.hidden = Boolean(hasDetail) || small;
+      };
+      const closeDetail = ({ restoreFocus = false } = {}) => {
+        if (!detail) return;
+        const selectedButton = selectedId ? document.querySelector(`[data-catalogue-select="${selectedId}"]`) : null;
+        detail.hidden = true;
+        selectedId = null;
+        syncCatalogueLayout();
+        document.querySelectorAll('[data-catalogue-select]').forEach((button) => { button.classList.remove('selected'); button.setAttribute('aria-pressed', 'false'); });
+        if (restoreFocus && selectedButton instanceof HTMLElement) selectedButton.focus();
+      };
       const updateCatalogue = () => {
         const query = search?.value.trim().toLowerCase() || '';
         let visible = 0;
@@ -224,6 +253,7 @@ const validation = [
         });
         if (count) count.textContent = `${visible} ${visible === 1 ? 'entry' : 'entries'}`;
         if (empty) empty.hidden = visible > 0;
+        if (selectedId && rows.find((row) => row.dataset.search?.includes(selectedId))?.hidden) closeDetail();
       };
       search?.addEventListener('input', updateCatalogue);
       document.querySelectorAll('[data-catalogue-filter]').forEach((button) => button.addEventListener('click', () => {
@@ -232,7 +262,6 @@ const validation = [
         updateCatalogue();
       }));
 
-      const detail = document.querySelector('[data-detail]');
       const escapeHtml = (value) => String(value).replace(/[&<>"']/g, (character) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[character]);
       const componentPreview = (item) => {
         const previews = {
@@ -253,19 +282,26 @@ const validation = [
       const renderDetail = (id) => {
         const item = catalogue.find((entry) => entry.id === id);
         if (!item || !detail) return;
+        selectedId = id;
         document.querySelectorAll('[data-catalogue-select]').forEach((button) => { const selected = button.dataset.catalogueSelect === id; button.classList.toggle('selected', selected); button.setAttribute('aria-pressed', String(selected)); });
-        detail.innerHTML = `<div class="detail-head"><div><h2 class="detail-title">${escapeHtml(item.id)}</h2><div class="detail-meta">${escapeHtml(item.type)} · ${escapeHtml(item.category)}</div></div><button class="text-button" type="button" data-detail-close>Close</button></div><section class="section"><h3 class="section-heading">Descriptor</h3><dl class="fields"><div class="field"><dt>Use for</dt><dd>${escapeHtml(item.useFor)}</dd></div><div class="field"><dt>Avoid for</dt><dd>${escapeHtml(item.avoidFor)}</dd></div><div class="field"><dt>States</dt><dd>${escapeHtml(item.states)}</dd></div><div class="field"><dt>Output</dt><dd>${escapeHtml(item.output)}</dd></div></dl></section><section class="section preview-section"><h3 class="section-heading">Rendered preview</h3><div class="component-preview" data-component-preview>${componentPreview(item)}</div><p class="preview-note">This is the shipped custom element under the current theme—not a static illustration.</p></section><section class="section"><h3 class="section-heading">Guidance</h3><ul class="rule-list">${item.rules.map((rule) => `<li class="rule"><div class="rule-title">${escapeHtml(rule.title)}</div><div class="rule-detail">${escapeHtml(rule.detail)}</div></li>`).join('')}</ul></section><div class="command"><div class="command-label">Inspect</div><code>ovlira inspect ${escapeHtml(item.id)} --section guidance --json</code></div>`;
+        detail.innerHTML = `<div class="detail-head"><div><h2 class="detail-title" data-detail-title tabindex="-1">${escapeHtml(item.id)}</h2><div class="detail-meta">${escapeHtml(item.type)} · ${escapeHtml(item.category)}</div></div><div class="detail-actions"><button class="text-button detail-back" type="button" data-detail-back>Back to catalogue</button><button class="text-button detail-close" type="button" data-detail-close>Close</button></div></div><section class="section"><h3 class="section-heading">Descriptor</h3><dl class="fields"><div class="field"><dt>Use for</dt><dd>${escapeHtml(item.useFor)}</dd></div><div class="field"><dt>Avoid for</dt><dd>${escapeHtml(item.avoidFor)}</dd></div><div class="field"><dt>States</dt><dd>${escapeHtml(item.states)}</dd></div><div class="field"><dt>Output</dt><dd>${escapeHtml(item.output)}</dd></div></dl></section><section class="section preview-section"><h3 class="section-heading">Rendered preview</h3><div class="component-preview" data-component-preview>${componentPreview(item)}</div><p class="preview-note">This is the shipped custom element under the current theme—not a static illustration.</p></section><section class="section"><h3 class="section-heading">Guidance</h3><ul class="rule-list">${item.rules.map((rule) => `<li class="rule"><div class="rule-title">${escapeHtml(rule.title)}</div><div class="rule-detail">${escapeHtml(rule.detail)}</div></li>`).join('')}</ul></section><div class="command"><div class="command-label">Inspect</div><code>ovlira inspect ${escapeHtml(item.id)} --section guidance --json</code></div>`;
         detail.hidden = false;
+        syncCatalogueLayout();
         const select = detail.querySelector('ov-select');
         if (select) select.options = [{ value: 'light', label: 'Light' }, { value: 'dark', label: 'Dark' }, { value: 'system', label: 'System' }];
         const table = detail.querySelector('ov-data-table');
         if (table) { table.columns = [{ key: 'name', label: 'Name' }, { key: 'state', label: 'State' }]; table.rows = [{ name: 'Ovlira', state: 'Ready' }, { name: 'Reference', state: 'Approved' }]; }
-        detail.querySelector('[data-detail-close]')?.addEventListener('click', () => { detail.hidden = true; });
+        detail.querySelector('[data-detail-close]')?.addEventListener('click', () => closeDetail({ restoreFocus: true }));
+        detail.querySelector('[data-detail-back]')?.addEventListener('click', () => closeDetail({ restoreFocus: true }));
+        requestAnimationFrame(() => detail.querySelector('[data-detail-title]')?.focus());
       };
       document.querySelectorAll('[data-catalogue-select]').forEach((button) => button.addEventListener('click', () => renderDetail(button.dataset.catalogueSelect)));
+      window.addEventListener('resize', () => {
+        syncCatalogueLayout();
+      });
       document.addEventListener('keydown', (event) => {
         if (event.key === '/' && document.activeElement?.tagName !== 'INPUT') { event.preventDefault(); search?.focus(); }
-        if (event.key === 'Escape' && detail && !detail.hidden) detail.hidden = true;
+        if (event.key === 'Escape' && detail && !detail.hidden) closeDetail({ restoreFocus: true });
       });
       updateCatalogue();
     </script>

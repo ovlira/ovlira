@@ -33,6 +33,43 @@ test('catalogue inspection renders the shipped component preview', async ({ page
   expect(results.violations, results.violations.map((violation) => `${violation.id}: ${violation.help}`).join('\n')).toEqual([]);
 });
 
+test('catalogue uses a desktop master detail split and a mobile detail replacement', async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await openMarketing(page);
+  const listPanel = page.locator('[data-catalogue-list-panel]');
+  const placeholder = page.locator('[data-detail-empty]');
+  const detail = page.locator('[data-detail]');
+  const button = page.locator('[data-catalogue-select="ov-button"]');
+
+  await expect(listPanel).toBeVisible();
+  await expect(detail).toBeHidden();
+  await expect(placeholder).toBeVisible();
+  await button.click();
+  await expect(listPanel).toBeVisible();
+  await expect(detail).toBeVisible();
+  await expect(placeholder).toBeHidden();
+  await expect(page.getByRole('button', { name: 'Back to catalogue', exact: true })).toBeHidden();
+  await expect(page.getByRole('button', { name: 'Close', exact: true })).toBeVisible();
+  await expect(button).toHaveClass(/selected/);
+  await expect(button).toHaveAttribute('aria-pressed', 'true');
+
+  await page.setViewportSize({ width: 375, height: 812 });
+  await expect(listPanel).toBeHidden();
+  await expect(detail).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Back to catalogue', exact: true })).toBeVisible();
+  const mobileResults = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa']).analyze();
+  expect(mobileResults.violations, mobileResults.violations.map((violation) => `${violation.id}: ${violation.help}`).join('\n')).toEqual([]);
+
+  await page.getByRole('button', { name: 'Back to catalogue', exact: true }).click();
+  await expect(listPanel).toBeVisible();
+  await expect(detail).toBeHidden();
+  await expect(placeholder).toBeHidden();
+  await expect(button).toHaveAttribute('aria-pressed', 'false');
+
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await expect(placeholder).toBeVisible();
+});
+
 test('catalogue preview coverage includes every shipped component', async ({ page }) => {
   await openMarketing(page);
   for (const id of ['ov-button', 'ov-input', 'ov-select', 'ov-badge', 'ov-card', 'ov-alert', 'ov-page-header', 'ov-empty-state', 'ov-data-table', 'ov-application-shell']) {
@@ -49,6 +86,18 @@ for (const theme of ['light', 'dark'] as const) {
     await page.locator('[data-catalogue-select="ov-button"]').click();
     await expect(page.locator('[data-component-preview]')).toHaveScreenshot(`marketing-preview-button-${theme}.png`);
   });
+}
+
+for (const theme of ['light', 'dark'] as const) {
+  for (const viewport of [{ name: 'wide', width: 1440, height: 900 }, { name: 'narrow', width: 375, height: 812 }]) {
+    test(`catalogue detail layout ${theme} ${viewport.name}`, async ({ page }) => {
+      await page.setViewportSize({ width: viewport.width, height: viewport.height });
+      await openMarketing(page, theme);
+      await page.locator('[data-catalogue-select="ov-button"]').click();
+      await expect(page.locator('[data-detail]')).toBeVisible();
+      await expect(page).toHaveScreenshot(`marketing-detail-${theme}-${viewport.name}.png`, { fullPage: true });
+    });
+  }
 }
 
 test('marketing catalogue search and filters stay bounded', async ({ page }) => {
