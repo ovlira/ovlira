@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import '../src/components/index.js';
 
 describe('Ovlira components', () => {
@@ -23,6 +23,83 @@ describe('Ovlira components', () => {
     expect(label?.textContent).toContain('Email address');
     expect(label?.htmlFor).toBe(input?.id);
     expect(input?.required).toBe(true);
+  });
+
+  it('keeps textarea label, rows, and help text in a native contract', async () => {
+    document.body.innerHTML = '<ov-textarea label="Project description" name="description" rows="5" help-text="Keep this concise." required></ov-textarea>';
+    const element = document.querySelector('ov-textarea') as import('../src/components/textarea.js').OvTextarea;
+    await element.updateComplete;
+    const label = element.shadowRoot?.querySelector('label');
+    const textarea = element.shadowRoot?.querySelector('textarea');
+    expect(label?.textContent).toContain('Project description');
+    expect(label?.htmlFor).toBe(textarea?.id);
+    expect(textarea?.rows).toBe(5);
+    expect(textarea?.required).toBe(true);
+    expect(element.shadowRoot?.querySelector('.message')?.textContent).toContain('Keep this concise.');
+  });
+
+  it('keeps checkbox label, selection, and help text in a native contract', async () => {
+    document.body.innerHTML = '<ov-checkbox label="Keep me signed in" name="remember" checked help-text="Use this only on a private device." required></ov-checkbox>';
+    const element = document.querySelector('ov-checkbox') as import('../src/components/checkbox.js').OvCheckbox;
+    await element.updateComplete;
+    const label = element.shadowRoot?.querySelector('label');
+    const checkbox = element.shadowRoot?.querySelector('input[type="checkbox"]') as HTMLInputElement | null;
+    expect(label?.htmlFor).toBe(checkbox?.id);
+    expect(checkbox?.checked).toBe(true);
+    expect(checkbox?.required).toBe(true);
+    expect(element.shadowRoot?.querySelector('.message')?.textContent).toContain('Use this only on a private device.');
+  });
+
+  it('keeps radio group legend, options, and selected value in a native contract', async () => {
+    document.body.innerHTML = '<ov-radio-group label="Workspace visibility" name="visibility" value="team" help-text="Choose who can access this workspace." required></ov-radio-group>';
+    const element = document.querySelector('ov-radio-group') as import('../src/components/radio-group.js').OvRadioGroup;
+    element.options = [{ value: 'private', label: 'Only me' }, { value: 'team', label: 'Everyone on the team' }];
+    await element.updateComplete;
+    const fieldset = element.shadowRoot?.querySelector('fieldset');
+    const legend = element.shadowRoot?.querySelector('legend');
+    const radios = [...(element.shadowRoot?.querySelectorAll('input[type="radio"]') ?? [])] as HTMLInputElement[];
+    expect(fieldset?.getAttribute('aria-describedby')).toContain('ov-radio-group-');
+    expect(legend?.textContent).toContain('Workspace visibility');
+    expect(radios).toHaveLength(2);
+    expect(radios[0]?.checked).toBe(false);
+    expect(radios[1]?.checked).toBe(true);
+    expect(radios.every((radio) => radio.required)).toBe(true);
+  });
+
+  it('keeps toggle label, switch semantics, and checked state in a native contract', async () => {
+    document.body.innerHTML = '<ov-toggle label="Email me about project activity" name="activity" checked help-text="You can change this at any time."></ov-toggle>';
+    const element = document.querySelector('ov-toggle') as import('../src/components/toggle.js').OvToggle;
+    await element.updateComplete;
+    const label = element.shadowRoot?.querySelector('label');
+    const toggle = element.shadowRoot?.querySelector('input[role="switch"]') as HTMLInputElement | null;
+    const thumb = element.shadowRoot?.querySelector('.toggle-control .thumb');
+    expect(label?.htmlFor).toBe(toggle?.id);
+    expect(toggle?.checked).toBe(true);
+    expect(toggle?.getAttribute('aria-checked')).toBe('true');
+    expect(thumb).not.toBeNull();
+    expect(element.shadowRoot?.querySelector('.message')?.textContent).toContain('You can change this at any time.');
+  });
+
+  it('keeps dialog heading, body, actions, and explicit close semantics', async () => {
+    document.body.innerHTML = '<ov-dialog heading="Archive this project?" description="People will lose access." open><p>Review this decision.</p><ov-button slot="actions">Archive</ov-button></ov-dialog>';
+    const element = document.querySelector('ov-dialog') as import('../src/components/dialog.js').OvDialog;
+    await element.updateComplete;
+    const dialog = element.shadowRoot?.querySelector('dialog');
+    const heading = element.shadowRoot?.querySelector('h2');
+    const description = element.shadowRoot?.querySelector('.description');
+    const actions = element.shadowRoot?.querySelector('slot[name="actions"]');
+    expect(dialog?.open).toBe(true);
+    expect(dialog?.getAttribute('aria-labelledby')).toBe(heading?.id);
+    expect(dialog?.getAttribute('aria-describedby')).toBe(description?.id);
+    expect(element.textContent).toContain('Review this decision.');
+    expect(actions?.assignedElements()).toHaveLength(1);
+
+    const close = vi.fn();
+    element.addEventListener('close', close);
+    element.shadowRoot?.querySelector<HTMLButtonElement>('.close')?.click();
+    await element.updateComplete;
+    expect(element.open).toBe(false);
+    expect(close).toHaveBeenCalledTimes(1);
   });
 
   it('renders property-backed table data without requiring JSON attributes', async () => {

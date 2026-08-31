@@ -19,7 +19,7 @@ Diagnostics include a severity, stable rule ID, file, line where practical, and 
 
 `src/validator/runtime.ts` contains the first runtime-facing rule layer. A host integration can pass a rendered `Document` to `validateRuntimeDocument` and receive the same diagnostic shape for:
 
-- missing accessible names on native controls and `ov-input`/`ov-select` hosts;
+- missing accessible names on native controls and `ov-input`/`ov-textarea`/`ov-checkbox`/`ov-radio-group`/`ov-toggle`/`ov-select` hosts;
 - rendered heading starts and jumps;
 - missing required state markers;
 - multiple primary actions in a marked region; and

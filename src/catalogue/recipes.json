@@ -12,7 +12,13 @@
     "requiredStates": ["loading", "error", "success"],
     "constraints": ["Use one primary action per form section.", "Do not place destructive actions beside the primary save action.", "Keep settings grouped by user intent."],
     "example": "examples/settings-page",
-    "composition": ["Application shell", "Page header", "Aligned settings sections separated by rules", "Inline feedback near the affected section"]
+    "composition": ["Application shell", "Page header", "Aligned settings sections separated by rules", "Inline feedback near the affected section"],
+    "contentRegions": ["page header", "identity fields", "preference fields", "section feedback"],
+    "extensionPoints": {
+      "data": ["field values", "select options"],
+      "actions": ["save identity", "save preferences"],
+      "navigation": ["brand link", "shell nav links"]
+    }
   },
   {
     "id": "page.search",
@@ -27,7 +33,13 @@
     "requiredStates": ["loading", "empty", "error"],
     "constraints": ["Keep the query visible after submission.", "Explain zero results and offer a useful next action."],
     "example": "examples/recipes/search-page.md",
-    "composition": ["Page header", "Search controls", "Result summary", "Results or empty state"]
+    "composition": ["Page header", "Search controls", "Result summary", "Results or empty state"],
+    "contentRegions": ["page header", "search controls", "result summary", "results feedback"],
+    "extensionPoints": {
+      "data": ["query and filters", "result rows and columns"],
+      "actions": ["submit search", "recover from zero results"],
+      "navigation": ["page links", "result links"]
+    }
   },
   {
     "id": "page.crud-table",
@@ -42,7 +54,13 @@
     "requiredStates": ["loading", "empty", "error", "success"],
     "constraints": ["Make create the page-level primary action.", "Confirm destructive row actions and preserve context."],
     "example": "examples/recipes/crud-table-page.md",
-    "composition": ["Page header with create action", "Table with concise row actions", "Empty state with create action"]
+    "composition": ["Page header with create action", "Table with concise row actions", "Empty state with create action"],
+    "contentRegions": ["page header", "create form", "records table", "state feedback"],
+    "extensionPoints": {
+      "data": ["table columns and rows", "create fields"],
+      "actions": ["create record", "save record", "row actions"],
+      "navigation": ["page links", "record links"]
+    }
   },
   {
     "id": "page.detail",
@@ -57,7 +75,13 @@
     "requiredStates": ["loading", "error"],
     "constraints": ["Put the record identity and status above secondary fields.", "Keep destructive actions visually and spatially separate."],
     "example": "examples/recipes/detail-page.md",
-    "composition": ["Page header", "Identity summary", "Aligned detail sections separated by rules", "Contextual action group"]
+    "composition": ["Page header", "Identity summary", "Aligned detail sections separated by rules", "Contextual action group"],
+    "contentRegions": ["page header", "identity summary", "detail fields", "action feedback"],
+    "extensionPoints": {
+      "data": ["record fields", "record status"],
+      "actions": ["edit record", "save changes", "go back"],
+      "navigation": ["back link", "shell nav links"]
+    }
   },
   {
     "id": "state.empty",
@@ -72,7 +96,13 @@
     "requiredStates": ["empty"],
     "constraints": ["Say what is empty and how to create the first item.", "Do not use an empty state to hide a loading or error condition."],
     "example": "examples/recipes/empty-state-page.md",
-    "composition": ["Empty state heading", "Plain-language explanation", "One next action"]
+    "composition": ["Empty state heading", "Plain-language explanation", "One next action"],
+    "contentRegions": ["page header", "empty explanation", "completion feedback"],
+    "extensionPoints": {
+      "data": ["collection state", "created item"],
+      "actions": ["create first item"],
+      "navigation": ["back link", "collection link"]
+    }
   },
   {
     "id": "shell.application",
@@ -87,6 +117,12 @@
     "requiredStates": [],
     "constraints": ["Keep the rail useful at narrow widths.", "Use native links inside the nav slot."],
     "example": "examples/recipes/application-shell.md",
-    "composition": ["Application shell", "Brand slot", "Nav slot", "Page content slot"]
+    "composition": ["Application shell", "Brand slot", "Nav slot", "Page content slot"],
+    "contentRegions": ["brand", "navigation labels", "page header", "activity feedback"],
+    "extensionPoints": {
+      "data": ["active destination", "activity summary"],
+      "actions": ["navigate", "create project"],
+      "navigation": ["brand link", "nav links"]
+    }
   }
 ]

@@ -50,4 +50,9 @@ function validateRecipe(recipe: RecipeDescriptor, path: string, _tags: Set<strin
   if (!recipe.components.length && recipe.requiredStates.length) issues.push({ code: 'metadata.recipe-components', path: `${path}.components`, message: 'A recipe with required states must name at least one component.' });
   if (new Set(recipe.requiredStates).size !== recipe.requiredStates.length) issues.push({ code: 'metadata.duplicate-state', path: `${path}.requiredStates`, message: 'Recipe required states must be unique.' });
   if (!recipe.example) issues.push({ code: 'metadata.example-required', path: `${path}.example`, message: 'Every recipe needs an example path.' });
+  if (!Array.isArray(recipe.contentRegions) || !recipe.contentRegions.length) issues.push({ code: 'metadata.recipe-content-regions', path: `${path}.contentRegions`, message: 'Every recipe needs at least one content region for adaptation.' });
+  for (const key of ['data', 'actions', 'navigation'] as const) {
+    const extension = recipe.extensionPoints?.[key];
+    if (!Array.isArray(extension) || !extension.length) issues.push({ code: 'metadata.recipe-extension-points', path: `${path}.extensionPoints.${key}`, message: `Every recipe needs at least one ${key} extension point.` });
+  }
 }

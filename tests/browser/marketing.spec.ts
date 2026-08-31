@@ -71,11 +71,40 @@ test('catalogue uses a desktop master detail split and a mobile detail replaceme
 
 test('catalogue preview coverage includes every shipped component', async ({ page }) => {
   await openMarketing(page);
-  for (const id of ['ov-button', 'ov-input', 'ov-select', 'ov-badge', 'ov-card', 'ov-alert', 'ov-page-header', 'ov-empty-state', 'ov-data-table', 'ov-application-shell']) {
+  for (const id of ['ov-button', 'ov-input', 'ov-textarea', 'ov-checkbox', 'ov-radio-group', 'ov-toggle', 'ov-dialog', 'ov-select', 'ov-badge', 'ov-card', 'ov-alert', 'ov-page-header', 'ov-empty-state', 'ov-data-table', 'ov-application-shell']) {
     await page.locator(`[data-catalogue-select="${id}"]`).click();
     await expect(page.locator('[data-component-preview]')).toBeVisible();
     await expect(page.locator(`[data-component-preview] ${id}`).first()).toBeVisible();
   }
+});
+
+test('dialog preview exposes native semantics and an explicit close path', async ({ page }) => {
+  await openMarketing(page);
+  await page.locator('[data-catalogue-select="ov-dialog"]').click();
+  const host = page.locator('[data-component-preview] ov-dialog').first();
+  const dialog = host.locator('dialog');
+  await expect(dialog).toBeVisible();
+  await expect(dialog).toHaveAttribute('aria-labelledby', /ov-dialog-/);
+  await expect(dialog).toHaveAttribute('aria-describedby', /ov-dialog-/);
+  await host.evaluate((element) => { (element as HTMLElement & { modal: boolean }).modal = true; });
+  await expect.poll(() => dialog.evaluate((element) => element.matches(':modal'))).toBe(true);
+  await host.getByRole('button', { name: 'Close', exact: true }).click();
+  await expect(host).not.toHaveAttribute('open');
+  await expect(dialog).toBeHidden();
+});
+
+test('toggle preview renders a circular handle inside its track', async ({ page }) => {
+  await openMarketing(page);
+  await page.locator('[data-catalogue-select="ov-toggle"]').click();
+  const geometry = await page.locator('[data-component-preview] ov-toggle').first().evaluate((host) => {
+    const root = host.shadowRoot;
+    const track = root?.querySelector<HTMLElement>('.toggle-control')?.getBoundingClientRect();
+    const thumb = root?.querySelector<HTMLElement>('.thumb')?.getBoundingClientRect();
+    return { track: track && { width: track.width, height: track.height }, thumb: thumb && { width: thumb.width, height: thumb.height } };
+  });
+  expect(geometry.track?.width ?? 0).toBeGreaterThan(geometry.thumb?.width ?? 0);
+  expect(geometry.thumb?.width ?? 0).toBeGreaterThan(10);
+  expect(Math.abs((geometry.thumb?.width ?? 0) - (geometry.thumb?.height ?? 0))).toBeLessThan(0.5);
 });
 
 for (const theme of ['light', 'dark'] as const) {
@@ -101,7 +130,7 @@ for (const theme of ['light', 'dark'] as const) {
 
 test('marketing catalogue search and filters stay bounded', async ({ page }) => {
   await openMarketing(page);
-  await page.getByRole('searchbox', { name: 'Search components and recipes' }).fill('settings');
+  await page.getByRole('searchbox', { name: 'Search components and recipes' }).fill('page.settings');
   await expect(page.getByText('1 entry')).toBeVisible();
   await expect(page.getByRole('button', { name: /page\.settings/ })).toBeVisible();
   await page.getByRole('searchbox', { name: 'Search components and recipes' }).fill('');

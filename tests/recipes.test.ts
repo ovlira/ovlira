@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
-import { recipes } from '../src/catalogue/index.js';
+import { catalogue, recipes } from '../src/catalogue/index.js';
 import { recipeFixtureMarkup, recipeFixtures } from '../src/recipes/fixtures.js';
+import { validateCatalogue } from '../src/catalogue/validate.js';
 
 describe('canonical recipe fixtures', () => {
   it('keeps catalogue dependencies and required states aligned with rendered markup', () => {
@@ -12,6 +13,10 @@ describe('canonical recipe fixtures', () => {
         .map((match) => match[1]);
       expect([...new Set(tags)].sort(), `${fixture.id} component dependencies`).toEqual([...descriptor!.components].sort());
       expect(fixture.states, `${fixture.id} required states`).toEqual(expect.arrayContaining(descriptor!.requiredStates));
+      expect(descriptor!.contentRegions, `${fixture.id} content regions`).not.toHaveLength(0);
+      expect(descriptor!.extensionPoints.data, `${fixture.id} data seams`).not.toHaveLength(0);
+      expect(descriptor!.extensionPoints.actions, `${fixture.id} action seams`).not.toHaveLength(0);
+      expect(descriptor!.extensionPoints.navigation, `${fixture.id} navigation seams`).not.toHaveLength(0);
     }
   });
 
@@ -19,5 +24,15 @@ describe('canonical recipe fixtures', () => {
     for (const fixture of recipeFixtures) {
       expect(recipeFixtureMarkup(fixture.id), fixture.id).not.toContain('<ov-card');
     }
+  });
+
+  it('reports missing adaptation metadata without throwing', () => {
+    const malformed = structuredClone(catalogue);
+    const recipe = malformed.find((descriptor) => descriptor.id === 'page.settings') as Record<string, unknown>;
+    delete recipe.contentRegions;
+    delete recipe.extensionPoints;
+    const report = validateCatalogue(malformed);
+    expect(report.valid).toBe(false);
+    expect(report.issues.map((issue) => issue.code)).toEqual(expect.arrayContaining(['metadata.recipe-content-regions', 'metadata.recipe-extension-points']));
   });
 });

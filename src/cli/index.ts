@@ -205,7 +205,7 @@ function inspectCommand(args: ParsedArgs, io: CliIO): number {
 function inspectSection(item: Descriptor, section: NonNullable<ParsedArgs['section']>) {
   if (section === 'example') return item.kind === 'component' ? item.guidance.example : item.example;
   if (item.kind === 'component') return item[section];
-  return { useWhen: item.useWhen, avoidWhen: item.avoidWhen, components: item.components, requiredStates: item.requiredStates, constraints: item.constraints, composition: item.composition };
+  return { useWhen: item.useWhen, avoidWhen: item.avoidWhen, components: item.components, requiredStates: item.requiredStates, constraints: item.constraints, composition: item.composition, contentRegions: item.contentRegions, extensionPoints: item.extensionPoints };
 }
 
 function formatInspect(item: Descriptor): string {
@@ -412,7 +412,7 @@ function globalStyles(): string {
   return `* { box-sizing: border-box; }
 html, body, #app { margin: 0; min-height: 100%; }
 body { background: var(--ov-bg, var(--ov-color-canvas)); color: var(--ov-text, var(--ov-color-ink)); font-family: var(--ov-font-sans); font-size: var(--ov-text-md); -webkit-font-smoothing: antialiased; }
-button, input, select { font: inherit; }
+button, input, select, textarea { font: inherit; }
 .starter, .demo { margin: 12vh auto; max-width: var(--ov-content-narrow, 34rem); padding-inline: var(--ov-space-6); }
 .starter h1, .demo h1 { font-size: var(--ov-text-xl); font-weight: 600; letter-spacing: -0.025em; line-height: var(--ov-line-tight); margin: 0 0 var(--ov-space-4); }
 .starter p:not(.kicker) { color: var(--ov-muted, var(--ov-color-muted)); line-height: var(--ov-line-body); }
@@ -430,7 +430,7 @@ import './styles.css';
 const app = document.querySelector<HTMLDivElement>('#app');
 if (app) {
   app.innerHTML = \`${componentMarkup(item)}\`;
-  ${item.api.tag === 'ov-select' ? "const select = app.querySelector('ov-select'); if (select) select.options = [{ value: 'eu', label: 'Europe' }, { value: 'us', label: 'United States' }];" : ''}
+  ${item.api.tag === 'ov-select' ? "const select = app.querySelector('ov-select'); if (select) select.options = [{ value: 'eu', label: 'Europe' }, { value: 'us', label: 'United States' }];" : item.api.tag === 'ov-radio-group' ? "const radioGroup = app.querySelector('ov-radio-group'); if (radioGroup) radioGroup.options = [{ value: 'private', label: 'Only me' }, { value: 'team', label: 'Everyone on the team' }];" : ''}
 }
 `;
 }
@@ -438,6 +438,11 @@ if (app) {
 function componentMarkup(item: ComponentDescriptor): string {
   switch (item.api.tag) {
     case 'ov-input': return '<main class="demo"><p class="kicker">OVLIRA / COMPONENT</p><h1>Input</h1><ov-input label="Workspace name" placeholder="e.g. Northstar"></ov-input></main>';
+    case 'ov-textarea': return '<main class="demo"><p class="kicker">OVLIRA / COMPONENT</p><h1>Textarea</h1><ov-textarea label="Project description" rows="5" placeholder="What is this project for?"></ov-textarea></main>';
+    case 'ov-checkbox': return '<main class="demo"><p class="kicker">OVLIRA / COMPONENT</p><h1>Checkbox</h1><ov-checkbox label="Keep me signed in" name="remember" checked></ov-checkbox></main>';
+    case 'ov-radio-group': return '<main class="demo"><p class="kicker">OVLIRA / COMPONENT</p><h1>Radio group</h1><ov-radio-group label="Workspace visibility" name="visibility" value="team"></ov-radio-group></main>';
+    case 'ov-toggle': return '<main class="demo"><p class="kicker">OVLIRA / COMPONENT</p><h1>Toggle</h1><ov-toggle label="Email me about project activity" name="activity" checked></ov-toggle></main>';
+    case 'ov-dialog': return '<main class="demo"><p class="kicker">OVLIRA / COMPONENT</p><h1>Dialog</h1><ov-dialog heading="Archive this project?" description="People will lose access to the project workspace." open><p>This action can be reversed later from project settings.</p><ov-button slot="actions" variant="danger">Archive project</ov-button></ov-dialog></main>';
     case 'ov-select': return '<main class="demo"><p class="kicker">OVLIRA / COMPONENT</p><h1>Select</h1><ov-select label="Region"></ov-select></main>';
     case 'ov-button': return '<main class="demo"><p class="kicker">OVLIRA / COMPONENT</p><h1>Button</h1><ov-button variant="primary">Continue</ov-button></main>';
     case 'ov-badge': return '<main class="demo"><p class="kicker">OVLIRA / COMPONENT</p><h1>Badge</h1><ov-badge tone="accent">Ready</ov-badge></main>';
@@ -451,7 +456,8 @@ function componentMarkup(item: ComponentDescriptor): string {
 }
 
 function recipeEntry(recipe: RecipeDescriptor, theme = themeFileName): string {
-  const markup = recipeFixtureMarkup(recipe.id as RecipeFixtureId);
+  const seams = `<!-- Ovlira adaptation seams — content regions: ${recipe.contentRegions.join(', ')}; data: ${recipe.extensionPoints.data.join(', ')}; actions: ${recipe.extensionPoints.actions.join(', ')}; navigation: ${recipe.extensionPoints.navigation.join(', ')}. -->`;
+  const markup = `${seams}\n${recipeFixtureMarkup(recipe.id as RecipeFixtureId)}`;
   const setup = recipeSetup(recipe);
   const behavior = recipeBehavior(recipe);
   return `import './ovlira.generated.js';\nimport './styles/${theme}';\nimport './styles.css';\n\nconst app = document.querySelector<HTMLDivElement>('#app');\nif (app) {\n  app.innerHTML = \`${markup}\`;\n  ${setup}\n  const stateButtons = app.querySelectorAll<HTMLElement>('[data-ovlira-state-target]');\n  const states = app.querySelectorAll<HTMLElement>('[data-ovlira-state]');\n  const showState = (name: string) => {\n    states.forEach((state) => { state.hidden = state.dataset.ovliraState !== name; });\n    stateButtons.forEach((button) => { button.setAttribute('aria-pressed', String(button.dataset.ovliraStateTarget === name)); });\n  };\n  stateButtons.forEach((button) => button.addEventListener('click', () => showState(button.dataset.ovliraStateTarget ?? '')));\n  ${behavior}\n}\n`;

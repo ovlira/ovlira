@@ -21,16 +21,16 @@ function ioCapture() {
 describe('ovlira CLI', () => {
   it('returns bounded, stable JSON search results', async () => {
     const capture = ioCapture();
-    const code = await runCli(['search', 'settings', '--json'], process.cwd(), capture.io);
+    const code = await runCli(['search', 'page.settings', '--json'], process.cwd(), capture.io);
     expect(code).toBe(0);
     expect(JSON.parse(capture.stdout[0])).toEqual({
       version: 1,
-      query: 'settings',
+      query: 'page.settings',
       filters: { kind: null, tag: null, category: null, limit: 8 },
       results: [expect.objectContaining({ id: 'page.settings', kind: 'recipe', title: 'Settings page' })],
     });
     const second = ioCapture();
-    await runCli(['search', 'settings', '--json'], process.cwd(), second.io);
+    await runCli(['search', 'page.settings', '--json'], process.cwd(), second.io);
     expect(second.stdout[0]).toBe(capture.stdout[0]);
   });
 
@@ -48,11 +48,26 @@ describe('ovlira CLI', () => {
 
   it('supports bounded search filters and focused inspect sections', async () => {
     const searchCapture = ioCapture();
-    expect(await runCli(['search', 'field', '--kind', 'component', '--category', 'forms', '--limit', '1', '--json'], process.cwd(), searchCapture.io)).toBe(0);
+    expect(await runCli(['search', 'input', '--kind', 'component', '--category', 'forms', '--limit', '1', '--json'], process.cwd(), searchCapture.io)).toBe(0);
     expect(JSON.parse(searchCapture.stdout[0])).toMatchObject({ filters: { kind: 'component', category: 'forms', limit: 1 }, results: [{ id: 'component.input' }] });
     const inspectCapture = ioCapture();
     expect(await runCli(['inspect', 'ov-input', '--section', 'api', '--json'], process.cwd(), inspectCapture.io)).toBe(0);
     expect(JSON.parse(inspectCapture.stdout[0])).toMatchObject({ id: 'component.input', section: 'api', data: { tag: 'ov-input' } });
+    const recipeGuidance = ioCapture();
+    expect(await runCli(['inspect', 'page.settings', '--section', 'guidance', '--json'], process.cwd(), recipeGuidance.io)).toBe(0);
+    expect(JSON.parse(recipeGuidance.stdout[0])).toMatchObject({
+      id: 'page.settings',
+      section: 'guidance',
+      data: {
+        contentRegions: expect.arrayContaining(['page header', 'section feedback']),
+        requiredStates: ['loading', 'error', 'success'],
+        extensionPoints: {
+          data: expect.arrayContaining(['field values']),
+          actions: expect.arrayContaining(['save identity']),
+          navigation: expect.arrayContaining(['brand link']),
+        },
+      },
+    });
   });
 
   it('rejects invalid and unknown options with structured errors', async () => {
@@ -70,7 +85,7 @@ describe('ovlira CLI', () => {
   });
 
   it('validates metadata and exposes a normalized registry index', async () => {
-    expect(metadataReport).toMatchObject({ version: 1, valid: true, componentCount: 10, recipeCount: 6 });
+    expect(metadataReport).toMatchObject({ version: 1, valid: true, componentCount: 15, recipeCount: 6 });
     expect(metadataReport.issues).toEqual([]);
     const capture = ioCapture();
     expect(await runCli(['metadata', '--json'], process.cwd(), capture.io)).toBe(0);
@@ -101,6 +116,7 @@ describe('ovlira CLI', () => {
       expect(await runCli(['add', recipe, '--cwd', project], project, ioCapture().io)).toBe(0);
       const entry = await fs.readFile(path.join(project, 'src/main.ts'), 'utf8');
       expect(entry).toContain("./styles/ovlira-theme.css");
+      expect(entry).toContain('Ovlira adaptation seams');
       if (recipe !== 'state.empty' && recipe !== 'shell.application') expect(entry).toContain('data-ovlira-state-target');
       if (recipe === 'page.settings') expect(entry).toContain('data-ovlira-action="save"');
       if (recipe === 'page.search') expect(entry).toContain('data-ovlira-action="search"');
@@ -141,6 +157,66 @@ describe('ovlira CLI', () => {
     expect(JSON.parse(explicitEntry.stdout[0]).entry).toBe('src/app.ts');
     expect(await fs.readFile(path.join(explicitEntryProject, 'src/app.ts'), 'utf8')).toContain('ov-input');
   });
+
+  it('generates a buildable standalone textarea starter', async () => {
+    const project = await tempProject();
+    expect(await runCli(['init', '.'], project, ioCapture().io)).toBe(0);
+    const addCapture = ioCapture();
+    expect(await runCli(['add', 'component.textarea', '--cwd', project, '--json'], project, addCapture.io)).toBe(0);
+    expect(JSON.parse(addCapture.stdout[0]).added).toContain('ov-textarea');
+    expect(await fs.readFile(path.join(project, 'src/main.ts'), 'utf8')).toContain('<ov-textarea');
+    expect(await runCli(['check', '--cwd', project, '--json'], project, ioCapture().io)).toBe(0);
+    await fs.symlink(path.join(process.cwd(), 'node_modules'), path.join(project, 'node_modules'), 'dir');
+    await execFile('npm', ['run', 'build'], { cwd: project, env: { ...process.env, NO_COLOR: '1' } });
+  }, 30_000);
+
+  it('generates a buildable standalone checkbox starter', async () => {
+    const project = await tempProject();
+    expect(await runCli(['init', '.'], project, ioCapture().io)).toBe(0);
+    const addCapture = ioCapture();
+    expect(await runCli(['add', 'component.checkbox', '--cwd', project, '--json'], project, addCapture.io)).toBe(0);
+    expect(JSON.parse(addCapture.stdout[0]).added).toContain('ov-checkbox');
+    expect(await fs.readFile(path.join(project, 'src/main.ts'), 'utf8')).toContain('<ov-checkbox');
+    expect(await runCli(['check', '--cwd', project, '--json'], project, ioCapture().io)).toBe(0);
+    await fs.symlink(path.join(process.cwd(), 'node_modules'), path.join(project, 'node_modules'), 'dir');
+    await execFile('npm', ['run', 'build'], { cwd: project, env: { ...process.env, NO_COLOR: '1' } });
+  }, 30_000);
+
+  it('generates a buildable standalone radio group starter', async () => {
+    const project = await tempProject();
+    expect(await runCli(['init', '.'], project, ioCapture().io)).toBe(0);
+    const addCapture = ioCapture();
+    expect(await runCli(['add', 'component.radio-group', '--cwd', project, '--json'], project, addCapture.io)).toBe(0);
+    expect(JSON.parse(addCapture.stdout[0]).added).toContain('ov-radio-group');
+    expect(await fs.readFile(path.join(project, 'src/main.ts'), 'utf8')).toContain('<ov-radio-group');
+    expect(await runCli(['check', '--cwd', project, '--json'], project, ioCapture().io)).toBe(0);
+    await fs.symlink(path.join(process.cwd(), 'node_modules'), path.join(project, 'node_modules'), 'dir');
+    await execFile('npm', ['run', 'build'], { cwd: project, env: { ...process.env, NO_COLOR: '1' } });
+  }, 30_000);
+
+  it('generates a buildable standalone toggle starter', async () => {
+    const project = await tempProject();
+    expect(await runCli(['init', '.'], project, ioCapture().io)).toBe(0);
+    const addCapture = ioCapture();
+    expect(await runCli(['add', 'component.toggle', '--cwd', project, '--json'], project, addCapture.io)).toBe(0);
+    expect(JSON.parse(addCapture.stdout[0]).added).toContain('ov-toggle');
+    expect(await fs.readFile(path.join(project, 'src/main.ts'), 'utf8')).toContain('<ov-toggle');
+    expect(await runCli(['check', '--cwd', project, '--json'], project, ioCapture().io)).toBe(0);
+    await fs.symlink(path.join(process.cwd(), 'node_modules'), path.join(project, 'node_modules'), 'dir');
+    await execFile('npm', ['run', 'build'], { cwd: project, env: { ...process.env, NO_COLOR: '1' } });
+  }, 30_000);
+
+  it('generates a buildable standalone dialog starter', async () => {
+    const project = await tempProject();
+    expect(await runCli(['init', '.'], project, ioCapture().io)).toBe(0);
+    const addCapture = ioCapture();
+    expect(await runCli(['add', 'component.dialog', '--cwd', project, '--json'], project, addCapture.io)).toBe(0);
+    expect(JSON.parse(addCapture.stdout[0]).added).toContain('ov-dialog');
+    expect(await fs.readFile(path.join(project, 'src/main.ts'), 'utf8')).toContain('<ov-dialog');
+    expect(await runCli(['check', '--cwd', project, '--json'], project, ioCapture().io)).toBe(0);
+    await fs.symlink(path.join(process.cwd(), 'node_modules'), path.join(project, 'node_modules'), 'dir');
+    await execFile('npm', ['run', 'build'], { cwd: project, env: { ...process.env, NO_COLOR: '1' } });
+  }, 30_000);
 
   it('preflights add conflicts without partially changing the project', async () => {
     const project = await tempProject();

@@ -22,7 +22,7 @@ ovlira check --json
 
 Search gives stable IDs and short descriptions. Inspect gives one component or recipe contract. Add copies only the selected source and its direct catalogue dependencies. Check reports stable rules, locations, and suggested fixes.
 
-Use `--kind`, `--category`, `--tag`, and `--limit` to keep search context bounded. Use `inspect --section api|guidance|example` when the full descriptor is unnecessary. Add is idempotent and preserves locally edited files; pass `--entry src/app.ts` to target an explicit entry or `--force` only to replace generated files deliberately.
+Use `--kind`, `--category`, `--tag`, and `--limit` to keep search context bounded. Use `inspect --section api|guidance|example` when the full descriptor is unnecessary; recipe guidance includes content regions, required states, and supported data/action/navigation seams. Add is idempotent and preserves locally edited files; pass `--entry src/app.ts` to target an explicit entry or `--force` only to replace generated files deliberately.
 
 ## Visual execution contract
 

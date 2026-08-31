@@ -20,7 +20,7 @@
     },
     {
       "type": "object",
-      "required": ["id", "kind", "title", "description", "category", "tags", "useWhen", "avoidWhen", "components", "requiredStates", "constraints", "example", "composition"],
+      "required": ["id", "kind", "title", "description", "category", "tags", "useWhen", "avoidWhen", "components", "requiredStates", "constraints", "example", "composition", "contentRegions", "extensionPoints"],
       "properties": {
         "id": { "type": "string", "pattern": "^(page|state|shell)\\.[a-z0-9-]+$" },
         "kind": { "const": "recipe" },
@@ -34,7 +34,9 @@
         "requiredStates": { "type": "array", "items": { "type": "string" } },
         "constraints": { "type": "array", "items": { "type": "string" } },
         "example": { "type": "string", "minLength": 1 },
-        "composition": { "type": "array", "items": { "type": "string" } }
+        "composition": { "type": "array", "items": { "type": "string" } },
+        "contentRegions": { "type": "array", "items": { "type": "string", "minLength": 1 } },
+        "extensionPoints": { "$ref": "#/$defs/recipeExtensionPoints" }
       }
     }
   ],
@@ -63,6 +65,15 @@
         "requiredProps": { "type": "array", "items": { "type": "string" } },
         "disallowedChildren": { "type": "array", "items": { "type": "string" } },
         "example": { "type": "string", "minLength": 1 }
+      }
+    },
+    "recipeExtensionPoints": {
+      "type": "object",
+      "required": ["data", "actions", "navigation"],
+      "properties": {
+        "data": { "type": "array", "items": { "type": "string", "minLength": 1 } },
+        "actions": { "type": "array", "items": { "type": "string", "minLength": 1 } },
+        "navigation": { "type": "array", "items": { "type": "string", "minLength": 1 } }
       }
     }
   }

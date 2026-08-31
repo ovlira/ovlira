@@ -29,7 +29,6 @@ jobs:
         with:
           node-version: '24.x'
           registry-url: https://registry.npmjs.org
-          package-manager-cache: false
 
       - name: Use trusted-publishing-compatible npm
         run: |
