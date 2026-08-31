@@ -73,6 +73,7 @@ button:focus-visible, a:focus-visible, input:focus-visible { outline: 2px solid 
 .catalogue-row { margin-inline: -.7rem; }
 .catalogue-button { appearance: none; width: 100%; display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 1rem; padding: .62rem .7rem; border: 0; border-radius: var(--ov-radius-lg); background: transparent; color: inherit; text-align: start; cursor: pointer; }
 .catalogue-button:hover, .catalogue-button.selected { background: var(--hover); }
+.catalogue-button.selected .item-detail, .catalogue-button.selected .item-type { color: var(--text); }
 .item-main { min-width: 0; }
 .item-name { display: block; overflow: hidden; font-weight: 500; text-overflow: ellipsis; white-space: nowrap; }
 .item-detail { display: block; margin-block-start: .18rem; overflow: hidden; color: var(--faint); font-size: .8rem; line-height: 1.35; text-overflow: ellipsis; white-space: nowrap; }
@@ -85,6 +86,20 @@ button:focus-visible, a:focus-visible, input:focus-visible { outline: 2px solid 
 .detail-meta { margin-block-start: .32rem; color: var(--muted); line-height: 1.45; }
 .text-button { appearance: none; min-height: var(--ov-touch-target); display: inline-flex; align-items: center; padding: .45rem 0; border: 0; background: transparent; color: var(--muted); cursor: pointer; }
 .text-button:hover { color: var(--text); }
+.component-preview { padding: 1rem; border: 1px solid var(--border); background: var(--ov-surface-raised); }
+.preview-stack { display: grid; gap: 1rem; }
+.preview-actions { display: flex; flex-wrap: wrap; align-items: center; gap: .65rem; }
+.preview-label { margin-block-end: .55rem; color: var(--faint); font-size: .68rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; }
+.preview-note { margin: .8rem 0 0; color: var(--faint); font-size: .75rem; line-height: 1.45; }
+.recipe-preview { display: grid; gap: 1rem; }
+.recipe-preview-grid { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 1.5rem; align-items: start; }
+.recipe-preview-grid strong { display: block; font-weight: 500; line-height: 1.45; }
+.recipe-preview-grid p { margin: .45rem 0 0; color: var(--muted); font-size: .82rem; }
+.preview-state-list { display: flex; flex-wrap: wrap; gap: .35rem .7rem; justify-content: flex-end; }
+.preview-state-list span { color: var(--good); font-size: .76rem; white-space: nowrap; }
+.shell-preview-frame { max-height: 220px; overflow: hidden; border: 1px solid var(--border); }
+.shell-preview-frame ov-application-shell { --ov-shell-rail: 9rem; --ov-content-wide: 100%; }
+.shell-preview-frame ov-application-shell p { padding: 1rem; }
 .fields { margin: 0; }
 .field { display: grid; grid-template-columns: minmax(8rem, .75fr) 1.5fr; gap: 1rem; padding: .42rem 0; }
 .field dt { color: var(--muted); }
@@ -142,6 +157,8 @@ code, pre { font-family: var(--ov-font-mono); }
   .item-type { font-size: .76rem; }
   .detail-head { display: block; }
   .detail-head .text-button { margin-block-start: .8rem; }
+  .recipe-preview-grid { grid-template-columns: 1fr; gap: .8rem; }
+  .preview-state-list { justify-content: flex-start; }
 }
 
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; } }

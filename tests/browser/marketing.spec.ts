@@ -21,6 +21,36 @@ test('marketing surface follows the reference shell and exposes the agent loop',
   await expect(page.getByText('ovlira inspect page.settings --section guidance --json')).toBeVisible();
 });
 
+test('catalogue inspection renders the shipped component preview', async ({ page }) => {
+  await openMarketing(page);
+  await page.getByRole('button', { name: /ov-button/ }).click();
+  await expect(page.getByRole('heading', { name: 'Rendered preview', exact: true })).toBeVisible();
+  const preview = page.locator('[data-component-preview]');
+  await expect(preview.locator('ov-button').first()).toBeVisible();
+  await expect(preview.locator('ov-button').first()).toContainText('Save changes');
+  await expect(preview.locator('ov-button[loading]').locator('button')).toBeDisabled();
+  const results = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa']).analyze();
+  expect(results.violations, results.violations.map((violation) => `${violation.id}: ${violation.help}`).join('\n')).toEqual([]);
+});
+
+test('catalogue preview coverage includes every shipped component', async ({ page }) => {
+  await openMarketing(page);
+  for (const id of ['ov-button', 'ov-input', 'ov-select', 'ov-badge', 'ov-card', 'ov-alert', 'ov-page-header', 'ov-empty-state', 'ov-data-table', 'ov-application-shell']) {
+    await page.locator(`[data-catalogue-select="${id}"]`).click();
+    await expect(page.locator('[data-component-preview]')).toBeVisible();
+    await expect(page.locator(`[data-component-preview] ${id}`).first()).toBeVisible();
+  }
+});
+
+for (const theme of ['light', 'dark'] as const) {
+  test(`rendered button preview remains stable in ${theme}`, async ({ page }) => {
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await openMarketing(page, theme);
+    await page.locator('[data-catalogue-select="ov-button"]').click();
+    await expect(page.locator('[data-component-preview]')).toHaveScreenshot(`marketing-preview-button-${theme}.png`);
+  });
+}
+
 test('marketing catalogue search and filters stay bounded', async ({ page }) => {
   await openMarketing(page);
   await page.getByRole('searchbox', { name: 'Search components and recipes' }).fill('settings');

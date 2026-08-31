@@ -172,6 +172,8 @@ const validation = [
       </main>
     </div>
 
+    <script src="../component-preview.ts"></script>
+
     <script define:vars={{ catalogue, pages }}>
       const root = document.documentElement;
       const viewButtons = [...document.querySelectorAll('[data-view-trigger]')];
@@ -232,12 +234,32 @@ const validation = [
 
       const detail = document.querySelector('[data-detail]');
       const escapeHtml = (value) => String(value).replace(/[&<>"']/g, (character) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[character]);
+      const componentPreview = (item) => {
+        const previews = {
+          'ov-button': '<div class="preview-stack"><div class="preview-label">Intent</div><div class="preview-actions"><ov-button>Save changes</ov-button><ov-button variant="secondary">Review</ov-button><ov-button variant="quiet">Cancel</ov-button><ov-button variant="danger">Delete</ov-button></div><div class="preview-label">Progress</div><div class="preview-actions"><ov-button loading>Saving</ov-button><ov-button disabled>Unavailable</ov-button></div></div>',
+          'ov-input': '<div class="preview-stack"><ov-input label="Project name" value="Ovlira" help-text="Visible to your team"></ov-input><ov-input label="Workspace ID" value="ovlira" error="Use a shorter identifier"></ov-input></div>',
+          'ov-select': '<div class="preview-stack"><ov-select label="Theme" required></ov-select><ov-select label="Optional region" help-text="Choose a region when you are ready"></ov-select></div>',
+          'ov-badge': '<div class="preview-actions"><ov-badge>Neutral</ov-badge><ov-badge tone="accent">Accent</ov-badge><ov-badge tone="success">Ready</ov-badge><ov-badge tone="warning">Review</ov-badge><ov-badge tone="danger">Blocked</ov-badge></div>',
+          'ov-card': '<ov-card padding="md"><span slot="header">Account settings</span><p>One bounded group for related content; hierarchy stays shallow.</p><span slot="footer"><ov-button variant="quiet" size="sm">Open settings</ov-button></span></ov-card>',
+          'ov-alert': '<div class="preview-stack"><ov-alert heading="Saved" tone="success">Your changes are ready to use.</ov-alert><ov-alert heading="Needs attention" tone="warning">Review the highlighted fields before continuing.</ov-alert><ov-alert heading="Could not save" tone="danger">Try again or check your connection.</ov-alert></div>',
+          'ov-page-header': '<ov-page-header eyebrow="Workspace" title="Project settings" description="A compact page header keeps context and the primary task aligned."><span slot="actions"><ov-button size="sm">Save</ov-button></span></ov-page-header>',
+          'ov-empty-state': '<ov-empty-state title="No projects yet" description="Create a project to start composing a local surface."><ov-button slot="action">Create project</ov-button></ov-empty-state>',
+          'ov-data-table': '<ov-data-table caption="Recent projects"></ov-data-table>',
+          'ov-application-shell': '<div class="shell-preview-frame"><ov-application-shell nav-label="Preview navigation"><strong slot="brand">Workspace</strong><a slot="nav" href="#catalogue">Overview</a><a slot="nav" href="#catalogue">Settings</a><span slot="header">Preview shell</span><p>Persistent navigation, quiet rail, focused content.</p></ov-application-shell></div>',
+        };
+        if (item.type === 'recipe') return `<div class="recipe-preview"><div class="preview-label">${escapeHtml(item.id)} / starter surface</div><div class="recipe-preview-grid"><div><strong>${escapeHtml(item.summary)}</strong><p>Uses the approved recipe shape and adapts only content, data, and behavior.</p></div><div class="preview-state-list">${item.states.split(', ').map((state) => `<span>${escapeHtml(state)}</span>`).join('')}</div></div></div>`;
+        return previews[item.id] || '<p class="preview-note">This component is available to compose through its catalogue contract.</p>';
+      };
       const renderDetail = (id) => {
         const item = catalogue.find((entry) => entry.id === id);
         if (!item || !detail) return;
         document.querySelectorAll('[data-catalogue-select]').forEach((button) => { const selected = button.dataset.catalogueSelect === id; button.classList.toggle('selected', selected); button.setAttribute('aria-pressed', String(selected)); });
-        detail.innerHTML = `<div class="detail-head"><div><h2 class="detail-title">${escapeHtml(item.id)}</h2><div class="detail-meta">${escapeHtml(item.type)} · ${escapeHtml(item.category)}</div></div><button class="text-button" type="button" data-detail-close>Close</button></div><section class="section"><h3 class="section-heading">Descriptor</h3><dl class="fields"><div class="field"><dt>Use for</dt><dd>${escapeHtml(item.useFor)}</dd></div><div class="field"><dt>Avoid for</dt><dd>${escapeHtml(item.avoidFor)}</dd></div><div class="field"><dt>States</dt><dd>${escapeHtml(item.states)}</dd></div><div class="field"><dt>Output</dt><dd>${escapeHtml(item.output)}</dd></div></dl></section><section class="section"><h3 class="section-heading">Guidance</h3><ul class="rule-list">${item.rules.map((rule) => `<li class="rule"><div class="rule-title">${escapeHtml(rule.title)}</div><div class="rule-detail">${escapeHtml(rule.detail)}</div></li>`).join('')}</ul></section><div class="command"><div class="command-label">Inspect</div><code>ovlira inspect ${escapeHtml(item.id)} --section guidance --json</code></div>`;
+        detail.innerHTML = `<div class="detail-head"><div><h2 class="detail-title">${escapeHtml(item.id)}</h2><div class="detail-meta">${escapeHtml(item.type)} · ${escapeHtml(item.category)}</div></div><button class="text-button" type="button" data-detail-close>Close</button></div><section class="section"><h3 class="section-heading">Descriptor</h3><dl class="fields"><div class="field"><dt>Use for</dt><dd>${escapeHtml(item.useFor)}</dd></div><div class="field"><dt>Avoid for</dt><dd>${escapeHtml(item.avoidFor)}</dd></div><div class="field"><dt>States</dt><dd>${escapeHtml(item.states)}</dd></div><div class="field"><dt>Output</dt><dd>${escapeHtml(item.output)}</dd></div></dl></section><section class="section preview-section"><h3 class="section-heading">Rendered preview</h3><div class="component-preview" data-component-preview>${componentPreview(item)}</div><p class="preview-note">This is the shipped custom element under the current theme—not a static illustration.</p></section><section class="section"><h3 class="section-heading">Guidance</h3><ul class="rule-list">${item.rules.map((rule) => `<li class="rule"><div class="rule-title">${escapeHtml(rule.title)}</div><div class="rule-detail">${escapeHtml(rule.detail)}</div></li>`).join('')}</ul></section><div class="command"><div class="command-label">Inspect</div><code>ovlira inspect ${escapeHtml(item.id)} --section guidance --json</code></div>`;
         detail.hidden = false;
+        const select = detail.querySelector('ov-select');
+        if (select) select.options = [{ value: 'light', label: 'Light' }, { value: 'dark', label: 'Dark' }, { value: 'system', label: 'System' }];
+        const table = detail.querySelector('ov-data-table');
+        if (table) { table.columns = [{ key: 'name', label: 'Name' }, { key: 'state', label: 'State' }]; table.rows = [{ name: 'Ovlira', state: 'Ready' }, { name: 'Reference', state: 'Approved' }]; }
         detail.querySelector('[data-detail-close]')?.addEventListener('click', () => { detail.hidden = true; });
       };
       document.querySelectorAll('[data-catalogue-select]').forEach((button) => button.addEventListener('click', () => renderDetail(button.dataset.catalogueSelect)));
