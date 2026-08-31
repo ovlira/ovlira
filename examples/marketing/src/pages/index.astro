@@ -36,6 +36,11 @@ const nav = [
   { id: 'about', label: 'About' },
 ];
 
+const projectLinks = [
+  { label: 'GitHub', href: 'https://github.com/ovlira/ovlira' },
+  { label: 'npm', href: 'https://www.npmjs.com/package/@ovlira/cli' },
+];
+
 const pages = {
   catalogue: { eyebrow: 'Local catalogue', title: 'Components and recipes', description: 'Search the smallest useful set of human-designed building blocks, then inspect only the guidance an agent needs.' },
   workflow: { eyebrow: 'Agent path', title: 'Short, deterministic workflow', description: 'Keep retrieval bounded and local: search, inspect, add, compose, then check.' },
@@ -109,7 +114,12 @@ const validation = [
               <h1 class="page-title" data-page-title>{pages.catalogue.title}</h1>
               <p class="page-description" data-page-description>{pages.catalogue.description}</p>
             </div>
-            <div class="top-actions"><button class="icon-button" type="button" data-theme-toggle aria-label="Switch to dark theme"><span aria-hidden="true">◐</span></button></div>
+            <div class="top-actions">
+              <nav class="project-links" aria-label="Project resources">
+                {projectLinks.map((link) => <a class="project-link" href={link.href} target="_blank" rel="noreferrer">{link.label}<span aria-hidden="true">↗</span></a>)}
+              </nav>
+              <button class="icon-button" type="button" data-theme-toggle aria-label="Switch to dark theme"><span aria-hidden="true">◐</span></button>
+            </div>
           </header>
 
           <section class="view" data-view="catalogue" aria-labelledby="catalogue-heading">

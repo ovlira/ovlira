@@ -13,6 +13,8 @@ async function openMarketing(page: import('@playwright/test').Page, theme: 'ligh
 test('marketing surface follows the reference shell and exposes the agent loop', async ({ page }) => {
   await openMarketing(page);
   await expect(page.getByRole('complementary')).toContainText('Local UI guidance for coding agents.');
+  await expect(page.getByRole('link', { name: 'GitHub' })).toHaveAttribute('href', 'https://github.com/ovlira/ovlira');
+  await expect(page.getByRole('link', { name: 'npm' })).toHaveAttribute('href', 'https://www.npmjs.com/package/@ovlira/cli');
   await page.getByRole('button', { name: 'Workflow', exact: true }).first().click();
   await expect(page.getByRole('heading', { name: 'Short, deterministic workflow', exact: true })).toBeVisible();
   await page.getByRole('button', { name: 'Catalogue', exact: true }).first().click();
