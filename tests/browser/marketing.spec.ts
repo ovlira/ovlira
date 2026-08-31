@@ -1,14 +1,28 @@
 import AxeBuilder from '@axe-core/playwright';
-import { expect, test } from '@playwright/test';
+import { expect, test, type Locator, type Page } from '@playwright/test';
 import { components } from '../../src/catalogue/index.js';
 
 const marketingUrl = 'http://127.0.0.1:4321/';
 
-async function openMarketing(page: import('@playwright/test').Page, theme: 'light' | 'dark' = 'light') {
+async function openMarketing(page: Page, theme: 'light' | 'dark' = 'light') {
   await page.goto(marketingUrl);
   await page.evaluate((selectedTheme) => { document.documentElement.dataset.theme = selectedTheme; }, theme);
   await page.waitForFunction(() => Boolean(document.querySelector('[data-view="catalogue"]')));
+  await page.evaluate(
+    (tags) => Promise.all(tags.map((tag) => customElements.whenDefined(tag))),
+    components.map((component) => component.api.tag),
+  );
   await page.evaluate(() => document.fonts.ready);
+}
+
+async function settleComponents(root: Locator) {
+  await root.evaluate(async (element) => {
+    const elements = [element, ...element.querySelectorAll('*')];
+    await Promise.all(elements.map((candidate) => {
+      const updateComplete = (candidate as Element & { updateComplete?: Promise<unknown> }).updateComplete;
+      return updateComplete ?? Promise.resolve();
+    }));
+  });
 }
 
 test('marketing surface follows the reference shell and exposes the agent loop', async ({ page }) => {
@@ -237,10 +251,11 @@ test('tooltip preview exposes supplemental content for keyboard users', async ({
   await openMarketing(page);
   await page.locator('[data-catalogue-select="ov-tooltip"]').click();
   const host = page.locator('[data-component-preview] ov-tooltip').first();
+  await settleComponents(host);
   const trigger = host.getByRole('button', { name: 'Search help' });
+  await expect(trigger).toHaveAttribute('aria-describedby', /ov-tooltip-/);
   await trigger.focus();
   await expect(host.getByRole('tooltip')).toBeVisible();
-  await expect(trigger).toHaveAttribute('aria-describedby', /ov-tooltip-/);
   await expect(host.getByRole('tooltip')).toContainText('Keyboard shortcut: /');
   await trigger.press('Escape');
   await expect(host.getByRole('tooltip')).toBeHidden();
@@ -410,7 +425,9 @@ for (const theme of ['light', 'dark'] as const) {
     await page.setViewportSize({ width: 1440, height: 900 });
     await openMarketing(page, theme);
     await page.locator('[data-catalogue-select="ov-button"]').click();
-    await expect(page.locator('[data-component-preview]')).toHaveScreenshot(`marketing-preview-button-${theme}.png`);
+    const preview = page.locator('[data-component-preview]');
+    await settleComponents(preview);
+    await expect(preview).toHaveScreenshot(`marketing-preview-button-${theme}.png`);
   });
 }
 
@@ -420,7 +437,9 @@ for (const theme of ['light', 'dark'] as const) {
       await page.setViewportSize({ width: viewport.width, height: viewport.height });
       await openMarketing(page, theme);
       await page.locator('[data-catalogue-select="ov-button"]').click();
-      await expect(page.locator('[data-detail]')).toBeVisible();
+      const detail = page.locator('[data-detail]');
+      await expect(detail).toBeVisible();
+      await settleComponents(detail);
       await expect(page).toHaveScreenshot(`marketing-detail-${theme}-${viewport.name}.png`, { fullPage: true });
     });
   }
