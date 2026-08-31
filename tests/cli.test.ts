@@ -85,7 +85,7 @@ describe('ovlira CLI', () => {
   });
 
   it('validates metadata and exposes a normalized registry index', async () => {
-    expect(metadataReport).toMatchObject({ version: 1, valid: true, componentCount: 15, recipeCount: 6 });
+    expect(metadataReport).toMatchObject({ version: 1, valid: true, componentCount: 19, recipeCount: 6 });
     expect(metadataReport.issues).toEqual([]);
     const capture = ioCapture();
     expect(await runCli(['metadata', '--json'], process.cwd(), capture.io)).toBe(0);
@@ -217,6 +217,20 @@ describe('ovlira CLI', () => {
     await fs.symlink(path.join(process.cwd(), 'node_modules'), path.join(project, 'node_modules'), 'dir');
     await execFile('npm', ['run', 'build'], { cwd: project, env: { ...process.env, NO_COLOR: '1' } });
   }, 30_000);
+
+  for (const [id, tag] of [['component.spinner', 'ov-spinner'], ['component.menu', 'ov-menu'], ['component.pagination', 'ov-pagination'], ['component.combobox', 'ov-combobox'] as const]) {
+    it(`generates a buildable standalone ${tag} starter`, async () => {
+      const project = await tempProject();
+      expect(await runCli(['init', '.'], project, ioCapture().io)).toBe(0);
+      const addCapture = ioCapture();
+      expect(await runCli(['add', id, '--cwd', project, '--json'], project, addCapture.io)).toBe(0);
+      expect(JSON.parse(addCapture.stdout[0]).added).toContain(tag);
+      expect(await fs.readFile(path.join(project, 'src/main.ts'), 'utf8')).toContain(`<${tag}`);
+      expect(await runCli(['check', '--cwd', project, '--json'], project, ioCapture().io)).toBe(0);
+      await fs.symlink(path.join(process.cwd(), 'node_modules'), path.join(project, 'node_modules'), 'dir');
+      await execFile('npm', ['run', 'build'], { cwd: project, env: { ...process.env, NO_COLOR: '1' } });
+    }, 30_000);
+  }
 
   it('preflights add conflicts without partially changing the project', async () => {
     const project = await tempProject();

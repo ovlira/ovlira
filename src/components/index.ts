@@ -13,3 +13,7 @@ export * from './page-header.js';
 export * from './empty-state.js';
 export * from './data-table.js';
 export * from './application-shell.js';
+export * from './spinner.js';
+export * from './menu.js';
+export * from './pagination.js';
+export * from './combobox.js';

@@ -430,7 +430,7 @@ import './styles.css';
 const app = document.querySelector<HTMLDivElement>('#app');
 if (app) {
   app.innerHTML = \`${componentMarkup(item)}\`;
-  ${item.api.tag === 'ov-select' ? "const select = app.querySelector('ov-select'); if (select) select.options = [{ value: 'eu', label: 'Europe' }, { value: 'us', label: 'United States' }];" : item.api.tag === 'ov-radio-group' ? "const radioGroup = app.querySelector('ov-radio-group'); if (radioGroup) radioGroup.options = [{ value: 'private', label: 'Only me' }, { value: 'team', label: 'Everyone on the team' }];" : ''}
+  ${item.api.tag === 'ov-select' ? "const select = app.querySelector('ov-select'); if (select) select.options = [{ value: 'eu', label: 'Europe' }, { value: 'us', label: 'United States' }];" : item.api.tag === 'ov-radio-group' ? "const radioGroup = app.querySelector('ov-radio-group'); if (radioGroup) radioGroup.options = [{ value: 'private', label: 'Only me' }, { value: 'team', label: 'Everyone on the team' }];" : item.api.tag === 'ov-menu' ? "const menu = app.querySelector('ov-menu'); if (menu) menu.items = [{ value: 'duplicate', label: 'Duplicate project' }, { value: 'archive', label: 'Archive project', tone: 'danger' }];" : item.api.tag === 'ov-pagination' ? '' : item.api.tag === 'ov-combobox' ? "const combobox = app.querySelector('ov-combobox'); if (combobox) combobox.options = [{ value: 'maya', label: 'Maya Chen' }, { value: 'jon', label: 'Jon Bell' }, { value: 'anika', label: 'Anika Rao' }];" : ''}
 }
 `;
 }
@@ -444,6 +444,10 @@ function componentMarkup(item: ComponentDescriptor): string {
     case 'ov-toggle': return '<main class="demo"><p class="kicker">OVLIRA / COMPONENT</p><h1>Toggle</h1><ov-toggle label="Email me about project activity" name="activity" checked></ov-toggle></main>';
     case 'ov-dialog': return '<main class="demo"><p class="kicker">OVLIRA / COMPONENT</p><h1>Dialog</h1><ov-dialog heading="Archive this project?" description="People will lose access to the project workspace." open><p>This action can be reversed later from project settings.</p><ov-button slot="actions" variant="danger">Archive project</ov-button></ov-dialog></main>';
     case 'ov-select': return '<main class="demo"><p class="kicker">OVLIRA / COMPONENT</p><h1>Select</h1><ov-select label="Region"></ov-select></main>';
+    case 'ov-spinner': return '<main class="demo"><p class="kicker">OVLIRA / COMPONENT</p><h1>Spinner</h1><ov-spinner label="Loading projects"></ov-spinner></main>';
+    case 'ov-menu': return '<main class="demo"><p class="kicker">OVLIRA / COMPONENT</p><h1>Menu</h1><ov-menu label="Project actions"></ov-menu></main>';
+    case 'ov-pagination': return '<main class="demo"><p class="kicker">OVLIRA / COMPONENT</p><h1>Pagination</h1><ov-pagination current-page="2" total-pages="12" label="Project pages"></ov-pagination></main>';
+    case 'ov-combobox': return '<main class="demo"><p class="kicker">OVLIRA / COMPONENT</p><h1>Combobox</h1><ov-combobox label="Project owner" placeholder="Search people"></ov-combobox></main>';
     case 'ov-button': return '<main class="demo"><p class="kicker">OVLIRA / COMPONENT</p><h1>Button</h1><ov-button variant="primary">Continue</ov-button></main>';
     case 'ov-badge': return '<main class="demo"><p class="kicker">OVLIRA / COMPONENT</p><h1>Badge</h1><ov-badge tone="accent">Ready</ov-badge></main>';
     case 'ov-alert': return '<main class="demo"><p class="kicker">OVLIRA / COMPONENT</p><h1>Alert</h1><ov-alert tone="info">A concise message with a next step.</ov-alert></main>';

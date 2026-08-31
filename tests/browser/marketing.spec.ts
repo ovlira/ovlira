@@ -71,7 +71,7 @@ test('catalogue uses a desktop master detail split and a mobile detail replaceme
 
 test('catalogue preview coverage includes every shipped component', async ({ page }) => {
   await openMarketing(page);
-  for (const id of ['ov-button', 'ov-input', 'ov-textarea', 'ov-checkbox', 'ov-radio-group', 'ov-toggle', 'ov-dialog', 'ov-select', 'ov-badge', 'ov-card', 'ov-alert', 'ov-page-header', 'ov-empty-state', 'ov-data-table', 'ov-application-shell']) {
+  for (const id of ['ov-button', 'ov-input', 'ov-textarea', 'ov-checkbox', 'ov-radio-group', 'ov-toggle', 'ov-dialog', 'ov-select', 'ov-spinner', 'ov-menu', 'ov-pagination', 'ov-combobox', 'ov-badge', 'ov-card', 'ov-alert', 'ov-page-header', 'ov-empty-state', 'ov-data-table', 'ov-application-shell']) {
     await page.locator(`[data-catalogue-select="${id}"]`).click();
     await expect(page.locator('[data-component-preview]')).toBeVisible();
     await expect(page.locator(`[data-component-preview] ${id}`).first()).toBeVisible();
@@ -105,6 +105,74 @@ test('toggle preview renders a circular handle inside its track', async ({ page 
   expect(geometry.track?.width ?? 0).toBeGreaterThan(geometry.thumb?.width ?? 0);
   expect(geometry.thumb?.width ?? 0).toBeGreaterThan(10);
   expect(Math.abs((geometry.thumb?.width ?? 0) - (geometry.thumb?.height ?? 0))).toBeLessThan(0.5);
+});
+
+test('spinner preview exposes a polite loading status', async ({ page }) => {
+  await openMarketing(page);
+  await page.locator('[data-catalogue-select="ov-spinner"]').click();
+  const status = page.locator('[data-component-preview] [role="status"]').first();
+  await expect(status).toContainText('Loading projects');
+  await expect(status).toHaveAttribute('aria-live', 'polite');
+});
+
+test('menu preview opens, selects an action, and restores trigger focus', async ({ page }) => {
+  await openMarketing(page);
+  await page.locator('[data-catalogue-select="ov-menu"]').click();
+  const host = page.locator('[data-component-preview] ov-menu').first();
+  const trigger = host.locator('button.trigger');
+  await trigger.click();
+  await expect(trigger).toHaveAttribute('aria-expanded', 'true');
+  await expect(host.getByRole('menuitem', { name: 'Duplicate project' })).toBeVisible();
+  await host.getByRole('menuitem', { name: 'Duplicate project' }).click();
+  await expect(trigger).toBeFocused();
+  await expect(trigger).toHaveAttribute('aria-expanded', 'false');
+});
+
+test('menu keyboard navigation opens on Enter and closes on Escape', async ({ page }) => {
+  await openMarketing(page);
+  await page.locator('[data-catalogue-select="ov-menu"]').click();
+  const host = page.locator('[data-component-preview] ov-menu').first();
+  const trigger = host.locator('button.trigger');
+  await trigger.press('Enter');
+  await expect(host.getByRole('menuitem', { name: 'Duplicate project' })).toBeFocused();
+  await host.getByRole('menuitem', { name: 'Duplicate project' }).press('Escape');
+  await expect(trigger).toBeFocused();
+  await expect(trigger).toHaveAttribute('aria-expanded', 'false');
+});
+
+test('pagination preview exposes current page and navigation controls', async ({ page }) => {
+  await openMarketing(page);
+  await page.locator('[data-catalogue-select="ov-pagination"]').click();
+  const host = page.locator('[data-component-preview] ov-pagination').first();
+  await expect(host.locator('[aria-current="page"]')).toHaveText('4');
+  await expect(host.getByRole('button', { name: 'Previous page' })).toBeEnabled();
+  await expect(host.getByRole('button', { name: 'Next page' })).toBeEnabled();
+});
+
+test('combobox preview exposes filtering and listbox semantics', async ({ page }) => {
+  await openMarketing(page);
+  await page.locator('[data-catalogue-select="ov-combobox"]').click();
+  const host = page.locator('[data-component-preview] ov-combobox').first();
+  const input = host.getByRole('combobox', { name: 'Project owner' });
+  await input.click();
+  await expect(input).toHaveAttribute('aria-expanded', 'true');
+  await expect(host.getByRole('option')).toHaveCount(4);
+  await input.fill('Maya');
+  await expect(host.getByRole('option')).toHaveCount(1);
+  await host.getByRole('option', { name: 'Maya Chen' }).click();
+  await expect(input).toHaveValue('Maya Chen');
+});
+
+test('combobox keyboard navigation selects the active option', async ({ page }) => {
+  await openMarketing(page);
+  await page.locator('[data-catalogue-select="ov-combobox"]').click();
+  const host = page.locator('[data-component-preview] ov-combobox').first();
+  const input = host.getByRole('combobox', { name: 'Project owner' });
+  await input.click();
+  await input.press('ArrowDown');
+  await input.press('Enter');
+  await expect(input).toHaveValue('Maya Chen');
+  await expect(input).toHaveAttribute('aria-expanded', 'false');
 });
 
 for (const theme of ['light', 'dark'] as const) {

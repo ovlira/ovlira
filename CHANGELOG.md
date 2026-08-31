@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Added reviewed-batch candidates `ov-spinner`, `ov-menu`, `ov-pagination`, and `ov-combobox` with property-backed APIs, native interaction semantics, examples, CLI starters, and marketing previews. Visual baselines are pending human approval.
+
 - Added `ov-textarea`, a token-aware labelled multiline field with native form semantics, help/error messaging, and input events.
 - Added `ov-checkbox`, a labelled native boolean field with checked, required, disabled, and help/error states.
 - Added `ov-radio-group`, a labelled native single-choice field with property-assigned options, required, disabled, and help/error states.

@@ -102,6 +102,71 @@ describe('Ovlira components', () => {
     expect(close).toHaveBeenCalledTimes(1);
   });
 
+  it('renders an accessible inline spinner with a visible status label', async () => {
+    document.body.innerHTML = '<ov-spinner label="Loading projects"></ov-spinner>';
+    const element = document.querySelector('ov-spinner') as import('../src/components/spinner.js').OvSpinner;
+    await element.updateComplete;
+    const status = element.shadowRoot?.querySelector('[role="status"]');
+    expect(status?.getAttribute('aria-live')).toBe('polite');
+    expect(status?.textContent).toContain('Loading projects');
+    expect(element.shadowRoot?.querySelector('[part="indicator"]')).not.toBeNull();
+  });
+
+  it('opens a menu, exposes menuitems, and emits a selected action', async () => {
+    document.body.innerHTML = '<ov-menu label="Project actions"></ov-menu>';
+    const element = document.querySelector('ov-menu') as import('../src/components/menu.js').OvMenu;
+    element.items = [{ value: 'duplicate', label: 'Duplicate project' }, { value: 'archive', label: 'Archive project', disabled: true }];
+    await element.updateComplete;
+    const trigger = element.shadowRoot?.querySelector<HTMLButtonElement>('.trigger');
+    trigger?.click();
+    await element.updateComplete;
+    expect(trigger?.getAttribute('aria-expanded')).toBe('true');
+    expect(element.shadowRoot?.querySelector('[role="menu"]')?.hasAttribute('hidden')).toBe(false);
+    expect(element.shadowRoot?.querySelectorAll('[role="menuitem"]')).toHaveLength(2);
+    const select = vi.fn();
+    element.addEventListener('select', select);
+    element.shadowRoot?.querySelector<HTMLButtonElement>('[role="menuitem"]')?.click();
+    expect(select).toHaveBeenCalledTimes(1);
+    expect((select.mock.calls[0]?.[0] as CustomEvent).detail).toEqual({ value: 'duplicate', label: 'Duplicate project' });
+  });
+
+  it('renders pagination semantics and emits page changes', async () => {
+    document.body.innerHTML = '<ov-pagination current-page="2" total-pages="12" label="Project pages"></ov-pagination>';
+    const element = document.querySelector('ov-pagination') as import('../src/components/pagination.js').OvPagination;
+    await element.updateComplete;
+    expect(element.shadowRoot?.querySelector('nav')?.getAttribute('aria-label')).toBe('Project pages');
+    expect(element.shadowRoot?.querySelector('[aria-current="page"]')?.textContent).toBe('2');
+    const change = vi.fn();
+    element.addEventListener('change', change);
+    element.shadowRoot?.querySelector<HTMLButtonElement>('[aria-label="Next page"]')?.click();
+    expect(element.currentPage).toBe(3);
+    expect(change).toHaveBeenCalledTimes(1);
+    expect((change.mock.calls[0]?.[0] as CustomEvent).detail).toEqual({ page: 3 });
+  });
+
+  it('keeps combobox label, listbox semantics, filtering, and selected value in a native contract', async () => {
+    document.body.innerHTML = '<ov-combobox label="Project owner" placeholder="Search people"></ov-combobox>';
+    const element = document.querySelector('ov-combobox') as import('../src/components/combobox.js').OvCombobox;
+    element.options = [{ value: 'maya', label: 'Maya Chen' }, { value: 'jon', label: 'Jon Bell' }, { value: 'anika', label: 'Anika Rao' }];
+    await element.updateComplete;
+    const input = element.shadowRoot?.querySelector<HTMLInputElement>('input[role="combobox"]');
+    expect(input?.getAttribute('aria-controls')).toContain('ov-combobox-');
+    input?.focus();
+    await element.updateComplete;
+    const currentInput = element.shadowRoot?.querySelector<HTMLInputElement>('input[role="combobox"]');
+    expect(currentInput?.getAttribute('aria-expanded')).toBe('true');
+    expect(element.shadowRoot?.querySelectorAll('[role="option"]')).toHaveLength(3);
+    currentInput!.value = 'Maya';
+    currentInput?.dispatchEvent(new Event('input', { bubbles: true, composed: true }));
+    await element.updateComplete;
+    expect(element.shadowRoot?.querySelectorAll('[role="option"]')).toHaveLength(1);
+    element.shadowRoot?.querySelector<HTMLElement>('[role="option"]')?.dispatchEvent(new Event('pointerdown', { bubbles: true, composed: true }));
+    await element.updateComplete;
+    const selectedInput = element.shadowRoot?.querySelector<HTMLInputElement>('input[role="combobox"]');
+    expect(element.value).toBe('maya');
+    expect(selectedInput?.getAttribute('aria-expanded')).toBe('false');
+  });
+
   it('renders property-backed table data without requiring JSON attributes', async () => {
     document.body.innerHTML = '<ov-data-table caption="Projects"></ov-data-table>';
     const element = document.querySelector('ov-data-table') as import('../src/components/data-table.js').OvDataTable;

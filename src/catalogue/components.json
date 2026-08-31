@@ -421,5 +421,132 @@
       "requiredProps": [],
       "example": "examples/components/application-shell.md"
     }
+  },
+  {
+    "id": "component.spinner",
+    "kind": "component",
+    "title": "Spinner",
+    "description": "A small inline loading indicator with an accessible status label.",
+    "category": "feedback",
+    "tags": ["loading", "progress", "status", "async"],
+    "api": {
+      "tag": "ov-spinner",
+      "importPath": "./components/ovlira/spinner.js",
+      "props": [
+        { "name": "label", "type": "string", "description": "Accessible and visible loading status.", "default": "Loading", "reflected": true },
+        { "name": "size", "type": "'sm' | 'md'", "description": "Indicator size.", "default": "sm", "reflected": true }
+      ],
+      "events": [],
+      "slots": [],
+      "cssCustomProperties": [],
+      "parts": ["status", "indicator", "label"]
+    },
+    "guidance": {
+      "useWhen": ["A local task is still running and the surrounding context should remain visible."],
+      "avoidWhen": ["The page is empty or an urgent failure needs explanation; use ov-empty-state or ov-alert instead."],
+      "constraints": ["Keep the label specific to the work in progress.", "Keep loading inline rather than replacing the whole page."],
+      "requiredProps": [],
+      "example": "examples/components/spinner.md"
+    }
+  },
+  {
+    "id": "component.menu",
+    "kind": "component",
+    "title": "Menu",
+    "description": "A compact action menu with keyboard navigation and a floating surface.",
+    "category": "actions",
+    "tags": ["menu", "actions", "popover", "context", "overlay"],
+    "api": {
+      "tag": "ov-menu",
+      "importPath": "./components/ovlira/menu.js",
+      "props": [
+        { "name": "label", "type": "string", "description": "Accessible trigger label and fallback text.", "default": "Actions", "reflected": true },
+        { "name": "open", "type": "boolean", "description": "Whether the menu is visible.", "default": "false", "reflected": true },
+        { "name": "disabled", "type": "boolean", "description": "Prevents opening and selection.", "default": "false", "reflected": true },
+        { "name": "items", "type": "MenuItem[]", "description": "Menu actions assigned as a property." }
+      ],
+      "events": [
+        { "name": "open", "description": "Dispatched when the menu opens." },
+        { "name": "close", "description": "Dispatched when the menu closes." },
+        { "name": "select", "detail": "{ value: string; label: string }", "description": "Dispatched when an enabled menu item is selected." }
+      ],
+      "slots": ["trigger: non-interactive trigger label"],
+      "cssCustomProperties": [],
+      "parts": ["trigger", "menu", "item"]
+    },
+    "guidance": {
+      "useWhen": ["Several related actions need a compact floating surface."],
+      "avoidWhen": ["The action is the primary task or the choices need persistent explanation; use ov-button or page content instead."],
+      "constraints": ["Keep the trigger label and menu items action-first.", "Use the trigger slot for label content only; do not nest another interactive control.", "Menus close on Escape and restore focus to their trigger."],
+      "requiredProps": [],
+      "example": "examples/components/menu.md"
+    }
+  },
+  {
+    "id": "component.pagination",
+    "kind": "component",
+    "title": "Pagination",
+    "description": "A compact result page navigator.",
+    "category": "data",
+    "tags": ["pagination", "navigation", "table"],
+    "api": {
+      "tag": "ov-pagination",
+      "importPath": "./components/ovlira/pagination.js",
+      "props": [
+        { "name": "currentPage", "type": "number", "description": "Currently selected page.", "default": "1", "reflected": true },
+        { "name": "totalPages", "type": "number", "description": "Total available pages.", "default": "1", "reflected": true },
+        { "name": "label", "type": "string", "description": "Accessible navigation label.", "default": "Pagination", "reflected": true },
+        { "name": "disabled", "type": "boolean", "description": "Prevents page changes.", "default": "false", "reflected": true }
+      ],
+      "events": [{ "name": "change", "detail": "{ page: number }", "description": "Dispatched when the selected page changes." }],
+      "slots": [],
+      "cssCustomProperties": [],
+      "parts": ["nav", "previous", "pages", "page", "ellipsis", "next"]
+    },
+    "guidance": {
+      "useWhen": ["A collection spans multiple result pages and users need to move through it deliberately."],
+      "avoidWhen": ["There is only one page or continuous loading better matches the task."],
+      "constraints": ["Keep data fetching and row ownership outside the component.", "Expose the current page through aria-current and announce page changes."],
+      "requiredProps": [],
+      "example": "examples/components/pagination.md"
+    }
+  },
+  {
+    "id": "component.combobox",
+    "kind": "component",
+    "title": "Combobox",
+    "description": "A labelled searchable listbox for a longer set of known options.",
+    "category": "forms",
+    "tags": ["form", "choice", "search", "listbox", "field"],
+    "api": {
+      "tag": "ov-combobox",
+      "importPath": "./components/ovlira/combobox.js",
+      "props": [
+        { "name": "label", "type": "string", "description": "Visible accessible label.", "required": true, "reflected": true },
+        { "name": "name", "type": "string", "description": "Native form field name.", "reflected": true },
+        { "name": "value", "type": "string", "description": "Selected option value." },
+        { "name": "placeholder", "type": "string", "description": "Optional prompt for the expected choice.", "reflected": true },
+        { "name": "options", "type": "ComboboxOption[]", "description": "Options assigned as a property." },
+        { "name": "required", "type": "boolean", "description": "Requires an option to be selected.", "default": "false", "reflected": true },
+        { "name": "disabled", "type": "boolean", "description": "Prevents interaction.", "default": "false", "reflected": true },
+        { "name": "error", "type": "string", "description": "Validation message." },
+        { "name": "helpText", "type": "string", "description": "Supporting guidance.", "reflected": false },
+        { "name": "open", "type": "boolean", "description": "Whether the option list is visible.", "default": "false", "reflected": true }
+      ],
+      "events": [
+        { "name": "input", "description": "Dispatched as the user filters the options." },
+        { "name": "change", "detail": "{ value: string; label: string }", "description": "Dispatched when an option is selected." }
+      ],
+      "slots": [],
+      "cssCustomProperties": ["--ov-field-accent"],
+      "parts": ["field", "label", "input", "listbox", "option", "message"]
+    },
+    "guidance": {
+      "useWhen": ["The option list is too long to scan comfortably in a native select."],
+      "avoidWhen": ["There are only a few options; use ov-select instead."],
+      "constraints": ["Provide a visible label and keep option labels concise.", "Keep filtering local to the supplied options; remote fetching belongs to the owning application.", "Support Arrow keys, Enter, Escape, and visible focus without removing the native input."],
+      "requiredProps": ["label"],
+      "example": "examples/components/combobox.md"
+    }
   }
 ]
