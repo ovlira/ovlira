@@ -1,4 +1,4 @@
-# Ovlira 0.2
+# Ovlira 0.3
 
 Ovlira is a local, token-efficient UI prototyping toolkit for coding agents such as Codex and Claude Code. It gives them a small catalogue of human-designed Lit components, screen recipes, global theme tokens, and deterministic guardrails without sending an entire design system into context.
 
@@ -58,7 +58,7 @@ For a catalogue overview, use `ovlira list` or `ovlira list --json`.
 
 ## Catalogue
 
-The initial catalogue contains:
+The catalogue contains:
 
 - Components: `ov-button`, `ov-input`, `ov-textarea`, `ov-checkbox`, `ov-radio-group`, `ov-toggle`, `ov-dialog`, `ov-select`, `ov-spinner`, `ov-menu`, `ov-pagination`, `ov-combobox`, `ov-tabs`, `ov-toast`, `ov-progress`, `ov-skeleton`, `ov-tooltip`, `ov-avatar`, `ov-breadcrumbs`, `ov-accordion`, `ov-slider`, `ov-file-upload`, `ov-date-input`, `ov-stepper`, `ov-drawer`, `ov-number-input`, `ov-popover`, `ov-tree`, `ov-badge`, `ov-card`, `ov-alert`, `ov-page-header`, `ov-empty-state`, `ov-data-table`, and `ov-application-shell`.
 - Recipes: `page.settings`, `page.search`, `page.crud-table`, `page.detail`, `state.empty`, and `shell.application`.
@@ -99,7 +99,7 @@ The generated app imports the user-owned `src/styles/ovlira-theme.css`. Use `--o
 
 Diagnostics include a stable rule ID, severity, file and line where practical, and a suggested fix. It is intentionally a source-level check: it does not prove visual quality, runtime state transitions, browser behavior, or every accessibility concern.
 
-The v0.2 validator also understands obvious TypeScript/JavaScript DOM property assignments and checks more token literal categories. `ovlira add` is idempotent, writes `src/ovlira.generated.ts`, supports `--entry`, and preserves local edits unless `--force` is used.
+The validator also understands obvious TypeScript/JavaScript DOM property assignments and checks more token literal categories. `ovlira add` is idempotent, writes `src/ovlira.generated.ts`, supports `--entry`, and preserves local edits unless `--force` is used.
 
 ## Live Codex evaluations
 
@@ -167,4 +167,4 @@ tests              unit, CLI, browser, screenshot, and valid/invalid fixtures
 
 ## Current limitations
 
-This first pass has no visual editor, canvas manipulation, drag-and-drop, change tracking, collaboration, hosted service, authentication, backend, MCP server, semantic/vector search, or automatic Lit-to-React/Vue/Angular conversion. The validator uses conservative static checks. A dependency-free runtime DOM contract now exists for future browser adapters, but the CLI does not start a browser yet. A future version can add AST and browser-backed checks without changing the local CLI workflow.
+The current CLI has no visual editor, canvas manipulation, drag-and-drop, change tracking, collaboration, hosted service, authentication, backend, MCP server, semantic/vector search, or automatic Lit-to-React/Vue/Angular conversion. The validator uses conservative static checks. A dependency-free runtime DOM contract now exists for future browser adapters, but the CLI does not start a browser yet. A future version can add AST and browser-backed checks without changing the local CLI workflow.
