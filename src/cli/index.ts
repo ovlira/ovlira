@@ -414,6 +414,7 @@ html, body, #app { margin: 0; min-height: 100%; }
 body { background: var(--ov-bg, var(--ov-color-canvas)); color: var(--ov-text, var(--ov-color-ink)); font-family: var(--ov-font-sans); font-size: var(--ov-text-md); -webkit-font-smoothing: antialiased; }
 button, input, select, textarea { font: inherit; }
 .starter, .demo { margin: 12vh auto; max-width: var(--ov-content-narrow, 34rem); padding-inline: var(--ov-space-6); }
+.preview-stack { display: grid; gap: var(--ov-space-4, 1rem); }
 .starter h1, .demo h1 { font-size: var(--ov-text-xl); font-weight: 600; letter-spacing: -0.025em; line-height: var(--ov-line-tight); margin: 0 0 var(--ov-space-4); }
 .starter p:not(.kicker) { color: var(--ov-muted, var(--ov-color-muted)); line-height: var(--ov-line-body); }
 .kicker { color: var(--ov-faint, var(--ov-color-muted)); font: 600 var(--ov-text-xs) / 1.2 var(--ov-font-sans); letter-spacing: 0.08em; text-transform: uppercase; }
@@ -451,7 +452,7 @@ function componentMarkup(item: ComponentDescriptor): string {
     case 'ov-tabs': return '<main class="demo"><p class="kicker">OVLIRA / COMPONENT</p><h1>Tabs</h1><ov-tabs label="Project views" value="overview"><p slot="overview">A summary of the project.</p><p slot="activity">Recent project activity.</p><p slot="settings">Project preferences.</p></ov-tabs></main>';
     case 'ov-toast': return '<main class="demo"><p class="kicker">OVLIRA / COMPONENT</p><h1>Toast</h1><ov-toast tone="success" heading="Saved" open>Your project is up to date.</ov-toast></main>';
     case 'ov-progress': return '<main class="demo"><p class="kicker">OVLIRA / COMPONENT</p><h1>Progress</h1><ov-progress label="Importing projects" value="68" max="100" show-value></ov-progress></main>';
-    case 'ov-skeleton': return '<main class="demo"><p class="kicker">OVLIRA / COMPONENT</p><h1>Skeleton</h1><section aria-busy="true" aria-label="Loading project details"><ov-skeleton variant="heading"></ov-skeleton><ov-skeleton variant="text" lines="3"></ov-skeleton></section></main>';
+    case 'ov-skeleton': return '<main class="demo"><p class="kicker">OVLIRA / COMPONENT</p><h1>Skeleton</h1><section class="preview-stack" aria-busy="true" aria-label="Loading project details"><ov-skeleton variant="heading"></ov-skeleton><ov-skeleton variant="text" lines="3"></ov-skeleton></section></main>';
     case 'ov-button': return '<main class="demo"><p class="kicker">OVLIRA / COMPONENT</p><h1>Button</h1><ov-button variant="primary">Continue</ov-button></main>';
     case 'ov-badge': return '<main class="demo"><p class="kicker">OVLIRA / COMPONENT</p><h1>Badge</h1><ov-badge tone="accent">Ready</ov-badge></main>';
     case 'ov-alert': return '<main class="demo"><p class="kicker">OVLIRA / COMPONENT</p><h1>Alert</h1><ov-alert tone="info">A concise message with a next step.</ov-alert></main>';

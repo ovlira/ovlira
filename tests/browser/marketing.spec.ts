@@ -211,6 +211,11 @@ test('skeleton preview remains decorative inside a busy region', async ({ page }
   const host = page.locator('[data-component-preview]');
   await expect(host.locator('[aria-busy="true"]')).toHaveAttribute('aria-label', 'Loading project details');
   await expect(host.locator('ov-skeleton').first().locator('[aria-hidden="true"]')).toBeVisible();
+  const boxes = await host.locator('ov-skeleton').evaluateAll((elements) => elements.map((element) => {
+    const box = element.getBoundingClientRect();
+    return { top: box.top, bottom: box.bottom };
+  }));
+  expect(boxes[1]!.top - boxes[0]!.bottom).toBeGreaterThanOrEqual(16);
 });
 
 for (const theme of ['light', 'dark'] as const) {

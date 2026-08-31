@@ -1,7 +1,7 @@
 # Skeleton
 
 ```html
-<section aria-busy="true" aria-label="Loading project details">
+<section class="preview-stack" aria-busy="true" aria-label="Loading project details">
   <ov-skeleton variant="heading"></ov-skeleton>
   <ov-skeleton variant="text" lines="3"></ov-skeleton>
 </section>
