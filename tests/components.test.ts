@@ -50,6 +50,22 @@ describe('Ovlira components', () => {
     expect(element.shadowRoot?.querySelector('.message')?.textContent).toContain('Use this only on a private device.');
   });
 
+  it('keeps radio group legend, options, and selected value in a native contract', async () => {
+    document.body.innerHTML = '<ov-radio-group label="Workspace visibility" name="visibility" value="team" help-text="Choose who can access this workspace." required></ov-radio-group>';
+    const element = document.querySelector('ov-radio-group') as import('../src/components/radio-group.js').OvRadioGroup;
+    element.options = [{ value: 'private', label: 'Only me' }, { value: 'team', label: 'Everyone on the team' }];
+    await element.updateComplete;
+    const fieldset = element.shadowRoot?.querySelector('fieldset');
+    const legend = element.shadowRoot?.querySelector('legend');
+    const radios = [...(element.shadowRoot?.querySelectorAll('input[type="radio"]') ?? [])] as HTMLInputElement[];
+    expect(fieldset?.getAttribute('aria-describedby')).toContain('ov-radio-group-');
+    expect(legend?.textContent).toContain('Workspace visibility');
+    expect(radios).toHaveLength(2);
+    expect(radios[0]?.checked).toBe(false);
+    expect(radios[1]?.checked).toBe(true);
+    expect(radios.every((radio) => radio.required)).toBe(true);
+  });
+
   it('renders property-backed table data without requiring JSON attributes', async () => {
     document.body.innerHTML = '<ov-data-table caption="Projects"></ov-data-table>';
     const element = document.querySelector('ov-data-table') as import('../src/components/data-table.js').OvDataTable;

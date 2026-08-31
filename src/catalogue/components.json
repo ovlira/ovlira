@@ -97,6 +97,39 @@
     }
   },
   {
+    "id": "component.radio-group",
+    "kind": "component",
+    "title": "Radio group",
+    "description": "A labelled native radio group for choosing one option from a short list.",
+    "category": "forms",
+    "tags": ["form", "choice", "radio", "selection", "field"],
+    "api": {
+      "tag": "ov-radio-group",
+      "importPath": "./components/ovlira/radio-group.js",
+      "props": [
+        { "name": "label", "type": "string", "description": "Visible group label.", "required": true, "reflected": true },
+        { "name": "name", "type": "string", "description": "Native radio group name.", "reflected": true },
+        { "name": "options", "type": "RadioOption[]", "description": "Options assigned as a property." },
+        { "name": "value", "type": "string", "description": "Selected option value." },
+        { "name": "required", "type": "boolean", "description": "Requires one option to be selected.", "default": "false", "reflected": true },
+        { "name": "disabled", "type": "boolean", "description": "Prevents interaction.", "default": "false", "reflected": true },
+        { "name": "error", "type": "string", "description": "Validation message." },
+        { "name": "helpText", "type": "string", "description": "Supporting guidance.", "reflected": false }
+      ],
+      "events": [{ "name": "change", "description": "Native change event retargeted from the shadow root." }],
+      "slots": [],
+      "cssCustomProperties": [],
+      "parts": ["field", "label", "option", "radio", "message"]
+    },
+    "guidance": {
+      "useWhen": ["The user must choose exactly one option from a short, visible list."],
+      "avoidWhen": ["The list is long or the user may select several options; use ov-select or ov-checkbox instead."],
+      "constraints": ["Use a meaningful group label and keep each option label concise.", "Group related choices with a native fieldset and legend."],
+      "requiredProps": ["label"],
+      "example": "examples/components/radio-group.md"
+    }
+  },
+  {
     "id": "component.input",
     "kind": "component",
     "title": "Input",

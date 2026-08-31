@@ -124,7 +124,7 @@ const validation = [
 
           <section class="view" data-view="catalogue" aria-labelledby="catalogue-heading">
             <div class="summary">
-              <div class="summary-item"><div class="summary-value">12</div><div class="summary-label">Components</div></div>
+              <div class="summary-item"><div class="summary-value">13</div><div class="summary-label">Components</div></div>
               <div class="summary-item"><div class="summary-value">6</div><div class="summary-label">Recipes</div></div>
               <div class="summary-item"><div class="summary-value good">Valid</div><div class="summary-label">Metadata contract</div></div>
               <div class="summary-item"><div class="summary-value">8 max</div><div class="summary-label">Search results</div></div>
@@ -138,7 +138,7 @@ const validation = [
                   <button class="filter" type="button" data-catalogue-filter="component" aria-pressed="false">Components</button>
                   <button class="filter" type="button" data-catalogue-filter="recipe" aria-pressed="false">Recipes</button>
                 </div>
-                <div class="catalogue-count" data-catalogue-count aria-live="polite">18 entries</div>
+                <div class="catalogue-count" data-catalogue-count aria-live="polite">19 entries</div>
                 <ul class="catalogue" data-catalogue-list>
                   {catalogue.map((item) => (
                     <li class="catalogue-row" data-catalogue-row data-kind={item.type} data-search={`${item.id} ${item.type} ${item.category} ${item.summary} ${item.useFor}`}>
@@ -272,6 +272,7 @@ const validation = [
           'ov-input': '<div class="preview-stack"><ov-input label="Project name" value="Ovlira" help-text="Visible to your team"></ov-input><ov-input label="Workspace ID" value="ovlira" error="Use a shorter identifier"></ov-input></div>',
           'ov-textarea': '<div class="preview-stack"><ov-textarea label="Project description" rows="4" value="A local toolkit for focused work." help-text="Keep this concise and useful."></ov-textarea><ov-textarea label="Notes" rows="3" error="Add a little more context."></ov-textarea></div>',
           'ov-checkbox': '<div class="preview-stack"><ov-checkbox label="Keep me signed in" name="remember" checked help-text="Use this only on a private device."></ov-checkbox><ov-checkbox label="Send weekly updates" error="Choose whether to receive updates."></ov-checkbox></div>',
+          'ov-radio-group': '<div class="preview-stack"><ov-radio-group label="Workspace visibility" name="visibility" value="team" help-text="Choose who can access this workspace."></ov-radio-group><ov-radio-group label="Notification cadence" name="cadence" error="Choose a delivery schedule."></ov-radio-group></div>',
           'ov-select': '<div class="preview-stack"><ov-select label="Theme" required></ov-select><ov-select label="Optional region" help-text="Choose a region when you are ready"></ov-select></div>',
           'ov-badge': '<div class="preview-actions"><ov-badge>Neutral</ov-badge><ov-badge tone="accent">Accent</ov-badge><ov-badge tone="success">Ready</ov-badge><ov-badge tone="warning">Review</ov-badge><ov-badge tone="danger">Blocked</ov-badge></div>',
           'ov-card': '<ov-card padding="md"><span slot="header">Account settings</span><p>One bounded group for related content; hierarchy stays shallow.</p><span slot="footer"><ov-button variant="quiet" size="sm">Open settings</ov-button></span></ov-card>',
@@ -294,6 +295,9 @@ const validation = [
         syncCatalogueLayout();
         const select = detail.querySelector('ov-select');
         if (select) select.options = [{ value: 'light', label: 'Light' }, { value: 'dark', label: 'Dark' }, { value: 'system', label: 'System' }];
+        const radioGroups = detail.querySelectorAll('ov-radio-group');
+        if (radioGroups[0]) radioGroups[0].options = [{ value: 'private', label: 'Only me' }, { value: 'team', label: 'Everyone on the team' }];
+        if (radioGroups[1]) radioGroups[1].options = [{ value: 'daily', label: 'Every day' }, { value: 'weekly', label: 'Every week' }];
         const table = detail.querySelector('ov-data-table');
         if (table) { table.columns = [{ key: 'name', label: 'Name' }, { key: 'state', label: 'State' }]; table.rows = [{ name: 'Ovlira', state: 'Ready' }, { name: 'Reference', state: 'Approved' }]; }
         detail.querySelector('[data-detail-close]')?.addEventListener('click', () => closeDetail({ restoreFocus: true }));
