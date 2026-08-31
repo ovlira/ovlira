@@ -205,7 +205,7 @@ function inspectCommand(args: ParsedArgs, io: CliIO): number {
 function inspectSection(item: Descriptor, section: NonNullable<ParsedArgs['section']>) {
   if (section === 'example') return item.kind === 'component' ? item.guidance.example : item.example;
   if (item.kind === 'component') return item[section];
-  return { useWhen: item.useWhen, avoidWhen: item.avoidWhen, components: item.components, requiredStates: item.requiredStates, constraints: item.constraints, composition: item.composition };
+  return { useWhen: item.useWhen, avoidWhen: item.avoidWhen, components: item.components, requiredStates: item.requiredStates, constraints: item.constraints, composition: item.composition, contentRegions: item.contentRegions, extensionPoints: item.extensionPoints };
 }
 
 function formatInspect(item: Descriptor): string {
@@ -451,7 +451,8 @@ function componentMarkup(item: ComponentDescriptor): string {
 }
 
 function recipeEntry(recipe: RecipeDescriptor, theme = themeFileName): string {
-  const markup = recipeFixtureMarkup(recipe.id as RecipeFixtureId);
+  const seams = `<!-- Ovlira adaptation seams — content regions: ${recipe.contentRegions.join(', ')}; data: ${recipe.extensionPoints.data.join(', ')}; actions: ${recipe.extensionPoints.actions.join(', ')}; navigation: ${recipe.extensionPoints.navigation.join(', ')}. -->`;
+  const markup = `${seams}\n${recipeFixtureMarkup(recipe.id as RecipeFixtureId)}`;
   const setup = recipeSetup(recipe);
   const behavior = recipeBehavior(recipe);
   return `import './ovlira.generated.js';\nimport './styles/${theme}';\nimport './styles.css';\n\nconst app = document.querySelector<HTMLDivElement>('#app');\nif (app) {\n  app.innerHTML = \`${markup}\`;\n  ${setup}\n  const stateButtons = app.querySelectorAll<HTMLElement>('[data-ovlira-state-target]');\n  const states = app.querySelectorAll<HTMLElement>('[data-ovlira-state]');\n  const showState = (name: string) => {\n    states.forEach((state) => { state.hidden = state.dataset.ovliraState !== name; });\n    stateButtons.forEach((button) => { button.setAttribute('aria-pressed', String(button.dataset.ovliraStateTarget === name)); });\n  };\n  stateButtons.forEach((button) => button.addEventListener('click', () => showState(button.dataset.ovliraStateTarget ?? '')));\n  ${behavior}\n}\n`;

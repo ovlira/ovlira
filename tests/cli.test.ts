@@ -53,6 +53,21 @@ describe('ovlira CLI', () => {
     const inspectCapture = ioCapture();
     expect(await runCli(['inspect', 'ov-input', '--section', 'api', '--json'], process.cwd(), inspectCapture.io)).toBe(0);
     expect(JSON.parse(inspectCapture.stdout[0])).toMatchObject({ id: 'component.input', section: 'api', data: { tag: 'ov-input' } });
+    const recipeGuidance = ioCapture();
+    expect(await runCli(['inspect', 'page.settings', '--section', 'guidance', '--json'], process.cwd(), recipeGuidance.io)).toBe(0);
+    expect(JSON.parse(recipeGuidance.stdout[0])).toMatchObject({
+      id: 'page.settings',
+      section: 'guidance',
+      data: {
+        contentRegions: expect.arrayContaining(['page header', 'section feedback']),
+        requiredStates: ['loading', 'error', 'success'],
+        extensionPoints: {
+          data: expect.arrayContaining(['field values']),
+          actions: expect.arrayContaining(['save identity']),
+          navigation: expect.arrayContaining(['brand link']),
+        },
+      },
+    });
   });
 
   it('rejects invalid and unknown options with structured errors', async () => {
@@ -101,6 +116,7 @@ describe('ovlira CLI', () => {
       expect(await runCli(['add', recipe, '--cwd', project], project, ioCapture().io)).toBe(0);
       const entry = await fs.readFile(path.join(project, 'src/main.ts'), 'utf8');
       expect(entry).toContain("./styles/ovlira-theme.css");
+      expect(entry).toContain('Ovlira adaptation seams');
       if (recipe !== 'state.empty' && recipe !== 'shell.application') expect(entry).toContain('data-ovlira-state-target');
       if (recipe === 'page.settings') expect(entry).toContain('data-ovlira-action="save"');
       if (recipe === 'page.search') expect(entry).toContain('data-ovlira-action="search"');

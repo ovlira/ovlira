@@ -10,6 +10,6 @@ The Ovlira layer is `src/catalogue/components.json` and `src/catalogue/recipes.j
 - use/avoid guidance;
 - required props and states;
 - disallowed composition;
-- recipe component lists, composition rules, and examples.
+- recipe component lists, composition rules, content regions, adaptation extension points, and examples.
 
-`ovlira inspect <id> --json` exposes the sidecar descriptor. CEM remains available as a package artifact for tooling that needs implementation-level API detail.
+`ovlira inspect <id> --json` exposes the sidecar descriptor. Focused recipe guidance also returns content regions, required states, and the supported data, action, and navigation extension points. CEM remains available as a package artifact for tooling that needs implementation-level API detail.

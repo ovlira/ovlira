@@ -46,6 +46,12 @@ export interface ComponentDescriptor {
   guidance: ComponentGuidance;
 }
 
+export interface RecipeExtensionPoints {
+  data: string[];
+  actions: string[];
+  navigation: string[];
+}
+
 export interface RecipeDescriptor {
   id: string;
   kind: 'recipe';
@@ -60,6 +66,8 @@ export interface RecipeDescriptor {
   constraints: string[];
   example: string;
   composition: string[];
+  contentRegions: string[];
+  extensionPoints: RecipeExtensionPoints;
 }
 
 export type Descriptor = ComponentDescriptor | RecipeDescriptor;

@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Made recipe adaptation explicit: focused guidance now returns content regions and supported data, action, and navigation extension points, and generated starters preserve those seams in their markup.
+- Removed the unsupported `package-manager-cache` publish-workflow input.
+
 ## 0.2.2 — project safety and release hardening
 
 - Hardened `add` with conflict preflight so failed operations do not partially update a project manifest or generated files.
