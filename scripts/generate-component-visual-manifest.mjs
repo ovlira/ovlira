@@ -8,6 +8,7 @@ const cataloguePath = path.join(repositoryRoot, 'src', 'catalogue', 'components.
 const snapshotsDirectory = path.join(repositoryRoot, 'tests', 'browser', 'component-visual.review.ts-snapshots');
 const manifestPath = path.join(repositoryRoot, 'docs', 'design', 'component-visual-manifest.json');
 const approve = process.argv.includes('--approve');
+const approveOverview = process.argv.includes('--approve-overview');
 const approvalSource = readOption('--approval-source') ?? 'user-confirmed review';
 
 const components = JSON.parse(await fs.readFile(cataloguePath, 'utf8'));
@@ -42,7 +43,7 @@ const reviewComponents = components.map((component) => {
 const currentCatalogueOverview = snapshotFiles
   .filter((file) => file.startsWith('catalogue-'))
   .map((file) => ({ file, sha256: snapshotHashes.get(file) }));
-const catalogueOverviewDecision = approve || (
+const catalogueOverviewDecision = approve || approveOverview || (
   existing.catalogueOverviewDecision === 'pass'
   && sameSnapshotSet(existing.catalogueOverview, currentCatalogueOverview)
 ) ? 'pass' : 'pending';
@@ -52,7 +53,7 @@ const catalogueOverview = currentCatalogueOverview.map((snapshot) => ({
 }));
 const allPassed = catalogueOverviewDecision === 'pass' && reviewComponents.every((component) => component.decision === 'pass');
 const approval = allPassed
-  ? (approve ? { decision: 'pass', date: new Date().toISOString().slice(0, 10), source: approvalSource } : existing.approval)
+  ? (approve || approveOverview ? { decision: 'pass', date: new Date().toISOString().slice(0, 10), source: approvalSource } : existing.approval)
   : null;
 
 const manifest = {

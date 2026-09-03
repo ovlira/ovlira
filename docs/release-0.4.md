@@ -9,13 +9,13 @@
 - Browser CI builds workspace packages before consumers.
 - Full release gate must pass from a clean checkout before tagging.
 
-## Visual review pending
+## Visual review approved
 
 Release-check run on 2026-09-03: package checks and fresh-install smoke passed; the main browser suite passed 187/187; the component matrix passed 151/153. The only remaining failures were the two narrow overview comparisons below. This is not a green release gate.
 
 After adding the domain rehearsal, the expanded main browser suite passed 199/199 (including all 12 domain/theme/viewport cases). The component matrix remained 151/153, with the same two overview differences. Unit/evaluation tests passed 72/72. The preparation work is tracked in GitHub PR #5; publication remains blocked, and package versions are intentionally unchanged.
 
-The narrow catalogue overview in light and dark is 36px taller than its approved baseline because the navigation wraps instead of clipping Validation. This follows DESIGN.md's responsive navigation rule, but the two changed component-review overview images still require human approval. Do not blanket-update snapshots or approve component styling to clear this gate.
+The user marked the narrow light/dark catalogue overview review as passed on 2026-09-03. Those two baselines were promoted: navigation wraps instead of clipping Validation, adding 36px in accordance with DESIGN.md. The scoped `--approve-overview` manifest operation preserves all component decisions; no component baseline was changed or reapproved. The manifest consistency test passed after promotion.
 
 The earlier date-input failure was a browser page-setup timeout. The accordion dark capture was light; setting the persisted theme before navigation fixes the test setup. Both focused checks passed without baseline changes on 2026-09-03.
 
