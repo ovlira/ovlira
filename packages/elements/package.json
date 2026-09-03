@@ -1,0 +1,36 @@
+{
+  "name": "@ovlira/elements",
+  "version": "0.3.0",
+  "description": "Human-designed, themeable web components for Ovlira prototypes.",
+  "license": "MIT",
+  "type": "module",
+  "customElements": "./custom-elements.json",
+  "exports": {
+    ".": "./dist/index.js",
+    "./register-all.js": "./dist/register-all.js",
+    "./*.js": "./dist/*.js",
+    "./default-theme.css": "./dist/default-theme.css",
+    "./tokens.json": "./dist/tokens.json",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist",
+    "custom-elements.json",
+    "README.md",
+    "LICENSE"
+  ],
+  "sideEffects": [
+    "./dist/*.js",
+    "./dist/default-theme.css"
+  ],
+  "scripts": {
+    "clean": "node ../../scripts/clean-dist.mjs",
+    "build": "npm run clean && tsc -p tsconfig.json && node scripts/copy-assets.mjs"
+  },
+  "dependencies": {
+    "lit": "^3.3.0"
+  },
+  "engines": {
+    "node": ">=20.19.0"
+  }
+}

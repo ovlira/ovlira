@@ -1,6 +1,6 @@
 # Validation
 
-The first validator is a static source check. It scans project source files while ignoring `node_modules`, generated `dist`, copied Ovlira component implementations, and the user-owned `src/styles/ovlira-theme.css` (or legacy `ovlira-tokens.css`) theme file. TypeScript/JavaScript files also receive a small AST pass so obvious DOM property assignments such as `field.label = 'Name'` are understood.
+The first validator is a static source check. It scans project source files while ignoring `node_modules`, generated `dist`, and the user-owned `src/styles/ovlira-theme.css` (or legacy `ovlira-tokens.css`) theme file. TypeScript/JavaScript files also receive a small AST pass so obvious DOM property assignments such as `field.label = 'Name'` are understood. Package mode also checks that `@ovlira/cli` and `@ovlira/elements` are declared, reports version drift between the manifest and the elements dependency, and checks that used `ov-*` tags have explicit package module imports (or an intentional `register-all.js` import).
 
 Rules currently implemented:
 

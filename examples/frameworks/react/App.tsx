@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
-import 'ovlira/components/button.js';
-import 'ovlira/components/select.js';
+import '@ovlira/elements/button.js';
+import '@ovlira/elements/select.js';
 
 export function App() {
   const selectRef = useRef<HTMLElement & { options: { value: string; label: string }[] }>(null);

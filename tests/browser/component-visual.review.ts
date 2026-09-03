@@ -10,7 +10,7 @@ interface ManualScenario {
   target?: SnapshotTarget;
 }
 
-const marketingUrl = 'http://127.0.0.1:4321/';
+const marketingUrl = 'http://127.0.0.1:4321/catalogue/';
 const wide = { width: 1440, height: 900 };
 const narrow = { width: 375, height: 812 };
 const catalogueViewports = [
@@ -137,8 +137,9 @@ async function openComponentPreview(page: Page, tag: string, theme: Theme, viewp
 
 async function openMarketingReview(page: Page, theme: Theme, viewport: { width: number; height: number }) {
   await page.setViewportSize(viewport);
+  await page.addInitScript((selectedTheme) => localStorage.setItem('ovlira-theme', selectedTheme), theme);
   await page.goto(marketingUrl);
-  await page.evaluate((selectedTheme) => { document.documentElement.dataset.theme = selectedTheme; }, theme);
+  await expect(page.locator('html')).toHaveAttribute('data-theme', theme);
   await page.waitForFunction(() => Boolean(document.querySelector('[data-view="catalogue"]')));
   await page.evaluate(() => document.fonts.ready);
 }

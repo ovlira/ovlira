@@ -2,12 +2,15 @@
 import { promises as fs } from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
-import { spawn } from 'node:child_process';
+import { execFile as execFileCallback, spawn } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 import { performance } from 'node:perf_hooks';
+import { promisify } from 'node:util';
 import { runCli } from '../cli/index.js';
 import { packageVersion } from '../version.js';
+
+const execFile = promisify(execFileCallback);
 
 type Kind = 'component' | 'recipe';
 type Section = 'api' | 'guidance' | 'example';
@@ -214,6 +217,9 @@ async function runScenario(
     const check = await runCommand(['check', '--cwd', project, '--json'], project);
     steps.push(step('check', ['--cwd', project, '--json'], check));
     if (check.code !== 0) return failedScenario(scenario, run, options, codex, steps, 'Generated project failed ovlira check.', plan);
+    const build = await buildGeneratedProject(project);
+    steps.push({ op: 'build', args: ['npm', 'run', 'build'], code: build.code, ok: build.code === 0, ...(build.error ? { error: build.error } : {}) });
+    if (build.code !== 0) return failedScenario(scenario, run, options, codex, steps, `Generated project failed npm run build: ${build.error ?? 'unknown error'}.`, plan);
     return { scenarioId: scenario.id, run, mode: options.mode, passed: true, plan, codex: compactCodex(codex, options.model), steps };
   } catch (error) {
     const fallback: CodexCall = codex ?? offlineCall(scenario);
@@ -223,6 +229,16 @@ async function runScenario(
       await fs.rm(project, { recursive: true, force: true });
       await fs.rm(agentCwd, { recursive: true, force: true });
     }
+  }
+}
+
+async function buildGeneratedProject(project: string) {
+  try {
+    await fs.symlink(path.join(packageRoot, 'node_modules'), path.join(project, 'node_modules'), 'dir');
+    await execFile('npm', ['run', 'build'], { cwd: project, env: { ...process.env, NO_COLOR: '1' } });
+    return { code: 0 };
+  } catch (error: any) {
+    return { code: typeof error?.code === 'number' ? error.code : 1, error: String(error?.stderr || error?.message || error).trim().slice(-1200) };
   }
 }
 
@@ -366,7 +382,15 @@ function checkStep(operation: EvalOperation, result: StepResult, scenario: EvalS
     if (!(results as Array<{ id?: string }>).some((candidate) => candidate.id === scenario.targetId)) return `Search did not return ${scenario.targetId}.`;
   }
   if (operation.op === 'inspect' && (result.result?.id !== scenario.targetId || result.result?.kind !== scenario.targetKind)) return `Inspect did not return the expected ${scenario.targetKind} descriptor.`;
-  if (operation.op === 'add' && result.result?.ok !== true) return 'Add did not report ok=true.';
+  if (operation.op === 'add') {
+    if (result.result?.ok !== true) return 'Add did not report ok=true.';
+    if (result.result.kind === 'recipe') {
+      const imports = Array.isArray(result.result.imports) ? result.result.imports : [];
+      if (!imports.length || imports.some((value) => typeof value !== 'string' || !value.startsWith('@ovlira/elements/'))) return 'Recipe add did not report direct @ovlira/elements imports.';
+      const files = Array.isArray(result.result.files) ? result.result.files : [];
+      if (files.some((value) => typeof value === 'string' && value.includes('src/components'))) return 'Recipe add attempted to copy component source.';
+    }
+  }
   return undefined;
 }
 
@@ -383,7 +407,7 @@ function step(op: string, args: string[], result: { code: number; stdout: string
 }
 
 function summarizeStepResult(value: Record<string, unknown>): Record<string, unknown> {
-  const keep = ['version', 'query', 'id', 'kind', 'ok', 'added', 'files', 'changed', 'skipped', 'conflicts', 'entry', 'results', 'diagnostics'];
+  const keep = ['version', 'query', 'id', 'kind', 'ok', 'tag', 'importPath', 'imports', 'files', 'changed', 'skipped', 'conflicts', 'entry', 'next', 'results', 'diagnostics'];
   return Object.fromEntries(keep.filter((key) => key in value).map((key) => {
     if (key === 'diagnostics') return [key, summarizeDiagnostics(value[key])];
     if (key === 'results' && Array.isArray(value[key])) return [key, value[key].map((item) => typeof item === 'object' && item ? { id: (item as any).id, kind: (item as any).kind, title: (item as any).title } : item)];

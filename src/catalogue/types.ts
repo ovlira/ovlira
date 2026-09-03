@@ -73,9 +73,10 @@ export interface RecipeDescriptor {
 export type Descriptor = ComponentDescriptor | RecipeDescriptor;
 
 export interface ProjectManifest {
-  version: 1;
-  added: string[];
-  recipes: string[];
+  version: 2;
+  mode: 'package';
+  elementsVersion: string;
+  recipes: Record<string, string>;
   entry: string;
 }
 

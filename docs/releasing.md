@@ -1,14 +1,14 @@
 # Releasing Ovlira
 
-Ovlira currently ships as one public npm package:
+Ovlira ships as two public npm packages:
 
 ```text
-package:   @ovlira/cli
-executable: ovlira
+packages:   @ovlira/cli, @ovlira/elements
+executable:  ovlira
 repository: ovlira/ovlira
 ```
 
-The organization scope gives the npm organization ownership of the package without forcing a premature package split. `@ovlira/core` is reserved as a possible future extraction for stable registry and validation APIs; it is not a second package today.
+The CLI depends on the elements package. Publish `@ovlira/elements` before `@ovlira/cli` for each version.
 
 ## Before the first publish
 
@@ -17,34 +17,40 @@ From a clean checkout:
 ```bash
 npm ci
 npm run release:check
-npm pack --dry-run
+npm run pack:check
+npm run package:smoke
 ```
 
-Review the tarball contents and confirm that it contains `dist`, `src`, the catalogue, metadata, docs, examples, and the Custom Elements Manifest, but not `node_modules`, `coverage`, `reports`, or local credentials.
+Review both tarballs. The CLI should contain its compiled catalogue, validator, and executable; the elements package should contain built components, theme assets, types, and its Custom Elements Manifest. Neither should contain `node_modules`, coverage, reports, repository sources, or local credentials.
+
+`npm run package:smoke` installs both candidate tarballs with npm into a fresh temporary app, without repository dependency symlinks. It exercises the local `npm run ovlira --` interface through search, inspection, initialization, recipe generation, and validation, builds the app, then repeats build/check after `npm ci`. Candidate tarballs replace unpublished version ranges; third-party dependencies come from the configured npm registry. The check therefore requires registry access and uses an isolated temporary cache. PR CI runs it on both supported Node versions.
 
 The initial scoped package must be made public explicitly:
 
 ```bash
 npm whoami
+npm publish --workspace @ovlira/elements --access public
 npm publish --access public
 ```
 
 Publishing a version is irreversible in the npm registry, so the package name, version, tarball, and access level should be checked before this command.
 
-Do not create a GitHub Release for `v0.2.0` after this manual publish: the release workflow would try to publish the same npm version again. Push the matching Git tag if desired, then use the GitHub Release workflow for the next version.
+Do not create a GitHub Release for a version after manually publishing that same version: the release workflow would try to publish it again. Push the matching Git tag if desired, then use the GitHub Release workflow for the next version.
 
 ## GitHub releases
 
 For releases after the initial `0.2.0` package, prepare the intended semantic version on a release branch:
 
 ```bash
-npm version <version> --no-git-tag-version
+npm version <version> --workspaces --include-workspace-root --no-git-tag-version
+npm pkg set 'dependencies.@ovlira/elements=<version>'
+npm install --package-lock-only
 npm run release:check
 ```
 
-Merge the release branch after CI passes, then create and publish a GitHub Release for the matching tag, such as `v0.3.0`. The publish workflow checks that the tag version exactly matches `package.json` before publishing.
+Replace `<version>` with the same intended version in both commands. Review both package versions, the CLI's elements dependency, and lockfile together. Merge the release branch after CI passes, then create and publish a GitHub Release for the matching tag, such as `v0.4.0`. The publish workflow checks that the tag version exactly matches both packages and the CLI's pinned elements dependency before publishing.
 
-Before relying on the workflow, configure an npm trusted publisher for `@ovlira/cli`:
+Before relying on the workflow, configure an npm trusted publisher for both packages:
 
 - Provider: GitHub Actions
 - Organization: `ovlira`
@@ -52,7 +58,7 @@ Before relying on the workflow, configure an npm trusted publisher for `@ovlira/
 - Workflow filename: `publish.yml`
 - Allowed action: npm publish
 
-The workflow grants only `contents: read` and `id-token: write`, runs the package release checks, and publishes with provenance. Browser/screenshot checks remain in the macOS CI job because their approved baselines are platform-specific. It does not store an npm token in GitHub. See the [npm trusted publishing documentation](https://docs.npmjs.com/trusted-publishers/) for the current npm configuration screens and requirements.
+The workflow grants only `contents: read` and `id-token: write`, runs the package release checks, and publishes both packages with provenance. Browser/screenshot checks remain in the macOS CI job because their approved baselines are platform-specific. It does not store an npm token in GitHub. See the [npm trusted publishing documentation](https://docs.npmjs.com/trusted-publishers/) for the current npm configuration screens and requirements.
 
 Trusted publishing requires npm CLI 11.5.1 or later and Node 22.14.0 or later. The workflow uses Node 24 and installs the latest npm 11.x before publishing. If a release run fails after a package has already been published, do not rerun it for the same version; npm never reuses a published name/version pair. For a failed unpublished release, use the workflow's manual `Run workflow` action with the existing tag, such as `v0.3.0`.
 

@@ -1,4 +1,6 @@
-# 002 — `ui add` copies source
+# 002 — `ui add` copied source (superseded)
+
+Status: superseded by [006 — Publish elements, generate compositions](006-package-elements-generate-recipes.md) before public adoption.
 
 ## Question
 
@@ -12,7 +14,7 @@ Ran `init` and `add page.settings` in a clean temporary directory, then inspecte
 
 Copying gives an agent a local, searchable implementation and avoids a network or package-resolution requirement after the CLI is installed. It also makes deliberate local edits possible, including a project-owned theme file.
 
-## Decision
+## Historical decision
 
 Copy the selected component sources, a project-owned theme CSS file, and a runnable entry example into the project. Keep the registry and source templates bundled with the CLI package.
 

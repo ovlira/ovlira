@@ -1,5 +1,5 @@
-import 'ovlira/components/button.js';
-import 'ovlira/components/select.js';
+import '@ovlira/elements/button.js';
+import '@ovlira/elements/select.js';
 
 document.querySelector('#app')!.innerHTML = `
   <ov-button variant="primary">Save</ov-button>

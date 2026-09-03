@@ -2,7 +2,7 @@ import AxeBuilder from '@axe-core/playwright';
 import { expect, test, type Locator, type Page } from '@playwright/test';
 import { components } from '../../src/catalogue/index.js';
 
-const marketingUrl = 'http://127.0.0.1:4321/';
+const marketingUrl = 'http://127.0.0.1:4321/catalogue/';
 
 async function openMarketing(page: Page, theme: 'light' | 'dark' = 'light') {
   await page.goto(marketingUrl);
@@ -33,12 +33,12 @@ test('marketing surface follows the reference shell and exposes the agent loop',
   await expect(page.getByRole('complementary')).toContainText('Local UI guidance for coding agents.');
   await expect(page.getByRole('link', { name: 'GitHub' })).toHaveAttribute('href', 'https://github.com/ovlira/ovlira');
   await expect(page.getByRole('link', { name: 'npm' })).toHaveAttribute('href', 'https://www.npmjs.com/package/@ovlira/cli');
-  await page.getByRole('button', { name: 'Workflow', exact: true }).first().click();
+  await page.getByRole('link', { name: 'Workflow', exact: true }).first().click();
   await expect(page.getByRole('heading', { name: 'Short, deterministic workflow', exact: true })).toBeVisible();
-  await page.getByRole('button', { name: 'Catalogue', exact: true }).first().click();
+  await page.getByRole('link', { name: 'Catalogue', exact: true }).first().click();
   await page.getByRole('button', { name: /page\.settings/ }).click();
   await expect(page.getByRole('heading', { name: 'page.settings', exact: true })).toBeVisible();
-  await expect(page.getByText('ovlira inspect page.settings --section guidance --json')).toBeVisible();
+  await expect(page.getByText('npm run ovlira -- inspect page.settings --section guidance --json')).toBeVisible();
 });
 
 test('catalogue inspection renders the shipped component preview', async ({ page }) => {
@@ -51,6 +51,33 @@ test('catalogue inspection renders the shipped component preview', async ({ page
   await expect(preview.locator('ov-button[loading]').locator('button')).toBeDisabled();
   const results = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa']).analyze();
   expect(results.violations, results.violations.map((violation) => `${violation.id}: ${violation.help}`).join('\n')).toEqual([]);
+});
+
+test('marketing navigation uses real routes for intro, install, and catalogue', async ({ page }) => {
+  await page.goto('http://127.0.0.1:4321/');
+  await expect(page.getByRole('heading', { name: 'Human design. Agent composition.', exact: true })).toBeVisible();
+  await page.getByRole('link', { name: 'Install Ovlira', exact: true }).click();
+  await expect(page).toHaveURL(/\/install\/$/);
+  await expect(page.getByRole('heading', { name: 'Install once. Compose locally.', exact: true })).toBeVisible();
+  await page.getByRole('link', { name: 'Catalogue', exact: true }).first().click();
+  await expect(page).toHaveURL(/\/catalogue\/$/);
+  await expect(page.getByRole('heading', { name: 'Components and recipes', exact: true })).toBeVisible();
+});
+
+test('every primary sidebar destination renders its own page', async ({ page }) => {
+  const routes = [
+    ['/', 'Human design. Agent composition.'],
+    ['/catalogue/', 'Components and recipes'],
+    ['/workflow/', 'Short, deterministic workflow'],
+    ['/install/', 'Install once. Compose locally.'],
+    ['/tokens/', 'Replaceable design tokens'],
+    ['/validation/', 'Source-level validation'],
+  ] as const;
+  for (const [route, heading] of routes) {
+    await page.goto(`http://127.0.0.1:4321${route}`);
+    await expect(page).toHaveURL(new RegExp(`${route === '/' ? '/$' : `${route}$`}`));
+    await expect(page.getByRole('heading', { name: heading, exact: true })).toBeVisible();
+  }
 });
 
 test('catalogue uses a desktop master detail split and a mobile detail replacement', async ({ page }) => {
@@ -66,6 +93,7 @@ test('catalogue uses a desktop master detail split and a mobile detail replaceme
   await button.click();
   await expect(listPanel).toBeVisible();
   await expect(detail).toBeVisible();
+  await expect(page).toHaveURL(/entry=ov-button/);
   await expect(page.getByRole('button', { name: 'Back to catalogue', exact: true })).toBeHidden();
   await expect(page.getByRole('button', { name: 'Close', exact: true })).toBeVisible();
   await expect(button).toHaveClass(/selected/);
@@ -81,6 +109,7 @@ test('catalogue uses a desktop master detail split and a mobile detail replaceme
   await page.getByRole('button', { name: 'Back to catalogue', exact: true }).click();
   await expect(listPanel).toBeVisible();
   await expect(detail).toBeHidden();
+  await expect(page).toHaveURL(/\/catalogue\/$/);
   await expect(button).toHaveAttribute('aria-pressed', 'false');
 
   await page.setViewportSize({ width: 1440, height: 900 });
@@ -464,7 +493,7 @@ test('marketing theme and navigation controls are observable', async ({ page }) 
   await openMarketing(page);
   await page.getByRole('button', { name: /Switch to dark theme/ }).click();
   await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
-  await page.getByRole('button', { name: 'Tokens', exact: true }).first().click();
+  await page.getByRole('link', { name: 'Tokens', exact: true }).first().click();
   await expect(page.getByRole('heading', { name: 'Replaceable design tokens', exact: true })).toBeVisible();
 });
 

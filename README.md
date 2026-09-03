@@ -23,18 +23,26 @@ npm run build
 npm run manifest
 ```
 
-To install the published CLI:
+To install the published CLI into an application:
 
 ```bash
-npm install -g @ovlira/cli
-ovlira --version
+npm install -D @ovlira/cli
+npm install @ovlira/elements
+npx ovlira --version
+```
+
+Keep the executable local and add this script to the application's `package.json`:
+
+```json
+{ "scripts": { "ovlira": "ovlira" } }
 ```
 
 The npm package is scoped to the `ovlira` organization, but the executable remains `ovlira`. To use the CLI from this checkout after building:
 
 ```bash
-npm install -g .
-ovlira search "settings page" --json
+npm install
+npm run build
+npm run ovlira -- search "settings page" --json
 ```
 
 Or call `node dist/cli/index.js` directly while developing this repository.
@@ -42,17 +50,19 @@ Or call `node dist/cli/index.js` directly while developing this repository.
 ## Agent workflow
 
 ```bash
-ovlira search "settings page" --json
-ovlira inspect page.settings --json
-ovlira init ./workspace-ui
-ovlira add page.settings --cwd ./workspace-ui
+npm run ovlira -- search "settings page" --json
+npm run ovlira -- inspect page.settings --json
+npm run ovlira -- init ./workspace-ui
+npm run ovlira -- add page.settings --cwd ./workspace-ui
 cd workspace-ui
 npm install
 npm run build
-ovlira check --json
+npm run ovlira -- check --json
 ```
 
-`search` returns at most eight compact results. `inspect` returns one full descriptor. `add` copies only the recipe's component source, the user-owned theme CSS, and a runnable example into the project. The generated project is ordinary Vite + TypeScript and can be changed locally.
+`search` returns at most eight compact results. `inspect` returns one full descriptor. `add` generates a local recipe composition and theme override; it does not copy component source into the project. The generated project is ordinary Vite + TypeScript and can be changed locally.
+
+`@ovlira/elements` is the runtime package. Component imports are explicit (`@ovlira/elements/tooltip.js`), so bundlers include only the components the application uses. `@ovlira/elements/register-all.js` remains available as an intentional convenience entry when an application wants the complete catalogue.
 
 For a catalogue overview, use `ovlira list` or `ovlira list --json`.
 
@@ -66,11 +76,11 @@ The catalogue contains:
 Component descriptors keep runtime API metadata separate from Ovlira guidance. For example:
 
 ```bash
-ovlira inspect ov-input --json
-ovlira inspect page.settings --json
+npm run ovlira -- inspect ov-input --json
+npm run ovlira -- inspect page.settings --json
 ```
 
-Runtime API metadata is generated to [`custom-elements.json`](./custom-elements.json) with Custom Elements Manifest. Ovlira-specific use/avoid rules, required states, composition constraints, and examples live in [`src/catalogue`](./src/catalogue).
+Runtime API metadata is generated to [`packages/elements/custom-elements.json`](./packages/elements/custom-elements.json) with Custom Elements Manifest. Ovlira-specific use/avoid rules, required states, composition constraints, and examples live in [`src/catalogue`](./src/catalogue).
 
 Use `ovlira metadata --json` to validate the catalogue contract and inspect the normalized ID/tag/category index. Use `inspect --section api|guidance|example` to retrieve only the part an agent needs.
 
@@ -99,7 +109,7 @@ The generated app imports the user-owned `src/styles/ovlira-theme.css`. Use `--o
 
 Diagnostics include a stable rule ID, severity, file and line where practical, and a suggested fix. It is intentionally a source-level check: it does not prove visual quality, runtime state transitions, browser behavior, or every accessibility concern.
 
-The validator also understands obvious TypeScript/JavaScript DOM property assignments and checks more token literal categories. `ovlira add` is idempotent, writes `src/ovlira.generated.ts`, supports `--entry`, and preserves local edits unless `--force` is used.
+The validator also understands obvious TypeScript/JavaScript DOM property assignments and checks more token literal categories. `ovlira add` records generated recipe modules in `.ovlira.json`, imports runtime components from `@ovlira/elements`, supports `--entry`, and preserves local edits unless `--force` is used. Adding a component ID returns its import contract; it does not copy or mutate component source.
 
 ## Live Codex evaluations
 
@@ -140,7 +150,7 @@ See the [living evaluation plan](./docs/ai-evals.md#structured-specs-and-generat
 
 ## Releases
 
-The repository publishes one package, [`@ovlira/cli`](https://www.npmjs.com/package/@ovlira/cli), with the `ovlira` executable. Run the release checks before publishing:
+The repository publishes [`@ovlira/cli`](https://www.npmjs.com/package/@ovlira/cli) and [`@ovlira/elements`](https://www.npmjs.com/package/@ovlira/elements). Run the release checks before publishing:
 
 ```bash
 npm run release:check
@@ -155,10 +165,10 @@ The component layer is standard custom elements, so Lit and plain HTML consume i
 ## Repository map
 
 ```text
-src/components    Lit implementations and TypeScript types
+packages/elements  published Lit implementations, default theme, and TypeScript types
 src/catalogue     compact component/recipe descriptors
 src/recipes       canonical markup and layout shared by generation and review
-src/tokens        token JSON and CSS export
+packages/elements token JSON and CSS export
 src/cli           CLI, local registry, and validator
 docs              decisions, spikes, architecture, workflow, metadata, validation, roadmap
 examples          component/recipe snippets and framework portability examples

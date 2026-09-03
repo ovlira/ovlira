@@ -1,0 +1,54 @@
+---
+import MarketingLayout from '../layouts/MarketingLayout.astro';
+---
+
+<MarketingLayout
+  eyebrow="First run"
+  title="Install once. Compose locally."
+  description="Keep the CLI beside the application and import only the runtime elements the surface uses."
+  pageTitle="Install · Ovlira"
+>
+  <div class="document-page">
+    <div class="notice"><strong>No global install.</strong> The project owns the CLI version, component dependency, generated composition, and theme overrides.</div>
+
+    <section class="section" aria-labelledby="install-heading">
+      <h2 id="install-heading" class="section-heading">Install</h2>
+      <div class="code-block">
+        <div class="code-block-head"><span>Terminal</span><button type="button" class="copy-button" data-copy-command aria-live="polite">Copy</button></div>
+        <pre><code>npm install -D @ovlira/cli typescript vite
+npm install @ovlira/elements</code></pre>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="install-init-heading">
+      <h2 id="install-init-heading" class="section-heading">Initialise</h2>
+      <p class="document-copy">Add the local script once, then use the same invocation in agent guidance, CI, and hand-written commands.</p>
+      <div class="code-block">
+        <div class="code-block-head"><span>package.json</span><button type="button" class="copy-button" data-copy-command aria-live="polite">Copy</button></div>
+        <pre><code>{`"scripts": {
+  "ovlira": "ovlira"
+}`}</code></pre>
+      </div>
+      <div class="command"><div class="command-label">Create the starter</div><code>npm run ovlira -- init .</code></div>
+    </section>
+
+    <section class="section" aria-labelledby="install-flow-heading">
+      <h2 id="install-flow-heading" class="section-heading">First useful screen</h2>
+      <ol class="process-list">
+        <li class="process-row"><span class="process-index">01</span><div><strong>Search</strong><p>Find the smallest relevant recipe or component.</p><code>npm run ovlira -- search "settings page" --json</code></div></li>
+        <li class="process-row"><span class="process-index">02</span><div><strong>Inspect</strong><p>Read the guidance and required states before composing.</p><code>npm run ovlira -- inspect page.settings --section guidance --json</code></div></li>
+        <li class="process-row"><span class="process-index">03</span><div><strong>Add</strong><p>Generate local composition with explicit package imports.</p><code>npm run ovlira -- add page.settings</code></div></li>
+        <li class="process-row"><span class="process-index">04</span><div><strong>Check</strong><p>Return stable diagnostics before handing the surface back.</p><code>npm run ovlira -- check --json</code></div></li>
+      </ol>
+    </section>
+
+    <section class="section" aria-labelledby="install-packages-heading">
+      <h2 id="install-packages-heading" class="section-heading">Package boundary</h2>
+      <dl class="fields">
+        <div class="field"><dt><code>@ovlira/cli</code></dt><dd>Search, inspect, recipe generation, tokens, and validation. Development dependency.</dd></div>
+        <div class="field"><dt><code>@ovlira/elements</code></dt><dd>Explicit custom-element modules, default theme, types, and optional register-all entrypoint. Application dependency.</dd></div>
+        <div class="field"><dt>Bundling</dt><dd>Generated recipes import component subpaths directly, allowing unused modules to stay out of the build.</dd></div>
+      </dl>
+    </section>
+  </div>
+</MarketingLayout>

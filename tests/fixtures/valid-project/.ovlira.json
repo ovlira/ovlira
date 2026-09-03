@@ -1,6 +1,7 @@
 {
-  "version": 1,
-  "added": ["ov-page-header", "ov-input", "ov-select", "ov-button", "ov-alert", "ov-data-table"],
-  "recipes": ["page.settings"],
+  "version": 2,
+  "mode": "package",
+  "elementsVersion": "0.3.0",
+  "recipes": { "page.settings": "src/main.ts" },
   "entry": "src/main.ts"
 }

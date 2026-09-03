@@ -32,6 +32,9 @@ jobs:
       - name: Run tests
         run: npm test
 
+      - name: Build and validate the domain adaptation rehearsal
+        run: npm run adaptation:check
+
       - name: Regenerate Custom Elements Manifest
         run: npm run manifest
 
@@ -48,7 +51,10 @@ jobs:
         run: node -e "const pkg = require('./package.json'); if (pkg.name !== '@ovlira/cli' || pkg.bin?.ovlira !== 'dist/cli/bin.js') process.exit(1)"
 
       - name: Inspect package contents
-        run: npm pack --dry-run
+        run: npm run pack:check
+
+      - name: Verify fresh installation of both packed packages
+        run: npm run package:smoke
 
   ui:
     name: Browser and visual gates
@@ -71,7 +77,7 @@ jobs:
         run: npx playwright install chromium
 
       - name: Build visual authority, fixture harness, and marketing side
-        run: npm run reference:design:build && npm run review:visual:build && npm run marketing:build
+        run: npm run build && npm run reference:design:build && npm run review:visual:build && npm run marketing:build
 
       - name: Run interactions, accessibility, responsive, and screenshot gates
         run: npm run test:ui && npm run test:component-visual
