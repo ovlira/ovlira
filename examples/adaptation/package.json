@@ -8,10 +8,10 @@
     "ovlira": "ovlira"
   },
   "dependencies": {
-    "@ovlira/elements": "^0.3.0"
+    "@ovlira/elements": "^0.4.0"
   },
   "devDependencies": {
-    "@ovlira/cli": "^0.3.0",
+    "@ovlira/cli": "^0.4.0",
     "typescript": "^5.8.3",
     "vite": "^7.1.0"
   }

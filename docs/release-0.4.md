@@ -13,15 +13,15 @@
 
 Release-check run on 2026-09-03: package checks and fresh-install smoke passed; the main browser suite passed 187/187; the component matrix passed 151/153. The only remaining failures were the two narrow overview comparisons below. This is not a green release gate.
 
-After adding the domain rehearsal, the expanded main browser suite passed 199/199 (including all 12 domain/theme/viewport cases). The component matrix remained 151/153, with the same two overview differences. Unit/evaluation tests passed 72/72. The preparation work is tracked in GitHub PR #5; publication remains blocked, and package versions are intentionally unchanged.
+After adding the domain rehearsal, the expanded main browser suite passed 199/199 (including all 12 domain/theme/viewport cases). The component matrix remained 151/153, with the same two overview differences. Unit/evaluation tests passed 72/72. The preparation work is tracked in GitHub PR #5; the two overview baselines were subsequently approved and the independent adaptation benchmark is recorded below. Package versions remain unchanged until the final release checks pass.
 
 The user marked the narrow light/dark catalogue overview review as passed on 2026-09-03. Those two baselines were promoted: navigation wraps instead of clipping Validation, adding 36px in accordance with DESIGN.md. The scoped `--approve-overview` manifest operation preserves all component decisions; no component baseline was changed or reapproved. The manifest consistency test passed after promotion.
 
 The earlier date-input failure was a browser page-setup timeout. The accordion dark capture was light; setting the persisted theme before navigation fixes the test setup. Both focused checks passed without baseline changes on 2026-09-03.
 
-## Adaptation rehearsal and outstanding benchmark
+## Adaptation rehearsal and benchmark
 
-`examples/adaptation` now contains an agent-authored CRUD adaptation for all three domains below, using the generated stylesheet and theme unchanged. `tests/browser/adaptation.spec.ts` exercises validation, keyboard creation, failed-read retry, empty recovery, safe text rendering, record navigation, browser Back, accessibility, and overflow in both themes at 375px and 1440px. This is a shared implementation tested twelve ways, **not twelve independent agent implementations**. Independent scored runs remain outstanding.
+`examples/adaptation` now contains an agent-authored CRUD adaptation for all three domains below, using the generated stylesheet and theme unchanged. `tests/browser/adaptation.spec.ts` exercises validation, keyboard creation, failed-read retry, empty recovery, safe text rendering, record navigation, browser Back, accessibility, and overflow in both themes at 375px and 1440px. This is a shared implementation tested twelve ways, **not twelve independent agent implementations**. The independent scored runs are recorded in [`docs/benchmarks/0.4/agents.json`](benchmarks/0.4/agents.json).
 
 Observed friction: `ov-data-table` has no public record-link or row-action interface, despite the recipe listing navigation as an extension point. The rehearsal uses an approved selector plus explicit Open action; it does not modify component styling or inject actions into shadow DOM. The generated starter also permits blank names and hides the collection after creation; the adapted application implements validation and preserves the collection beside success feedback.
 
@@ -47,7 +47,7 @@ Use deterministic local data and simulated asynchronous operations. No external 
 - No component source, base styling, or design-authority changes.
 - Reinitialization and repeated add preserve adapted source and theme byte-for-byte; expected conflicts are acceptable, silent replacement is not.
 
-Start with one run in each domain. Repair evidenced recipe/descriptor/validator friction, then freeze the task set and run each four times. Require at least 11/12 successful runs, zero data-loss failures, and the existing CLI response budgets. Record model, commit, prompts, failures, artifacts, and human visual decisions. Report rehearsal and scored runs separately.
+The frozen run set completed at 11/12 under the behavioral and release criteria, with zero data-loss failures. `customers-3` is the single failed run because it added custom CSS instead of preserving the generated stylesheet; its executable workflow still passed. A failed partial-spawn retry targeted `customers-1` after another attempt had used that directory, so the recorded score carries an evidence-quality exception; repeat that customer run before treating the benchmark as a pristine study. The tracked score is in [`agents.json`](benchmarks/0.4/agents.json); the full reports, tests, screenshots, and discovery logs remain under `reports/autonomy-v04/` locally.
 
 ## Publication checklist
 

@@ -243,7 +243,7 @@ describe('ovlira CLI', () => {
     await initialise(project);
     const packagePath = path.join(project, 'package.json');
     const pkg = JSON.parse(await fs.readFile(packagePath, 'utf8'));
-    pkg.dependencies['@ovlira/elements'] = '^0.4.0';
+    pkg.dependencies['@ovlira/elements'] = '^0.3.0';
     await fs.writeFile(packagePath, JSON.stringify(pkg, null, 2));
     const result = await validateProject(project);
     expect(result.diagnostics).toContainEqual(expect.objectContaining({ ruleId: 'project.elements-version-drift', severity: 'warning' }));

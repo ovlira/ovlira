@@ -64,6 +64,10 @@ The workflow uses Node 24 and the latest npm 11.x. `scripts/publish-packages.mjs
 
 For a new package name, npm requires the package to exist before configuring a trusted publisher. First publication may therefore require an authenticated maintainer and 2FA. After publishing the exact reviewed elements tarball, configure its GitHub publisher for `ovlira/ovlira`, `publish.yml`, then run the GitHub release workflow. The integrity check will verify and skip that identical elements artifact before publishing the CLI. Do not claim GitHub provenance for a locally bootstrapped artifact; subsequent OIDC publications receive provenance. See [npm trust prerequisites](https://docs.npmjs.com/cli/v11/commands/npm-trust/).
 
+## Marketing deployment
+
+The root `build` now builds the package workspaces and the Astro marketing site into `reports/marketing-dist`, the directory configured by `wrangler.jsonc`. This is required because Workers Builds starts from a clean checkout. Configure the Worker with `npm run build` as its build command and `npm run deploy` as its deploy command; the latter rebuilds defensively and runs `npx wrangler deploy`. A local validation is `npm run build && npx wrangler deploy --dry-run`.
+
 ## CI
 
 Pull requests and pushes to `main` run:

@@ -1,4 +1,4 @@
-# Ovlira 0.3
+# Ovlira 0.4
 
 Ovlira is a local, token-efficient UI prototyping toolkit for coding agents such as Codex and Claude Code. It gives them a small catalogue of human-designed Lit components, screen recipes, global theme tokens, and deterministic guardrails without sending an entire design system into context.
 
