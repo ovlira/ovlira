@@ -4,7 +4,7 @@
   "modules": [
     {
       "kind": "javascript-module",
-      "path": "src/components/accordion.ts",
+      "path": "packages/elements/src/accordion.ts",
       "declarations": [
         {
           "kind": "class",
@@ -158,7 +158,7 @@
           "name": "OvAccordion",
           "declaration": {
             "name": "OvAccordion",
-            "module": "src/components/accordion.ts"
+            "module": "packages/elements/src/accordion.ts"
           }
         },
         {
@@ -166,14 +166,14 @@
           "name": "ov-accordion",
           "declaration": {
             "name": "OvAccordion",
-            "module": "src/components/accordion.ts"
+            "module": "packages/elements/src/accordion.ts"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/alert.ts",
+      "path": "packages/elements/src/alert.ts",
       "declarations": [
         {
           "kind": "class",
@@ -234,7 +234,7 @@
           "name": "OvAlert",
           "declaration": {
             "name": "OvAlert",
-            "module": "src/components/alert.ts"
+            "module": "packages/elements/src/alert.ts"
           }
         },
         {
@@ -242,14 +242,14 @@
           "name": "ov-alert",
           "declaration": {
             "name": "OvAlert",
-            "module": "src/components/alert.ts"
+            "module": "packages/elements/src/alert.ts"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/application-shell.ts",
+      "path": "packages/elements/src/application-shell.ts",
       "declarations": [
         {
           "kind": "class",
@@ -305,7 +305,7 @@
           "name": "OvApplicationShell",
           "declaration": {
             "name": "OvApplicationShell",
-            "module": "src/components/application-shell.ts"
+            "module": "packages/elements/src/application-shell.ts"
           }
         },
         {
@@ -313,14 +313,14 @@
           "name": "ov-application-shell",
           "declaration": {
             "name": "OvApplicationShell",
-            "module": "src/components/application-shell.ts"
+            "module": "packages/elements/src/application-shell.ts"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/avatar.ts",
+      "path": "packages/elements/src/avatar.ts",
       "declarations": [
         {
           "kind": "class",
@@ -471,7 +471,7 @@
           "name": "OvAvatar",
           "declaration": {
             "name": "OvAvatar",
-            "module": "src/components/avatar.ts"
+            "module": "packages/elements/src/avatar.ts"
           }
         },
         {
@@ -479,14 +479,14 @@
           "name": "ov-avatar",
           "declaration": {
             "name": "OvAvatar",
-            "module": "src/components/avatar.ts"
+            "module": "packages/elements/src/avatar.ts"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/badge.ts",
+      "path": "packages/elements/src/badge.ts",
       "declarations": [
         {
           "kind": "class",
@@ -529,7 +529,7 @@
           "name": "OvBadge",
           "declaration": {
             "name": "OvBadge",
-            "module": "src/components/badge.ts"
+            "module": "packages/elements/src/badge.ts"
           }
         },
         {
@@ -537,14 +537,14 @@
           "name": "ov-badge",
           "declaration": {
             "name": "OvBadge",
-            "module": "src/components/badge.ts"
+            "module": "packages/elements/src/badge.ts"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/breadcrumbs.ts",
+      "path": "packages/elements/src/breadcrumbs.ts",
       "declarations": [
         {
           "kind": "class",
@@ -605,7 +605,7 @@
           "name": "OvBreadcrumbs",
           "declaration": {
             "name": "OvBreadcrumbs",
-            "module": "src/components/breadcrumbs.ts"
+            "module": "packages/elements/src/breadcrumbs.ts"
           }
         },
         {
@@ -613,14 +613,14 @@
           "name": "ov-breadcrumbs",
           "declaration": {
             "name": "OvBreadcrumbs",
-            "module": "src/components/breadcrumbs.ts"
+            "module": "packages/elements/src/breadcrumbs.ts"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/button.ts",
+      "path": "packages/elements/src/button.ts",
       "declarations": [
         {
           "kind": "class",
@@ -749,7 +749,7 @@
           "name": "OvButton",
           "declaration": {
             "name": "OvButton",
-            "module": "src/components/button.ts"
+            "module": "packages/elements/src/button.ts"
           }
         },
         {
@@ -757,14 +757,14 @@
           "name": "ov-button",
           "declaration": {
             "name": "OvButton",
-            "module": "src/components/button.ts"
+            "module": "packages/elements/src/button.ts"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/card.ts",
+      "path": "packages/elements/src/card.ts",
       "declarations": [
         {
           "kind": "class",
@@ -820,7 +820,7 @@
           "name": "OvCard",
           "declaration": {
             "name": "OvCard",
-            "module": "src/components/card.ts"
+            "module": "packages/elements/src/card.ts"
           }
         },
         {
@@ -828,14 +828,14 @@
           "name": "ov-card",
           "declaration": {
             "name": "OvCard",
-            "module": "src/components/card.ts"
+            "module": "packages/elements/src/card.ts"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/checkbox.ts",
+      "path": "packages/elements/src/checkbox.ts",
       "declarations": [
         {
           "kind": "class",
@@ -1037,7 +1037,7 @@
           "name": "OvCheckbox",
           "declaration": {
             "name": "OvCheckbox",
-            "module": "src/components/checkbox.ts"
+            "module": "packages/elements/src/checkbox.ts"
           }
         },
         {
@@ -1045,14 +1045,14 @@
           "name": "ov-checkbox",
           "declaration": {
             "name": "OvCheckbox",
-            "module": "src/components/checkbox.ts"
+            "module": "packages/elements/src/checkbox.ts"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/combobox.ts",
+      "path": "packages/elements/src/combobox.ts",
       "declarations": [
         {
           "kind": "class",
@@ -1435,7 +1435,7 @@
           "name": "OvCombobox",
           "declaration": {
             "name": "OvCombobox",
-            "module": "src/components/combobox.ts"
+            "module": "packages/elements/src/combobox.ts"
           }
         },
         {
@@ -1443,14 +1443,14 @@
           "name": "ov-combobox",
           "declaration": {
             "name": "OvCombobox",
-            "module": "src/components/combobox.ts"
+            "module": "packages/elements/src/combobox.ts"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/data-table.ts",
+      "path": "packages/elements/src/data-table.ts",
       "declarations": [
         {
           "kind": "class",
@@ -1529,7 +1529,7 @@
           "name": "OvDataTable",
           "declaration": {
             "name": "OvDataTable",
-            "module": "src/components/data-table.ts"
+            "module": "packages/elements/src/data-table.ts"
           }
         },
         {
@@ -1537,14 +1537,14 @@
           "name": "ov-data-table",
           "declaration": {
             "name": "OvDataTable",
-            "module": "src/components/data-table.ts"
+            "module": "packages/elements/src/data-table.ts"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/date-input.ts",
+      "path": "packages/elements/src/date-input.ts",
       "declarations": [
         {
           "kind": "class",
@@ -1766,7 +1766,7 @@
           "name": "OvDateInput",
           "declaration": {
             "name": "OvDateInput",
-            "module": "src/components/date-input.ts"
+            "module": "packages/elements/src/date-input.ts"
           }
         },
         {
@@ -1774,14 +1774,14 @@
           "name": "ov-date-input",
           "declaration": {
             "name": "OvDateInput",
-            "module": "src/components/date-input.ts"
+            "module": "packages/elements/src/date-input.ts"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/dialog.ts",
+      "path": "packages/elements/src/dialog.ts",
       "declarations": [
         {
           "kind": "class",
@@ -1980,7 +1980,7 @@
           "name": "OvDialog",
           "declaration": {
             "name": "OvDialog",
-            "module": "src/components/dialog.ts"
+            "module": "packages/elements/src/dialog.ts"
           }
         },
         {
@@ -1988,14 +1988,14 @@
           "name": "ov-dialog",
           "declaration": {
             "name": "OvDialog",
-            "module": "src/components/dialog.ts"
+            "module": "packages/elements/src/dialog.ts"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/drawer.ts",
+      "path": "packages/elements/src/drawer.ts",
       "declarations": [
         {
           "kind": "class",
@@ -2213,7 +2213,7 @@
           "name": "OvDrawer",
           "declaration": {
             "name": "OvDrawer",
-            "module": "src/components/drawer.ts"
+            "module": "packages/elements/src/drawer.ts"
           }
         },
         {
@@ -2221,14 +2221,14 @@
           "name": "ov-drawer",
           "declaration": {
             "name": "OvDrawer",
-            "module": "src/components/drawer.ts"
+            "module": "packages/elements/src/drawer.ts"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/empty-state.ts",
+      "path": "packages/elements/src/empty-state.ts",
       "declarations": [
         {
           "kind": "class",
@@ -2289,7 +2289,7 @@
           "name": "OvEmptyState",
           "declaration": {
             "name": "OvEmptyState",
-            "module": "src/components/empty-state.ts"
+            "module": "packages/elements/src/empty-state.ts"
           }
         },
         {
@@ -2297,14 +2297,14 @@
           "name": "ov-empty-state",
           "declaration": {
             "name": "OvEmptyState",
-            "module": "src/components/empty-state.ts"
+            "module": "packages/elements/src/empty-state.ts"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/file-upload.ts",
+      "path": "packages/elements/src/file-upload.ts",
       "declarations": [
         {
           "kind": "class",
@@ -2571,7 +2571,7 @@
           "name": "OvFileUpload",
           "declaration": {
             "name": "OvFileUpload",
-            "module": "src/components/file-upload.ts"
+            "module": "packages/elements/src/file-upload.ts"
           }
         },
         {
@@ -2579,14 +2579,14 @@
           "name": "ov-file-upload",
           "declaration": {
             "name": "OvFileUpload",
-            "module": "src/components/file-upload.ts"
+            "module": "packages/elements/src/file-upload.ts"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/input.ts",
+      "path": "packages/elements/src/input.ts",
       "declarations": [
         {
           "kind": "class",
@@ -2806,7 +2806,7 @@
           "name": "OvInput",
           "declaration": {
             "name": "OvInput",
-            "module": "src/components/input.ts"
+            "module": "packages/elements/src/input.ts"
           }
         },
         {
@@ -2814,14 +2814,14 @@
           "name": "ov-input",
           "declaration": {
             "name": "OvInput",
-            "module": "src/components/input.ts"
+            "module": "packages/elements/src/input.ts"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/menu.ts",
+      "path": "packages/elements/src/menu.ts",
       "declarations": [
         {
           "kind": "class",
@@ -3054,7 +3054,7 @@
           "name": "OvMenu",
           "declaration": {
             "name": "OvMenu",
-            "module": "src/components/menu.ts"
+            "module": "packages/elements/src/menu.ts"
           }
         },
         {
@@ -3062,14 +3062,14 @@
           "name": "ov-menu",
           "declaration": {
             "name": "OvMenu",
-            "module": "src/components/menu.ts"
+            "module": "packages/elements/src/menu.ts"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/number-input.ts",
+      "path": "packages/elements/src/number-input.ts",
       "declarations": [
         {
           "kind": "class",
@@ -3310,7 +3310,7 @@
           "name": "OvNumberInput",
           "declaration": {
             "name": "OvNumberInput",
-            "module": "src/components/number-input.ts"
+            "module": "packages/elements/src/number-input.ts"
           }
         },
         {
@@ -3318,14 +3318,14 @@
           "name": "ov-number-input",
           "declaration": {
             "name": "OvNumberInput",
-            "module": "src/components/number-input.ts"
+            "module": "packages/elements/src/number-input.ts"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/page-header.ts",
+      "path": "packages/elements/src/page-header.ts",
       "declarations": [
         {
           "kind": "class",
@@ -3404,7 +3404,7 @@
           "name": "OvPageHeader",
           "declaration": {
             "name": "OvPageHeader",
-            "module": "src/components/page-header.ts"
+            "module": "packages/elements/src/page-header.ts"
           }
         },
         {
@@ -3412,14 +3412,14 @@
           "name": "ov-page-header",
           "declaration": {
             "name": "OvPageHeader",
-            "module": "src/components/page-header.ts"
+            "module": "packages/elements/src/page-header.ts"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/pagination.ts",
+      "path": "packages/elements/src/pagination.ts",
       "declarations": [
         {
           "kind": "class",
@@ -3576,7 +3576,7 @@
           "name": "OvPagination",
           "declaration": {
             "name": "OvPagination",
-            "module": "src/components/pagination.ts"
+            "module": "packages/elements/src/pagination.ts"
           }
         },
         {
@@ -3584,14 +3584,14 @@
           "name": "ov-pagination",
           "declaration": {
             "name": "OvPagination",
-            "module": "src/components/pagination.ts"
+            "module": "packages/elements/src/pagination.ts"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/popover.ts",
+      "path": "packages/elements/src/popover.ts",
       "declarations": [
         {
           "kind": "class",
@@ -3767,7 +3767,7 @@
           "name": "OvPopover",
           "declaration": {
             "name": "OvPopover",
-            "module": "src/components/popover.ts"
+            "module": "packages/elements/src/popover.ts"
           }
         },
         {
@@ -3775,14 +3775,14 @@
           "name": "ov-popover",
           "declaration": {
             "name": "OvPopover",
-            "module": "src/components/popover.ts"
+            "module": "packages/elements/src/popover.ts"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/progress.ts",
+      "path": "packages/elements/src/progress.ts",
       "declarations": [
         {
           "kind": "class",
@@ -3927,7 +3927,7 @@
           "name": "OvProgress",
           "declaration": {
             "name": "OvProgress",
-            "module": "src/components/progress.ts"
+            "module": "packages/elements/src/progress.ts"
           }
         },
         {
@@ -3935,14 +3935,14 @@
           "name": "ov-progress",
           "declaration": {
             "name": "OvProgress",
-            "module": "src/components/progress.ts"
+            "module": "packages/elements/src/progress.ts"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/radio-group.ts",
+      "path": "packages/elements/src/radio-group.ts",
       "declarations": [
         {
           "kind": "class",
@@ -4142,7 +4142,7 @@
           "name": "OvRadioGroup",
           "declaration": {
             "name": "OvRadioGroup",
-            "module": "src/components/radio-group.ts"
+            "module": "packages/elements/src/radio-group.ts"
           }
         },
         {
@@ -4150,14 +4150,29 @@
           "name": "ov-radio-group",
           "declaration": {
             "name": "OvRadioGroup",
-            "module": "src/components/radio-group.ts"
+            "module": "packages/elements/src/radio-group.ts"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/select.ts",
+      "path": "packages/elements/src/register-all.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "*",
+          "declaration": {
+            "name": "*",
+            "module": "packages/elements/src/index.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "packages/elements/src/select.ts",
       "declarations": [
         {
           "kind": "class",
@@ -4338,7 +4353,7 @@
           "name": "OvSelect",
           "declaration": {
             "name": "OvSelect",
-            "module": "src/components/select.ts"
+            "module": "packages/elements/src/select.ts"
           }
         },
         {
@@ -4346,14 +4361,14 @@
           "name": "ov-select",
           "declaration": {
             "name": "OvSelect",
-            "module": "src/components/select.ts"
+            "module": "packages/elements/src/select.ts"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/skeleton.ts",
+      "path": "packages/elements/src/skeleton.ts",
       "declarations": [
         {
           "kind": "class",
@@ -4443,7 +4458,7 @@
           "name": "OvSkeleton",
           "declaration": {
             "name": "OvSkeleton",
-            "module": "src/components/skeleton.ts"
+            "module": "packages/elements/src/skeleton.ts"
           }
         },
         {
@@ -4451,14 +4466,14 @@
           "name": "ov-skeleton",
           "declaration": {
             "name": "OvSkeleton",
-            "module": "src/components/skeleton.ts"
+            "module": "packages/elements/src/skeleton.ts"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/slider.ts",
+      "path": "packages/elements/src/slider.ts",
       "declarations": [
         {
           "kind": "class",
@@ -4700,7 +4715,7 @@
           "name": "OvSlider",
           "declaration": {
             "name": "OvSlider",
-            "module": "src/components/slider.ts"
+            "module": "packages/elements/src/slider.ts"
           }
         },
         {
@@ -4708,14 +4723,14 @@
           "name": "ov-slider",
           "declaration": {
             "name": "OvSlider",
-            "module": "src/components/slider.ts"
+            "module": "packages/elements/src/slider.ts"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/spinner.ts",
+      "path": "packages/elements/src/spinner.ts",
       "declarations": [
         {
           "kind": "class",
@@ -4777,7 +4792,7 @@
           "name": "OvSpinner",
           "declaration": {
             "name": "OvSpinner",
-            "module": "src/components/spinner.ts"
+            "module": "packages/elements/src/spinner.ts"
           }
         },
         {
@@ -4785,14 +4800,14 @@
           "name": "ov-spinner",
           "declaration": {
             "name": "OvSpinner",
-            "module": "src/components/spinner.ts"
+            "module": "packages/elements/src/spinner.ts"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/stepper.ts",
+      "path": "packages/elements/src/stepper.ts",
       "declarations": [
         {
           "kind": "class",
@@ -4932,7 +4947,7 @@
           "name": "OvStepper",
           "declaration": {
             "name": "OvStepper",
-            "module": "src/components/stepper.ts"
+            "module": "packages/elements/src/stepper.ts"
           }
         },
         {
@@ -4940,14 +4955,14 @@
           "name": "ov-stepper",
           "declaration": {
             "name": "OvStepper",
-            "module": "src/components/stepper.ts"
+            "module": "packages/elements/src/stepper.ts"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/tabs.ts",
+      "path": "packages/elements/src/tabs.ts",
       "declarations": [
         {
           "kind": "class",
@@ -5181,7 +5196,7 @@
           "name": "OvTabs",
           "declaration": {
             "name": "OvTabs",
-            "module": "src/components/tabs.ts"
+            "module": "packages/elements/src/tabs.ts"
           }
         },
         {
@@ -5189,14 +5204,14 @@
           "name": "ov-tabs",
           "declaration": {
             "name": "OvTabs",
-            "module": "src/components/tabs.ts"
+            "module": "packages/elements/src/tabs.ts"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/textarea.ts",
+      "path": "packages/elements/src/textarea.ts",
       "declarations": [
         {
           "kind": "class",
@@ -5416,7 +5431,7 @@
           "name": "OvTextarea",
           "declaration": {
             "name": "OvTextarea",
-            "module": "src/components/textarea.ts"
+            "module": "packages/elements/src/textarea.ts"
           }
         },
         {
@@ -5424,14 +5439,14 @@
           "name": "ov-textarea",
           "declaration": {
             "name": "OvTextarea",
-            "module": "src/components/textarea.ts"
+            "module": "packages/elements/src/textarea.ts"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/toast.ts",
+      "path": "packages/elements/src/toast.ts",
       "declarations": [
         {
           "kind": "class",
@@ -5685,7 +5700,7 @@
           "name": "OvToast",
           "declaration": {
             "name": "OvToast",
-            "module": "src/components/toast.ts"
+            "module": "packages/elements/src/toast.ts"
           }
         },
         {
@@ -5693,14 +5708,14 @@
           "name": "ov-toast",
           "declaration": {
             "name": "OvToast",
-            "module": "src/components/toast.ts"
+            "module": "packages/elements/src/toast.ts"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/toggle.ts",
+      "path": "packages/elements/src/toggle.ts",
       "declarations": [
         {
           "kind": "class",
@@ -5902,7 +5917,7 @@
           "name": "OvToggle",
           "declaration": {
             "name": "OvToggle",
-            "module": "src/components/toggle.ts"
+            "module": "packages/elements/src/toggle.ts"
           }
         },
         {
@@ -5910,14 +5925,14 @@
           "name": "ov-toggle",
           "declaration": {
             "name": "OvToggle",
-            "module": "src/components/toggle.ts"
+            "module": "packages/elements/src/toggle.ts"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/tooltip.ts",
+      "path": "packages/elements/src/tooltip.ts",
       "declarations": [
         {
           "kind": "class",
@@ -6073,7 +6088,7 @@
           "name": "OvTooltip",
           "declaration": {
             "name": "OvTooltip",
-            "module": "src/components/tooltip.ts"
+            "module": "packages/elements/src/tooltip.ts"
           }
         },
         {
@@ -6081,14 +6096,14 @@
           "name": "ov-tooltip",
           "declaration": {
             "name": "OvTooltip",
-            "module": "src/components/tooltip.ts"
+            "module": "packages/elements/src/tooltip.ts"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/tree.ts",
+      "path": "packages/elements/src/tree.ts",
       "declarations": [
         {
           "kind": "class",
@@ -6423,7 +6438,7 @@
           "name": "OvTree",
           "declaration": {
             "name": "OvTree",
-            "module": "src/components/tree.ts"
+            "module": "packages/elements/src/tree.ts"
           }
         },
         {
@@ -6431,7 +6446,7 @@
           "name": "ov-tree",
           "declaration": {
             "name": "OvTree",
-            "module": "src/components/tree.ts"
+            "module": "packages/elements/src/tree.ts"
           }
         }
       ]

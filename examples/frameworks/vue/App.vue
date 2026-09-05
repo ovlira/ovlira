@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
-import 'ovlira/components/button.js'
-import 'ovlira/components/select.js'
+import '@ovlira/elements/button.js'
+import '@ovlira/elements/select.js'
 
 const select = ref<HTMLElement & { options: { value: string; label: string }[] }>()
 onMounted(() => {

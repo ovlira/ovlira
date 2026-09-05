@@ -1,0 +1,9 @@
+{
+  "version": 2,
+  "mode": "package",
+  "elementsVersion": "0.4.0",
+  "recipes": {
+    "page.crud-table": "src/main.ts"
+  },
+  "entry": "src/main.ts"
+}

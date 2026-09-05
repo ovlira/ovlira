@@ -1,6 +1,6 @@
 import { Component, CUSTOM_ELEMENTS_SCHEMA, ElementRef, ViewChild } from '@angular/core';
-import 'ovlira/components/button.js';
-import 'ovlira/components/select.js';
+import '@ovlira/elements/button.js';
+import '@ovlira/elements/select.js';
 
 @Component({
   selector: 'app-root',

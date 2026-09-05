@@ -30,8 +30,8 @@
   "releaseGate": true,
   "approval": {
     "decision": "pass",
-    "date": "2026-08-31",
-    "source": "user-confirmed review"
+    "date": "2026-09-03",
+    "source": "User passed narrow light/dark navigation review in Codex on 2026-09-03; component approvals unchanged"
   },
   "catalogueOverviewDecision": "pass",
   "catalogueOverview": [
@@ -47,7 +47,7 @@
     },
     {
       "file": "catalogue-overview-dark-narrow-darwin.png",
-      "sha256": "982b63dde3d88c0f1eac8c225b18c873ef380831e14b41ed6eb646aef641a480",
+      "sha256": "f9d5fac6c57eae40f3dc39c43d509df57b3b5aeb9f495685429bf784ff325ac7",
       "status": "approved"
     },
     {
@@ -62,7 +62,7 @@
     },
     {
       "file": "catalogue-overview-light-narrow-darwin.png",
-      "sha256": "285717f6b90fcf85f7c146a414d898ad17f27ba5f076efb6fd20c0a71cc5df9e",
+      "sha256": "d86bf2a1158f72393a4c8ea6ea43f925f75d4700344a677e172324ee5d3a4771",
       "status": "approved"
     },
     {

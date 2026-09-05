@@ -6,9 +6,9 @@ on:
   workflow_dispatch:
     inputs:
       release_tag:
-        description: Git tag to publish, for example v0.3.0
+        description: Git tag to publish, for example v0.4.0
         required: true
-        default: v0.3.0
+        default: v0.4.0
 
 permissions:
   contents: read
@@ -39,7 +39,7 @@ jobs:
       - name: Verify release version
         env:
           RELEASE_TAG: ${{ github.event.release.tag_name || inputs.release_tag }}
-        run: node -e "const pkg = require('./package.json'); const tag = process.env.RELEASE_TAG.replace(/^v/, ''); if (pkg.version !== tag) throw new Error('package.json version ' + pkg.version + ' does not match release tag ' + tag)"
+        run: node -e "const root = require('./package.json'); const elements = require('./packages/elements/package.json'); const tag = process.env.RELEASE_TAG.replace(/^v/, ''); for (const pkg of [root, elements]) if (pkg.version !== tag) throw new Error(pkg.name + ' version ' + pkg.version + ' does not match release tag ' + tag); if (root.dependencies['@ovlira/elements'] !== tag) throw new Error('CLI elements dependency must match release tag ' + tag)"
 
       - name: Install dependencies
         run: npm ci
@@ -51,4 +51,4 @@ jobs:
         run: npm run manifest
 
       - name: Publish with trusted provenance
-        run: npm publish --access public
+        run: node scripts/publish-packages.mjs

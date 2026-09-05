@@ -1,12 +1,12 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import '../src/components/index.js';
+import '@ovlira/elements/register-all.js';
 
 describe('Ovlira components', () => {
   beforeEach(() => { document.body.innerHTML = ''; });
 
   it('renders a native button with a stable accessible contract', async () => {
     document.body.innerHTML = '<ov-button variant="primary">Save changes</ov-button>';
-    const element = document.querySelector('ov-button') as import('../src/components/button.js').OvButton;
+    const element = document.querySelector('ov-button') as import('@ovlira/elements/button.js').OvButton;
     await element.updateComplete;
     const button = element.shadowRoot?.querySelector('button');
     expect(element.textContent).toContain('Save changes');
@@ -16,7 +16,7 @@ describe('Ovlira components', () => {
 
   it('keeps input label and native input association inside Shadow DOM', async () => {
     document.body.innerHTML = '<ov-input label="Email address" name="email" required></ov-input>';
-    const element = document.querySelector('ov-input') as import('../src/components/input.js').OvInput;
+    const element = document.querySelector('ov-input') as import('@ovlira/elements/input.js').OvInput;
     await element.updateComplete;
     const label = element.shadowRoot?.querySelector('label');
     const input = element.shadowRoot?.querySelector('input');
@@ -27,7 +27,7 @@ describe('Ovlira components', () => {
 
   it('keeps textarea label, rows, and help text in a native contract', async () => {
     document.body.innerHTML = '<ov-textarea label="Project description" name="description" rows="5" help-text="Keep this concise." required></ov-textarea>';
-    const element = document.querySelector('ov-textarea') as import('../src/components/textarea.js').OvTextarea;
+    const element = document.querySelector('ov-textarea') as import('@ovlira/elements/textarea.js').OvTextarea;
     await element.updateComplete;
     const label = element.shadowRoot?.querySelector('label');
     const textarea = element.shadowRoot?.querySelector('textarea');
@@ -40,7 +40,7 @@ describe('Ovlira components', () => {
 
   it('keeps checkbox label, selection, and help text in a native contract', async () => {
     document.body.innerHTML = '<ov-checkbox label="Keep me signed in" name="remember" checked help-text="Use this only on a private device." required></ov-checkbox>';
-    const element = document.querySelector('ov-checkbox') as import('../src/components/checkbox.js').OvCheckbox;
+    const element = document.querySelector('ov-checkbox') as import('@ovlira/elements/checkbox.js').OvCheckbox;
     await element.updateComplete;
     const label = element.shadowRoot?.querySelector('label');
     const checkbox = element.shadowRoot?.querySelector('input[type="checkbox"]') as HTMLInputElement | null;
@@ -52,7 +52,7 @@ describe('Ovlira components', () => {
 
   it('keeps radio group legend, options, and selected value in a native contract', async () => {
     document.body.innerHTML = '<ov-radio-group label="Workspace visibility" name="visibility" value="team" help-text="Choose who can access this workspace." required></ov-radio-group>';
-    const element = document.querySelector('ov-radio-group') as import('../src/components/radio-group.js').OvRadioGroup;
+    const element = document.querySelector('ov-radio-group') as import('@ovlira/elements/radio-group.js').OvRadioGroup;
     element.options = [{ value: 'private', label: 'Only me' }, { value: 'team', label: 'Everyone on the team' }];
     await element.updateComplete;
     const fieldset = element.shadowRoot?.querySelector('fieldset');
@@ -68,7 +68,7 @@ describe('Ovlira components', () => {
 
   it('keeps toggle label, switch semantics, and checked state in a native contract', async () => {
     document.body.innerHTML = '<ov-toggle label="Email me about project activity" name="activity" checked help-text="You can change this at any time."></ov-toggle>';
-    const element = document.querySelector('ov-toggle') as import('../src/components/toggle.js').OvToggle;
+    const element = document.querySelector('ov-toggle') as import('@ovlira/elements/toggle.js').OvToggle;
     await element.updateComplete;
     const label = element.shadowRoot?.querySelector('label');
     const toggle = element.shadowRoot?.querySelector('input[role="switch"]') as HTMLInputElement | null;
@@ -82,7 +82,7 @@ describe('Ovlira components', () => {
 
   it('keeps dialog heading, body, actions, and explicit close semantics', async () => {
     document.body.innerHTML = '<ov-dialog heading="Archive this project?" description="People will lose access." open><p>Review this decision.</p><ov-button slot="actions">Archive</ov-button></ov-dialog>';
-    const element = document.querySelector('ov-dialog') as import('../src/components/dialog.js').OvDialog;
+    const element = document.querySelector('ov-dialog') as import('@ovlira/elements/dialog.js').OvDialog;
     await element.updateComplete;
     const dialog = element.shadowRoot?.querySelector('dialog');
     const heading = element.shadowRoot?.querySelector('h2');
@@ -104,7 +104,7 @@ describe('Ovlira components', () => {
 
   it('renders an accessible inline spinner with a visible status label', async () => {
     document.body.innerHTML = '<ov-spinner label="Loading projects"></ov-spinner>';
-    const element = document.querySelector('ov-spinner') as import('../src/components/spinner.js').OvSpinner;
+    const element = document.querySelector('ov-spinner') as import('@ovlira/elements/spinner.js').OvSpinner;
     await element.updateComplete;
     const status = element.shadowRoot?.querySelector('[role="status"]');
     expect(status?.getAttribute('aria-live')).toBe('polite');
@@ -114,7 +114,7 @@ describe('Ovlira components', () => {
 
   it('opens a menu, exposes menuitems, and emits a selected action', async () => {
     document.body.innerHTML = '<ov-menu label="Project actions"></ov-menu>';
-    const element = document.querySelector('ov-menu') as import('../src/components/menu.js').OvMenu;
+    const element = document.querySelector('ov-menu') as import('@ovlira/elements/menu.js').OvMenu;
     element.items = [{ value: 'duplicate', label: 'Duplicate project' }, { value: 'archive', label: 'Archive project', disabled: true }];
     await element.updateComplete;
     const trigger = element.shadowRoot?.querySelector<HTMLButtonElement>('.trigger');
@@ -132,7 +132,7 @@ describe('Ovlira components', () => {
 
   it('renders pagination semantics and emits page changes', async () => {
     document.body.innerHTML = '<ov-pagination current-page="2" total-pages="12" label="Project pages"></ov-pagination>';
-    const element = document.querySelector('ov-pagination') as import('../src/components/pagination.js').OvPagination;
+    const element = document.querySelector('ov-pagination') as import('@ovlira/elements/pagination.js').OvPagination;
     await element.updateComplete;
     expect(element.shadowRoot?.querySelector('nav')?.getAttribute('aria-label')).toBe('Project pages');
     expect(element.shadowRoot?.querySelector('[aria-current="page"]')?.textContent).toBe('2');
@@ -146,7 +146,7 @@ describe('Ovlira components', () => {
 
   it('keeps combobox label, listbox semantics, filtering, and selected value in a native contract', async () => {
     document.body.innerHTML = '<ov-combobox label="Project owner" placeholder="Search people"></ov-combobox>';
-    const element = document.querySelector('ov-combobox') as import('../src/components/combobox.js').OvCombobox;
+    const element = document.querySelector('ov-combobox') as import('@ovlira/elements/combobox.js').OvCombobox;
     element.options = [{ value: 'maya', label: 'Maya Chen' }, { value: 'jon', label: 'Jon Bell' }, { value: 'anika', label: 'Anika Rao' }];
     await element.updateComplete;
     const input = element.shadowRoot?.querySelector<HTMLInputElement>('input[role="combobox"]');
@@ -169,7 +169,7 @@ describe('Ovlira components', () => {
 
   it('renders tabs with tablist semantics, named panels, and keyboard selection', async () => {
     document.body.innerHTML = '<ov-tabs label="Project views" value="overview"><p slot="overview">Summary</p><p slot="activity">Recent activity</p></ov-tabs>';
-    const element = document.querySelector('ov-tabs') as import('../src/components/tabs.js').OvTabs;
+    const element = document.querySelector('ov-tabs') as import('@ovlira/elements/tabs.js').OvTabs;
     element.items = [{ value: 'overview', label: 'Overview' }, { value: 'activity', label: 'Activity' }];
     await element.updateComplete;
     const tablist = element.shadowRoot?.querySelector('[role="tablist"]');
@@ -191,7 +191,7 @@ describe('Ovlira components', () => {
 
   it('renders an open toast with a live-region role and dismisses it', async () => {
     document.body.innerHTML = '<ov-toast tone="success" heading="Saved" duration="0" open>Your changes are ready.</ov-toast>';
-    const element = document.querySelector('ov-toast') as import('../src/components/toast.js').OvToast;
+    const element = document.querySelector('ov-toast') as import('@ovlira/elements/toast.js').OvToast;
     await element.updateComplete;
     const toast = element.shadowRoot?.querySelector('[role="status"]');
     expect(toast?.getAttribute('aria-live')).toBe('polite');
@@ -207,7 +207,7 @@ describe('Ovlira components', () => {
 
   it('keeps progress native and supports determinate and indeterminate states', async () => {
     document.body.innerHTML = '<ov-progress label="Importing projects" value="68" max="100" show-value></ov-progress>';
-    const element = document.querySelector('ov-progress') as import('../src/components/progress.js').OvProgress;
+    const element = document.querySelector('ov-progress') as import('@ovlira/elements/progress.js').OvProgress;
     await element.updateComplete;
     const progress = element.shadowRoot?.querySelector('progress') as HTMLProgressElement | null;
     expect(progress?.value).toBe(68);
@@ -220,7 +220,7 @@ describe('Ovlira components', () => {
 
   it('renders decorative skeleton variants with the requested line count', async () => {
     document.body.innerHTML = '<ov-skeleton variant="text" lines="3"></ov-skeleton>';
-    const element = document.querySelector('ov-skeleton') as import('../src/components/skeleton.js').OvSkeleton;
+    const element = document.querySelector('ov-skeleton') as import('@ovlira/elements/skeleton.js').OvSkeleton;
     await element.updateComplete;
     const skeleton = element.shadowRoot?.querySelector('[part="skeleton"]');
     expect(skeleton?.getAttribute('aria-hidden')).toBe('true');
@@ -232,7 +232,7 @@ describe('Ovlira components', () => {
 
   it('opens tooltip content for a slotted trigger and dismisses with Escape', async () => {
     document.body.innerHTML = '<ov-tooltip content="Keyboard shortcut: /"><button slot="trigger" type="button" aria-label="Search help">?</button></ov-tooltip>';
-    const element = document.querySelector('ov-tooltip') as import('../src/components/tooltip.js').OvTooltip;
+    const element = document.querySelector('ov-tooltip') as import('@ovlira/elements/tooltip.js').OvTooltip;
     await element.updateComplete;
     const trigger = element.querySelector('button') as HTMLButtonElement;
     expect(trigger.getAttribute('aria-describedby')).toContain('ov-tooltip-');
@@ -247,7 +247,7 @@ describe('Ovlira components', () => {
 
   it('renders avatar initials, status semantics, and an image-error fallback', async () => {
     document.body.innerHTML = '<ov-avatar name="Maya Chen" status="online"></ov-avatar>';
-    const element = document.querySelector('ov-avatar') as import('../src/components/avatar.js').OvAvatar;
+    const element = document.querySelector('ov-avatar') as import('@ovlira/elements/avatar.js').OvAvatar;
     await element.updateComplete;
     const avatar = element.shadowRoot?.querySelector('[part="avatar"]');
     expect(avatar?.getAttribute('role')).toBe('img');
@@ -264,7 +264,7 @@ describe('Ovlira components', () => {
 
   it('renders linked parent breadcrumbs and marks only the current location', async () => {
     document.body.innerHTML = '<ov-breadcrumbs label="Project path"></ov-breadcrumbs>';
-    const element = document.querySelector('ov-breadcrumbs') as import('../src/components/breadcrumbs.js').OvBreadcrumbs;
+    const element = document.querySelector('ov-breadcrumbs') as import('@ovlira/elements/breadcrumbs.js').OvBreadcrumbs;
     element.items = [{ label: 'Projects', href: '/projects' }, { label: 'Northstar studio', href: '/projects/northstar' }, { label: 'Settings' }];
     await element.updateComplete;
     expect(element.shadowRoot?.querySelector('nav')?.getAttribute('aria-label')).toBe('Project path');
@@ -275,7 +275,7 @@ describe('Ovlira components', () => {
 
   it('renders accordion disclosures and keeps open item state property-backed', async () => {
     document.body.innerHTML = '<ov-accordion></ov-accordion>';
-    const element = document.querySelector('ov-accordion') as import('../src/components/accordion.js').OvAccordion;
+    const element = document.querySelector('ov-accordion') as import('@ovlira/elements/accordion.js').OvAccordion;
     element.items = [{ value: 'summary', label: 'Project summary' }, { value: 'members', label: 'Members' }];
     element.innerHTML = '<p slot="summary">A concise overview.</p><p slot="members">Three people have access.</p>';
     await element.updateComplete;
@@ -292,7 +292,7 @@ describe('Ovlira components', () => {
 
   it('keeps slider range semantics and emits numeric input details', async () => {
     document.body.innerHTML = '<ov-slider label="Opacity" min="0" max="100" value="50" step="5" show-value></ov-slider>';
-    const element = document.querySelector('ov-slider') as import('../src/components/slider.js').OvSlider;
+    const element = document.querySelector('ov-slider') as import('@ovlira/elements/slider.js').OvSlider;
     await element.updateComplete;
     const input = element.shadowRoot?.querySelector<HTMLInputElement>('input[type="range"]');
     expect(input?.getAttribute('min')).toBe('0');
@@ -311,7 +311,7 @@ describe('Ovlira components', () => {
 
   it('keeps file upload input labelled and lists selected files', async () => {
     document.body.innerHTML = '<ov-file-upload label="Project archive" name="archive" accept=".zip" required></ov-file-upload>';
-    const element = document.querySelector('ov-file-upload') as import('../src/components/file-upload.js').OvFileUpload;
+    const element = document.querySelector('ov-file-upload') as import('@ovlira/elements/file-upload.js').OvFileUpload;
     await element.updateComplete;
     const input = element.shadowRoot?.querySelector<HTMLInputElement>('input[type="file"]');
     expect(input?.getAttribute('aria-labelledby')).toContain('ov-file-upload-');
@@ -330,7 +330,7 @@ describe('Ovlira components', () => {
 
   it('keeps date input constraints and emits the ISO value', async () => {
     document.body.innerHTML = '<ov-date-input label="Launch date" min="2026-01-01" max="2026-12-31" value="2026-03-12" required></ov-date-input>';
-    const element = document.querySelector('ov-date-input') as import('../src/components/date-input.js').OvDateInput;
+    const element = document.querySelector('ov-date-input') as import('@ovlira/elements/date-input.js').OvDateInput;
     await element.updateComplete;
     const input = element.shadowRoot?.querySelector<HTMLInputElement>('input[type="date"]');
     expect(input?.value).toBe('2026-03-12');
@@ -348,7 +348,7 @@ describe('Ovlira components', () => {
 
   it('keeps number input bounds and emits the string value', async () => {
     document.body.innerHTML = '<ov-number-input label="Seats" min="1" max="24" step="1" value="4" required></ov-number-input>';
-    const element = document.querySelector('ov-number-input') as import('../src/components/number-input.js').OvNumberInput;
+    const element = document.querySelector('ov-number-input') as import('@ovlira/elements/number-input.js').OvNumberInput;
     await element.updateComplete;
     const input = element.shadowRoot?.querySelector<HTMLInputElement>('input[type="number"]');
     expect(input?.type).toBe('number');
@@ -368,7 +368,7 @@ describe('Ovlira components', () => {
 
   it('opens and dismisses a labelled popover while restoring trigger focus', async () => {
     document.body.innerHTML = '<ov-popover label="Project details"><span slot="trigger">View details</span><p>Last updated recently.</p></ov-popover>';
-    const element = document.querySelector('ov-popover') as import('../src/components/popover.js').OvPopover;
+    const element = document.querySelector('ov-popover') as import('@ovlira/elements/popover.js').OvPopover;
     await element.updateComplete;
     const trigger = element.shadowRoot?.querySelector<HTMLButtonElement>('[part="trigger"]');
     const surface = element.shadowRoot?.querySelector<HTMLElement>('[part="popover"]');
@@ -387,7 +387,7 @@ describe('Ovlira components', () => {
 
   it('renders nested tree semantics and toggles expanded parents', async () => {
     document.body.innerHTML = '<ov-tree label="Project files"></ov-tree>';
-    const element = document.querySelector('ov-tree') as import('../src/components/tree.js').OvTree;
+    const element = document.querySelector('ov-tree') as import('@ovlira/elements/tree.js').OvTree;
     element.items = [{ value: 'src', label: 'src', children: [{ value: 'main', label: 'main.ts' }] }, { value: 'readme', label: 'README.md' }];
     element.expanded = ['src'];
     element.value = 'main';
@@ -407,7 +407,7 @@ describe('Ovlira components', () => {
 
   it('renders stepper progress with aligned markers and stateful connectors', async () => {
     document.body.innerHTML = '<ov-stepper value="access" orientation="vertical"></ov-stepper>';
-    const element = document.querySelector('ov-stepper') as import('../src/components/stepper.js').OvStepper;
+    const element = document.querySelector('ov-stepper') as import('@ovlira/elements/stepper.js').OvStepper;
     element.items = [{ value: 'details', label: 'Details' }, { value: 'access', label: 'Access', description: 'Choose who can enter.' }, { value: 'review', label: 'Review' }];
     await element.updateComplete;
     const steps = [...(element.shadowRoot?.querySelectorAll<HTMLElement>('[part="step"]') ?? [])];
@@ -423,7 +423,7 @@ describe('Ovlira components', () => {
 
   it('opens and closes a drawer with native dialog semantics', async () => {
     document.body.innerHTML = '<ov-drawer heading="Filters" description="Refine the visible projects." open><p>Choose filters.</p></ov-drawer>';
-    const element = document.querySelector('ov-drawer') as import('../src/components/drawer.js').OvDrawer;
+    const element = document.querySelector('ov-drawer') as import('@ovlira/elements/drawer.js').OvDrawer;
     await element.updateComplete;
     const dialog = element.shadowRoot?.querySelector('dialog');
     expect(dialog?.open).toBe(true);
@@ -439,7 +439,7 @@ describe('Ovlira components', () => {
 
   it('renders property-backed table data without requiring JSON attributes', async () => {
     document.body.innerHTML = '<ov-data-table caption="Projects"></ov-data-table>';
-    const element = document.querySelector('ov-data-table') as import('../src/components/data-table.js').OvDataTable;
+    const element = document.querySelector('ov-data-table') as import('@ovlira/elements/data-table.js').OvDataTable;
     element.columns = [{ key: 'name', label: 'Name' }];
     element.rows = [{ name: 'Northstar' }];
     await element.updateComplete;
@@ -449,7 +449,7 @@ describe('Ovlira components', () => {
 
   it('scopes application-shell navigation styles to the nav slot', async () => {
     document.body.innerHTML = '<ov-application-shell><a slot="nav" href="#overview">Overview</a></ov-application-shell>';
-    const element = document.querySelector('ov-application-shell') as import('../src/components/application-shell.js').OvApplicationShell;
+    const element = document.querySelector('ov-application-shell') as import('@ovlira/elements/application-shell.js').OvApplicationShell;
     await element.updateComplete;
     const navSlot = element.shadowRoot?.querySelector('slot[name="nav"]');
     expect(navSlot?.classList.contains('nav-slot')).toBe(true);

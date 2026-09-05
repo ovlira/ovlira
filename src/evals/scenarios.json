@@ -22,5 +22,29 @@
     "searchQuery": "empty state",
     "targetId": "state.empty",
     "targetKind": "recipe"
+  },
+  {
+    "id": "search-recipe",
+    "title": "Project search screen",
+    "prompt": "A product team needs a searchable project directory with filters, results, loading, empty, and error states. Choose the highest-level approved recipe and leave its domain data and actions adaptable.",
+    "searchQuery": "search page",
+    "targetId": "page.search",
+    "targetKind": "recipe"
+  },
+  {
+    "id": "crud-recipe",
+    "title": "Manage a team directory",
+    "prompt": "An operations team needs to browse and create records in a small management table. Prefer the approved page recipe that includes a create flow and observable states.",
+    "searchQuery": "crud table",
+    "targetId": "page.crud-table",
+    "targetKind": "recipe"
+  },
+  {
+    "id": "detail-recipe",
+    "title": "Customer detail screen",
+    "prompt": "A support tool needs a detail screen for one customer with identity, editable fields, navigation back, and ready/error states. Choose the approved complete recipe.",
+    "searchQuery": "detail page",
+    "targetId": "page.detail",
+    "targetKind": "recipe"
   }
 ]

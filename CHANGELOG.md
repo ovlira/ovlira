@@ -2,6 +2,17 @@
 
 ## Unreleased
 
+## 0.4.0 — agent-ready package composition
+
+- Hardened repeated recipe use so adapted application files and registered recipe paths are preserved on conflict.
+- Added trusted-publishing-safe package publication with integrity checks and completed the 11/12 independent adaptation benchmark gate with zero data-loss failures.
+
+- Split the package-managed runtime into `@ovlira/elements`; the local CLI now generates application-owned recipe compositions with direct subpath imports.
+- Added real Intro, Install, Workflow, Tokens, Validation, and Catalogue routes to the marketing site.
+- Added fresh npm installation, local CLI, build/check, and clean-reinstall smoke coverage for both candidate tarballs in PR CI.
+- Preserve registered recipe paths when re-adding a recipe, preventing an adapted screen from being silently replaced in the project manifest by a second generated copy.
+- Initialize component visual tests with a persisted theme before navigation to avoid wrong-theme captures.
+
 ## 0.3.0 — complete theme and catalogue foundation
 
 - Added the approved warm-paper contrasting theme, wired it into the recipe and authored-reference harnesses, and digest-bound its approved evidence across all fixtures, states, and required viewports.

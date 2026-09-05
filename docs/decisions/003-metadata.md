@@ -14,7 +14,7 @@ CEM is a useful base for tags, properties, slots, events, parts, and CSS propert
 
 ## Decision
 
-Generate `custom-elements.json` for runtime API metadata and supplement it with compact Ovlira descriptors in `src/catalogue/*.json`.
+Generate `packages/elements/custom-elements.json` for runtime API metadata and supplement it with compact Ovlira descriptors in `src/catalogue/*.json`.
 
 ## Consequence for Ovlira
 

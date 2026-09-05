@@ -1,0 +1,7 @@
+{
+  "private": true,
+  "type": "module",
+  "scripts": { "ovlira": "ovlira" },
+  "dependencies": { "@ovlira/elements": "^0.4.0" },
+  "devDependencies": { "@ovlira/cli": "^0.4.0" }
+}

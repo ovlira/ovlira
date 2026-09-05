@@ -6,7 +6,7 @@ The theme artifact and its 33 rendered recipe/reference baselines were approved 
 
 ## Required deliverable
 
-The supplied CSS file overrides the semantic surface used by [`src/tokens/tokens.css`](../../src/tokens/tokens.css):
+The supplied CSS file overrides the semantic surface used by [`packages/elements/src/default-theme.css`](../../packages/elements/src/default-theme.css):
 
 - `--ov-bg`, `--ov-surface`, `--ov-surface-raised`, `--ov-text`, `--ov-muted`, and `--ov-faint`;
 - `--ov-border`, `--ov-hover`, and `--ov-focus`;

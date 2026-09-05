@@ -16,10 +16,10 @@ describe('Codex evaluation harness', () => {
   it('runs all scenario assertions offline without Codex or network access', async () => {
     const report = await runEvaluator({ offline: true, runs: 2 });
     expect(report.mode).toBe('offline');
-    expect(report.summary).toMatchObject({ runs: 2, scenarioCount: 3, total: 6, passed: 6, failed: 0, passRate: 1 });
+    expect(report.summary).toMatchObject({ runs: 2, scenarioCount: 6, total: 12, passed: 12, failed: 0, passRate: 1 });
     expect(report.scenarios.every((scenario) => scenario.passed)).toBe(true);
-    expect(report.scenarios.every((scenario) => scenario.steps.at(-1)?.op === 'check')).toBe(true);
-  });
+    expect(report.scenarios.every((scenario) => scenario.steps.at(-2)?.op === 'check' && scenario.steps.at(-1)?.op === 'build')).toBe(true);
+  }, 30_000);
 
   it('rejects an unknown scenario before creating a run', async () => {
     await expect(runEvaluator({ offline: true, scenarioId: 'missing-scenario' })).rejects.toThrow('Unknown eval scenario');

@@ -1,0 +1,113 @@
+---
+import '../styles.css';
+
+interface Props {
+  eyebrow: string;
+  title: string;
+  description: string;
+  pageTitle?: string;
+}
+
+const { eyebrow, title, description, pageTitle = `${title} · Ovlira` } = Astro.props;
+const pathname = Astro.url.pathname;
+const nav = [
+  { href: '/', label: 'Intro' },
+  { href: '/catalogue/', label: 'Catalogue' },
+  { href: '/workflow/', label: 'Workflow' },
+  { href: '/install/', label: 'Install' },
+  { href: '/tokens/', label: 'Tokens' },
+  { href: '/validation/', label: 'Validation' },
+];
+const isActive = (href: string) => href === '/' ? pathname === '/' : pathname.startsWith(href);
+const projectLinks = [
+  { label: 'GitHub', href: 'https://github.com/ovlira/ovlira' },
+  { label: 'npm', href: 'https://www.npmjs.com/package/@ovlira/cli' },
+];
+---
+
+<!doctype html>
+<html lang="en" data-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="description" content="Ovlira is a local catalogue of human-designed UI guidance for coding agents." />
+    <meta name="theme-color" content="#ffffff" />
+    <title>{pageTitle}</title>
+    <script is:inline>
+      (() => {
+        const stored = localStorage.getItem('ovlira-theme');
+        const theme = stored === 'dark' || stored === 'light' ? stored : matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        document.documentElement.dataset.theme = theme;
+      })();
+    </script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">Skip to content</a>
+    <div class="app">
+      <aside class="sidebar">
+        <a class="brand brand-link" href="/" aria-label="Ovlira home">
+          <span class="brand-row"><span class="brand-name">Ovlira</span><span class="version">0.3</span></span>
+          <span class="brand-description">Local UI guidance for coding agents.</span>
+        </a>
+        <nav aria-label="Toolkit">
+          <div class="nav-label">Toolkit</div>
+          {nav.map((item) => (
+            <a class:list={['nav-button', isActive(item.href) && 'active']} href={item.href} aria-current={isActive(item.href) ? 'page' : undefined}>{item.label}</a>
+          ))}
+        </nav>
+        <div class="sidebar-spacer"></div>
+        <div class="sidebar-meta">Local catalogue<br />Deterministic output</div>
+      </aside>
+
+      <main id="main-content" class="main">
+        <div class="content">
+          <nav class="mobile-nav" aria-label="Toolkit">
+            {nav.map((item) => (
+              <a class:list={[isActive(item.href) && 'active']} href={item.href} aria-current={isActive(item.href) ? 'page' : undefined}>{item.label}</a>
+            ))}
+          </nav>
+
+          <header class="topbar">
+            <div>
+              <div class="eyebrow">{eyebrow}</div>
+              <h1 class="page-title">{title}</h1>
+              <p class="page-description">{description}</p>
+            </div>
+            <div class="top-actions">
+              <nav class="project-links" aria-label="Project resources">
+                {projectLinks.map((link) => <a class="project-link" href={link.href} target="_blank" rel="noreferrer">{link.label}<span aria-hidden="true">↗</span></a>)}
+              </nav>
+              <button class="icon-button" type="button" data-theme-toggle aria-label="Switch to dark theme"><span aria-hidden="true">◐</span></button>
+            </div>
+          </header>
+
+          <slot />
+        </div>
+      </main>
+    </div>
+
+    <script>
+      const root = document.documentElement;
+      const themeButton = document.querySelector('[data-theme-toggle]');
+      const themeMeta = document.querySelector('meta[name="theme-color"]');
+      const setTheme = (theme, persist = true) => {
+        root.dataset.theme = theme;
+        if (persist) localStorage.setItem('ovlira-theme', theme);
+        themeMeta?.setAttribute('content', theme === 'dark' ? '#111111' : '#ffffff');
+        themeButton?.setAttribute('aria-label', `Switch to ${theme === 'dark' ? 'light' : 'dark'} theme`);
+      };
+      const storedTheme = localStorage.getItem('ovlira-theme');
+      const hasStoredTheme = storedTheme === 'dark' || storedTheme === 'light';
+      setTheme(hasStoredTheme ? storedTheme : root.dataset.theme, hasStoredTheme);
+      themeButton?.addEventListener('click', () => setTheme(root.dataset.theme === 'dark' ? 'light' : 'dark'));
+
+      document.querySelectorAll('[data-copy-command]').forEach((button) => button.addEventListener('click', async () => {
+        const code = button.closest('.code-block')?.querySelector('code')?.textContent ?? '';
+        if (!code) return;
+        await navigator.clipboard.writeText(code);
+        button.textContent = 'Copied';
+        window.setTimeout(() => { button.textContent = 'Copy'; }, 1400);
+      }));
+    </script>
+  </body>
+</html>

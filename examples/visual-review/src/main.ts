@@ -1,6 +1,6 @@
 import '@fontsource-variable/inter/wght.css';
-import '../../../src/components/index.ts';
-import '../../../src/tokens/tokens.css';
+import '@ovlira/elements/register-all.js';
+import '@ovlira/elements/default-theme.css';
 import '../../../docs/design/ovlira-contrast-theme.css';
 import { recipeFixture, recipeFixtureMarkup, recipeFixtureStyles, recipeFixtures, type RecipeFixtureId } from '../../../src/recipes/fixtures.ts';
 import './styles.css';

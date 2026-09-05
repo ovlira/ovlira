@@ -1,6 +1,6 @@
 {
   "name": "@ovlira/cli",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "A local, token-efficient UI prototyping toolkit for coding agents.",
   "keywords": [
     "design-system",
@@ -12,7 +12,9 @@
   ],
   "license": "MIT",
   "type": "module",
-  "customElements": "./custom-elements.json",
+  "workspaces": [
+    "packages/*"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ovlira/ovlira.git"
@@ -28,32 +30,24 @@
     "ovlira": "dist/cli/bin.js"
   },
   "exports": {
-    ".": "./dist/index.js",
-    "./components/*.js": "./dist/components/*.js"
+    ".": "./dist/index.js"
   },
   "files": [
     "dist",
-    "src",
-    "custom-elements.json",
-    "custom-elements-manifest.config.mjs",
     "README.md",
     "CHANGELOG.md",
-    "DESIGN.md",
-    "ui.html",
-    "inter.css",
-    "LICENSE",
-    "docs",
-    "examples",
-    "AGENTS.md",
-    "CLAUDE.md"
+    "LICENSE"
   ],
   "engines": {
     "node": ">=20.19.0"
   },
   "scripts": {
-    "build": "tsc -p tsconfig.json",
+    "clean": "node scripts/clean-dist.mjs",
+    "build": "npm run clean && npm run build --workspace @ovlira/elements && tsc -p tsconfig.json && npm run marketing:build",
+    "deploy": "npm run build && npx wrangler deploy",
     "test": "npm run build && vitest run",
     "test:watch": "vitest",
+    "ovlira": "node dist/cli/bin.js",
     "manifest": "cem analyze --litelement",
     "metadata:check": "node dist/cli/index.js metadata --json",
     "review:visual": "vite --config examples/visual-review/vite.config.ts",
@@ -71,7 +65,10 @@
     "component-visual:manifest": "node scripts/generate-component-visual-manifest.mjs",
     "component-visual:approve": "node scripts/generate-component-visual-manifest.mjs --approve",
     "test:ui": "playwright test",
-    "release:check:package": "npm test && npm run manifest && npm run check:fixtures && npm run reference:design:build && npm run review:visual:build && npm run marketing:build && npm pack --dry-run",
+    "pack:check": "npm pack --dry-run && npm pack --dry-run --workspace @ovlira/elements",
+    "package:smoke": "node scripts/package-smoke.mjs",
+    "adaptation:check": "npm --prefix examples/adaptation run build && npm run ovlira -- check --cwd examples/adaptation --json",
+    "release:check:package": "npm test && npm run manifest && npm run check:fixtures && npm run adaptation:check && npm run reference:design:build && npm run review:visual:build && npm run marketing:build && npm run pack:check && npm run package:smoke",
     "release:check": "npm run release:check:package && npm run test:ui && npm run test:component-visual",
     "eval:codex": "npm run build && node dist/evals/runner.js",
     "benchmark:codex": "npm run build && node dist/evals/runner.js --runs 3",
@@ -81,7 +78,7 @@
     "check:fixtures": "node dist/cli/index.js check --json --cwd tests/fixtures/valid-project && ! node dist/cli/index.js check --json --cwd tests/fixtures/invalid-project"
   },
   "dependencies": {
-    "lit": "^3.3.0",
+    "@ovlira/elements": "0.4.0",
     "typescript": "^5.8.3"
   },
   "devDependencies": {

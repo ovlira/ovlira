@@ -10,13 +10,16 @@ Each scenario gives Codex a user request and only the compact results of an init
 search → inspect → add
 ```
 
-The runner validates the plan, initializes a temporary project, executes the plan through Ovlira's CLI implementation, runs `ovlira check`, and records the result. Generated plans cannot execute arbitrary shell commands or mutate the repository. Temporary projects are removed unless `--keep` is passed.
+The runner validates the plan, initializes a temporary package-mode project, executes the plan through Ovlira's CLI implementation, runs `npm run ovlira -- check`, builds the generated project with `npm run build`, and records the result. Generated plans cannot execute arbitrary shell commands or mutate the repository. Temporary projects are removed unless `--keep` is passed.
 
-Scenarios currently cover:
+Scenarios currently cover six domains and building-block decisions:
 
 - choosing the settings recipe for a complete screen;
 - choosing the input component for a focused field;
-- choosing the empty-state recipe for an empty collection.
+- choosing the empty-state recipe for an empty collection;
+- choosing the search recipe for a project directory;
+- choosing the CRUD-table recipe for a team directory; and
+- choosing the detail recipe for a customer support screen.
 
 Scenario contracts live in [`src/evals/scenarios.json`](../src/evals/scenarios.json). The Codex response contract lives in [`src/evals/codex-plan.schema.json`](../src/evals/codex-plan.schema.json).
 
@@ -38,6 +41,8 @@ npm run benchmark:codex -- --runs 3 --report reports/baseline.json
 
 The live mode uses `codex exec` with an ephemeral read-only workspace, a strict output schema, no project documents, no skills/memories/apps, and no shell or browser tools. The profile hash is recorded in every report so later comparisons can distinguish prompt/config changes from model changes.
 
+Baseline on 2026-09-01: GPT-5.6 Luna selected the expected target in all six scenarios and passed every `search → inspect → add → check → build` run (6/6, 100%). A two-run repeatability pass also passed all 12 runs. The page-level scenarios included search, CRUD, and detail domains; the empty-state scenario also verified that the recipe was chosen when the primitive ranked first.
+
 The runner records Codex CLI version, model, profile hash, latency, schema success, total input, cached input, uncached input, output, reasoning, and total tokens. Cached input is reported separately; it is not treated as proof that the prompt became smaller.
 
 ## Ovlira output budgets
@@ -51,7 +56,7 @@ The estimator counts UTF-8 bytes and rounds up at four bytes per estimated token
 - full inspect: 900; and
 - a normal `search → focused inspect → add → check` workflow: 1,500 total.
 
-The workflow assertion counts one JSON response from each command. Human visual approval, successful builds, and provider token reports remain separate exit criteria.
+The workflow assertion counts one JSON response from each command. Human visual approval and provider token reports remain separate exit criteria; generated-project build success is part of the evaluator result.
 
 If authentication is available from an isolated Codex home, pass `--codex-home PATH`. Otherwise the runner preserves the normal Codex authentication location while suppressing unrelated context with `--ignore-user-config` and the compact profile flags.
 

@@ -3,8 +3,8 @@
 This is the runnable example produced by:
 
 ```bash
-ovlira init ./settings-page
-ovlira add page.settings --cwd ./settings-page
+npm run ovlira -- init ./settings-page
+npm run ovlira -- add page.settings --cwd ./settings-page
 cd settings-page
 npm install
 npm run dev

@@ -1,4 +1,6 @@
-import './components/ovlira/page-header.js';
+import '@ovlira/elements/page-header.js';
+import '@ovlira/elements/input.js';
+import '@ovlira/elements/button.js';
 
 const app = document.querySelector('#app');
 if (app) app.innerHTML = `

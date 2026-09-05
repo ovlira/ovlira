@@ -1,0 +1,46 @@
+---
+import MarketingLayout from '../layouts/MarketingLayout.astro';
+const workflow = ['search', 'inspect', 'add', 'compose', 'check'];
+---
+
+<MarketingLayout eyebrow="Agent path" title="Short, deterministic workflow" description="Five local operations keep retrieval bounded and implementation auditable." pageTitle="Workflow · Ovlira">
+  <div class="document-page">
+    <section class="section" aria-labelledby="workflow-heading">
+      <h2 id="workflow-heading" class="section-heading">Sequence</h2>
+      <div class="workflow">{workflow.map((step, index) => <div class="workflow-step"><strong>{step}</strong><span>0{index + 1}</span></div>)}</div>
+    </section>
+
+    <section class="section" aria-labelledby="workflow-contract-heading">
+      <h2 id="workflow-contract-heading" class="section-heading">Working contract</h2>
+      <ol class="process-list">
+        <li class="process-row"><span class="process-index">01</span><div><strong>Search narrowly</strong><p>Return at most eight compact candidates. Prefer a recipe when the task describes a complete screen.</p></div></li>
+        <li class="process-row"><span class="process-index">02</span><div><strong>Inspect one descriptor</strong><p>Read only the API, guidance, or example section needed for the current decision.</p></div></li>
+        <li class="process-row"><span class="process-index">03</span><div><strong>Generate composition</strong><p>Add local application structure, explicit package imports, and a project-owned theme override.</p></div></li>
+        <li class="process-row"><span class="process-index">04</span><div><strong>Adapt the product</strong><p>Implement domain copy, data, actions, routing, and state transitions in application code.</p></div></li>
+        <li class="process-row"><span class="process-index">05</span><div><strong>Build and check</strong><p>Compile the project, run stable diagnostics, then inspect the rendered result at required viewports.</p></div></li>
+      </ol>
+    </section>
+
+    <section class="section" aria-labelledby="workflow-run-heading">
+      <h2 id="workflow-run-heading" class="section-heading">Typical run</h2>
+      <div class="code-block">
+        <div class="code-block-head"><span>Terminal</span><button type="button" class="copy-button" data-copy-command aria-live="polite">Copy</button></div>
+        <pre><code>npm run ovlira -- search "settings page" --json
+npm run ovlira -- inspect page.settings --section guidance --json
+npm run ovlira -- add page.settings
+npm run build
+npm run ovlira -- check --json</code></pre>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="workflow-output-heading">
+      <h2 id="workflow-output-heading" class="section-heading">What stays local</h2>
+      <dl class="fields">
+        <div class="field"><dt>Catalogue</dt><dd>Package metadata read by the CLI.</dd></div>
+        <div class="field"><dt>Composition</dt><dd>Application-owned TypeScript generated from a recipe.</dd></div>
+        <div class="field"><dt>Theme</dt><dd>Small project-owned overrides layered over the default tokens.</dd></div>
+        <div class="field"><dt>Diagnostics</dt><dd>Structured JSON suitable for agents and CI.</dd></div>
+      </dl>
+    </section>
+  </div>
+</MarketingLayout>

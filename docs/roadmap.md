@@ -49,14 +49,14 @@ A successful prototype is ordinary local frontend source that:
 
 Ovlira does not need to generate production backends, solve deployment, or provide a visual editor for this definition to be useful.
 
-## Current position: v0.2
+## Current position: package refactor after v0.2
 
 The initial release proves the technical vertical slice:
 
-- one local npm package with no server or model dependency;
+- two local npm packages (`@ovlira/cli` and `@ovlira/elements`) with no server or model dependency;
 - thirty-five Lit components and six domain-neutral recipes;
 - bounded catalogue search and focused inspection;
-- source copying with conflict protection and explicit local ownership;
+- local recipe generation with explicit component imports and conflict protection;
 - global CSS custom properties for the initial palette and typography;
 - static and runtime-facing validation contracts; and
 - offline and opt-in live evaluations with token reporting.

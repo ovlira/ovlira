@@ -1,0 +1,44 @@
+---
+import MarketingLayout from '../layouts/MarketingLayout.astro';
+const validation = [
+  ['Unknown elements', 'Reject unregistered ov-* tags.'],
+  ['Required content', 'Check metadata for mandatory labels, captions, and props.'],
+  ['Composition', 'Flag invalid nesting and multiple primary actions.'],
+  ['Recipe states', 'Require declared loading, empty, error, and success markers.'],
+  ['Design tokens', 'Report obvious unapproved colour and token-category literals.'],
+  ['Document structure', 'Catch basic heading hierarchy problems.'],
+];
+---
+
+<MarketingLayout eyebrow="Guardrails" title="Source-level validation" description="Stable diagnostics catch catalogue misuse before visual and accessibility review." pageTitle="Validation · Ovlira">
+  <div class="document-page">
+    <div class="validation-summary" role="status"><span class="status-mark" aria-hidden="true"></span><div><strong>Example project passes.</strong><span>0 errors · 0 warnings · 1 file scanned</span></div></div>
+
+    <section class="section" aria-labelledby="validation-heading">
+      <h2 id="validation-heading" class="section-heading">Checks</h2>
+      <div class="validation-list">{validation.map(([title, detail]) => <div class="validation-row"><div><div class="validation-title">{title}</div><div class="validation-detail">{detail}</div></div><div class="status good">Pass</div></div>)}</div>
+    </section>
+
+    <section class="section" aria-labelledby="validation-command-heading">
+      <h2 id="validation-command-heading" class="section-heading">Run locally</h2>
+      <div class="code-block">
+        <div class="code-block-head"><span>Terminal</span><button type="button" class="copy-button" data-copy-command aria-live="polite">Copy</button></div>
+        <pre><code>npm run ovlira -- check --json</code></pre>
+      </div>
+      <div class="diagnostic-example" aria-label="Example diagnostic">
+        <span class="diagnostic-level">error</span>
+        <code>component.not-imported</code>
+        <span>Import the package module that renders <code>&lt;ov-button&gt;</code>.</span>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="validation-boundary-heading">
+      <h2 id="validation-boundary-heading" class="section-heading">Boundary</h2>
+      <dl class="fields">
+        <div class="field"><dt>Source check</dt><dd>Imports, metadata contracts, recipe markers, token literals, and basic structure.</dd></div>
+        <div class="field"><dt>Browser check</dt><dd>Interaction, responsive layout, rendered accessibility, and component behaviour.</dd></div>
+        <div class="field"><dt>Human review</dt><dd>Visual quality, product fit, content judgment, and approval.</dd></div>
+      </dl>
+    </section>
+  </div>
+</MarketingLayout>

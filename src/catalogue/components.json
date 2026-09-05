@@ -5,27 +5,72 @@
     "title": "Button",
     "description": "A native button with a restrained set of intent, size, and loading states.",
     "category": "actions",
-    "tags": ["action", "form", "primary", "secondary", "destructive"],
+    "tags": [
+      "action",
+      "form",
+      "primary",
+      "secondary",
+      "destructive"
+    ],
     "api": {
       "tag": "ov-button",
-      "importPath": "./components/ovlira/button.js",
+      "importPath": "@ovlira/elements/button.js",
       "props": [
-        { "name": "variant", "type": "'primary' | 'secondary' | 'quiet' | 'danger'", "description": "Visual and semantic intent.", "default": "primary", "reflected": true },
-        { "name": "size", "type": "'sm' | 'md' | 'lg'", "description": "Control height and padding.", "default": "md", "reflected": true },
-        { "name": "loading", "type": "boolean", "description": "Disables the button and communicates progress.", "default": "false", "reflected": true },
-        { "name": "disabled", "type": "boolean", "description": "Prevents interaction.", "default": "false", "reflected": true }
+        {
+          "name": "variant",
+          "type": "'primary' | 'secondary' | 'quiet' | 'danger'",
+          "description": "Visual and semantic intent.",
+          "default": "primary",
+          "reflected": true
+        },
+        {
+          "name": "size",
+          "type": "'sm' | 'md' | 'lg'",
+          "description": "Control height and padding.",
+          "default": "md",
+          "reflected": true
+        },
+        {
+          "name": "loading",
+          "type": "boolean",
+          "description": "Disables the button and communicates progress.",
+          "default": "false",
+          "reflected": true
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "description": "Prevents interaction.",
+          "default": "false",
+          "reflected": true
+        }
       ],
       "events": [],
-      "slots": ["default: button label"],
-      "cssCustomProperties": ["--ov-button-radius"],
-      "parts": ["button"]
+      "slots": [
+        "default: button label"
+      ],
+      "cssCustomProperties": [
+        "--ov-button-radius"
+      ],
+      "parts": [
+        "button"
+      ]
     },
     "guidance": {
-      "useWhen": ["The user needs to submit, confirm, or move forward."],
-      "avoidWhen": ["The action is navigation; use a native link instead."],
-      "constraints": ["Use one primary button per form or task region.", "Keep the label action-first and specific."],
+      "useWhen": [
+        "The user needs to submit, confirm, or move forward."
+      ],
+      "avoidWhen": [
+        "The action is navigation; use a native link instead."
+      ],
+      "constraints": [
+        "Use one primary button per form or task region.",
+        "Keep the label action-first and specific."
+      ],
       "requiredProps": [],
-      "disallowedChildren": ["ov-button"],
+      "disallowedChildren": [
+        "ov-button"
+      ],
       "example": "examples/components/button.md"
     }
   },
@@ -35,31 +80,105 @@
     "title": "Textarea",
     "description": "A labelled native multiline text field with help, error, and required states.",
     "category": "forms",
-    "tags": ["form", "text", "long-form", "field", "validation"],
+    "tags": [
+      "form",
+      "text",
+      "long-form",
+      "field",
+      "validation"
+    ],
     "api": {
       "tag": "ov-textarea",
-      "importPath": "./components/ovlira/textarea.js",
+      "importPath": "@ovlira/elements/textarea.js",
       "props": [
-        { "name": "label", "type": "string", "description": "Visible accessible label.", "required": true, "reflected": true },
-        { "name": "name", "type": "string", "description": "Native form field name.", "reflected": true },
-        { "name": "value", "type": "string", "description": "Current textarea value." },
-        { "name": "placeholder", "type": "string", "description": "Optional prompt for the expected content.", "reflected": true },
-        { "name": "rows", "type": "number", "description": "Visible text rows.", "default": "4", "reflected": true },
-        { "name": "required", "type": "boolean", "description": "Marks the field as required.", "default": "false", "reflected": true },
-        { "name": "disabled", "type": "boolean", "description": "Prevents interaction.", "default": "false", "reflected": true },
-        { "name": "error", "type": "string", "description": "Validation message." },
-        { "name": "helpText", "type": "string", "description": "Supporting guidance.", "reflected": false }
+        {
+          "name": "label",
+          "type": "string",
+          "description": "Visible accessible label.",
+          "required": true,
+          "reflected": true
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "description": "Native form field name.",
+          "reflected": true
+        },
+        {
+          "name": "value",
+          "type": "string",
+          "description": "Current textarea value."
+        },
+        {
+          "name": "placeholder",
+          "type": "string",
+          "description": "Optional prompt for the expected content.",
+          "reflected": true
+        },
+        {
+          "name": "rows",
+          "type": "number",
+          "description": "Visible text rows.",
+          "default": "4",
+          "reflected": true
+        },
+        {
+          "name": "required",
+          "type": "boolean",
+          "description": "Marks the field as required.",
+          "default": "false",
+          "reflected": true
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "description": "Prevents interaction.",
+          "default": "false",
+          "reflected": true
+        },
+        {
+          "name": "error",
+          "type": "string",
+          "description": "Validation message."
+        },
+        {
+          "name": "helpText",
+          "type": "string",
+          "description": "Supporting guidance.",
+          "reflected": false
+        }
       ],
-      "events": [{ "name": "input", "description": "Native input event retargeted from the shadow root." }],
+      "events": [
+        {
+          "name": "input",
+          "description": "Native input event retargeted from the shadow root."
+        }
+      ],
       "slots": [],
-      "cssCustomProperties": ["--ov-field-accent"],
-      "parts": ["field", "label", "textarea", "message"]
+      "cssCustomProperties": [
+        "--ov-field-accent"
+      ],
+      "parts": [
+        "field",
+        "label",
+        "textarea",
+        "message"
+      ]
     },
     "guidance": {
-      "useWhen": ["A user must enter a short-to-medium length multiline value."],
-      "avoidWhen": ["The response is a single short value; use ov-input instead."],
-      "constraints": ["Always provide a visible label; placeholder text is not a label.", "Keep the field sized to the expected response rather than the entire page."],
-      "requiredProps": ["label"],
+      "useWhen": [
+        "A user must enter a short-to-medium length multiline value."
+      ],
+      "avoidWhen": [
+        "The response is a single short value; use ov-input instead."
+      ],
+      "constraints": [
+        "Always provide a visible label; placeholder text is not a label.",
+        "Keep the field sized to the expected response rather than the entire page."
+      ],
+      "requiredProps": [
+        "label"
+      ],
       "example": "examples/components/textarea.md"
     }
   },
@@ -69,30 +188,99 @@
     "title": "Checkbox",
     "description": "A labelled native checkbox for boolean settings and selectable options.",
     "category": "forms",
-    "tags": ["form", "choice", "boolean", "selection", "field"],
+    "tags": [
+      "form",
+      "choice",
+      "boolean",
+      "selection",
+      "field"
+    ],
     "api": {
       "tag": "ov-checkbox",
-      "importPath": "./components/ovlira/checkbox.js",
+      "importPath": "@ovlira/elements/checkbox.js",
       "props": [
-        { "name": "label", "type": "string", "description": "Visible accessible label.", "required": true, "reflected": true },
-        { "name": "name", "type": "string", "description": "Native form field name.", "reflected": true },
-        { "name": "value", "type": "string", "description": "Submitted checkbox value.", "default": "on", "reflected": true },
-        { "name": "checked", "type": "boolean", "description": "Whether the checkbox is selected.", "default": "false", "reflected": true },
-        { "name": "required", "type": "boolean", "description": "Requires the checkbox to be selected.", "default": "false", "reflected": true },
-        { "name": "disabled", "type": "boolean", "description": "Prevents interaction.", "default": "false", "reflected": true },
-        { "name": "error", "type": "string", "description": "Validation message." },
-        { "name": "helpText", "type": "string", "description": "Supporting guidance.", "reflected": false }
+        {
+          "name": "label",
+          "type": "string",
+          "description": "Visible accessible label.",
+          "required": true,
+          "reflected": true
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "description": "Native form field name.",
+          "reflected": true
+        },
+        {
+          "name": "value",
+          "type": "string",
+          "description": "Submitted checkbox value.",
+          "default": "on",
+          "reflected": true
+        },
+        {
+          "name": "checked",
+          "type": "boolean",
+          "description": "Whether the checkbox is selected.",
+          "default": "false",
+          "reflected": true
+        },
+        {
+          "name": "required",
+          "type": "boolean",
+          "description": "Requires the checkbox to be selected.",
+          "default": "false",
+          "reflected": true
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "description": "Prevents interaction.",
+          "default": "false",
+          "reflected": true
+        },
+        {
+          "name": "error",
+          "type": "string",
+          "description": "Validation message."
+        },
+        {
+          "name": "helpText",
+          "type": "string",
+          "description": "Supporting guidance.",
+          "reflected": false
+        }
       ],
-      "events": [{ "name": "change", "description": "Native change event retargeted from the shadow root." }],
+      "events": [
+        {
+          "name": "change",
+          "description": "Native change event retargeted from the shadow root."
+        }
+      ],
       "slots": [],
       "cssCustomProperties": [],
-      "parts": ["field", "label", "checkbox", "message"]
+      "parts": [
+        "field",
+        "label",
+        "checkbox",
+        "message"
+      ]
     },
     "guidance": {
-      "useWhen": ["A user needs to turn one independent option on or off."],
-      "avoidWhen": ["The user must choose exactly one option; use ov-select or a radio group."],
-      "constraints": ["Keep the visible label next to the control and meaningful without color.", "Group related checkboxes with a native fieldset and legend."],
-      "requiredProps": ["label"],
+      "useWhen": [
+        "A user needs to turn one independent option on or off."
+      ],
+      "avoidWhen": [
+        "The user must choose exactly one option; use ov-select or a radio group."
+      ],
+      "constraints": [
+        "Keep the visible label next to the control and meaningful without color.",
+        "Group related checkboxes with a native fieldset and legend."
+      ],
+      "requiredProps": [
+        "label"
+      ],
       "example": "examples/components/checkbox.md"
     }
   },
@@ -102,30 +290,96 @@
     "title": "Radio group",
     "description": "A labelled native radio group for choosing one option from a short list.",
     "category": "forms",
-    "tags": ["form", "choice", "radio", "selection", "field"],
+    "tags": [
+      "form",
+      "choice",
+      "radio",
+      "selection",
+      "field"
+    ],
     "api": {
       "tag": "ov-radio-group",
-      "importPath": "./components/ovlira/radio-group.js",
+      "importPath": "@ovlira/elements/radio-group.js",
       "props": [
-        { "name": "label", "type": "string", "description": "Visible group label.", "required": true, "reflected": true },
-        { "name": "name", "type": "string", "description": "Native radio group name.", "reflected": true },
-        { "name": "options", "type": "RadioOption[]", "description": "Options assigned as a property." },
-        { "name": "value", "type": "string", "description": "Selected option value." },
-        { "name": "required", "type": "boolean", "description": "Requires one option to be selected.", "default": "false", "reflected": true },
-        { "name": "disabled", "type": "boolean", "description": "Prevents interaction.", "default": "false", "reflected": true },
-        { "name": "error", "type": "string", "description": "Validation message." },
-        { "name": "helpText", "type": "string", "description": "Supporting guidance.", "reflected": false }
+        {
+          "name": "label",
+          "type": "string",
+          "description": "Visible group label.",
+          "required": true,
+          "reflected": true
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "description": "Native radio group name.",
+          "reflected": true
+        },
+        {
+          "name": "options",
+          "type": "RadioOption[]",
+          "description": "Options assigned as a property."
+        },
+        {
+          "name": "value",
+          "type": "string",
+          "description": "Selected option value."
+        },
+        {
+          "name": "required",
+          "type": "boolean",
+          "description": "Requires one option to be selected.",
+          "default": "false",
+          "reflected": true
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "description": "Prevents interaction.",
+          "default": "false",
+          "reflected": true
+        },
+        {
+          "name": "error",
+          "type": "string",
+          "description": "Validation message."
+        },
+        {
+          "name": "helpText",
+          "type": "string",
+          "description": "Supporting guidance.",
+          "reflected": false
+        }
       ],
-      "events": [{ "name": "change", "description": "Native change event retargeted from the shadow root." }],
+      "events": [
+        {
+          "name": "change",
+          "description": "Native change event retargeted from the shadow root."
+        }
+      ],
       "slots": [],
       "cssCustomProperties": [],
-      "parts": ["field", "label", "option", "radio", "message"]
+      "parts": [
+        "field",
+        "label",
+        "option",
+        "radio",
+        "message"
+      ]
     },
     "guidance": {
-      "useWhen": ["The user must choose exactly one option from a short, visible list."],
-      "avoidWhen": ["The list is long or the user may select several options; use ov-select or ov-checkbox instead."],
-      "constraints": ["Use a meaningful group label and keep each option label concise.", "Group related choices with a native fieldset and legend."],
-      "requiredProps": ["label"],
+      "useWhen": [
+        "The user must choose exactly one option from a short, visible list."
+      ],
+      "avoidWhen": [
+        "The list is long or the user may select several options; use ov-select or ov-checkbox instead."
+      ],
+      "constraints": [
+        "Use a meaningful group label and keep each option label concise.",
+        "Group related choices with a native fieldset and legend."
+      ],
+      "requiredProps": [
+        "label"
+      ],
       "example": "examples/components/radio-group.md"
     }
   },
@@ -135,30 +389,99 @@
     "title": "Toggle",
     "description": "A compact native switch for an immediate boolean setting.",
     "category": "forms",
-    "tags": ["form", "toggle", "boolean", "setting", "field"],
+    "tags": [
+      "form",
+      "toggle",
+      "boolean",
+      "setting",
+      "field"
+    ],
     "api": {
       "tag": "ov-toggle",
-      "importPath": "./components/ovlira/toggle.js",
+      "importPath": "@ovlira/elements/toggle.js",
       "props": [
-        { "name": "label", "type": "string", "description": "Visible accessible label.", "required": true, "reflected": true },
-        { "name": "name", "type": "string", "description": "Native form field name.", "reflected": true },
-        { "name": "value", "type": "string", "description": "Submitted switch value.", "default": "on", "reflected": true },
-        { "name": "checked", "type": "boolean", "description": "Whether the switch is enabled.", "default": "false", "reflected": true },
-        { "name": "required", "type": "boolean", "description": "Requires the switch to be enabled.", "default": "false", "reflected": true },
-        { "name": "disabled", "type": "boolean", "description": "Prevents interaction.", "default": "false", "reflected": true },
-        { "name": "error", "type": "string", "description": "Validation message." },
-        { "name": "helpText", "type": "string", "description": "Supporting guidance.", "reflected": false }
+        {
+          "name": "label",
+          "type": "string",
+          "description": "Visible accessible label.",
+          "required": true,
+          "reflected": true
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "description": "Native form field name.",
+          "reflected": true
+        },
+        {
+          "name": "value",
+          "type": "string",
+          "description": "Submitted switch value.",
+          "default": "on",
+          "reflected": true
+        },
+        {
+          "name": "checked",
+          "type": "boolean",
+          "description": "Whether the switch is enabled.",
+          "default": "false",
+          "reflected": true
+        },
+        {
+          "name": "required",
+          "type": "boolean",
+          "description": "Requires the switch to be enabled.",
+          "default": "false",
+          "reflected": true
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "description": "Prevents interaction.",
+          "default": "false",
+          "reflected": true
+        },
+        {
+          "name": "error",
+          "type": "string",
+          "description": "Validation message."
+        },
+        {
+          "name": "helpText",
+          "type": "string",
+          "description": "Supporting guidance.",
+          "reflected": false
+        }
       ],
-      "events": [{ "name": "change", "description": "Native change event retargeted from the shadow root." }],
+      "events": [
+        {
+          "name": "change",
+          "description": "Native change event retargeted from the shadow root."
+        }
+      ],
       "slots": [],
       "cssCustomProperties": [],
-      "parts": ["field", "label", "toggle", "message"]
+      "parts": [
+        "field",
+        "label",
+        "toggle",
+        "message"
+      ]
     },
     "guidance": {
-      "useWhen": ["A setting should switch on or off immediately without opening another flow."],
-      "avoidWhen": ["The user is selecting among options or triggering a one-time action; use ov-radio-group, ov-checkbox, or ov-button instead."],
-      "constraints": ["Keep the switch compact and pair it with an explicit text label.", "Use a toggle for an immediate setting, not for a submission or navigation action."],
-      "requiredProps": ["label"],
+      "useWhen": [
+        "A setting should switch on or off immediately without opening another flow."
+      ],
+      "avoidWhen": [
+        "The user is selecting among options or triggering a one-time action; use ov-radio-group, ov-checkbox, or ov-button instead."
+      ],
+      "constraints": [
+        "Keep the switch compact and pair it with an explicit text label.",
+        "Use a toggle for an immediate setting, not for a submission or navigation action."
+      ],
+      "requiredProps": [
+        "label"
+      ],
       "example": "examples/components/toggle.md"
     }
   },
@@ -168,28 +491,85 @@
     "title": "Input",
     "description": "A labelled native text input with help, error, and required states.",
     "category": "forms",
-    "tags": ["form", "text", "field", "label", "validation"],
+    "tags": [
+      "form",
+      "text",
+      "field",
+      "label",
+      "validation"
+    ],
     "api": {
       "tag": "ov-input",
-      "importPath": "./components/ovlira/input.js",
+      "importPath": "@ovlira/elements/input.js",
       "props": [
-        { "name": "label", "type": "string", "description": "Visible accessible label.", "required": true, "reflected": true },
-        { "name": "name", "type": "string", "description": "Native form field name.", "reflected": true },
-        { "name": "value", "type": "string", "description": "Current input value." },
-        { "name": "type", "type": "string", "description": "Native input type.", "default": "text", "reflected": true },
-        { "name": "required", "type": "boolean", "description": "Marks the field as required.", "default": "false", "reflected": true },
-        { "name": "error", "type": "string", "description": "Validation message." }
+        {
+          "name": "label",
+          "type": "string",
+          "description": "Visible accessible label.",
+          "required": true,
+          "reflected": true
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "description": "Native form field name.",
+          "reflected": true
+        },
+        {
+          "name": "value",
+          "type": "string",
+          "description": "Current input value."
+        },
+        {
+          "name": "type",
+          "type": "string",
+          "description": "Native input type.",
+          "default": "text",
+          "reflected": true
+        },
+        {
+          "name": "required",
+          "type": "boolean",
+          "description": "Marks the field as required.",
+          "default": "false",
+          "reflected": true
+        },
+        {
+          "name": "error",
+          "type": "string",
+          "description": "Validation message."
+        }
       ],
-      "events": [{ "name": "input", "description": "Native input event retargeted from the shadow root." }],
+      "events": [
+        {
+          "name": "input",
+          "description": "Native input event retargeted from the shadow root."
+        }
+      ],
       "slots": [],
-      "cssCustomProperties": ["--ov-field-accent"],
-      "parts": ["field", "label", "input", "message"]
+      "cssCustomProperties": [
+        "--ov-field-accent"
+      ],
+      "parts": [
+        "field",
+        "label",
+        "input",
+        "message"
+      ]
     },
     "guidance": {
-      "useWhen": ["A user must enter a short, single-line value."],
-      "avoidWhen": ["The response is long-form; use a native textarea until a dedicated recipe exists."],
-      "constraints": ["Always provide a visible label; placeholder text is not a label."],
-      "requiredProps": ["label"],
+      "useWhen": [
+        "A user must enter a short, single-line value."
+      ],
+      "avoidWhen": [
+        "The response is long-form; use a native textarea until a dedicated recipe exists."
+      ],
+      "constraints": [
+        "Always provide a visible label; placeholder text is not a label."
+      ],
+      "requiredProps": [
+        "label"
+      ],
       "example": "examples/components/input.md"
     }
   },
@@ -199,30 +579,93 @@
     "title": "Dialog",
     "description": "A native dialog for interruptive decisions with explicit open and modal semantics.",
     "category": "feedback",
-    "tags": ["dialog", "modal", "confirmation", "overlay", "decision"],
+    "tags": [
+      "dialog",
+      "modal",
+      "confirmation",
+      "overlay",
+      "decision"
+    ],
     "api": {
       "tag": "ov-dialog",
-      "importPath": "./components/ovlira/dialog.js",
+      "importPath": "@ovlira/elements/dialog.js",
       "props": [
-        { "name": "open", "type": "boolean", "description": "Whether the dialog is currently shown.", "default": "false", "reflected": true },
-        { "name": "modal", "type": "boolean", "description": "Whether opening blocks the rest of the document with a modal backdrop.", "default": "false", "reflected": true },
-        { "name": "heading", "type": "string", "description": "Accessible dialog heading.", "required": true, "reflected": true },
-        { "name": "description", "type": "string", "description": "Optional supporting context.", "reflected": true },
-        { "name": "dismissible", "type": "boolean", "description": "Whether the close action and Escape can dismiss the dialog.", "default": "true", "reflected": true }
+        {
+          "name": "open",
+          "type": "boolean",
+          "description": "Whether the dialog is currently shown.",
+          "default": "false",
+          "reflected": true
+        },
+        {
+          "name": "modal",
+          "type": "boolean",
+          "description": "Whether opening blocks the rest of the document with a modal backdrop.",
+          "default": "false",
+          "reflected": true
+        },
+        {
+          "name": "heading",
+          "type": "string",
+          "description": "Accessible dialog heading.",
+          "required": true,
+          "reflected": true
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "description": "Optional supporting context.",
+          "reflected": true
+        },
+        {
+          "name": "dismissible",
+          "type": "boolean",
+          "description": "Whether the close action and Escape can dismiss the dialog.",
+          "default": "true",
+          "reflected": true
+        }
       ],
       "events": [
-        { "name": "close", "description": "Dispatched when the dialog closes through its close action, Escape, or an external open change." },
-        { "name": "cancel", "description": "Dispatched when Escape requests dismissal; cancel the event to keep the dialog open." }
+        {
+          "name": "close",
+          "description": "Dispatched when the dialog closes through its close action, Escape, or an external open change."
+        },
+        {
+          "name": "cancel",
+          "description": "Dispatched when Escape requests dismissal; cancel the event to keep the dialog open."
+        }
       ],
-      "slots": ["default: dialog body", "actions: compact dialog actions"],
+      "slots": [
+        "default: dialog body",
+        "actions: compact dialog actions"
+      ],
       "cssCustomProperties": [],
-      "parts": ["dialog", "surface", "header", "heading", "description", "body", "actions", "close"]
+      "parts": [
+        "dialog",
+        "surface",
+        "header",
+        "heading",
+        "description",
+        "body",
+        "actions",
+        "close"
+      ]
     },
     "guidance": {
-      "useWhen": ["A decision is genuinely interruptive and the user must resolve it before continuing."],
-      "avoidWhen": ["The message can stay in page context; use ov-alert or an inline confirmation instead."],
-      "constraints": ["Provide a specific heading and an action that explains the consequence.", "Use modal=true only when losing the current context is acceptable or essential.", "Keep the body concise and offer a clear way to dismiss when the decision is not mandatory."],
-      "requiredProps": ["heading"],
+      "useWhen": [
+        "A decision is genuinely interruptive and the user must resolve it before continuing."
+      ],
+      "avoidWhen": [
+        "The message can stay in page context; use ov-alert or an inline confirmation instead."
+      ],
+      "constraints": [
+        "Provide a specific heading and an action that explains the consequence.",
+        "Use modal=true only when losing the current context is acceptable or essential.",
+        "Keep the body concise and offer a clear way to dismiss when the decision is not mandatory."
+      ],
+      "requiredProps": [
+        "heading"
+      ],
       "example": "examples/components/dialog.md"
     }
   },
@@ -232,27 +675,76 @@
     "title": "Select",
     "description": "A labelled native select for a small, known set of options.",
     "category": "forms",
-    "tags": ["form", "choice", "dropdown", "field"],
+    "tags": [
+      "form",
+      "choice",
+      "dropdown",
+      "field"
+    ],
     "api": {
       "tag": "ov-select",
-      "importPath": "./components/ovlira/select.js",
+      "importPath": "@ovlira/elements/select.js",
       "props": [
-        { "name": "label", "type": "string", "description": "Visible accessible label.", "required": true, "reflected": true },
-        { "name": "options", "type": "SelectOption[]", "description": "Options assigned as a property." },
-        { "name": "value", "type": "string", "description": "Selected option value." },
-        { "name": "required", "type": "boolean", "description": "Marks the field as required.", "default": "false", "reflected": true },
-        { "name": "error", "type": "string", "description": "Validation message." }
+        {
+          "name": "label",
+          "type": "string",
+          "description": "Visible accessible label.",
+          "required": true,
+          "reflected": true
+        },
+        {
+          "name": "options",
+          "type": "SelectOption[]",
+          "description": "Options assigned as a property."
+        },
+        {
+          "name": "value",
+          "type": "string",
+          "description": "Selected option value."
+        },
+        {
+          "name": "required",
+          "type": "boolean",
+          "description": "Marks the field as required.",
+          "default": "false",
+          "reflected": true
+        },
+        {
+          "name": "error",
+          "type": "string",
+          "description": "Validation message."
+        }
       ],
-      "events": [{ "name": "change", "description": "Native change event retargeted from the shadow root." }],
+      "events": [
+        {
+          "name": "change",
+          "description": "Native change event retargeted from the shadow root."
+        }
+      ],
       "slots": [],
-      "cssCustomProperties": ["--ov-field-accent"],
-      "parts": ["field", "label", "select", "message"]
+      "cssCustomProperties": [
+        "--ov-field-accent"
+      ],
+      "parts": [
+        "field",
+        "label",
+        "select",
+        "message"
+      ]
     },
     "guidance": {
-      "useWhen": ["The choice list is short enough to scan without search."],
-      "avoidWhen": ["There are more than roughly eight options or options need rich descriptions."],
-      "constraints": ["Provide a useful empty prompt when the field is not required."],
-      "requiredProps": ["label"],
+      "useWhen": [
+        "The choice list is short enough to scan without search."
+      ],
+      "avoidWhen": [
+        "There are more than roughly eight options or options need rich descriptions."
+      ],
+      "constraints": [
+        "Provide a useful empty prompt when the field is not required."
+      ],
+      "requiredProps": [
+        "label"
+      ],
       "example": "examples/components/select.md"
     }
   },
@@ -262,20 +754,43 @@
     "title": "Badge",
     "description": "A compact status or category marker for short labels.",
     "category": "feedback",
-    "tags": ["status", "label", "metadata", "pill"],
+    "tags": [
+      "status",
+      "label",
+      "metadata",
+      "pill"
+    ],
     "api": {
       "tag": "ov-badge",
-      "importPath": "./components/ovlira/badge.js",
-      "props": [{ "name": "tone", "type": "'neutral' | 'accent' | 'success' | 'warning' | 'danger'", "description": "Status tone.", "default": "neutral", "reflected": true }],
+      "importPath": "@ovlira/elements/badge.js",
+      "props": [
+        {
+          "name": "tone",
+          "type": "'neutral' | 'accent' | 'success' | 'warning' | 'danger'",
+          "description": "Status tone.",
+          "default": "neutral",
+          "reflected": true
+        }
+      ],
       "events": [],
-      "slots": ["default: badge text"],
+      "slots": [
+        "default: badge text"
+      ],
       "cssCustomProperties": [],
-      "parts": ["badge"]
+      "parts": [
+        "badge"
+      ]
     },
     "guidance": {
-      "useWhen": ["A short status adds useful scan context."],
-      "avoidWhen": ["The label is a paragraph or the only way information is conveyed."],
-      "constraints": ["Use text that remains meaningful without color."],
+      "useWhen": [
+        "A short status adds useful scan context."
+      ],
+      "avoidWhen": [
+        "The label is a paragraph or the only way information is conveyed."
+      ],
+      "constraints": [
+        "Use text that remains meaningful without color."
+      ],
       "example": "examples/components/badge.md"
     }
   },
@@ -285,20 +800,50 @@
     "title": "Card",
     "description": "An article-like surface for grouping related content and actions.",
     "category": "layout",
-    "tags": ["surface", "container", "section", "content"],
+    "tags": [
+      "surface",
+      "container",
+      "section",
+      "content"
+    ],
     "api": {
       "tag": "ov-card",
-      "importPath": "./components/ovlira/card.js",
-      "props": [{ "name": "padding", "type": "'none' | 'sm' | 'md' | 'lg'", "description": "Internal spacing.", "default": "md", "reflected": true }],
+      "importPath": "@ovlira/elements/card.js",
+      "props": [
+        {
+          "name": "padding",
+          "type": "'none' | 'sm' | 'md' | 'lg'",
+          "description": "Internal spacing.",
+          "default": "md",
+          "reflected": true
+        }
+      ],
       "events": [],
-      "slots": ["header", "default: body", "footer"],
-      "cssCustomProperties": ["--ov-card-padding"],
-      "parts": ["card", "header", "body", "footer"]
+      "slots": [
+        "header",
+        "default: body",
+        "footer"
+      ],
+      "cssCustomProperties": [
+        "--ov-card-padding"
+      ],
+      "parts": [
+        "card",
+        "header",
+        "body",
+        "footer"
+      ]
     },
     "guidance": {
-      "useWhen": ["A related set of content needs a clear boundary."],
-      "avoidWhen": ["The page is already composed of many nested bordered surfaces."],
-      "constraints": ["Keep card hierarchy shallow; prefer one card per task or information group."],
+      "useWhen": [
+        "A related set of content needs a clear boundary."
+      ],
+      "avoidWhen": [
+        "The page is already composed of many nested bordered surfaces."
+      ],
+      "constraints": [
+        "Keep card hierarchy shallow; prefer one card per task or information group."
+      ],
       "disallowedChildren": [],
       "example": "examples/components/card.md"
     }
@@ -309,20 +854,51 @@
     "title": "Alert",
     "description": "An inline message with an appropriate live-region role.",
     "category": "feedback",
-    "tags": ["message", "error", "notice", "status", "feedback"],
+    "tags": [
+      "message",
+      "error",
+      "notice",
+      "status",
+      "feedback"
+    ],
     "api": {
       "tag": "ov-alert",
-      "importPath": "./components/ovlira/alert.js",
-      "props": [{ "name": "tone", "type": "'info' | 'success' | 'warning' | 'danger'", "description": "Message intent.", "default": "info", "reflected": true }, { "name": "heading", "type": "string", "description": "Optional short heading." }],
+      "importPath": "@ovlira/elements/alert.js",
+      "props": [
+        {
+          "name": "tone",
+          "type": "'info' | 'success' | 'warning' | 'danger'",
+          "description": "Message intent.",
+          "default": "info",
+          "reflected": true
+        },
+        {
+          "name": "heading",
+          "type": "string",
+          "description": "Optional short heading."
+        }
+      ],
       "events": [],
-      "slots": ["default: message content"],
+      "slots": [
+        "default: message content"
+      ],
       "cssCustomProperties": [],
-      "parts": ["alert", "heading", "message"]
+      "parts": [
+        "alert",
+        "heading",
+        "message"
+      ]
     },
     "guidance": {
-      "useWhen": ["The user needs feedback that persists in the page context."],
-      "avoidWhen": ["The feedback is a transient toast or a field-level validation message."],
-      "constraints": ["Danger messages should explain what happened and the next action."],
+      "useWhen": [
+        "The user needs feedback that persists in the page context."
+      ],
+      "avoidWhen": [
+        "The feedback is a transient toast or a field-level validation message."
+      ],
+      "constraints": [
+        "Danger messages should explain what happened and the next action."
+      ],
       "example": "examples/components/alert.md"
     }
   },
@@ -332,21 +908,61 @@
     "title": "Page header",
     "description": "A consistent page title block with optional context and actions.",
     "category": "layout",
-    "tags": ["heading", "navigation", "page", "actions"],
+    "tags": [
+      "heading",
+      "navigation",
+      "page",
+      "actions"
+    ],
     "api": {
       "tag": "ov-page-header",
-      "importPath": "./components/ovlira/page-header.js",
-      "props": [{ "name": "title", "type": "string", "description": "Page heading.", "required": true, "reflected": true }, { "name": "description", "type": "string", "description": "Supporting context." }, { "name": "eyebrow", "type": "string", "description": "Small section label." }],
+      "importPath": "@ovlira/elements/page-header.js",
+      "props": [
+        {
+          "name": "title",
+          "type": "string",
+          "description": "Page heading.",
+          "required": true,
+          "reflected": true
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "description": "Supporting context."
+        },
+        {
+          "name": "eyebrow",
+          "type": "string",
+          "description": "Small section label."
+        }
+      ],
       "events": [],
-      "slots": ["actions"],
+      "slots": [
+        "actions"
+      ],
       "cssCustomProperties": [],
-      "parts": ["header", "eyebrow", "title", "description", "actions"]
+      "parts": [
+        "header",
+        "eyebrow",
+        "title",
+        "description",
+        "actions"
+      ]
     },
     "guidance": {
-      "useWhen": ["A screen needs a clear title and optional task-level actions."],
-      "avoidWhen": ["The content is a modal or a small card with its own heading."],
-      "constraints": ["Use exactly one page header per main region.", "Reserve the primary action for the page's main task."],
-      "requiredProps": ["title"],
+      "useWhen": [
+        "A screen needs a clear title and optional task-level actions."
+      ],
+      "avoidWhen": [
+        "The content is a modal or a small card with its own heading."
+      ],
+      "constraints": [
+        "Use exactly one page header per main region.",
+        "Reserve the primary action for the page's main task."
+      ],
+      "requiredProps": [
+        "title"
+      ],
       "example": "examples/components/page-header.md"
     }
   },
@@ -356,21 +972,54 @@
     "title": "Empty state",
     "description": "A calm, actionable explanation for a collection with no items.",
     "category": "feedback",
-    "tags": ["empty", "zero", "onboarding", "collection"],
+    "tags": [
+      "empty",
+      "zero",
+      "onboarding",
+      "collection"
+    ],
     "api": {
       "tag": "ov-empty-state",
-      "importPath": "./components/ovlira/empty-state.js",
-      "props": [{ "name": "title", "type": "string", "description": "Empty state heading.", "required": true, "reflected": true }, { "name": "description", "type": "string", "description": "Reason and next step." }],
+      "importPath": "@ovlira/elements/empty-state.js",
+      "props": [
+        {
+          "name": "title",
+          "type": "string",
+          "description": "Empty state heading.",
+          "required": true,
+          "reflected": true
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "description": "Reason and next step."
+        }
+      ],
       "events": [],
-      "slots": ["action"],
+      "slots": [
+        "action"
+      ],
       "cssCustomProperties": [],
-      "parts": ["state", "title", "description", "action"]
+      "parts": [
+        "state",
+        "title",
+        "description",
+        "action"
+      ]
     },
     "guidance": {
-      "useWhen": ["A user understands the collection but it currently has no results."],
-      "avoidWhen": ["The page failed to load; show an error state instead."],
-      "constraints": ["Name a specific next action when one exists."],
-      "requiredProps": ["title"],
+      "useWhen": [
+        "A user understands the collection but it currently has no results."
+      ],
+      "avoidWhen": [
+        "The page failed to load; show an error state instead."
+      ],
+      "constraints": [
+        "Name a specific next action when one exists."
+      ],
+      "requiredProps": [
+        "title"
+      ],
       "example": "examples/components/empty-state.md"
     }
   },
@@ -380,21 +1029,60 @@
     "title": "Data table",
     "description": "A compact, labelled table for comparable records and row actions.",
     "category": "data",
-    "tags": ["table", "data", "rows", "list", "crud"],
+    "tags": [
+      "table",
+      "data",
+      "rows",
+      "list",
+      "crud"
+    ],
     "api": {
       "tag": "ov-data-table",
-      "importPath": "./components/ovlira/data-table.js",
-      "props": [{ "name": "caption", "type": "string", "description": "Accessible table name.", "required": true, "reflected": true }, { "name": "columns", "type": "TableColumn[]", "description": "Column definitions." }, { "name": "rows", "type": "Record<string, string>[]", "description": "Data rows." }],
+      "importPath": "@ovlira/elements/data-table.js",
+      "props": [
+        {
+          "name": "caption",
+          "type": "string",
+          "description": "Accessible table name.",
+          "required": true,
+          "reflected": true
+        },
+        {
+          "name": "columns",
+          "type": "TableColumn[]",
+          "description": "Column definitions."
+        },
+        {
+          "name": "rows",
+          "type": "Record<string, string>[]",
+          "description": "Data rows."
+        }
+      ],
       "events": [],
       "slots": [],
       "cssCustomProperties": [],
-      "parts": ["table", "caption", "header", "body", "row"]
+      "parts": [
+        "table",
+        "caption",
+        "header",
+        "body",
+        "row"
+      ]
     },
     "guidance": {
-      "useWhen": ["Users need to compare the same fields across multiple records."],
-      "avoidWhen": ["Each record needs a long narrative or the layout is primarily visual."],
-      "constraints": ["Keep columns to the fields required for the task.", "Provide an empty state when rows are absent."],
-      "requiredProps": ["caption"],
+      "useWhen": [
+        "Users need to compare the same fields across multiple records."
+      ],
+      "avoidWhen": [
+        "Each record needs a long narrative or the layout is primarily visual."
+      ],
+      "constraints": [
+        "Keep columns to the fields required for the task.",
+        "Provide an empty state when rows are absent."
+      ],
+      "requiredProps": [
+        "caption"
+      ],
       "example": "examples/components/data-table.md"
     }
   },
@@ -404,20 +1092,56 @@
     "title": "Application shell",
     "description": "A responsive app frame with a labelled navigation rail and main content region.",
     "category": "layout",
-    "tags": ["shell", "navigation", "app", "layout", "sidebar"],
+    "tags": [
+      "shell",
+      "navigation",
+      "app",
+      "layout",
+      "sidebar"
+    ],
     "api": {
       "tag": "ov-application-shell",
-      "importPath": "./components/ovlira/application-shell.js",
-      "props": [{ "name": "navLabel", "type": "string", "description": "Accessible navigation label.", "default": "Primary navigation", "reflected": true }],
+      "importPath": "@ovlira/elements/application-shell.js",
+      "props": [
+        {
+          "name": "navLabel",
+          "type": "string",
+          "description": "Accessible navigation label.",
+          "default": "Primary navigation",
+          "reflected": true
+        }
+      ],
       "events": [],
-      "slots": ["brand", "nav", "header", "default: main content"],
-      "cssCustomProperties": ["--ov-shell-rail"],
-      "parts": ["shell", "rail", "brand", "nav", "content", "header", "main"]
+      "slots": [
+        "brand",
+        "nav",
+        "header",
+        "default: main content"
+      ],
+      "cssCustomProperties": [
+        "--ov-shell-rail"
+      ],
+      "parts": [
+        "shell",
+        "rail",
+        "brand",
+        "nav",
+        "content",
+        "header",
+        "main"
+      ]
     },
     "guidance": {
-      "useWhen": ["Multiple screens share a persistent navigation model."],
-      "avoidWhen": ["The page is a one-off landing screen or a focused modal flow."],
-      "constraints": ["Keep navigation labels short and ordered by frequency.", "Use one main landmark inside the shell."],
+      "useWhen": [
+        "Multiple screens share a persistent navigation model."
+      ],
+      "avoidWhen": [
+        "The page is a one-off landing screen or a focused modal flow."
+      ],
+      "constraints": [
+        "Keep navigation labels short and ordered by frequency.",
+        "Use one main landmark inside the shell."
+      ],
       "requiredProps": [],
       "example": "examples/components/application-shell.md"
     }
@@ -428,23 +1152,51 @@
     "title": "Spinner",
     "description": "A small inline loading indicator with an accessible status label.",
     "category": "feedback",
-    "tags": ["loading", "progress", "status", "async"],
+    "tags": [
+      "loading",
+      "progress",
+      "status",
+      "async"
+    ],
     "api": {
       "tag": "ov-spinner",
-      "importPath": "./components/ovlira/spinner.js",
+      "importPath": "@ovlira/elements/spinner.js",
       "props": [
-        { "name": "label", "type": "string", "description": "Accessible and visible loading status.", "default": "Loading", "reflected": true },
-        { "name": "size", "type": "'sm' | 'md'", "description": "Indicator size.", "default": "sm", "reflected": true }
+        {
+          "name": "label",
+          "type": "string",
+          "description": "Accessible and visible loading status.",
+          "default": "Loading",
+          "reflected": true
+        },
+        {
+          "name": "size",
+          "type": "'sm' | 'md'",
+          "description": "Indicator size.",
+          "default": "sm",
+          "reflected": true
+        }
       ],
       "events": [],
       "slots": [],
       "cssCustomProperties": [],
-      "parts": ["status", "indicator", "label"]
+      "parts": [
+        "status",
+        "indicator",
+        "label"
+      ]
     },
     "guidance": {
-      "useWhen": ["A local task is still running and the surrounding context should remain visible."],
-      "avoidWhen": ["The page is empty or an urgent failure needs explanation; use ov-empty-state or ov-alert instead."],
-      "constraints": ["Keep the label specific to the work in progress.", "Keep loading inline rather than replacing the whole page."],
+      "useWhen": [
+        "A local task is still running and the surrounding context should remain visible."
+      ],
+      "avoidWhen": [
+        "The page is empty or an urgent failure needs explanation; use ov-empty-state or ov-alert instead."
+      ],
+      "constraints": [
+        "Keep the label specific to the work in progress.",
+        "Keep loading inline rather than replacing the whole page."
+      ],
       "requiredProps": [],
       "example": "examples/components/spinner.md"
     }
@@ -455,29 +1207,81 @@
     "title": "Menu",
     "description": "A compact action menu with keyboard navigation and a floating surface.",
     "category": "actions",
-    "tags": ["menu", "actions", "popover", "context", "overlay"],
+    "tags": [
+      "menu",
+      "actions",
+      "popover",
+      "context",
+      "overlay"
+    ],
     "api": {
       "tag": "ov-menu",
-      "importPath": "./components/ovlira/menu.js",
+      "importPath": "@ovlira/elements/menu.js",
       "props": [
-        { "name": "label", "type": "string", "description": "Accessible trigger label and fallback text.", "default": "Actions", "reflected": true },
-        { "name": "open", "type": "boolean", "description": "Whether the menu is visible.", "default": "false", "reflected": true },
-        { "name": "disabled", "type": "boolean", "description": "Prevents opening and selection.", "default": "false", "reflected": true },
-        { "name": "items", "type": "MenuItem[]", "description": "Menu actions assigned as a property." }
+        {
+          "name": "label",
+          "type": "string",
+          "description": "Accessible trigger label and fallback text.",
+          "default": "Actions",
+          "reflected": true
+        },
+        {
+          "name": "open",
+          "type": "boolean",
+          "description": "Whether the menu is visible.",
+          "default": "false",
+          "reflected": true
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "description": "Prevents opening and selection.",
+          "default": "false",
+          "reflected": true
+        },
+        {
+          "name": "items",
+          "type": "MenuItem[]",
+          "description": "Menu actions assigned as a property."
+        }
       ],
       "events": [
-        { "name": "open", "description": "Dispatched when the menu opens." },
-        { "name": "close", "description": "Dispatched when the menu closes." },
-        { "name": "select", "detail": "{ value: string; label: string }", "description": "Dispatched when an enabled menu item is selected." }
+        {
+          "name": "open",
+          "description": "Dispatched when the menu opens."
+        },
+        {
+          "name": "close",
+          "description": "Dispatched when the menu closes."
+        },
+        {
+          "name": "select",
+          "detail": "{ value: string; label: string }",
+          "description": "Dispatched when an enabled menu item is selected."
+        }
       ],
-      "slots": ["trigger: non-interactive trigger label"],
+      "slots": [
+        "trigger: non-interactive trigger label"
+      ],
       "cssCustomProperties": [],
-      "parts": ["trigger", "menu", "item"]
+      "parts": [
+        "trigger",
+        "menu",
+        "item"
+      ]
     },
     "guidance": {
-      "useWhen": ["Several related actions need a compact floating surface."],
-      "avoidWhen": ["The action is the primary task or the choices need persistent explanation; use ov-button or page content instead."],
-      "constraints": ["Keep the trigger label and menu items action-first.", "Use the trigger slot for label content only; do not nest another interactive control.", "Menus close on Escape and restore focus to their trigger."],
+      "useWhen": [
+        "Several related actions need a compact floating surface."
+      ],
+      "avoidWhen": [
+        "The action is the primary task or the choices need persistent explanation; use ov-button or page content instead."
+      ],
+      "constraints": [
+        "Keep the trigger label and menu items action-first.",
+        "Use the trigger slot for label content only; do not nest another interactive control.",
+        "Menus close on Escape and restore focus to their trigger."
+      ],
       "requiredProps": [],
       "example": "examples/components/menu.md"
     }
@@ -488,25 +1292,73 @@
     "title": "Pagination",
     "description": "A compact result page navigator.",
     "category": "data",
-    "tags": ["pagination", "navigation", "table"],
+    "tags": [
+      "pagination",
+      "navigation",
+      "table"
+    ],
     "api": {
       "tag": "ov-pagination",
-      "importPath": "./components/ovlira/pagination.js",
+      "importPath": "@ovlira/elements/pagination.js",
       "props": [
-        { "name": "currentPage", "type": "number", "description": "Currently selected page.", "default": "1", "reflected": true },
-        { "name": "totalPages", "type": "number", "description": "Total available pages.", "default": "1", "reflected": true },
-        { "name": "label", "type": "string", "description": "Accessible navigation label.", "default": "Pagination", "reflected": true },
-        { "name": "disabled", "type": "boolean", "description": "Prevents page changes.", "default": "false", "reflected": true }
+        {
+          "name": "currentPage",
+          "type": "number",
+          "description": "Currently selected page.",
+          "default": "1",
+          "reflected": true
+        },
+        {
+          "name": "totalPages",
+          "type": "number",
+          "description": "Total available pages.",
+          "default": "1",
+          "reflected": true
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "description": "Accessible navigation label.",
+          "default": "Pagination",
+          "reflected": true
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "description": "Prevents page changes.",
+          "default": "false",
+          "reflected": true
+        }
       ],
-      "events": [{ "name": "change", "detail": "{ page: number }", "description": "Dispatched when the selected page changes." }],
+      "events": [
+        {
+          "name": "change",
+          "detail": "{ page: number }",
+          "description": "Dispatched when the selected page changes."
+        }
+      ],
       "slots": [],
       "cssCustomProperties": [],
-      "parts": ["nav", "previous", "pages", "page", "ellipsis", "next"]
+      "parts": [
+        "nav",
+        "previous",
+        "pages",
+        "page",
+        "ellipsis",
+        "next"
+      ]
     },
     "guidance": {
-      "useWhen": ["A collection spans multiple result pages and users need to move through it deliberately."],
-      "avoidWhen": ["There is only one page or continuous loading better matches the task."],
-      "constraints": ["Keep data fetching and row ownership outside the component.", "Expose the current page through aria-current and announce page changes."],
+      "useWhen": [
+        "A collection spans multiple result pages and users need to move through it deliberately."
+      ],
+      "avoidWhen": [
+        "There is only one page or continuous loading better matches the task."
+      ],
+      "constraints": [
+        "Keep data fetching and row ownership outside the component.",
+        "Expose the current page through aria-current and announce page changes."
+      ],
       "requiredProps": [],
       "example": "examples/components/pagination.md"
     }
@@ -517,35 +1369,118 @@
     "title": "Combobox",
     "description": "A labelled searchable listbox for a longer set of known options.",
     "category": "forms",
-    "tags": ["form", "choice", "search", "listbox", "field"],
+    "tags": [
+      "form",
+      "choice",
+      "search",
+      "listbox",
+      "field"
+    ],
     "api": {
       "tag": "ov-combobox",
-      "importPath": "./components/ovlira/combobox.js",
+      "importPath": "@ovlira/elements/combobox.js",
       "props": [
-        { "name": "label", "type": "string", "description": "Visible accessible label.", "required": true, "reflected": true },
-        { "name": "name", "type": "string", "description": "Native form field name.", "reflected": true },
-        { "name": "value", "type": "string", "description": "Selected option value." },
-        { "name": "placeholder", "type": "string", "description": "Optional prompt for the expected choice.", "reflected": true },
-        { "name": "options", "type": "ComboboxOption[]", "description": "Options assigned as a property." },
-        { "name": "required", "type": "boolean", "description": "Requires an option to be selected.", "default": "false", "reflected": true },
-        { "name": "disabled", "type": "boolean", "description": "Prevents interaction.", "default": "false", "reflected": true },
-        { "name": "error", "type": "string", "description": "Validation message." },
-        { "name": "helpText", "type": "string", "description": "Supporting guidance.", "reflected": false },
-        { "name": "open", "type": "boolean", "description": "Whether the option list is visible.", "default": "false", "reflected": true }
+        {
+          "name": "label",
+          "type": "string",
+          "description": "Visible accessible label.",
+          "required": true,
+          "reflected": true
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "description": "Native form field name.",
+          "reflected": true
+        },
+        {
+          "name": "value",
+          "type": "string",
+          "description": "Selected option value."
+        },
+        {
+          "name": "placeholder",
+          "type": "string",
+          "description": "Optional prompt for the expected choice.",
+          "reflected": true
+        },
+        {
+          "name": "options",
+          "type": "ComboboxOption[]",
+          "description": "Options assigned as a property."
+        },
+        {
+          "name": "required",
+          "type": "boolean",
+          "description": "Requires an option to be selected.",
+          "default": "false",
+          "reflected": true
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "description": "Prevents interaction.",
+          "default": "false",
+          "reflected": true
+        },
+        {
+          "name": "error",
+          "type": "string",
+          "description": "Validation message."
+        },
+        {
+          "name": "helpText",
+          "type": "string",
+          "description": "Supporting guidance.",
+          "reflected": false
+        },
+        {
+          "name": "open",
+          "type": "boolean",
+          "description": "Whether the option list is visible.",
+          "default": "false",
+          "reflected": true
+        }
       ],
       "events": [
-        { "name": "input", "description": "Dispatched as the user filters the options." },
-        { "name": "change", "detail": "{ value: string; label: string }", "description": "Dispatched when an option is selected." }
+        {
+          "name": "input",
+          "description": "Dispatched as the user filters the options."
+        },
+        {
+          "name": "change",
+          "detail": "{ value: string; label: string }",
+          "description": "Dispatched when an option is selected."
+        }
       ],
       "slots": [],
-      "cssCustomProperties": ["--ov-field-accent"],
-      "parts": ["field", "label", "input", "listbox", "option", "message"]
+      "cssCustomProperties": [
+        "--ov-field-accent"
+      ],
+      "parts": [
+        "field",
+        "label",
+        "input",
+        "listbox",
+        "option",
+        "message"
+      ]
     },
     "guidance": {
-      "useWhen": ["The option list is too long to scan comfortably in a native select."],
-      "avoidWhen": ["There are only a few options; use ov-select instead."],
-      "constraints": ["Provide a visible label and keep option labels concise.", "Keep filtering local to the supplied options; remote fetching belongs to the owning application.", "Support Arrow keys, Enter, Escape, and visible focus without removing the native input."],
-      "requiredProps": ["label"],
+      "useWhen": [
+        "The option list is too long to scan comfortably in a native select."
+      ],
+      "avoidWhen": [
+        "There are only a few options; use ov-select instead."
+      ],
+      "constraints": [
+        "Provide a visible label and keep option labels concise.",
+        "Keep filtering local to the supplied options; remote fetching belongs to the owning application.",
+        "Support Arrow keys, Enter, Escape, and visible focus without removing the native input."
+      ],
+      "requiredProps": [
+        "label"
+      ],
       "example": "examples/components/combobox.md"
     }
   },
@@ -555,25 +1490,74 @@
     "title": "Tabs",
     "description": "A controlled tablist with keyboard navigation and named panel slots.",
     "category": "navigation",
-    "tags": ["tabs", "navigation", "panels", "views", "switcher"],
+    "tags": [
+      "tabs",
+      "navigation",
+      "panels",
+      "views",
+      "switcher"
+    ],
     "api": {
       "tag": "ov-tabs",
-      "importPath": "./components/ovlira/tabs.js",
+      "importPath": "@ovlira/elements/tabs.js",
       "props": [
-        { "name": "label", "type": "string", "description": "Accessible tablist label.", "default": "Tabs", "reflected": true },
-        { "name": "value", "type": "string", "description": "Selected tab value.", "reflected": true },
-        { "name": "orientation", "type": "'horizontal' | 'vertical'", "description": "Tablist direction.", "default": "horizontal", "reflected": true },
-        { "name": "items", "type": "TabItem[]", "description": "Tab definitions assigned as a property." }
+        {
+          "name": "label",
+          "type": "string",
+          "description": "Accessible tablist label.",
+          "default": "Tabs",
+          "reflected": true
+        },
+        {
+          "name": "value",
+          "type": "string",
+          "description": "Selected tab value.",
+          "reflected": true
+        },
+        {
+          "name": "orientation",
+          "type": "'horizontal' | 'vertical'",
+          "description": "Tablist direction.",
+          "default": "horizontal",
+          "reflected": true
+        },
+        {
+          "name": "items",
+          "type": "TabItem[]",
+          "description": "Tab definitions assigned as a property."
+        }
       ],
-      "events": [{ "name": "change", "detail": "{ value: string; label: string }", "description": "Dispatched when an enabled tab is selected." }],
-      "slots": ["${value}: panel content for each tab value"],
+      "events": [
+        {
+          "name": "change",
+          "detail": "{ value: string; label: string }",
+          "description": "Dispatched when an enabled tab is selected."
+        }
+      ],
+      "slots": [
+        "${value}: panel content for each tab value"
+      ],
       "cssCustomProperties": [],
-      "parts": ["tabs", "tablist", "tab", "panels", "panel"]
+      "parts": [
+        "tabs",
+        "tablist",
+        "tab",
+        "panels",
+        "panel"
+      ]
     },
     "guidance": {
-      "useWhen": ["Users need to switch between related views that share the same context."],
-      "avoidWhen": ["The choices are independent destinations; use native links or application navigation instead."],
-      "constraints": ["Assign stable values and concise labels to every tab.", "Provide panel content through a named slot matching each tab value.", "Keep keyboard focus within the tablist predictable with Arrow, Home, and End keys."],
+      "useWhen": [
+        "Users need to switch between related views that share the same context."
+      ],
+      "avoidWhen": [
+        "The choices are independent destinations; use native links or application navigation instead."
+      ],
+      "constraints": [
+        "Assign stable values and concise labels to every tab.",
+        "Provide panel content through a named slot matching each tab value.",
+        "Keep keyboard focus within the tablist predictable with Arrow, Home, and End keys."
+      ],
       "requiredProps": [],
       "example": "examples/components/tabs.md"
     }
@@ -584,27 +1568,90 @@
     "title": "Toast",
     "description": "A transient, dismissible notification for cross-context status feedback.",
     "category": "feedback",
-    "tags": ["toast", "notification", "status", "alert", "transient"],
+    "tags": [
+      "toast",
+      "notification",
+      "status",
+      "alert",
+      "transient"
+    ],
     "api": {
       "tag": "ov-toast",
-      "importPath": "./components/ovlira/toast.js",
+      "importPath": "@ovlira/elements/toast.js",
       "props": [
-        { "name": "open", "type": "boolean", "description": "Whether the notification is visible.", "default": "false", "reflected": true },
-        { "name": "tone", "type": "'info' | 'success' | 'warning' | 'danger'", "description": "Notification intent.", "default": "info", "reflected": true },
-        { "name": "heading", "type": "string", "description": "Optional short notification heading.", "reflected": true },
-        { "name": "duration", "type": "number", "description": "Milliseconds before automatic dismissal; zero disables it.", "default": "5000", "reflected": true },
-        { "name": "dismissible", "type": "boolean", "description": "Shows a dismissal control.", "default": "true", "reflected": true },
-        { "name": "closeLabel", "type": "string", "description": "Accessible dismissal label.", "default": "Dismiss notification", "reflected": true }
+        {
+          "name": "open",
+          "type": "boolean",
+          "description": "Whether the notification is visible.",
+          "default": "false",
+          "reflected": true
+        },
+        {
+          "name": "tone",
+          "type": "'info' | 'success' | 'warning' | 'danger'",
+          "description": "Notification intent.",
+          "default": "info",
+          "reflected": true
+        },
+        {
+          "name": "heading",
+          "type": "string",
+          "description": "Optional short notification heading.",
+          "reflected": true
+        },
+        {
+          "name": "duration",
+          "type": "number",
+          "description": "Milliseconds before automatic dismissal; zero disables it.",
+          "default": "5000",
+          "reflected": true
+        },
+        {
+          "name": "dismissible",
+          "type": "boolean",
+          "description": "Shows a dismissal control.",
+          "default": "true",
+          "reflected": true
+        },
+        {
+          "name": "closeLabel",
+          "type": "string",
+          "description": "Accessible dismissal label.",
+          "default": "Dismiss notification",
+          "reflected": true
+        }
       ],
-      "events": [{ "name": "close", "detail": "{ reason: 'dismiss' | 'timeout' }", "description": "Dispatched when the notification is dismissed by the user or timer." }],
-      "slots": ["default: notification message"],
+      "events": [
+        {
+          "name": "close",
+          "detail": "{ reason: 'dismiss' | 'timeout' }",
+          "description": "Dispatched when the notification is dismissed by the user or timer."
+        }
+      ],
+      "slots": [
+        "default: notification message"
+      ],
       "cssCustomProperties": [],
-      "parts": ["toast", "copy", "heading", "message", "close"]
+      "parts": [
+        "toast",
+        "copy",
+        "heading",
+        "message",
+        "close"
+      ]
     },
     "guidance": {
-      "useWhen": ["A short-lived status needs to reach users while they are working elsewhere in the interface."],
-      "avoidWhen": ["The message explains a persistent page condition or field error; use ov-alert or field validation instead."],
-      "constraints": ["Place toasts in an owning live region and keep messages concise.", "Provide a dismissal path and pause automatic dismissal while the notification is hovered or focused.", "Do not use a toast as the only record of a destructive or required action."],
+      "useWhen": [
+        "A short-lived status needs to reach users while they are working elsewhere in the interface."
+      ],
+      "avoidWhen": [
+        "The message explains a persistent page condition or field error; use ov-alert or field validation instead."
+      ],
+      "constraints": [
+        "Place toasts in an owning live region and keep messages concise.",
+        "Provide a dismissal path and pause automatic dismissal while the notification is hovered or focused.",
+        "Do not use a toast as the only record of a destructive or required action."
+      ],
       "requiredProps": [],
       "example": "examples/components/toast.md"
     }
@@ -615,26 +1662,75 @@
     "title": "Progress",
     "description": "A labelled native progress indicator for determinate or indeterminate work.",
     "category": "feedback",
-    "tags": ["progress", "loading", "status", "async", "meter"],
+    "tags": [
+      "progress",
+      "loading",
+      "status",
+      "async",
+      "meter"
+    ],
     "api": {
       "tag": "ov-progress",
-      "importPath": "./components/ovlira/progress.js",
+      "importPath": "@ovlira/elements/progress.js",
       "props": [
-        { "name": "label", "type": "string", "description": "Visible and accessible progress label.", "default": "Progress", "reflected": true },
-        { "name": "value", "type": "number", "description": "Current completed amount.", "default": "0", "reflected": true },
-        { "name": "max", "type": "number", "description": "Total amount represented by the progress value.", "default": "100", "reflected": true },
-        { "name": "indeterminate", "type": "boolean", "description": "Communicates progress without a known completion amount.", "default": "false", "reflected": true },
-        { "name": "showValue", "type": "boolean", "description": "Shows the calculated percentage beside the bar.", "default": "false", "reflected": true }
+        {
+          "name": "label",
+          "type": "string",
+          "description": "Visible and accessible progress label.",
+          "default": "Progress",
+          "reflected": true
+        },
+        {
+          "name": "value",
+          "type": "number",
+          "description": "Current completed amount.",
+          "default": "0",
+          "reflected": true
+        },
+        {
+          "name": "max",
+          "type": "number",
+          "description": "Total amount represented by the progress value.",
+          "default": "100",
+          "reflected": true
+        },
+        {
+          "name": "indeterminate",
+          "type": "boolean",
+          "description": "Communicates progress without a known completion amount.",
+          "default": "false",
+          "reflected": true
+        },
+        {
+          "name": "showValue",
+          "type": "boolean",
+          "description": "Shows the calculated percentage beside the bar.",
+          "default": "false",
+          "reflected": true
+        }
       ],
       "events": [],
       "slots": [],
       "cssCustomProperties": [],
-      "parts": ["progress", "label", "value", "bar"]
+      "parts": [
+        "progress",
+        "label",
+        "value",
+        "bar"
+      ]
     },
     "guidance": {
-      "useWhen": ["A task has measurable completion or needs an explicit indeterminate work signal."],
-      "avoidWhen": ["The operation is a short local wait with no useful completion estimate; use ov-spinner instead."],
-      "constraints": ["Keep value and max meaningful to the owning task and update them from application state.", "Use a concise visible label so the native progress semantics have context.", "Do not imply completion when the application has not confirmed it."],
+      "useWhen": [
+        "A task has measurable completion or needs an explicit indeterminate work signal."
+      ],
+      "avoidWhen": [
+        "The operation is a short local wait with no useful completion estimate; use ov-spinner instead."
+      ],
+      "constraints": [
+        "Keep value and max meaningful to the owning task and update them from application state.",
+        "Use a concise visible label so the native progress semantics have context.",
+        "Do not imply completion when the application has not confirmed it."
+      ],
       "requiredProps": [],
       "example": "examples/components/progress.md"
     }
@@ -645,24 +1741,59 @@
     "title": "Skeleton",
     "description": "A decorative loading placeholder for reserving the shape of incoming content.",
     "category": "feedback",
-    "tags": ["skeleton", "loading", "placeholder", "async", "content"],
+    "tags": [
+      "skeleton",
+      "loading",
+      "placeholder",
+      "async",
+      "content"
+    ],
     "api": {
       "tag": "ov-skeleton",
-      "importPath": "./components/ovlira/skeleton.js",
+      "importPath": "@ovlira/elements/skeleton.js",
       "props": [
-        { "name": "variant", "type": "'text' | 'heading' | 'circle' | 'rect'", "description": "Placeholder shape.", "default": "text", "reflected": true },
-        { "name": "lines", "type": "number", "description": "Number of text or heading lines.", "default": "1", "reflected": true },
-        { "name": "animated", "type": "boolean", "description": "Enables the subtle loading pulse.", "default": "true", "reflected": true }
+        {
+          "name": "variant",
+          "type": "'text' | 'heading' | 'circle' | 'rect'",
+          "description": "Placeholder shape.",
+          "default": "text",
+          "reflected": true
+        },
+        {
+          "name": "lines",
+          "type": "number",
+          "description": "Number of text or heading lines.",
+          "default": "1",
+          "reflected": true
+        },
+        {
+          "name": "animated",
+          "type": "boolean",
+          "description": "Enables the subtle loading pulse.",
+          "default": "true",
+          "reflected": true
+        }
       ],
       "events": [],
       "slots": [],
       "cssCustomProperties": [],
-      "parts": ["skeleton", "line"]
+      "parts": [
+        "skeleton",
+        "line"
+      ]
     },
     "guidance": {
-      "useWhen": ["A known content shape should remain reserved while its data loads."],
-      "avoidWhen": ["The layout does not benefit from geometry reservation or the content can remain visible with an inline status."],
-      "constraints": ["Mark the owning content region aria-busy while placeholders are shown.", "Treat the placeholder as decorative and keep meaningful loading text in the owning region.", "Match the placeholder shape to the content it replaces without implying unavailable detail."],
+      "useWhen": [
+        "A known content shape should remain reserved while its data loads."
+      ],
+      "avoidWhen": [
+        "The layout does not benefit from geometry reservation or the content can remain visible with an inline status."
+      ],
+      "constraints": [
+        "Mark the owning content region aria-busy while placeholders are shown.",
+        "Treat the placeholder as decorative and keep meaningful loading text in the owning region.",
+        "Match the placeholder shape to the content it replaces without implying unavailable detail."
+      ],
       "requiredProps": [],
       "example": "examples/components/skeleton.md"
     }
@@ -673,24 +1804,65 @@
     "title": "Accordion",
     "description": "A native disclosure group for revealing related content on demand.",
     "category": "layout",
-    "tags": ["accordion", "disclosure", "content", "details", "sections"],
+    "tags": [
+      "accordion",
+      "disclosure",
+      "content",
+      "details",
+      "sections"
+    ],
     "api": {
       "tag": "ov-accordion",
-      "importPath": "./components/ovlira/accordion.js",
+      "importPath": "@ovlira/elements/accordion.js",
       "props": [
-        { "name": "items", "type": "AccordionItem[]", "description": "Disclosure definitions assigned as a property." },
-        { "name": "openItems", "type": "string[]", "description": "Values of the currently expanded disclosures." },
-        { "name": "multiple", "type": "boolean", "description": "Whether more than one disclosure may remain open.", "default": "false", "reflected": true }
+        {
+          "name": "items",
+          "type": "AccordionItem[]",
+          "description": "Disclosure definitions assigned as a property."
+        },
+        {
+          "name": "openItems",
+          "type": "string[]",
+          "description": "Values of the currently expanded disclosures."
+        },
+        {
+          "name": "multiple",
+          "type": "boolean",
+          "description": "Whether more than one disclosure may remain open.",
+          "default": "false",
+          "reflected": true
+        }
       ],
-      "events": [{ "name": "change", "detail": "{ value: string; open: boolean; openItems: string[] }", "description": "Dispatched when a disclosure opens or closes." }],
-      "slots": ["${value}: panel content for each item value"],
+      "events": [
+        {
+          "name": "change",
+          "detail": "{ value: string; open: boolean; openItems: string[] }",
+          "description": "Dispatched when a disclosure opens or closes."
+        }
+      ],
+      "slots": [
+        "${value}: panel content for each item value"
+      ],
       "cssCustomProperties": [],
-      "parts": ["accordion", "item", "summary", "panel"]
+      "parts": [
+        "accordion",
+        "item",
+        "summary",
+        "panel"
+      ]
     },
     "guidance": {
-      "useWhen": ["Related content can be progressively disclosed without changing the page task."],
-      "avoidWhen": ["Users need to compare panels simultaneously or switch between peer views; use visible sections or ov-tabs instead."],
-      "constraints": ["Assign stable values and concise labels to every item.", "Provide panel content through a named slot matching each item value.", "Keep the first useful answer visible when the content is essential to completing the task."],
+      "useWhen": [
+        "Related content can be progressively disclosed without changing the page task."
+      ],
+      "avoidWhen": [
+        "Users need to compare panels simultaneously or switch between peer views; use visible sections or ov-tabs instead."
+      ],
+      "constraints": [
+        "Assign stable values and concise labels to every item.",
+        "Provide panel content through a named slot matching each item value.",
+        "Keep the first useful answer visible when the content is essential to completing the task."
+      ],
       "requiredProps": [],
       "example": "examples/components/accordion.md"
     }
@@ -701,35 +1873,123 @@
     "title": "Slider",
     "description": "A labelled native range control for bounded numeric values.",
     "category": "forms",
-    "tags": ["form", "range", "numeric", "input", "control"],
+    "tags": [
+      "form",
+      "range",
+      "numeric",
+      "input",
+      "control"
+    ],
     "api": {
       "tag": "ov-slider",
-      "importPath": "./components/ovlira/slider.js",
+      "importPath": "@ovlira/elements/slider.js",
       "props": [
-        { "name": "label", "type": "string", "description": "Visible accessible label.", "required": true, "reflected": true },
-        { "name": "name", "type": "string", "description": "Native form field name.", "reflected": true },
-        { "name": "value", "type": "number", "description": "Current numeric value.", "default": "50", "reflected": true },
-        { "name": "min", "type": "number", "description": "Lowest allowed value.", "default": "0", "reflected": true },
-        { "name": "max", "type": "number", "description": "Highest allowed value.", "default": "100", "reflected": true },
-        { "name": "step", "type": "number", "description": "Allowed value increment.", "default": "1", "reflected": true },
-        { "name": "showValue", "type": "boolean", "description": "Shows the current value beside the label.", "default": "true", "reflected": true },
-        { "name": "disabled", "type": "boolean", "description": "Prevents interaction.", "default": "false", "reflected": true },
-        { "name": "error", "type": "string", "description": "Validation message." },
-        { "name": "helpText", "type": "string", "description": "Supporting guidance.", "reflected": false }
+        {
+          "name": "label",
+          "type": "string",
+          "description": "Visible accessible label.",
+          "required": true,
+          "reflected": true
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "description": "Native form field name.",
+          "reflected": true
+        },
+        {
+          "name": "value",
+          "type": "number",
+          "description": "Current numeric value.",
+          "default": "50",
+          "reflected": true
+        },
+        {
+          "name": "min",
+          "type": "number",
+          "description": "Lowest allowed value.",
+          "default": "0",
+          "reflected": true
+        },
+        {
+          "name": "max",
+          "type": "number",
+          "description": "Highest allowed value.",
+          "default": "100",
+          "reflected": true
+        },
+        {
+          "name": "step",
+          "type": "number",
+          "description": "Allowed value increment.",
+          "default": "1",
+          "reflected": true
+        },
+        {
+          "name": "showValue",
+          "type": "boolean",
+          "description": "Shows the current value beside the label.",
+          "default": "true",
+          "reflected": true
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "description": "Prevents interaction.",
+          "default": "false",
+          "reflected": true
+        },
+        {
+          "name": "error",
+          "type": "string",
+          "description": "Validation message."
+        },
+        {
+          "name": "helpText",
+          "type": "string",
+          "description": "Supporting guidance.",
+          "reflected": false
+        }
       ],
       "events": [
-        { "name": "input", "detail": "{ value: number }", "description": "Dispatched while the value changes." },
-        { "name": "change", "detail": "{ value: number }", "description": "Dispatched when the value is committed." }
+        {
+          "name": "input",
+          "detail": "{ value: number }",
+          "description": "Dispatched while the value changes."
+        },
+        {
+          "name": "change",
+          "detail": "{ value: number }",
+          "description": "Dispatched when the value is committed."
+        }
       ],
       "slots": [],
-      "cssCustomProperties": ["--ov-field-accent"],
-      "parts": ["field", "label", "value", "slider", "message"]
+      "cssCustomProperties": [
+        "--ov-field-accent"
+      ],
+      "parts": [
+        "field",
+        "label",
+        "value",
+        "slider",
+        "message"
+      ]
     },
     "guidance": {
-      "useWhen": ["A user needs to choose a value within a bounded numeric range and the relative position is meaningful."],
-      "avoidWhen": ["The exact number matters more than relative adjustment; use ov-input with an appropriate numeric type instead."],
-      "constraints": ["Provide a visible label and meaningful min, max, and step values.", "Show or otherwise expose the current value when the result is not obvious from the control.", "Keep the owning application responsible for formatting and applying the selected value."],
-      "requiredProps": ["label"],
+      "useWhen": [
+        "A user needs to choose a value within a bounded numeric range and the relative position is meaningful."
+      ],
+      "avoidWhen": [
+        "The exact number matters more than relative adjustment; use ov-input with an appropriate numeric type instead."
+      ],
+      "constraints": [
+        "Provide a visible label and meaningful min, max, and step values.",
+        "Show or otherwise expose the current value when the result is not obvious from the control.",
+        "Keep the owning application responsible for formatting and applying the selected value."
+      ],
+      "requiredProps": [
+        "label"
+      ],
       "example": "examples/components/slider.md"
     }
   },
@@ -739,31 +1999,106 @@
     "title": "File upload",
     "description": "A labelled native file picker with optional drag-and-drop support.",
     "category": "forms",
-    "tags": ["form", "file", "upload", "attachment", "dropzone"],
+    "tags": [
+      "form",
+      "file",
+      "upload",
+      "attachment",
+      "dropzone"
+    ],
     "api": {
       "tag": "ov-file-upload",
-      "importPath": "./components/ovlira/file-upload.js",
+      "importPath": "@ovlira/elements/file-upload.js",
       "props": [
-        { "name": "label", "type": "string", "description": "Visible accessible label.", "required": true, "reflected": true },
-        { "name": "name", "type": "string", "description": "Native file field name.", "reflected": true },
-        { "name": "accept", "type": "string", "description": "Accepted file types passed to the native picker.", "reflected": true },
-        { "name": "multiple", "type": "boolean", "description": "Allows more than one file.", "default": "false", "reflected": true },
-        { "name": "required", "type": "boolean", "description": "Requires at least one file.", "default": "false", "reflected": true },
-        { "name": "disabled", "type": "boolean", "description": "Prevents selecting or dropping files.", "default": "false", "reflected": true },
-        { "name": "files", "type": "File[]", "description": "Selected files assigned by the component after picking or dropping." },
-        { "name": "error", "type": "string", "description": "Validation message." },
-        { "name": "helpText", "type": "string", "description": "Supporting guidance.", "reflected": false }
+        {
+          "name": "label",
+          "type": "string",
+          "description": "Visible accessible label.",
+          "required": true,
+          "reflected": true
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "description": "Native file field name.",
+          "reflected": true
+        },
+        {
+          "name": "accept",
+          "type": "string",
+          "description": "Accepted file types passed to the native picker.",
+          "reflected": true
+        },
+        {
+          "name": "multiple",
+          "type": "boolean",
+          "description": "Allows more than one file.",
+          "default": "false",
+          "reflected": true
+        },
+        {
+          "name": "required",
+          "type": "boolean",
+          "description": "Requires at least one file.",
+          "default": "false",
+          "reflected": true
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "description": "Prevents selecting or dropping files.",
+          "default": "false",
+          "reflected": true
+        },
+        {
+          "name": "files",
+          "type": "File[]",
+          "description": "Selected files assigned by the component after picking or dropping."
+        },
+        {
+          "name": "error",
+          "type": "string",
+          "description": "Validation message."
+        },
+        {
+          "name": "helpText",
+          "type": "string",
+          "description": "Supporting guidance.",
+          "reflected": false
+        }
       ],
-      "events": [{ "name": "change", "detail": "{ files: File[] }", "description": "Dispatched when files are selected or dropped." }],
+      "events": [
+        {
+          "name": "change",
+          "detail": "{ files: File[] }",
+          "description": "Dispatched when files are selected or dropped."
+        }
+      ],
       "slots": [],
       "cssCustomProperties": [],
-      "parts": ["field", "label", "file-list", "file", "message"]
+      "parts": [
+        "field",
+        "label",
+        "file-list",
+        "file",
+        "message"
+      ]
     },
     "guidance": {
-      "useWhen": ["A task needs one or more user-provided files as an attachment or import input."],
-      "avoidWhen": ["The application can create the data locally or a simple text field is sufficient."],
-      "constraints": ["Keep the native file input available to keyboard and assistive technology users.", "Validate type, size, and content in the owning application rather than trusting accept.", "Show selected filenames and communicate errors near the field."],
-      "requiredProps": ["label"],
+      "useWhen": [
+        "A task needs one or more user-provided files as an attachment or import input."
+      ],
+      "avoidWhen": [
+        "The application can create the data locally or a simple text field is sufficient."
+      ],
+      "constraints": [
+        "Keep the native file input available to keyboard and assistive technology users.",
+        "Validate type, size, and content in the owning application rather than trusting accept.",
+        "Show selected filenames and communicate errors near the field."
+      ],
+      "requiredProps": [
+        "label"
+      ],
       "example": "examples/components/file-upload.md"
     }
   },
@@ -773,34 +2108,111 @@
     "title": "Date input",
     "description": "A labelled native date field with help, error, and range constraints.",
     "category": "forms",
-    "tags": ["form", "date", "calendar", "input", "field"],
+    "tags": [
+      "form",
+      "date",
+      "calendar",
+      "input",
+      "field"
+    ],
     "api": {
       "tag": "ov-date-input",
-      "importPath": "./components/ovlira/date-input.js",
+      "importPath": "@ovlira/elements/date-input.js",
       "props": [
-        { "name": "label", "type": "string", "description": "Visible accessible label.", "required": true, "reflected": true },
-        { "name": "name", "type": "string", "description": "Native form field name.", "reflected": true },
-        { "name": "value", "type": "string", "description": "Current ISO date value (YYYY-MM-DD)." },
-        { "name": "min", "type": "string", "description": "Earliest allowed ISO date.", "reflected": true },
-        { "name": "max", "type": "string", "description": "Latest allowed ISO date.", "reflected": true },
-        { "name": "required", "type": "boolean", "description": "Marks the field as required.", "default": "false", "reflected": true },
-        { "name": "disabled", "type": "boolean", "description": "Prevents interaction.", "default": "false", "reflected": true },
-        { "name": "error", "type": "string", "description": "Validation message." },
-        { "name": "helpText", "type": "string", "description": "Supporting guidance.", "reflected": false }
+        {
+          "name": "label",
+          "type": "string",
+          "description": "Visible accessible label.",
+          "required": true,
+          "reflected": true
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "description": "Native form field name.",
+          "reflected": true
+        },
+        {
+          "name": "value",
+          "type": "string",
+          "description": "Current ISO date value (YYYY-MM-DD)."
+        },
+        {
+          "name": "min",
+          "type": "string",
+          "description": "Earliest allowed ISO date.",
+          "reflected": true
+        },
+        {
+          "name": "max",
+          "type": "string",
+          "description": "Latest allowed ISO date.",
+          "reflected": true
+        },
+        {
+          "name": "required",
+          "type": "boolean",
+          "description": "Marks the field as required.",
+          "default": "false",
+          "reflected": true
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "description": "Prevents interaction.",
+          "default": "false",
+          "reflected": true
+        },
+        {
+          "name": "error",
+          "type": "string",
+          "description": "Validation message."
+        },
+        {
+          "name": "helpText",
+          "type": "string",
+          "description": "Supporting guidance.",
+          "reflected": false
+        }
       ],
       "events": [
-        { "name": "input", "detail": "{ value: string }", "description": "Dispatched while the date changes." },
-        { "name": "change", "detail": "{ value: string }", "description": "Dispatched when the date is committed." }
+        {
+          "name": "input",
+          "detail": "{ value: string }",
+          "description": "Dispatched while the date changes."
+        },
+        {
+          "name": "change",
+          "detail": "{ value: string }",
+          "description": "Dispatched when the date is committed."
+        }
       ],
       "slots": [],
-      "cssCustomProperties": ["--ov-field-accent"],
-      "parts": ["field", "label", "input", "message"]
+      "cssCustomProperties": [
+        "--ov-field-accent"
+      ],
+      "parts": [
+        "field",
+        "label",
+        "input",
+        "message"
+      ]
     },
     "guidance": {
-      "useWhen": ["A user needs to enter one calendar date and the browser's native date affordance is appropriate."],
-      "avoidWhen": ["The task requires a date range, time zone, or multi-date calendar; keep that orchestration in the owning application."],
-      "constraints": ["Use ISO date strings for value, min, and max.", "Provide a visible label and communicate validation next to the field.", "Do not treat the browser date format as a stable display format for saved data."],
-      "requiredProps": ["label"],
+      "useWhen": [
+        "A user needs to enter one calendar date and the browser's native date affordance is appropriate."
+      ],
+      "avoidWhen": [
+        "The task requires a date range, time zone, or multi-date calendar; keep that orchestration in the owning application."
+      ],
+      "constraints": [
+        "Use ISO date strings for value, min, and max.",
+        "Provide a visible label and communicate validation next to the field.",
+        "Do not treat the browser date format as a stable display format for saved data."
+      ],
+      "requiredProps": [
+        "label"
+      ],
       "example": "examples/components/date-input.md"
     }
   },
@@ -810,24 +2222,61 @@
     "title": "Stepper",
     "description": "A compact ordered progress indicator for multi-step workflows.",
     "category": "navigation",
-    "tags": ["stepper", "progress", "workflow", "steps", "navigation"],
+    "tags": [
+      "stepper",
+      "progress",
+      "workflow",
+      "steps",
+      "navigation"
+    ],
     "api": {
       "tag": "ov-stepper",
-      "importPath": "./components/ovlira/stepper.js",
+      "importPath": "@ovlira/elements/stepper.js",
       "props": [
-        { "name": "items", "type": "StepperItem[]", "description": "Step definitions assigned as a property." },
-        { "name": "value", "type": "string", "description": "Value of the current step.", "reflected": true },
-        { "name": "orientation", "type": "'horizontal' | 'vertical'", "description": "Step layout direction.", "default": "horizontal", "reflected": true }
+        {
+          "name": "items",
+          "type": "StepperItem[]",
+          "description": "Step definitions assigned as a property."
+        },
+        {
+          "name": "value",
+          "type": "string",
+          "description": "Value of the current step.",
+          "reflected": true
+        },
+        {
+          "name": "orientation",
+          "type": "'horizontal' | 'vertical'",
+          "description": "Step layout direction.",
+          "default": "horizontal",
+          "reflected": true
+        }
       ],
       "events": [],
       "slots": [],
       "cssCustomProperties": [],
-      "parts": ["stepper", "step", "track", "marker", "connector", "label", "description"]
+      "parts": [
+        "stepper",
+        "step",
+        "track",
+        "marker",
+        "connector",
+        "label",
+        "description"
+      ]
     },
     "guidance": {
-      "useWhen": ["A workflow has a known sequence and users benefit from seeing where they are and what remains."],
-      "avoidWhen": ["The steps are independent destinations or users need to switch freely between peer views; use links or ov-tabs instead."],
-      "constraints": ["Use stable values and concise labels for every step.", "Expose one current step and communicate completion or error without relying on colour alone.", "Keep navigation and validation actions in the owning workflow rather than inside the indicator."],
+      "useWhen": [
+        "A workflow has a known sequence and users benefit from seeing where they are and what remains."
+      ],
+      "avoidWhen": [
+        "The steps are independent destinations or users need to switch freely between peer views; use links or ov-tabs instead."
+      ],
+      "constraints": [
+        "Use stable values and concise labels for every step.",
+        "Expose one current step and communicate completion or error without relying on colour alone.",
+        "Keep navigation and validation actions in the owning workflow rather than inside the indicator."
+      ],
       "requiredProps": [],
       "example": "examples/components/stepper.md"
     }
@@ -838,31 +2287,100 @@
     "title": "Drawer",
     "description": "A native dialog presented as a focused side panel for supplemental work.",
     "category": "layout",
-    "tags": ["drawer", "panel", "dialog", "overlay", "side-panel"],
+    "tags": [
+      "drawer",
+      "panel",
+      "dialog",
+      "overlay",
+      "side-panel"
+    ],
     "api": {
       "tag": "ov-drawer",
-      "importPath": "./components/ovlira/drawer.js",
+      "importPath": "@ovlira/elements/drawer.js",
       "props": [
-        { "name": "open", "type": "boolean", "description": "Whether the drawer is currently shown.", "default": "false", "reflected": true },
-        { "name": "modal", "type": "boolean", "description": "Whether opening blocks the rest of the document with a modal backdrop.", "default": "true", "reflected": true },
-        { "name": "heading", "type": "string", "description": "Accessible drawer heading.", "required": true, "reflected": true },
-        { "name": "description", "type": "string", "description": "Optional supporting context.", "reflected": true },
-        { "name": "placement", "type": "'left' | 'right'", "description": "Side from which the drawer enters.", "default": "right", "reflected": true },
-        { "name": "dismissible", "type": "boolean", "description": "Whether the close action and Escape can dismiss the drawer.", "default": "true", "reflected": true }
+        {
+          "name": "open",
+          "type": "boolean",
+          "description": "Whether the drawer is currently shown.",
+          "default": "false",
+          "reflected": true
+        },
+        {
+          "name": "modal",
+          "type": "boolean",
+          "description": "Whether opening blocks the rest of the document with a modal backdrop.",
+          "default": "true",
+          "reflected": true
+        },
+        {
+          "name": "heading",
+          "type": "string",
+          "description": "Accessible drawer heading.",
+          "required": true,
+          "reflected": true
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "description": "Optional supporting context.",
+          "reflected": true
+        },
+        {
+          "name": "placement",
+          "type": "'left' | 'right'",
+          "description": "Side from which the drawer enters.",
+          "default": "right",
+          "reflected": true
+        },
+        {
+          "name": "dismissible",
+          "type": "boolean",
+          "description": "Whether the close action and Escape can dismiss the drawer.",
+          "default": "true",
+          "reflected": true
+        }
       ],
       "events": [
-        { "name": "close", "description": "Dispatched when the drawer closes through its close action, Escape, or an external open change." },
-        { "name": "cancel", "description": "Dispatched when Escape requests dismissal; cancel the event to keep the drawer open." }
+        {
+          "name": "close",
+          "description": "Dispatched when the drawer closes through its close action, Escape, or an external open change."
+        },
+        {
+          "name": "cancel",
+          "description": "Dispatched when Escape requests dismissal; cancel the event to keep the drawer open."
+        }
       ],
-      "slots": ["default: drawer body", "actions: compact drawer actions"],
+      "slots": [
+        "default: drawer body",
+        "actions: compact drawer actions"
+      ],
       "cssCustomProperties": [],
-      "parts": ["drawer", "surface", "header", "heading", "description", "body", "actions", "close"]
+      "parts": [
+        "drawer",
+        "surface",
+        "header",
+        "heading",
+        "description",
+        "body",
+        "actions",
+        "close"
+      ]
     },
     "guidance": {
-      "useWhen": ["Supplemental filters, navigation, or detail can be presented beside the current task without replacing its route."],
-      "avoidWhen": ["The decision is brief and interruptive; use ov-dialog, or keep the content inline when it does not need focus isolation."],
-      "constraints": ["Provide a specific heading and a clear close path.", "Use modal=false only when the current task remains safe and understandable beside the panel.", "Keep body content independently scrollable and keep actions concise."],
-      "requiredProps": ["heading"],
+      "useWhen": [
+        "Supplemental filters, navigation, or detail can be presented beside the current task without replacing its route."
+      ],
+      "avoidWhen": [
+        "The decision is brief and interruptive; use ov-dialog, or keep the content inline when it does not need focus isolation."
+      ],
+      "constraints": [
+        "Provide a specific heading and a clear close path.",
+        "Use modal=false only when the current task remains safe and understandable beside the panel.",
+        "Keep body content independently scrollable and keep actions concise."
+      ],
+      "requiredProps": [
+        "heading"
+      ],
       "example": "examples/components/drawer.md"
     }
   },
@@ -872,35 +2390,117 @@
     "title": "Number input",
     "description": "A labelled native numeric field with bounds and step controls.",
     "category": "forms",
-    "tags": ["form", "numeric", "spinbutton", "input", "field"],
+    "tags": [
+      "form",
+      "numeric",
+      "spinbutton",
+      "input",
+      "field"
+    ],
     "api": {
       "tag": "ov-number-input",
-      "importPath": "./components/ovlira/number-input.js",
+      "importPath": "@ovlira/elements/number-input.js",
       "props": [
-        { "name": "label", "type": "string", "description": "Visible accessible label.", "required": true, "reflected": true },
-        { "name": "name", "type": "string", "description": "Native form field name.", "reflected": true },
-        { "name": "value", "type": "string", "description": "Current numeric value as a string." },
-        { "name": "min", "type": "string", "description": "Smallest allowed value.", "reflected": true },
-        { "name": "max", "type": "string", "description": "Largest allowed value.", "reflected": true },
-        { "name": "step", "type": "string", "description": "Native increment between values.", "reflected": true },
-        { "name": "required", "type": "boolean", "description": "Marks the field as required.", "default": "false", "reflected": true },
-        { "name": "disabled", "type": "boolean", "description": "Prevents interaction.", "default": "false", "reflected": true },
-        { "name": "error", "type": "string", "description": "Validation message." },
-        { "name": "helpText", "type": "string", "description": "Supporting guidance.", "reflected": false }
+        {
+          "name": "label",
+          "type": "string",
+          "description": "Visible accessible label.",
+          "required": true,
+          "reflected": true
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "description": "Native form field name.",
+          "reflected": true
+        },
+        {
+          "name": "value",
+          "type": "string",
+          "description": "Current numeric value as a string."
+        },
+        {
+          "name": "min",
+          "type": "string",
+          "description": "Smallest allowed value.",
+          "reflected": true
+        },
+        {
+          "name": "max",
+          "type": "string",
+          "description": "Largest allowed value.",
+          "reflected": true
+        },
+        {
+          "name": "step",
+          "type": "string",
+          "description": "Native increment between values.",
+          "reflected": true
+        },
+        {
+          "name": "required",
+          "type": "boolean",
+          "description": "Marks the field as required.",
+          "default": "false",
+          "reflected": true
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "description": "Prevents interaction.",
+          "default": "false",
+          "reflected": true
+        },
+        {
+          "name": "error",
+          "type": "string",
+          "description": "Validation message."
+        },
+        {
+          "name": "helpText",
+          "type": "string",
+          "description": "Supporting guidance.",
+          "reflected": false
+        }
       ],
       "events": [
-        { "name": "input", "detail": "{ value: string }", "description": "Dispatched while the value changes." },
-        { "name": "change", "detail": "{ value: string }", "description": "Dispatched when the value is committed." }
+        {
+          "name": "input",
+          "detail": "{ value: string }",
+          "description": "Dispatched while the value changes."
+        },
+        {
+          "name": "change",
+          "detail": "{ value: string }",
+          "description": "Dispatched when the value is committed."
+        }
       ],
       "slots": [],
-      "cssCustomProperties": ["--ov-field-accent"],
-      "parts": ["field", "label", "input", "message"]
+      "cssCustomProperties": [
+        "--ov-field-accent"
+      ],
+      "parts": [
+        "field",
+        "label",
+        "input",
+        "message"
+      ]
     },
     "guidance": {
-      "useWhen": ["A user needs to enter a bounded quantity, count, or other numeric value."],
-      "avoidWhen": ["The value is continuous and better adjusted directly; use ov-slider for bounded range interaction."],
-      "constraints": ["Use min, max, and step when the domain has meaningful bounds.", "Keep value as a string at the component boundary so an empty field remains representable.", "Validate business rules in the owning form and communicate errors next to the field."],
-      "requiredProps": ["label"],
+      "useWhen": [
+        "A user needs to enter a bounded quantity, count, or other numeric value."
+      ],
+      "avoidWhen": [
+        "The value is continuous and better adjusted directly; use ov-slider for bounded range interaction."
+      ],
+      "constraints": [
+        "Use min, max, and step when the domain has meaningful bounds.",
+        "Keep value as a string at the component boundary so an empty field remains representable.",
+        "Validate business rules in the owning form and communicate errors next to the field."
+      ],
+      "requiredProps": [
+        "label"
+      ],
       "example": "examples/components/number-input.md"
     }
   },
@@ -910,29 +2510,86 @@
     "title": "Popover",
     "description": "A non-modal floating surface for contextual content and controls.",
     "category": "layout",
-    "tags": ["popover", "overlay", "context", "floating", "surface"],
+    "tags": [
+      "popover",
+      "overlay",
+      "context",
+      "floating",
+      "surface"
+    ],
     "api": {
       "tag": "ov-popover",
-      "importPath": "./components/ovlira/popover.js",
+      "importPath": "@ovlira/elements/popover.js",
       "props": [
-        { "name": "label", "type": "string", "description": "Accessible trigger and surface label.", "default": "More details", "reflected": true },
-        { "name": "open", "type": "boolean", "description": "Whether the popover is visible.", "default": "false", "reflected": true },
-        { "name": "disabled", "type": "boolean", "description": "Prevents opening.", "default": "false", "reflected": true },
-        { "name": "placement", "type": "'top' | 'right' | 'bottom' | 'left'", "description": "Preferred surface placement.", "default": "bottom", "reflected": true },
-        { "name": "dismissible", "type": "boolean", "description": "Whether Escape and outside pointer input dismiss the surface.", "default": "true", "reflected": true }
+        {
+          "name": "label",
+          "type": "string",
+          "description": "Accessible trigger and surface label.",
+          "default": "More details",
+          "reflected": true
+        },
+        {
+          "name": "open",
+          "type": "boolean",
+          "description": "Whether the popover is visible.",
+          "default": "false",
+          "reflected": true
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "description": "Prevents opening.",
+          "default": "false",
+          "reflected": true
+        },
+        {
+          "name": "placement",
+          "type": "'top' | 'right' | 'bottom' | 'left'",
+          "description": "Preferred surface placement.",
+          "default": "bottom",
+          "reflected": true
+        },
+        {
+          "name": "dismissible",
+          "type": "boolean",
+          "description": "Whether Escape and outside pointer input dismiss the surface.",
+          "default": "true",
+          "reflected": true
+        }
       ],
       "events": [
-        { "name": "open", "description": "Dispatched when the popover opens." },
-        { "name": "close", "description": "Dispatched when the popover closes." }
+        {
+          "name": "open",
+          "description": "Dispatched when the popover opens."
+        },
+        {
+          "name": "close",
+          "description": "Dispatched when the popover closes."
+        }
       ],
-      "slots": ["trigger: non-interactive trigger label", "default: contextual popover content"],
+      "slots": [
+        "trigger: non-interactive trigger label",
+        "default: contextual popover content"
+      ],
       "cssCustomProperties": [],
-      "parts": ["trigger", "popover", "content"]
+      "parts": [
+        "trigger",
+        "popover",
+        "content"
+      ]
     },
     "guidance": {
-      "useWhen": ["Supporting controls or context should float beside the current task without interrupting it."],
-      "avoidWhen": ["The content is an interruptive decision or action menu; use ov-dialog or ov-menu instead."],
-      "constraints": ["Keep the trigger label meaningful and do not slot another interactive control inside it.", "Keep the surface concise and preserve a keyboard path to close it.", "Use placement as a preference only; the owning layout should avoid clipping the surface."],
+      "useWhen": [
+        "Supporting controls or context should float beside the current task without interrupting it."
+      ],
+      "avoidWhen": [
+        "The content is an interruptive decision or action menu; use ov-dialog or ov-menu instead."
+      ],
+      "constraints": [
+        "Keep the trigger label meaningful and do not slot another interactive control inside it.",
+        "Keep the surface concise and preserve a keyboard path to close it.",
+        "Use placement as a preference only; the owning layout should avoid clipping the surface."
+      ],
       "requiredProps": [],
       "example": "examples/components/popover.md"
     }
@@ -943,28 +2600,76 @@
     "title": "Tree",
     "description": "An accessible hierarchical tree for nested resources and navigation.",
     "category": "navigation",
-    "tags": ["tree", "hierarchy", "navigation", "nested", "resources"],
+    "tags": [
+      "tree",
+      "hierarchy",
+      "navigation",
+      "nested",
+      "resources"
+    ],
     "api": {
       "tag": "ov-tree",
-      "importPath": "./components/ovlira/tree.js",
+      "importPath": "@ovlira/elements/tree.js",
       "props": [
-        { "name": "label", "type": "string", "description": "Accessible tree label.", "default": "Tree", "reflected": true },
-        { "name": "items", "type": "TreeItem[]", "description": "Nested tree definitions assigned as a property." },
-        { "name": "value", "type": "string", "description": "Selected tree item value.", "reflected": true },
-        { "name": "expanded", "type": "string[]", "description": "Values of expanded parent items." }
+        {
+          "name": "label",
+          "type": "string",
+          "description": "Accessible tree label.",
+          "default": "Tree",
+          "reflected": true
+        },
+        {
+          "name": "items",
+          "type": "TreeItem[]",
+          "description": "Nested tree definitions assigned as a property."
+        },
+        {
+          "name": "value",
+          "type": "string",
+          "description": "Selected tree item value.",
+          "reflected": true
+        },
+        {
+          "name": "expanded",
+          "type": "string[]",
+          "description": "Values of expanded parent items."
+        }
       ],
       "events": [
-        { "name": "select", "detail": "{ value: string; label: string }", "description": "Dispatched when an enabled item is selected." },
-        { "name": "toggle", "detail": "{ value: string; expanded: boolean }", "description": "Dispatched when a parent item expands or collapses." }
+        {
+          "name": "select",
+          "detail": "{ value: string; label: string }",
+          "description": "Dispatched when an enabled item is selected."
+        },
+        {
+          "name": "toggle",
+          "detail": "{ value: string; expanded: boolean }",
+          "description": "Dispatched when a parent item expands or collapses."
+        }
       ],
       "slots": [],
       "cssCustomProperties": [],
-      "parts": ["tree", "group", "item", "row", "disclosure", "label"]
+      "parts": [
+        "tree",
+        "group",
+        "item",
+        "row",
+        "disclosure",
+        "label"
+      ]
     },
     "guidance": {
-      "useWhen": ["Users need to browse or select nested resources such as files, projects, or navigation sections."],
-      "avoidWhen": ["The hierarchy is shallow or users need to compare peer options; use breadcrumbs, links, or ov-tabs instead."],
-      "constraints": ["Use stable values and labels for every item.", "Keep expansion state in the owning application through the expanded property.", "Do not rely on indentation or colour alone to communicate hierarchy or selection; the component exposes native tree semantics and keyboard navigation."],
+      "useWhen": [
+        "Users need to browse or select nested resources such as files, projects, or navigation sections."
+      ],
+      "avoidWhen": [
+        "The hierarchy is shallow or users need to compare peer options; use breadcrumbs, links, or ov-tabs instead."
+      ],
+      "constraints": [
+        "Use stable values and labels for every item.",
+        "Keep expansion state in the owning application through the expanded property.",
+        "Do not rely on indentation or colour alone to communicate hierarchy or selection; the component exposes native tree semantics and keyboard navigation."
+      ],
       "requiredProps": [],
       "example": "examples/components/tree.md"
     }
@@ -975,26 +2680,71 @@
     "title": "Tooltip",
     "description": "A supplemental tooltip that opens for pointer hover and keyboard focus.",
     "category": "feedback",
-    "tags": ["tooltip", "hint", "help", "overlay", "accessible"],
+    "tags": [
+      "tooltip",
+      "hint",
+      "help",
+      "overlay",
+      "accessible"
+    ],
     "api": {
       "tag": "ov-tooltip",
-      "importPath": "./components/ovlira/tooltip.js",
+      "importPath": "@ovlira/elements/tooltip.js",
       "props": [
-        { "name": "content", "type": "string", "description": "Supplemental explanation shown in the tooltip.", "required": true, "reflected": true },
-        { "name": "label", "type": "string", "description": "Fallback trigger label when no trigger slot is provided.", "default": "More information", "reflected": true },
-        { "name": "placement", "type": "'top' | 'right' | 'bottom' | 'left'", "description": "Preferred tooltip placement.", "default": "top", "reflected": true },
-        { "name": "open", "type": "boolean", "description": "Whether the tooltip is visible.", "default": "false", "reflected": true }
+        {
+          "name": "content",
+          "type": "string",
+          "description": "Supplemental explanation shown in the tooltip.",
+          "required": true,
+          "reflected": true
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "description": "Fallback trigger label when no trigger slot is provided.",
+          "default": "More information",
+          "reflected": true
+        },
+        {
+          "name": "placement",
+          "type": "'top' | 'right' | 'bottom' | 'left'",
+          "description": "Preferred tooltip placement.",
+          "default": "top",
+          "reflected": true
+        },
+        {
+          "name": "open",
+          "type": "boolean",
+          "description": "Whether the tooltip is visible.",
+          "default": "false",
+          "reflected": true
+        }
       ],
       "events": [],
-      "slots": ["trigger: the control or label that receives the supplemental description"],
+      "slots": [
+        "trigger: the control or label that receives the supplemental description"
+      ],
       "cssCustomProperties": [],
-      "parts": ["trigger", "tooltip"]
+      "parts": [
+        "trigger",
+        "tooltip"
+      ]
     },
     "guidance": {
-      "useWhen": ["A control or concise label needs a brief supplemental explanation on hover or focus."],
-      "avoidWhen": ["The content is required to understand or operate the control; use a visible label or help text instead."],
-      "constraints": ["Keep tooltip content short and supplemental.", "Support both pointer hover and keyboard focus, and allow Escape to dismiss.", "Never rely on a tooltip as the only accessible name for an interactive control."],
-      "requiredProps": ["content"],
+      "useWhen": [
+        "A control or concise label needs a brief supplemental explanation on hover or focus."
+      ],
+      "avoidWhen": [
+        "The content is required to understand or operate the control; use a visible label or help text instead."
+      ],
+      "constraints": [
+        "Keep tooltip content short and supplemental.",
+        "Support both pointer hover and keyboard focus, and allow Escape to dismiss.",
+        "Never rely on a tooltip as the only accessible name for an interactive control."
+      ],
+      "requiredProps": [
+        "content"
+      ],
       "example": "examples/components/tooltip.md"
     }
   },
@@ -1004,27 +2754,80 @@
     "title": "Avatar",
     "description": "A compact identity marker with image, initials, and status fallbacks.",
     "category": "identity",
-    "tags": ["avatar", "identity", "user", "member", "status"],
+    "tags": [
+      "avatar",
+      "identity",
+      "user",
+      "member",
+      "status"
+    ],
     "api": {
       "tag": "ov-avatar",
-      "importPath": "./components/ovlira/avatar.js",
+      "importPath": "@ovlira/elements/avatar.js",
       "props": [
-        { "name": "name", "type": "string", "description": "Identity used for the accessible label and initials.", "required": true, "reflected": true },
-        { "name": "src", "type": "string", "description": "Optional image URL.", "reflected": true },
-        { "name": "alt", "type": "string", "description": "Optional accessible identity override.", "reflected": true },
-        { "name": "size", "type": "'sm' | 'md' | 'lg'", "description": "Avatar diameter.", "default": "md", "reflected": true },
-        { "name": "status", "type": "'online' | 'away' | 'busy' | 'offline'", "description": "Optional presence status.", "reflected": true }
+        {
+          "name": "name",
+          "type": "string",
+          "description": "Identity used for the accessible label and initials.",
+          "required": true,
+          "reflected": true
+        },
+        {
+          "name": "src",
+          "type": "string",
+          "description": "Optional image URL.",
+          "reflected": true
+        },
+        {
+          "name": "alt",
+          "type": "string",
+          "description": "Optional accessible identity override.",
+          "reflected": true
+        },
+        {
+          "name": "size",
+          "type": "'sm' | 'md' | 'lg'",
+          "description": "Avatar diameter.",
+          "default": "md",
+          "reflected": true
+        },
+        {
+          "name": "status",
+          "type": "'online' | 'away' | 'busy' | 'offline'",
+          "description": "Optional presence status.",
+          "reflected": true
+        }
       ],
-      "events": [{ "name": "image-error", "description": "Dispatched when the image cannot load and the initials fallback is shown." }],
+      "events": [
+        {
+          "name": "image-error",
+          "description": "Dispatched when the image cannot load and the initials fallback is shown."
+        }
+      ],
       "slots": [],
       "cssCustomProperties": [],
-      "parts": ["avatar", "image", "initials", "status"]
+      "parts": [
+        "avatar",
+        "image",
+        "initials",
+        "status"
+      ]
     },
     "guidance": {
-      "useWhen": ["A user, member, owner, or contributor needs a compact visual identity marker."],
-      "avoidWhen": ["The identity is unknown or the label would be clearer as text alone."],
-      "constraints": ["Provide a meaningful name and keep the accessible label descriptive.", "Use an image only when it adds reliable identity value; initials remain the fallback.", "Treat presence status as supplemental and do not communicate critical state by colour alone."],
-      "requiredProps": ["name"],
+      "useWhen": [
+        "A user, member, owner, or contributor needs a compact visual identity marker."
+      ],
+      "avoidWhen": [
+        "The identity is unknown or the label would be clearer as text alone."
+      ],
+      "constraints": [
+        "Provide a meaningful name and keep the accessible label descriptive.",
+        "Use an image only when it adds reliable identity value; initials remain the fallback.",
+        "Treat presence status as supplemental and do not communicate critical state by colour alone."
+      ],
+      "requiredProps": [
+        "name"
+      ],
       "example": "examples/components/avatar.md"
     }
   },
@@ -1034,23 +2837,55 @@
     "title": "Breadcrumbs",
     "description": "A compact linked hierarchy with a clearly identified current location.",
     "category": "navigation",
-    "tags": ["breadcrumbs", "navigation", "hierarchy", "links", "location"],
+    "tags": [
+      "breadcrumbs",
+      "navigation",
+      "hierarchy",
+      "links",
+      "location"
+    ],
     "api": {
       "tag": "ov-breadcrumbs",
-      "importPath": "./components/ovlira/breadcrumbs.js",
+      "importPath": "@ovlira/elements/breadcrumbs.js",
       "props": [
-        { "name": "label", "type": "string", "description": "Accessible navigation label.", "default": "Breadcrumb", "reflected": true },
-        { "name": "items", "type": "BreadcrumbItem[]", "description": "Linked hierarchy assigned as a property." }
+        {
+          "name": "label",
+          "type": "string",
+          "description": "Accessible navigation label.",
+          "default": "Breadcrumb",
+          "reflected": true
+        },
+        {
+          "name": "items",
+          "type": "BreadcrumbItem[]",
+          "description": "Linked hierarchy assigned as a property."
+        }
       ],
       "events": [],
       "slots": [],
       "cssCustomProperties": [],
-      "parts": ["nav", "list", "item", "link", "label", "current", "separator"]
+      "parts": [
+        "nav",
+        "list",
+        "item",
+        "link",
+        "label",
+        "current",
+        "separator"
+      ]
     },
     "guidance": {
-      "useWhen": ["A nested resource or detail page benefits from a persistent path back to its parent locations."],
-      "avoidWhen": ["There is no meaningful hierarchy or a single back link communicates the route more clearly."],
-      "constraints": ["Use real links for parent locations and make only the final item current.", "Keep labels short enough to wrap or truncate without hiding the current location.", "Keep application routing and data ownership outside the component."],
+      "useWhen": [
+        "A nested resource or detail page benefits from a persistent path back to its parent locations."
+      ],
+      "avoidWhen": [
+        "There is no meaningful hierarchy or a single back link communicates the route more clearly."
+      ],
+      "constraints": [
+        "Use real links for parent locations and make only the final item current.",
+        "Keep labels short enough to wrap or truncate without hiding the current location.",
+        "Keep application routing and data ownership outside the component."
+      ],
       "requiredProps": [],
       "example": "examples/components/breadcrumbs.md"
     }

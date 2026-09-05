@@ -1,0 +1,32 @@
+{
+  "protocol": "protocol.md",
+  "startingRevision": "ea637e5c8edc7ca3272638c99a7addb0186319bf",
+  "modelSelection": "inherited parent model; no per-run override",
+  "canonicalRuns": [
+    { "id": "customers-1", "agentId": "01a071f9-d254-7cb3-ae59-76375c60bd9b", "status": "pass", "parentVerification": "9 passed, 3 intentional skips; build and check passed" },
+    { "id": "customers-2", "agentId": "01a071fa-574f-77a2-b45a-55ddb472b2d4", "status": "pass", "parentVerification": "5 passed; build and check passed" },
+    { "id": "customers-3", "agentId": "01a07069-a625-7e32-87e1-3ef831f1f4ed", "status": "fail", "parentVerification": "7 passed; build and check passed; adapted stylesheet changed beyond the generated file" },
+    { "id": "customers-4", "agentId": "01a07069-a6bc-78d0-8861-f2ade49113cb", "status": "pass", "parentVerification": "7 passed; build and check passed" },
+    { "id": "editorial-1", "agentId": "01a06965-cd11-70b0-9bf2-5774c8235582", "status": "pass", "parentVerification": "5 passed; build and check passed" },
+    { "id": "editorial-2", "agentId": "01a06966-52c1-7e83-8bd8-8826de8fa167", "status": "pass", "parentVerification": "5 passed; build and check passed" },
+    { "id": "editorial-3", "agentId": "01a071fa-584d-70c1-8e64-d323256911b9", "status": "pass", "parentVerification": "11 passed; build and check passed" },
+    { "id": "editorial-4", "agentId": "01a07069-a83c-7733-a292-91a2654873b0", "status": "pass", "parentVerification": "9 passed; build and check passed" },
+    { "id": "equipment-1", "agentId": "01a06965-cb21-7340-b7a4-d24e1aa16b05", "status": "pass", "parentVerification": "5 passed; build and check passed" },
+    { "id": "equipment-2", "agentId": "01a06966-523b-7041-b135-5f851677727e", "status": "pass", "parentVerification": "5 passed; build and check passed" },
+    { "id": "equipment-3", "agentId": "01a07069-a58a-7df1-acf2-c68441eee311", "status": "pass", "parentVerification": "5 passed; build and check passed" },
+    { "id": "equipment-4", "agentId": "01a07069-a97d-73c2-8246-d115401de5c1", "status": "pass", "parentVerification": "8 passed; build and check passed" }
+  ],
+  "score": {
+    "passed": 11,
+    "total": 12,
+    "passRate": 0.9167,
+    "zeroDataLossFailures": true,
+    "gate": "met",
+    "failure": "customers-3 added custom CSS to src/styles.css; the run fails the frozen styling-preservation criterion.",
+    "protocolNote": "A failed partial-spawn retry also targeted customers-1. The final scored report and source are retained under that directory; the collision is recorded as an evidence-quality exception and should be repeated before treating the benchmark as a pristine independent-run study.",
+    "supplementaryAttempts": [
+      { "id": "customers-5", "status": "abandoned-before-report", "reason": "agent usage limit / shutdown during finalization" },
+      { "id": "equipment-5", "status": "abandoned-before-report", "reason": "agent usage limit / shutdown during finalization" }
+    ]
+  }
+}

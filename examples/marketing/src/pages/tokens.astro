@@ -1,0 +1,47 @@
+---
+import MarketingLayout from '../layouts/MarketingLayout.astro';
+const tokens = [
+  { name: '--ov-bg', use: 'Primary application surface', sample: 'var(--ov-bg)' },
+  { name: '--ov-text', use: 'Primary readable foreground', sample: 'var(--ov-text)' },
+  { name: '--ov-muted', use: 'Secondary labels and controls', sample: 'var(--ov-muted)' },
+  { name: '--ov-faint', use: 'Low-priority metadata', sample: 'var(--ov-faint)' },
+  { name: '--ov-border', use: 'Subtle structural boundaries', sample: 'var(--ov-border)' },
+  { name: '--ov-good', use: 'Successful or healthy state', sample: 'var(--ov-good)' },
+  { name: '--ov-warn', use: 'Attention or warning state', sample: 'var(--ov-warn)' },
+  { name: '--ov-bad', use: 'Error or destructive state', sample: 'var(--ov-bad)' },
+  { name: '--ov-font-sans', use: 'Global UI typography' },
+  { name: '--ov-space-*', use: 'Approved spacing scale' },
+];
+---
+
+<MarketingLayout eyebrow="Theme" title="Replaceable design tokens" description="A small semantic surface lets projects change theme values without rewriting component internals." pageTitle="Tokens · Ovlira">
+  <div class="document-page">
+    <div class="notice"><strong>Projects own the overrides.</strong> Components consume semantic <code>--ov-*</code> properties; arbitrary literals remain visible to validation.</div>
+
+    <section class="section" aria-labelledby="tokens-heading">
+      <h2 id="tokens-heading" class="section-heading">Core surface</h2>
+      <div class="token-list">{tokens.map((token) => <div class="token-row"><div class="token-name">{token.name}</div><div class="token-use">{token.use}</div>{token.sample && <div class="token-sample" style={`background: ${token.sample}`} aria-hidden="true"></div>}</div>)}</div>
+    </section>
+
+    <section class="section" aria-labelledby="tokens-override-heading">
+      <h2 id="tokens-override-heading" class="section-heading">Project override</h2>
+      <p class="document-copy">Override only intentional differences. The default theme remains the complete fallback.</p>
+      <div class="code-block">
+        <div class="code-block-head"><span>src/styles/ovlira-theme.css</span><button type="button" class="copy-button" data-copy-command aria-live="polite">Copy</button></div>
+        <pre><code>{`:root {
+  --ov-bg: #ffffff;
+  --ov-text: #171717;
+}`}</code></pre>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="tokens-commands-heading">
+      <h2 id="tokens-commands-heading" class="section-heading">Exports</h2>
+      <dl class="fields">
+        <div class="field"><dt>JSON</dt><dd><code>npm run ovlira -- tokens --format json</code><br /><span class="field-note">Compact token data for agents and tooling.</span></dd></div>
+        <div class="field"><dt>CSS</dt><dd><code>npm run ovlira -- tokens --format css</code><br /><span class="field-note">Custom properties for direct project use.</span></dd></div>
+        <div class="field"><dt>Package</dt><dd><code>@ovlira/elements/default-theme.css</code><br /><span class="field-note">Complete runtime defaults.</span></dd></div>
+      </dl>
+    </section>
+  </div>
+</MarketingLayout>

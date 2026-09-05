@@ -1,17 +1,15 @@
 #!/usr/bin/env node
 import { promises as fs } from 'node:fs';
+import { createRequire } from 'node:module';
 import path from 'node:path';
-import { fileURLToPath } from 'node:url';
 import { catalogue, catalogueSchemaVersion, componentForTag, components, metadataReport, recipes, registryIndex, resolveDescriptor, searchCatalogue } from '../catalogue/index.js';
 import { recipeFixtureMarkup, recipeFixtureStyles, type RecipeFixtureId } from '../recipes/fixtures.js';
 import { collectAssignedProperties } from '../validator/ast.js';
 import { packageVersion } from '../version.js';
 import type { ComponentDescriptor, Descriptor, Diagnostic, ProjectManifest, RecipeDescriptor } from '../catalogue/types.js';
-import tokens from '../tokens/tokens.json' with { type: 'json' };
+import tokens from '@ovlira/elements/tokens.json' with { type: 'json' };
 
-const packageRoot = resolvePackageRoot();
-const sourceRoot = path.join(packageRoot, 'src');
-const tokenCssPath = path.join(sourceRoot, 'tokens', 'tokens.css');
+const defaultThemeCssPath = createRequire(import.meta.url).resolve('@ovlira/elements/default-theme.css');
 const themeFileName = 'ovlira-theme.css';
 const legacyThemeFileName = 'ovlira-tokens.css';
 const projectFiles = new Set(['.ts', '.tsx', '.js', '.jsx', '.vue', '.html', '.css']);
@@ -44,13 +42,6 @@ interface FileText {
 }
 
 const defaultIO: CliIO = { stdout: (text) => console.log(text), stderr: (text) => console.error(text) };
-
-function resolvePackageRoot() {
-  if (import.meta.url.startsWith('file:')) {
-    try { return fileURLToPath(new URL('../..', import.meta.url)); } catch { /* Vitest may virtualize import.meta.url. */ }
-  }
-  return process.cwd();
-}
 
 export async function runCli(argv: string[], startingCwd = process.cwd(), io: CliIO = defaultIO): Promise<number> {
   const args = parseArgs(argv, startingCwd);
@@ -139,6 +130,8 @@ function parseArgs(argv: string[], startingCwd: string): ParsedArgs {
     else if (arg.startsWith('--section=')) section = arg.slice('--section='.length) as ParsedArgs['section'];
     else if (arg === '--entry') entry = nextValue('--entry');
     else if (arg.startsWith('--entry=')) entry = arg.slice('--entry='.length);
+    else if (arg === '--out') entry = nextValue('--out');
+    else if (arg.startsWith('--out=')) entry = arg.slice('--out='.length);
     else if ((arg === '--help' || arg === '-h') && !positional.length) positional.push('help');
     else if ((arg === '--version' || arg === '-v') && !positional.length) positional.push('version');
     else if (!arg.startsWith('-')) positional.push(arg);
@@ -157,7 +150,7 @@ Commands:
   ovlira init [directory]                 Create a small Vite + Lit project
   ovlira search <query> [--json]          Find components and recipes
   ovlira inspect <id> [--json]            Read one compact descriptor
-  ovlira add <id> [--json]                Copy a component or recipe into a project
+  ovlira add <id> [--json]                Generate a recipe or show a component import
   ovlira list [--json]                    List the local catalogue
   ovlira tokens [--format css|json]       Export approved design tokens
   ovlira metadata [--json]                Validate metadata and show the registry index
@@ -165,8 +158,9 @@ Commands:
 
 Search filters: --kind component|recipe, --tag ov-input, --category forms, --limit N.
 Inspect sections: --section api|guidance|example.
-Add --cwd path and optionally --entry src/main.ts to control the target project.
-Use --force only when you intend to replace a locally edited generated file.`);
+Add a recipe with --cwd path and optionally --out src/pages/settings.ts.
+Components are consumed from @ovlira/elements with the import returned by inspect/add.
+Use --force only when you intend to replace a locally edited generated recipe.`);
 }
 
 function compactDescriptor(item: Descriptor) {
@@ -226,7 +220,7 @@ function listCommand(args: ParsedArgs, io: CliIO): number {
 async function tokensCommand(args: ParsedArgs, io: CliIO): Promise<number> {
   const format = args.json ? 'json' : (args.format ?? 'css');
   if (format === 'json') io.stdout(JSON.stringify({ version: 1, tokens }, null, 2));
-  else if (format === 'css') io.stdout(await fs.readFile(tokenCssPath, 'utf8'));
+  else if (format === 'css') io.stdout(await fs.readFile(defaultThemeCssPath, 'utf8'));
   else return writeCliError(args, io, 'tokens.invalid-format', 'tokens --format must be css or json.', 'Use --format css or --format json.');
   return 0;
 }
@@ -242,31 +236,62 @@ function metadataCommand(args: ParsedArgs, io: CliIO): number {
 async function initProject(cwd: string, args: ParsedArgs, io: CliIO): Promise<number> {
   const target = path.resolve(cwd, args.positional[0] ?? '.');
   await fs.mkdir(path.join(target, 'src', 'styles'), { recursive: true });
-  await fs.mkdir(path.join(target, 'src', 'components', 'ovlira'), { recursive: true });
   const theme = await projectTheme(target);
+  const packagePath = path.join(target, 'package.json');
+  const packageJson = await mergedProjectPackage(packagePath, path.basename(target));
   const files: Record<string, string> = {
-    'package.json': JSON.stringify({ name: path.basename(target), private: true, type: 'module', scripts: { dev: 'vite', build: 'tsc && vite build' }, dependencies: { lit: '^3.3.0' }, devDependencies: { typescript: '^5.8.3', vite: '^7.1.0' } }, null, 2) + '\n',
+    'package.json': JSON.stringify(packageJson, null, 2) + '\n',
     'index.html': '<!doctype html>\n<html lang="en"><head><meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><title>Ovlira prototype</title></head><body><div id="app"></div><script type="module" src="/src/main.ts"></script></body></html>\n',
     'src/main.ts': starterEntry(theme.fileName),
     'src/styles.css': globalStyles(),
     'tsconfig.json': JSON.stringify({ compilerOptions: { target: 'ES2022', useDefineForClassFields: false, module: 'ESNext', moduleResolution: 'Bundler', strict: true, noEmit: true, skipLibCheck: true, lib: ['ES2022', 'DOM', 'DOM.Iterable'] }, include: ['src'] }, null, 2) + '\n',
     'vite.config.ts': "import { defineConfig } from 'vite';\nexport default defineConfig({});\n",
     '.gitignore': 'node_modules\ndist\n',
-    '.ovlira.json': JSON.stringify({ version: 1, added: [], recipes: [], entry: 'src/main.ts' } satisfies ProjectManifest, null, 2) + '\n',
+    '.ovlira.json': JSON.stringify({ version: 2, mode: 'package', elementsVersion: packageVersion, recipes: {}, entry: 'src/main.ts' } satisfies ProjectManifest, null, 2) + '\n',
   };
-  files[`src/styles/${theme.fileName}`] = await fs.readFile(tokenCssPath, 'utf8');
+  files[`src/styles/${theme.fileName}`] = themeOverrideTemplate();
   const written: string[] = [];
   for (const [relative, content] of Object.entries(files)) {
     const absolute = path.join(target, relative);
-    if (!args.force && await exists(absolute)) continue;
+    const current = await exists(absolute) ? await fs.readFile(absolute, 'utf8') : undefined;
+    if (current === content) continue;
+    if (relative !== 'package.json' && !args.force && current !== undefined) continue;
     await fs.mkdir(path.dirname(absolute), { recursive: true });
     await fs.writeFile(absolute, content);
     written.push(relative);
   }
-  const result = { version: 1, directory: target, files: written, next: 'ovlira add page.settings' };
+  const result = { version: 2, directory: target, files: written, next: 'npm install && npm run ovlira -- add page.settings' };
   if (args.json) io.stdout(JSON.stringify(result, null, 2));
-  else io.stdout(`Initialised ${target}\n\nNext: cd ${target} && ovlira add page.settings`);
+  else io.stdout(`Initialised ${target}\n\nNext: cd ${target} && npm install && npm run ovlira -- add page.settings`);
   return 0;
+}
+
+async function mergedProjectPackage(packagePath: string, projectName: string): Promise<Record<string, unknown>> {
+  const value = await exists(packagePath)
+    ? JSON.parse(await fs.readFile(packagePath, 'utf8')) as Record<string, unknown>
+    : { name: projectName, private: true, type: 'module' };
+  const scripts = objectRecord(value.scripts);
+  scripts.dev ??= 'vite';
+  scripts.build ??= 'tsc && vite build';
+  scripts.ovlira ??= 'ovlira';
+  value.scripts = scripts;
+  const dependencies = objectRecord(value.dependencies);
+  dependencies['@ovlira/elements'] ??= `^${packageVersion}`;
+  value.dependencies = dependencies;
+  const devDependencies = objectRecord(value.devDependencies);
+  devDependencies['@ovlira/cli'] ??= `^${packageVersion}`;
+  devDependencies.typescript ??= '^5.8.3';
+  devDependencies.vite ??= '^7.1.0';
+  value.devDependencies = devDependencies;
+  return value;
+}
+
+function objectRecord(value: unknown): Record<string, unknown> {
+  return value && typeof value === 'object' && !Array.isArray(value) ? value as Record<string, unknown> : {};
+}
+
+function themeOverrideTemplate() {
+  return `:root {\n  /* Override approved --ov-* semantic tokens for this project here. */\n}\n`;
 }
 
 async function addCommand(args: ParsedArgs, io: CliIO): Promise<number> {
@@ -275,59 +300,53 @@ async function addCommand(args: ParsedArgs, io: CliIO): Promise<number> {
   if (!requested) return writeCliError(args, io, 'add.missing-id', 'add requires a component or recipe ID.', 'Pass a stable ID such as component.input or page.settings.');
   const item = resolveDescriptor(requested);
   if (!item) return writeCliError(args, io, 'catalogue.not-found', `Unknown catalogue entry “${requested}”.`, `Try “ovlira search ${requested}”.`);
+  if (item.kind === 'component') {
+    const result = {
+      version: 2,
+      ok: true,
+      id: item.id,
+      kind: item.kind,
+      tag: item.api.tag,
+      importPath: item.api.importPath,
+      example: item.guidance.example,
+      changed: [],
+      next: `Import '${item.api.importPath}' in the module that renders <${item.api.tag}>.`,
+    };
+    if (args.json) io.stdout(JSON.stringify(result, null, 2));
+    else io.stdout(`${item.id} is package-managed.\n\nimport '${item.api.importPath}';\n\nThen compose ${item.guidance.example}`);
+    return 0;
+  }
+
   const manifestPath = path.join(target, '.ovlira.json');
   const manifest = await readManifest(manifestPath);
-  const tags = item.kind === 'component' ? [item.api.tag] : item.components;
-  const nextManifest: ProjectManifest = {
-    version: manifest.version,
-    added: [...manifest.added],
-    recipes: [...manifest.recipes],
-    entry: args.entry ? projectRelativePath(target, args.entry) : manifest.entry,
-  };
-  for (const tag of tags) if (!nextManifest.added.includes(tag)) nextManifest.added.push(tag);
-  if (item.kind === 'recipe' && !nextManifest.recipes.includes(item.id)) nextManifest.recipes.push(item.id);
-
-  const plans: PlannedFile[] = [];
-  for (const tag of tags) {
-    const component = componentForTag(tag);
-    if (!component) continue;
-    const file = `${component.api.tag.replace('ov-', '')}.ts`;
-    const destination = path.join(target, 'src', 'components', 'ovlira', file);
-    plans.push({
-      absolute: destination,
-      relative: projectRelativePath(target, destination),
-      content: await fs.readFile(path.join(sourceRoot, 'components', file), 'utf8'),
-    });
-  }
   const theme = await projectTheme(target);
-  plans.push({ absolute: theme.absolute, relative: theme.relative, content: await fs.readFile(tokenCssPath, 'utf8'), preserveExisting: true });
-  const entryPath = path.join(target, nextManifest.entry);
-  const entryExists = await exists(entryPath);
-  const entryIsStarter = entryExists && (await fs.readFile(entryPath, 'utf8')).includes('ovlira add page.settings');
-  const entryWritten = !entryExists || entryIsStarter || Boolean(args.entry);
-  if (!entryExists || entryIsStarter || args.entry) {
-    plans.push({
-      absolute: entryPath,
-      relative: projectRelativePath(target, entryPath),
-      content: item.kind === 'recipe' ? recipeEntry(item, theme.fileName) : componentEntry(item, theme.fileName),
-      forceWhenStarter: entryIsStarter || !entryExists,
-    });
-  } else {
-    const examplePath = path.join(target, 'src', 'ovlira-example.ts');
-    plans.push({
-      absolute: examplePath,
-      relative: projectRelativePath(target, examplePath),
-      content: item.kind === 'recipe' ? recipeEntry(item, theme.fileName) : componentEntry(item, theme.fileName),
-    });
-  }
-  const barrelPath = path.join(target, 'src', 'ovlira.generated.ts');
-  const barrel = `${orderedAddedTags(nextManifest.added).map((tag) => `import './components/ovlira/${tag.replace('ov-', '')}.js';`).join('\n')}\n`;
-  plans.push({ absolute: barrelPath, relative: projectRelativePath(target, barrelPath), content: barrel });
+  const starterPath = path.join(target, manifest.entry);
+  const starterExists = await exists(starterPath);
+  const starterIsPlaceholder = starterExists && (await fs.readFile(starterPath, 'utf8')).includes('npm run ovlira -- add page.settings');
+  const outputRelative = args.entry
+    ? projectRelativePath(target, args.entry)
+    : manifest.recipes[item.id] ?? (starterIsPlaceholder || !starterExists
+      ? manifest.entry
+      : `src/pages/${recipeFileName(item.id)}.ts`);
+  const outputPath = path.join(target, outputRelative);
+  const nextManifest: ProjectManifest = {
+    ...manifest,
+    recipes: { ...manifest.recipes, [item.id]: outputRelative },
+  };
+  const plans: PlannedFile[] = [
+    { absolute: theme.absolute, relative: theme.relative, content: themeOverrideTemplate(), preserveExisting: true },
+    {
+      absolute: outputPath,
+      relative: outputRelative,
+      content: recipeEntry(item, theme.fileName, outputRelative),
+      forceWhenStarter: outputRelative === manifest.entry && (starterIsPlaceholder || !starterExists),
+    },
+  ];
 
   const statuses = await Promise.all(plans.map(async (plan) => ({ plan, status: await plannedFileStatus(plan, args.force) })));
   const conflicts = statuses.filter(({ status }) => status === 'conflict').map(({ plan }) => plan.relative);
   if (conflicts.length && !args.force) {
-    const result = { version: 1, ok: false, id: item.id, kind: item.kind, added: tags, files: [], changed: [], skipped: [], conflicts, entry: entryWritten ? nextManifest.entry : 'src/ovlira-example.ts' };
+    const result = { version: 2, ok: false, id: item.id, kind: item.kind, files: [], changed: [], skipped: [], conflicts, entry: outputRelative };
     if (args.json) io.stdout(JSON.stringify(result, null, 2));
     else io.stdout(`Could not safely add ${item.id}\n${conflicts.map((file) => `  conflict ${file}`).join('\n')}`);
     return 1;
@@ -340,10 +359,14 @@ async function addCommand(args: ParsedArgs, io: CliIO): Promise<number> {
   await fs.writeFile(manifestPath, JSON.stringify(nextManifest, null, 2) + '\n');
   const changed = statuses.filter(({ status }) => status === 'changed').map(({ plan }) => plan.relative);
   const skipped = statuses.filter(({ status }) => status === 'skipped').map(({ plan }) => plan.relative);
-  const result = { version: 1, ok: true, id: item.id, kind: item.kind, added: tags, files: [...changed, ...skipped], changed, skipped, conflicts: [], entry: entryWritten ? nextManifest.entry : 'src/ovlira-example.ts' };
+  const result = { version: 2, ok: true, id: item.id, kind: item.kind, imports: item.components.map((tag) => componentForTag(tag)?.api.importPath).filter(Boolean), files: [...changed, ...skipped], changed, skipped, conflicts: [], entry: outputRelative };
   if (args.json) io.stdout(JSON.stringify(result, null, 2));
   else io.stdout(`Added ${item.id}\n${changed.map((file) => `  changed ${file}`).join('\n')}${skipped.map((file) => `  kept ${file}`).join('\n')}`);
   return 0;
+}
+
+function recipeFileName(id: string) {
+  return id.replace(/^(?:page|state|shell)\./, '').replaceAll('.', '-');
 }
 
 type FileStatus = 'changed' | 'skipped' | 'conflict';
@@ -371,14 +394,14 @@ function projectRelativePath(project: string, requested: string): string {
   return relative.split(path.sep).join('/');
 }
 
-function orderedAddedTags(tags: string[]) {
-  return components.map((component) => component.api.tag).filter((tag) => tags.includes(tag));
-}
-
 async function readManifest(manifestPath: string): Promise<ProjectManifest> {
   if (!await exists(manifestPath)) throw new Error(`No .ovlira.json found in ${path.dirname(manifestPath)}. Run “ovlira init” first.`);
   const value = JSON.parse(await fs.readFile(manifestPath, 'utf8')) as ProjectManifest;
-  if (value.version !== 1 || !Array.isArray(value.added) || !Array.isArray(value.recipes)) throw new Error('Invalid .ovlira.json. Recreate it with “ovlira init”.');
+  if (value.version !== 2 || value.mode !== 'package' || typeof value.elementsVersion !== 'string' || !value.recipes || typeof value.recipes !== 'object' || Array.isArray(value.recipes) || typeof value.entry !== 'string') throw new Error('Invalid .ovlira.json. Recreate it with “ovlira init”.');
+  for (const entry of [value.entry, ...Object.values(value.recipes)]) {
+    if (typeof entry !== 'string' || !entry) throw new Error('Invalid recipe path in .ovlira.json.');
+    projectRelativePath(path.dirname(manifestPath), entry);
+  }
   return value;
 }
 
@@ -397,13 +420,14 @@ async function projectTheme(target: string): Promise<ProjectTheme> {
 }
 
 function starterEntry(theme = themeFileName): string {
-  return `import './styles/${theme}';
+  return `import '@ovlira/elements/default-theme.css';
+import './styles/${theme}';
 import './styles.css';
 
 const app = document.querySelector<HTMLDivElement>('#app');
 if (app) {
   app.innerHTML = \
-    \`<main class="starter"><p class="kicker">OVLIRA / LOCAL PROTOTYPE</p><h1>Start with a building block.</h1><p>Search the catalogue, inspect the contract, then add a component or recipe.</p><code>ovlira add page.settings</code></main>\`;
+    \`<main class="starter"><p class="kicker">OVLIRA / LOCAL PROTOTYPE</p><h1>Start with a building block.</h1><p>Search the catalogue, inspect the contract, then add a recipe or import a component.</p><code>npm run ovlira -- add page.settings</code></main>\`;
 }
 `;
 }
@@ -424,7 +448,8 @@ ${recipeFixtureStyles}
 }
 
 function componentEntry(item: ComponentDescriptor, theme = themeFileName): string {
-  return `import './ovlira.generated.js';
+  return `import '${item.api.importPath}';
+import '@ovlira/elements/default-theme.css';
 import './styles/${theme}';
 import './styles.css';
 
@@ -476,12 +501,24 @@ function componentMarkup(item: ComponentDescriptor): string {
   }
 }
 
-function recipeEntry(recipe: RecipeDescriptor, theme = themeFileName): string {
+function recipeEntry(recipe: RecipeDescriptor, theme = themeFileName, output = 'src/main.ts'): string {
   const seams = `<!-- Ovlira adaptation seams — content regions: ${recipe.contentRegions.join(', ')}; data: ${recipe.extensionPoints.data.join(', ')}; actions: ${recipe.extensionPoints.actions.join(', ')}; navigation: ${recipe.extensionPoints.navigation.join(', ')}. -->`;
   const markup = `${seams}\n${recipeFixtureMarkup(recipe.id as RecipeFixtureId)}`;
   const setup = recipeSetup(recipe);
   const behavior = recipeBehavior(recipe);
-  return `import './ovlira.generated.js';\nimport './styles/${theme}';\nimport './styles.css';\n\nconst app = document.querySelector<HTMLDivElement>('#app');\nif (app) {\n  app.innerHTML = \`${markup}\`;\n  ${setup}\n  const stateButtons = app.querySelectorAll<HTMLElement>('[data-ovlira-state-target]');\n  const states = app.querySelectorAll<HTMLElement>('[data-ovlira-state]');\n  const showState = (name: string) => {\n    states.forEach((state) => { state.hidden = state.dataset.ovliraState !== name; });\n    stateButtons.forEach((button) => { button.setAttribute('aria-pressed', String(button.dataset.ovliraStateTarget === name)); });\n  };\n  stateButtons.forEach((button) => button.addEventListener('click', () => showState(button.dataset.ovliraStateTarget ?? '')));\n  ${behavior}\n}\n`;
+  const componentImports = recipe.components
+    .map((tag) => componentForTag(tag)?.api.importPath)
+    .filter((importPath): importPath is string => Boolean(importPath))
+    .map((importPath) => `import '${importPath}';`)
+    .join('\n');
+  const themeImport = relativeImport(output, `src/styles/${theme}`);
+  const stylesImport = relativeImport(output, 'src/styles.css');
+  return `${componentImports}\nimport '@ovlira/elements/default-theme.css';\nimport '${themeImport}';\nimport '${stylesImport}';\n\nconst app = document.querySelector<HTMLDivElement>('#app');\nif (app) {\n  app.innerHTML = \`${markup}\`;\n  ${setup}\n  const stateButtons = app.querySelectorAll<HTMLElement>('[data-ovlira-state-target]');\n  const states = app.querySelectorAll<HTMLElement>('[data-ovlira-state]');\n  const showState = (name: string) => {\n    states.forEach((state) => { state.hidden = state.dataset.ovliraState !== name; });\n    stateButtons.forEach((button) => { button.setAttribute('aria-pressed', String(button.dataset.ovliraStateTarget === name)); });\n  };\n  stateButtons.forEach((button) => button.addEventListener('click', () => showState(button.dataset.ovliraStateTarget ?? '')));\n  ${behavior}\n}\n`;
+}
+
+function relativeImport(fromFile: string, toFile: string) {
+  const relative = path.posix.relative(path.posix.dirname(fromFile), toFile);
+  return relative.startsWith('.') ? relative : `./${relative}`;
 }
 
 function recipeSetup(recipe: RecipeDescriptor): string {
@@ -554,8 +591,9 @@ export async function validateProject(cwd: string) {
   }
   const manifest = await readManifest(manifestPath);
   const files = await collectProjectFiles(cwd);
-  for (const tag of manifest.added) if (!componentForTag(tag)) diagnostics.push({ ruleId: 'component.unknown', severity: 'error', message: `Unknown Ovlira component “${tag}” in .ovlira.json.`, file: '.ovlira.json', line: 1, suggestion: 'Remove the entry or add the component from the current catalogue.' });
+  await validateProjectPackage(cwd, manifest, diagnostics);
   for (const file of files) validateUnknownComponents(file, diagnostics);
+  validateComponentImports(files, diagnostics);
   for (const file of files) validateRequiredProps(file, diagnostics);
   for (const file of files) validateNesting(file, diagnostics);
   validateRecipeStates(manifest, files, diagnostics);
@@ -564,6 +602,22 @@ export async function validateProject(cwd: string) {
   validateHeadings(files, diagnostics);
   diagnostics.sort((a, b) => `${a.file ?? ''}:${a.line ?? 0}:${a.ruleId}`.localeCompare(`${b.file ?? ''}:${b.line ?? 0}:${b.ruleId}`));
   return { version: 1, ok: !diagnostics.some((diagnostic) => diagnostic.severity === 'error'), filesScanned: files.length, diagnostics };
+}
+
+async function validateProjectPackage(cwd: string, manifest: ProjectManifest, diagnostics: Diagnostic[]) {
+  const packagePath = path.join(cwd, 'package.json');
+  if (!await exists(packagePath)) {
+    diagnostics.push({ ruleId: 'project.package-missing', severity: 'error', message: 'Ovlira package mode requires a package.json.', file: 'package.json', line: 1, suggestion: 'Run “npm run ovlira -- init .” to configure this project.' });
+    return;
+  }
+  const value = JSON.parse(await fs.readFile(packagePath, 'utf8')) as Record<string, unknown>;
+  const dependencies = { ...objectRecord(value.dependencies), ...objectRecord(value.devDependencies) };
+  if (typeof dependencies['@ovlira/cli'] !== 'string') diagnostics.push({ ruleId: 'project.cli-missing', severity: 'error', message: 'The project does not declare @ovlira/cli.', file: 'package.json', line: 1, suggestion: 'Install @ovlira/cli locally and run it through “npm run ovlira -- …”.' });
+  const elementsDependency = dependencies['@ovlira/elements'];
+  if (typeof elementsDependency !== 'string') diagnostics.push({ ruleId: 'project.elements-missing', severity: 'error', message: 'The project does not declare @ovlira/elements.', file: 'package.json', line: 1, suggestion: 'Install @ovlira/elements and keep it as an application dependency.' });
+  else if (!elementsDependency.includes(manifest.elementsVersion)) diagnostics.push({ ruleId: 'project.elements-version-drift', severity: 'warning', message: `The manifest expects @ovlira/elements ${manifest.elementsVersion}, but package.json declares ${elementsDependency}.`, file: 'package.json', line: 1, suggestion: 'Review the package version before upgrading; Ovlira will not rewrite local recipe files or themes.' });
+  const scripts = objectRecord(value.scripts);
+  if (scripts.ovlira !== 'ovlira') diagnostics.push({ ruleId: 'project.local-cli-script', severity: 'warning', message: 'The project has no standard local Ovlira script.', file: 'package.json', line: 1, suggestion: 'Add "ovlira": "ovlira" to package.json scripts, then use “npm run ovlira -- …”.' });
 }
 
 async function collectProjectFiles(cwd: string): Promise<FileText[]> {
@@ -586,6 +640,20 @@ function validateUnknownComponents(file: FileText, diagnostics: Diagnostic[]) {
   let match: RegExpExecArray | null;
   while ((match = pattern.exec(file.text))) {
     if (!known.has(match[1])) pushDiagnostic(diagnostics, 'component.unknown', 'error', `Unknown Ovlira component “${match[1]}”.`, file, match.index, 'Search the catalogue and add an approved component.');
+  }
+}
+
+function validateComponentImports(files: FileText[], diagnostics: Diagnostic[]) {
+  const combined = files.map((file) => file.text).join('\n');
+  if (/['"]@ovlira\/elements\/(?:register-all\.js|index\.js)['"]/.test(combined)) return;
+  const imported = new Set([...combined.matchAll(/['"]@ovlira\/elements\/([a-z0-9-]+)\.js['"]/g)].map((match) => `ov-${match[1]}`));
+  for (const file of files) {
+    const pattern = /<(ov-[a-z0-9-]+)\b/gi;
+    let match: RegExpExecArray | null;
+    while ((match = pattern.exec(file.text))) {
+      if (!componentForTag(match[1]) || imported.has(match[1])) continue;
+      pushDiagnostic(diagnostics, 'component.not-imported', 'error', `${match[1]} is used without its package module.`, file, match.index, `Import '@ovlira/elements/${match[1].replace('ov-', '')}.js' in the module that renders it.`);
+    }
   }
 }
 
@@ -616,12 +684,15 @@ function validateNesting(file: FileText, diagnostics: Diagnostic[]) {
 }
 
 function validateRecipeStates(manifest: ProjectManifest, files: FileText[], diagnostics: Diagnostic[]) {
-  const combined = files.map((file) => file.text).join('\n');
-  for (const recipeId of manifest.recipes) {
+  for (const [recipeId, recipePath] of Object.entries(manifest.recipes)) {
     const recipe = recipes.find((item) => item.id === recipeId);
     if (!recipe) { diagnostics.push({ ruleId: 'recipe.unknown', severity: 'error', message: `Unknown recipe “${recipeId}” in .ovlira.json.`, file: '.ovlira.json', line: 1, suggestion: 'Remove the entry or add the recipe from the current catalogue.' }); continue; }
-    for (const state of recipe.requiredStates) if (!new RegExp(`data-ovlira-state=["']${state}["']`, 'i').test(combined)) {
-      const file = files.find((candidate) => candidate.relative === manifest.entry) ?? files[0];
+    const file = files.find((candidate) => candidate.relative === recipePath);
+    if (!file) {
+      diagnostics.push({ ruleId: 'recipe.file-missing', severity: 'error', message: `${recipe.id} points to missing generated source “${recipePath}”.`, file: '.ovlira.json', line: 1, suggestion: `Regenerate ${recipe.id} or update its path in .ovlira.json.` });
+      continue;
+    }
+    for (const state of recipe.requiredStates) if (!new RegExp(`data-ovlira-state=["']${state}["']`, 'i').test(file.text)) {
       diagnostics.push({ ruleId: 'recipe.required-state', severity: 'error', message: `${recipe.id} is missing its required ${state} state.`, file: file?.relative, line: file ? lineNumber(file.text, file.text.search(/<|$/)) : undefined, suggestion: `Add a visible or switchable element marked data-ovlira-state="${state}".` });
     }
   }
@@ -641,7 +712,7 @@ function validatePrimaryActions(files: FileText[], diagnostics: Diagnostic[]) {
 function validateTokens(files: FileText[], diagnostics: Diagnostic[]) {
   const approved = new Set(flattenTokenValues(tokens));
   for (const file of files) {
-    if (file.relative.endsWith(`src/styles/${themeFileName}`) || file.relative.endsWith(`src/styles/${legacyThemeFileName}`) || file.relative.startsWith('src/components/ovlira/')) continue;
+    if (file.relative.endsWith(`src/styles/${themeFileName}`) || file.relative.endsWith(`src/styles/${legacyThemeFileName}`)) continue;
     const pattern = /#[0-9a-f]{3,8}\b/gi;
     let match: RegExpExecArray | null;
     while ((match = pattern.exec(file.text))) if (!approved.has(match[0].toLowerCase())) pushDiagnostic(diagnostics, 'tokens.unapproved-literal', 'warning', `Literal color ${match[0]} is not an approved Ovlira token value.`, file, match.index, 'Use a --ov-* custom property from the token export.');
@@ -661,7 +732,6 @@ function flattenTokenValues(value: unknown): string[] {
 
 function validateHeadings(files: FileText[], diagnostics: Diagnostic[]) {
   for (const file of files) {
-    if (file.relative.startsWith('src/components/ovlira/')) continue;
     const headings: { level: number; index: number }[] = [];
     const pattern = /<h([1-6])\b/gi;
     let match: RegExpExecArray | null;
