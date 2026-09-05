@@ -13,7 +13,7 @@
 
 Release-check run on 2026-09-03: package checks and fresh-install smoke passed; the main browser suite passed 187/187; the component matrix passed 151/153. The only remaining failures were the two narrow overview comparisons below. This is not a green release gate.
 
-After adding the domain rehearsal, the expanded main browser suite passed 199/199 (including all 12 domain/theme/viewport cases). The component matrix remained 151/153, with the same two overview differences. Unit/evaluation tests passed 72/72. The preparation work is tracked in GitHub PR #5; the two overview baselines were subsequently approved and the independent adaptation benchmark is recorded below. Package versions remain unchanged until the final release checks pass.
+After adding the domain rehearsal, the expanded main browser suite passed 199/199 (including all 12 domain/theme/viewport cases). The component matrix remained 151/153, with the same two overview differences. Unit/evaluation tests passed 72/72. The preparation work is tracked in GitHub PR #5; the two overview baselines were subsequently approved and the independent adaptation benchmark is recorded below. Package versions were intentionally unchanged at that preparation stage; after the final release checks passed, the 0.4.0 release was cut.
 
 The user marked the narrow light/dark catalogue overview review as passed on 2026-09-03. Those two baselines were promoted: navigation wraps instead of clipping Validation, adding 36px in accordance with DESIGN.md. The scoped `--approve-overview` manifest operation preserves all component decisions; no component baseline was changed or reapproved. The manifest consistency test passed after promotion.
 
