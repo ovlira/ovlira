@@ -58,9 +58,11 @@ Before relying on the workflow, configure an npm trusted publisher for both pack
 - Workflow filename: `publish.yml`
 - Allowed action: npm publish
 
-The workflow grants only `contents: read` and `id-token: write`, runs the package release checks, and publishes both packages with provenance. Browser/screenshot checks remain in the macOS CI job because their approved baselines are platform-specific. It does not store an npm token in GitHub. See the [npm trusted publishing documentation](https://docs.npmjs.com/trusted-publishers/) for the current npm configuration screens and requirements.
+The workflow grants only `contents: read` and `id-token: write`, runs the package release checks, and publishes through npm trusted publishing. Browser/screenshot checks remain in the macOS CI job because their approved baselines are platform-specific. It does not store an npm token in GitHub. See the [npm trusted publishing documentation](https://docs.npmjs.com/trusted-publishers/) for the current npm configuration screens and requirements.
 
-Trusted publishing requires npm CLI 11.5.1 or later and Node 22.14.0 or later. The workflow uses Node 24 and installs the latest npm 11.x before publishing. If a release run fails after a package has already been published, do not rerun it for the same version; npm never reuses a published name/version pair. For a failed unpublished release, use the workflow's manual `Run workflow` action with the existing tag, such as `v0.3.0`.
+The workflow uses Node 24 and the latest npm 11.x. `scripts/publish-packages.mjs` packs candidates in dependency order, compares existing registry integrity, and skips only an identical already-published package. A mismatched artifact aborts; npm never reuses a name/version pair. This permits resuming a partially completed release without blind republishing. Use the manual `Run workflow` action with the existing release tag when resuming.
+
+For a new package name, npm requires the package to exist before configuring a trusted publisher. First publication may therefore require an authenticated maintainer and 2FA. After publishing the exact reviewed elements tarball, configure its GitHub publisher for `ovlira/ovlira`, `publish.yml`, then run the GitHub release workflow. The integrity check will verify and skip that identical elements artifact before publishing the CLI. Do not claim GitHub provenance for a locally bootstrapped artifact; subsequent OIDC publications receive provenance. See [npm trust prerequisites](https://docs.npmjs.com/cli/v11/commands/npm-trust/).
 
 ## CI
 

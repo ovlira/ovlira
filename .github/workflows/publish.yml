@@ -51,6 +51,4 @@ jobs:
         run: npm run manifest
 
       - name: Publish with trusted provenance
-        run: |
-          npm publish --workspace @ovlira/elements --access public
-          npm publish --access public
+        run: node scripts/publish-packages.mjs
